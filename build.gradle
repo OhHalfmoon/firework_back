@@ -33,6 +33,9 @@ dependencies {
 
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mustache
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
+	// https://mvnrepository.com/artifact/org.mybatis/mybatis
+	implementation 'org.mybatis:mybatis'
+
 
 }
 
