@@ -44,6 +44,10 @@ public class MemberController {
 
     @PostMapping("signin")
     public String login(MemberDTO memberDTO) {
+        MemberEntity member = memberService.login(memberDTO.getUsername(), memberDTO.getPassword());
+//        final MemberDTO memberDTO1 = MemberDTO.builder()
+//                .username(member.getUsername())
+//                .build();
         return "redirect:/";
     }
 }

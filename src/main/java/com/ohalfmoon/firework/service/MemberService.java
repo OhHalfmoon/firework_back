@@ -17,4 +17,7 @@ public class MemberService {
         return memberRepository.save(memberEntity);
     }
 
+    public MemberEntity login (final String username, final String password) {
+        return memberRepository.findByUsernameAndPassword(username, password);
+    }
 }
