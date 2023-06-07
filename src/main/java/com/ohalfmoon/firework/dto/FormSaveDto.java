@@ -1,4 +1,4 @@
-package com.ohalfmoon.firework.dto.form;
+package com.ohalfmoon.firework.dto;
 
 import com.ohalfmoon.firework.model.FormEntity;
 import lombok.Builder;
@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * packageName    : com.ohalfmoon.firework.dto.form
+ * packageName    : com.ohalfmoon.firework.dto
  * fileName       : FormDto
  * author         : 방한솔
  * date           : 2023/06/05
