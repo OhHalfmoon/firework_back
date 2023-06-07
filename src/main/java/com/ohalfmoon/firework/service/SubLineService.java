@@ -6,6 +6,17 @@ import com.ohalfmoon.firework.persistence.SubLineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * packageName    : com.ohalfmoon.firework.service
+ * fileName       : SubLineService
+ * author         : 이지윤
+ * date           : 2023/06/07
+ * description    : Create, Delete
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023/06/07        이지윤           최초 생성
+ */
 @Service
 public class SubLineService {
     @Autowired
