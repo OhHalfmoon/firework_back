@@ -32,9 +32,8 @@ public class MasterLineEntity {
     @Column(nullable = false)
     private String lineName;
 
-    private String userNo;
+    private Long userNo;
 
-    @Column(nullable = false)
     private Date regdate;
 
     private Date updatedate;

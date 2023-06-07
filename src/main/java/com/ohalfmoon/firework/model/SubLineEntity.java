@@ -39,7 +39,6 @@ public class SubLineEntity {
     @Column(nullable = false)
     private Long userNo;
 
-    @Column(nullable = false)
     private Date regdate;
     private Date updatedate;
 
