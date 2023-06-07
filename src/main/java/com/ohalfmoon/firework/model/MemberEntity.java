@@ -14,10 +14,16 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tbl_member")
+@Table(name = "tbl_member2")
 @DynamicInsert
+@Builder
 public class MemberEntity {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true)
     private String username;
 
     @Column(nullable = false)
@@ -77,7 +83,7 @@ public class MemberEntity {
         this.email = email;
         this.phoneNum = phoneNum;
 //        this.deptNo = deptNo;
-//        this.positionNo = positionNo;
+//        this.positionEntity.getPositionNo() =
         this.name = name;
         this.birthdate = birthdate;
         this.startdate = startdate;
