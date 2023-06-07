@@ -24,22 +24,22 @@ public class ApprovalEntity {
     @Column(nullable = false)
     private String approvalName;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "formNo")
     private FormEntity formEntity;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "lineNo")
     private MasterLineEntity masterLineEntity;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "docboxNo")
     private DocboxEntity docboxEntity;
 
     @Column(nullable = false)
     private String approContent;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "userNo")
     private MemberEntity memberEntity;
 
