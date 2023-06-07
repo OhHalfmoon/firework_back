@@ -47,7 +47,8 @@ public class FormEntity extends BaseTimeEntity {
      * @param isUsed   사용여부
      */
     @Builder
-    public FormEntity(String formName, String formText, Boolean isUsed) {
+    public FormEntity(Long formNo, String formName, String formText, Boolean isUsed) {
+        this.formNo = formNo;
         this.formName = formName;
         this.formText = formText;
         this.isUsed = isUsed;
