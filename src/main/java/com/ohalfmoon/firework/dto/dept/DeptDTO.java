@@ -1,4 +1,4 @@
-package com.ohalfmoon.firework.dto.form;
+package com.ohalfmoon.firework.dto.dept;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

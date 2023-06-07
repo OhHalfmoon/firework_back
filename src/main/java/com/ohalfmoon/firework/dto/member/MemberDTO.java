@@ -1,4 +1,4 @@
-package com.ohalfmoon.firework.dto.form;
+package com.ohalfmoon.firework.dto.member;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ohalfmoon.firework.model.DeptEntity;
@@ -20,6 +20,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class MemberDTO {
+    private Long userNo;
     private String username;
     private String password;
     private String email;
