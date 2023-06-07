@@ -1,4 +1,4 @@
-package com.ohalfmoon.firework.dto;
+package com.ohalfmoon.firework.dto.form;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ohalfmoon.firework.model.DeptEntity;
@@ -60,8 +60,6 @@ public class MemberDTO {
         this.password = password;
         this.email = email;
         this.phoneNum = phoneNum;
-        this.deptNo = deptNo;
-        this.positionNo = positionNo;
         this.name = name;
         this.birthdate = birthdate;
         this.startdate = startdate;
