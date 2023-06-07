@@ -8,4 +8,7 @@ import java.util.List;
 
 public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
     MemberEntity findByUsernameAndPassword(String username, String password);
+
+    MemberEntity findByUsername(String username);
+
 }
