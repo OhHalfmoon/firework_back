@@ -1,9 +1,20 @@
 package com.ohalfmoon.firework.controller;
 
+import com.ohalfmoon.firework.dto.FormResponseDto;
+import com.ohalfmoon.firework.service.FormService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * packageName    : com.ohalfmoon.firework.controller
@@ -16,11 +27,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * -----------------------------------------------------------
  * 2023/06/05        방한솔           최초 생성
  */
+@RequiredArgsConstructor
 @RequestMapping("/admin/form")
 @Controller
 public class FormViewController {
+
+    private final FormService formService;
+
     @GetMapping("/detail/{formNo}")
-    public String detail(@PathVariable Long formNo){
+    public String detail(@PathVariable Long formNo, Model model){
+        FormResponseDto formDetail = formService.findByFormNo(formNo);
+
+        model.addAttribute("formDetail", formDetail);
+
         return "admin/form/detail";
+    }
+
+    @GetMapping
+    public String list(
+            Optional<String> formName
+            , Pageable pageRequest
+            , Model model
+    ) {
+        Page<FormResponseDto> formDtos = formService.searchFormList(formName, pageRequest);
+
+        List<FormResponseDto> content = formDtos.getContent();
+
+        model.addAttribute("dtoList", content);
+        model.addAttribute("pageInfo", formDtos.getPageable());
+
+        return "admin/form/list";
     }
 }

@@ -1,6 +1,8 @@
 package com.ohalfmoon.firework.repository;
 
 import com.ohalfmoon.firework.model.FormEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -15,5 +17,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * 2023/06/05        방한솔           최초 생성
  */
 public interface FormRepository extends JpaRepository<FormEntity, Long> {
-
+    Page<FormEntity> findByFormNameContaining(String formName, Pageable pageable);
 }
