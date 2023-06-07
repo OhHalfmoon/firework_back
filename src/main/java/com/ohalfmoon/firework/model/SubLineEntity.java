@@ -8,15 +8,15 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * packageName    : com.ohalfmoon.firework.model
+ * packageName    : com.ohalfmoon.firework.entity
  * fileName       : SubLineEntity
  * author         : 이지윤
  * date           : 2023/06/07
- * description    : 결재선 설정 시 필요한 정보(결재자, 결재 순서)DTO
+ * description    : 결재 선에 필요한 정보(결재자, 결재 순서)Entity
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2023/06/05        이지윤           최초 생성
+ * 2023/06/07        이지윤           최초 생성
  */
 
 @Builder
