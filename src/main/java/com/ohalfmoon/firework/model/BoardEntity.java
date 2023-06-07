@@ -24,7 +24,7 @@ public class BoardEntity {
     @Column(nullable = false)
     private int boardCategory;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "userNo")
     private MemberEntity memberEntity;
 
