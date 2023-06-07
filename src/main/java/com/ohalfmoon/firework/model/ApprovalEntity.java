@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Getter
 @NoArgsConstructor
@@ -20,9 +21,35 @@ public class ApprovalEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long approvalNo;
 
+    @Column(nullable = false)
+    private String approvalName;
 
+    @ManyToOne
+    @JoinColumn(name = "formNo")
+    private FormEntity formEntity;
 
+    @ManyToOne
+    @JoinColumn(name = "lineNo")
+    private MasterLineEntity masterLineEntity;
 
+    @ManyToOne
+    @JoinColumn(name = "docboxNo")
+    private DocboxEntity docboxEntity;
 
+    @Column(nullable = false)
+    private String approContent;
 
+    @ManyToOne
+    @JoinColumn(name = "userNo")
+    private MemberEntity memberEntity;
+
+    @Column(nullable = false)
+    private int storage;
+
+    @Column(nullable = false)
+    private int approvalState;
+
+    private Date regdate;
+
+    private Date updatedate;
 }
