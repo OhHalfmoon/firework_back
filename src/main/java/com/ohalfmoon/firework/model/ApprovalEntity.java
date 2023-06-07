@@ -44,7 +44,7 @@ public class ApprovalEntity {
     private MemberEntity memberEntity;
 
     @Column(nullable = false)
-    private int save;
+    private int storage;
 
     @Column(nullable = false)
     private int approvalState;
