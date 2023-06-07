@@ -10,6 +10,7 @@ import com.ohalfmoon.firework.persistence.MemberRepository;
 import com.ohalfmoon.firework.persistence.PositionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -24,11 +25,7 @@ public class MemberService {
     @Autowired
     private PositionRepository positionRepository;
 
-//    private De
-
-//    public MemberEntity register(MemberEntity memberEntity) {
-//        return memberRepository.save(memberEntity);
-//    }
+    @Transactional // springboot
     public MemberEntity register(MemberDTO memberDTO) {
         MemberEntity entity = memberDTO.toEntity();
         DeptEntity byId = deptRepository
@@ -43,6 +40,7 @@ public class MemberService {
 
         return memberRepository.save(entity);
 }
+
 
     public MemberEntity login (final String username, final String password) {
         return memberRepository.findByUsernameAndPassword(username, password);

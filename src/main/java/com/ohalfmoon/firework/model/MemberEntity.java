@@ -76,14 +76,23 @@ public class MemberEntity {
         this.positionEntity = positionEntity;
     }
 
+    public void updatePw(String password) {
+        this.password = password;
+    }
+
+    public void update(String email, String phoneNum, String name, Date birthdate, Date startdate) {
+        this.email = email;
+        this.phoneNum = phoneNum;
+        this.name = name;
+        this.birthdate = birthdate;
+        this.startdate = startdate;
+    }
+
     @Builder
     public MemberEntity(String username
             , String password
             , String email
             , String phoneNum
-//            , Long deptNo
-            , DeptEntity deptEntity
-            , Long positionNo
             , String name
             , Date birthdate
             , Date startdate
