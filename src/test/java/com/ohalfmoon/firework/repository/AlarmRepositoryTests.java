@@ -5,12 +5,9 @@ import com.ohalfmoon.firework.model.ApprovalEntity;
 import com.ohalfmoon.firework.model.FormEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.persistence.AlamRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,7 +30,7 @@ public class AlarmRepositoryTests {
     @Test
     public void saveTests() {
         AlarmEntity alarm = AlarmEntity.builder()
-                .alarmTitle("테스트결재안알림2")
+                .alarmTitle("테스트결재안알림9")
                 .alarmReceiver(MemberEntity.builder().userNo(1L).build())
                 .alarmCategory("결제요청")
                 .boardNo(null)
@@ -42,7 +39,7 @@ public class AlarmRepositoryTests {
 
         AlarmEntity save = alamRepository.save(alarm);
 
-        AlarmEntity findAlarm = alamRepository.findById(1L).orElse(null);
+        AlarmEntity findAlarm = alamRepository.findById(save.getAlarmNo()).orElse(null);
 
         assertThat(save).isEqualTo(findAlarm);
     }

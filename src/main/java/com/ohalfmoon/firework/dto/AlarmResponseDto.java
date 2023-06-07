@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -36,7 +37,7 @@ public class AlarmResponseDto {
 
     private String alarmTitle;
 
-    private Date regdate;
+    private LocalDateTime regdate;
 
     private Long boardNo;
 

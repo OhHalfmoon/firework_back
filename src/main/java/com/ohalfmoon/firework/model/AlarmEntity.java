@@ -1,12 +1,12 @@
 package com.ohalfmoon.firework.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -27,6 +27,8 @@ import java.util.Date;
 @Table(name = "tbl_alarm")
 @DynamicInsert
 @Builder
+@EqualsAndHashCode()
+@ToString
 public class AlarmEntity {
 
     @Id
@@ -46,7 +48,8 @@ public class AlarmEntity {
     @Column(nullable = false)
     private String alarmTitle;
 
-    private Date regdate;
+    @CreatedDate
+    private LocalDateTime regdate;
 
     @ManyToOne
     @JoinColumn(name = "boardNo")
