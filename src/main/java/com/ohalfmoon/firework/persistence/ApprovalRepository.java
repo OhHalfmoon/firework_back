@@ -10,4 +10,6 @@ public interface ApprovalRepository extends JpaRepository<ApprovalEntity, Long> 
     ApprovalEntity findByApprovalName(String approvalName);
 
     List<ApprovalEntity> findAllByMemberEntity(MemberEntity memberEntity);
+
+
 }

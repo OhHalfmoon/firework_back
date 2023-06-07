@@ -1,6 +1,7 @@
 package com.ohalfmoon.firework.repository;
 
 import com.ohalfmoon.firework.model.FormEntity;
+import com.ohalfmoon.firework.persistence.FormRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

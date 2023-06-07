@@ -2,11 +2,14 @@ package com.ohalfmoon.firework.repository;
 
 import com.ohalfmoon.firework.model.*;
 import com.ohalfmoon.firework.persistence.ApprovalRepository;
+import org.apache.juli.logging.Log;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 @SpringBootTest
 public class ApprovalRepositoryTests {
@@ -24,5 +27,22 @@ public class ApprovalRepositoryTests {
                         .memberEntity(MemberEntity.builder().userNo(1L).build())
                         .regdate(new Date())
                 .build());
+    }
+
+    @Test
+    public void approvalList() {
+        List<ApprovalEntity> test = approvalRepository.findAllByMemberEntity(MemberEntity.builder().userNo(1L).build());
+        test.forEach(System.out::println);
+    }
+
+    @Test
+    public void getApproval() {
+        ApprovalEntity test = approvalRepository.findByApprovalName("다시만드는기안");
+        System.out.println(test);
+    }
+
+    @Test
+    public void removeTest() {
+        approvalRepository.delete(ApprovalEntity.builder().approvalNo(4L).build());
     }
 }

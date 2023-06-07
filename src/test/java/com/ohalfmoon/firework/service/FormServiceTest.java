@@ -4,7 +4,7 @@ import com.ohalfmoon.firework.dto.FormResponseDto;
 import com.ohalfmoon.firework.dto.FormSaveDto;
 import com.ohalfmoon.firework.dto.FormUpdateDto;
 import com.ohalfmoon.firework.model.FormEntity;
-import com.ohalfmoon.firework.repository.FormRepository;
+import com.ohalfmoon.firework.persistence.FormRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

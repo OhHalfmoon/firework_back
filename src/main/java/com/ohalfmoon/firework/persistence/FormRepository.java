@@ -1,4 +1,4 @@
-package com.ohalfmoon.firework.repository;
+package com.ohalfmoon.firework.persistence;
 
 import com.ohalfmoon.firework.model.FormEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

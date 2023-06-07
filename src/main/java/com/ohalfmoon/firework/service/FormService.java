@@ -4,7 +4,7 @@ import com.ohalfmoon.firework.dto.FormResponseDto;
 import com.ohalfmoon.firework.dto.FormSaveDto;
 import com.ohalfmoon.firework.dto.FormUpdateDto;
 import com.ohalfmoon.firework.model.FormEntity;
-import com.ohalfmoon.firework.repository.FormRepository;
+import com.ohalfmoon.firework.persistence.FormRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
