@@ -1,20 +1,24 @@
 package com.ohalfmoon.firework.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ohalfmoon.firework.model.DeptEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.ohalfmoon.firework.model.PositionEntity;
+import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.swing.text.Position;
 import java.lang.reflect.Member;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class MemberDTO {
     private String username;
     private String password;
@@ -24,14 +28,22 @@ public class MemberDTO {
     private Long positionNo;
     private String name;
     private boolean manager;
+    @DateTimeFormat(pattern = "yyyyMMdd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd", timezone = "Asia/Seoul")
     private Date birthdate;
     private String authProvider;
     private String memberSign;
+    @DateTimeFormat(pattern = "yyyyMMdd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd", timezone = "Asia/Seoul")
     private Date startdate;
+    @DateTimeFormat(pattern = "yyyyMMdd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd", timezone = "Asia/Seoul")
     private Date enddate;
     private int state;
     private Date regdate;
     private Date updatedate;
+
+
 
     @Builder
     public MemberDTO(String username
@@ -60,8 +72,6 @@ public class MemberDTO {
                 .password(password)
                 .email(email)
                 .phoneNum(phoneNum)
-//                .deptNo(deptNo)
-//                .positionNo(positionNo)
                 .name(name)
                 .birthdate(birthdate)
                 .startdate(startdate)
