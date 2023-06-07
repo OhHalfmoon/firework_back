@@ -68,13 +68,22 @@ public class MemberEntity {
 
     private Date updatedate;
 
+    public void updateDeptNo(DeptEntity deptEntity) {
+        this.deptEntity = deptEntity;
+    }
+
+    public void updatePositionNo(PositionEntity positionEntity) {
+        this.positionEntity = positionEntity;
+    }
+
     @Builder
     public MemberEntity(String username
             , String password
             , String email
             , String phoneNum
 //            , Long deptNo
-//            , Long positionNo
+            , DeptEntity deptEntity
+            , Long positionNo
             , String name
             , Date birthdate
             , Date startdate
@@ -83,7 +92,7 @@ public class MemberEntity {
         this.password = password;
         this.email = email;
         this.phoneNum = phoneNum;
-//        this.deptNo = deptNo;
+        this.deptEntity = deptEntity;
 //        this.positionEntity.getPositionNo() =
         this.name = name;
         this.birthdate = birthdate;

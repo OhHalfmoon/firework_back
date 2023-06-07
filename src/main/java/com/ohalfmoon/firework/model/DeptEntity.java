@@ -6,10 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -20,6 +17,7 @@ import java.util.Date;
 @DynamicInsert
 public class DeptEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long deptNo;
     private String deptName;
     private Date regdate;
