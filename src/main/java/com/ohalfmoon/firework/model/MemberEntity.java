@@ -14,14 +14,14 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tbl_member2")
+@Table(name = "tbl_member")
 @DynamicInsert
 @Builder
 public class MemberEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userNo;
 
     @Column(unique = true)
     private String username;
@@ -35,7 +35,6 @@ public class MemberEntity {
     @Column(nullable = false)
     private String phoneNum;
 
-//    private Long deptNo;
     @ManyToOne
     @JoinColumn(name = "deptNo")
     private DeptEntity deptEntity;
@@ -43,24 +42,26 @@ public class MemberEntity {
     @ManyToOne
     @JoinColumn(name = "positionNo")
     private PositionEntity positionEntity;
-//    private Long positionNo;
 
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private boolean manager;
 
     @Column(nullable = true)
     private Date birthdate;
-//    @Column(name = "auth_provider")
+
     private String authProvider;
 
     private String memberSign;
 
+    @Column(nullable = false)
     private Date startdate;
 
     private Date enddate;
 
+    @Column(nullable = false)
     private int state;
 
     private Date regdate;

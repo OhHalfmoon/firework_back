@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("auth")
 public class MemberController {
@@ -43,11 +46,11 @@ public class MemberController {
     public void login() {}
 
     @PostMapping("signin")
-    public String login(MemberDTO memberDTO) {
+    public String login(MemberDTO memberDTO, HttpServletRequest request) {
         MemberEntity member = memberService.login(memberDTO.getUsername(), memberDTO.getPassword());
-//        final MemberDTO memberDTO1 = MemberDTO.builder()
-//                .username(member.getUsername())
-//                .build();
+        HttpSession session = request.getSession();
+        session.setAttribute("member", memberService.get(memberDTO.getUsername()));
+
         return "redirect:/";
     }
 }

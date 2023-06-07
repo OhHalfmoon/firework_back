@@ -20,4 +20,8 @@ public class MemberService {
     public MemberEntity login (final String username, final String password) {
         return memberRepository.findByUsernameAndPassword(username, password);
     }
+
+    public MemberEntity get (final String username) {
+        return memberRepository.findByUsername(username);
+    }
 }
