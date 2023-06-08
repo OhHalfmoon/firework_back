@@ -1,6 +1,7 @@
 package com.ohalfmoon.firework.dto;
 
 import com.ohalfmoon.firework.model.AlarmEntity;
+import com.ohalfmoon.firework.model.MemberEntity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,8 +52,9 @@ public class AlarmResponseDto {
         alarmCheck = entity.isAlarmCheck();
         alarmCategory = entity.getAlarmCategory();
         alarmTitle = entity.getAlarmTitle();
-        boardNo = entity.getBoardNo().getBoardNo();
-        approvalNo = entity.getApprovalNo().getApprovalNo();
+        boardNo = entity.getBoardNo() == null ? null : entity.getBoardNo().getBoardNo();
+        approvalNo = entity.getApprovalNo() == null ? null : entity.getApprovalNo().getApprovalNo();
         regdate = entity.getRegdate();
     }
+
 }
