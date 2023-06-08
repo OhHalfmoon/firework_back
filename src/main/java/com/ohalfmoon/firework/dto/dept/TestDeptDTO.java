@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class DeptDTO {
+public class TestDeptDTO {
     private Long deptNo;
     private String deptName;
 

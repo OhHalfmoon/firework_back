@@ -1,6 +1,6 @@
 package com.ohalfmoon.firework.service;
 
-import com.ohalfmoon.firework.dto.member.MemberDTO;
+import com.ohalfmoon.firework.dto.member.TestMemberDTO;
 import com.ohalfmoon.firework.dto.member.MemberUpdateDTO;
 import com.ohalfmoon.firework.dto.member.MemberUpdatePwDTO;
 import com.ohalfmoon.firework.dto.role.RoleDTO;
@@ -33,7 +33,7 @@ public class MemberService {
     private RoleRepository roleRepository;
 
     @Transactional // springboot
-    public RoleEntity register(MemberDTO memberDTO, RoleDTO roleDTO) {
+    public RoleEntity register(TestMemberDTO memberDTO, RoleDTO roleDTO) {
         MemberEntity entity = memberDTO.toEntity();
         DeptEntity byId = deptRepository
                 .findById(memberDTO.getDeptNo())
