@@ -9,7 +9,9 @@ import java.util.List;
 public interface ApprovalRepository extends JpaRepository<ApprovalEntity, Long> {
     ApprovalEntity findByApprovalName(String approvalName);
 
+//    List<ApprovalEntity> findAllByMemberEntity(MemberEntity memberEntity);
     List<ApprovalEntity> findAllByMemberEntity(MemberEntity memberEntity);
 
+    ApprovalEntity findByApprovalNo(Long approvalNo);
 
 }

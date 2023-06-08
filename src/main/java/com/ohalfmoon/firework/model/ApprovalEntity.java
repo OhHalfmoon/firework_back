@@ -1,5 +1,6 @@
 package com.ohalfmoon.firework.model;
 
+import com.ohalfmoon.firework.dto.ApprovalResponseDto;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -14,7 +15,7 @@ import java.util.Date;
 @DynamicInsert
 @Builder
 @ToString
-public class ApprovalEntity {
+public class ApprovalEntity extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long approvalNo;
@@ -42,12 +43,36 @@ public class ApprovalEntity {
     private MemberEntity memberEntity;
 
     @Column(nullable = false)
-    private int storage;
+    private boolean storage;
 
     @Column(nullable = false)
     private int approvalState;
 
-    private Date regdate;
+//    private Date regdate;
+//
+//    private Date updatedate;
 
-    private Date updatedate;
+
+    public ApprovalResponseDto toDto() {
+        return ApprovalResponseDto.builder()
+                .approvalNo(approvalNo)
+                .approvalName(approvalName)
+                .docboxNo(docboxEntity.getDocboxNo())
+                .docboxName(docboxEntity.getDocboxName())
+                .approContent(approContent)
+                .userNo(memberEntity.getUserNo())
+                .name(memberEntity.getName())
+                .storage(storage)
+                .approvalState(approvalState)
+                .regdate(getRegdate())
+                .build();
+    }
+
+    public void updateStorage(boolean storage) {
+        this.storage = storage;
+    }
+
+    public void updateState(int approvalState) {
+        this.approvalState = approvalState;
+    }
 }

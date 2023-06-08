@@ -25,7 +25,6 @@ public class ApprovalRepositoryTests {
                         .docboxEntity(DocboxEntity.builder().docboxNo(1L).build())
                         .approContent("가나다라마바사아자차카타파하")
                         .memberEntity(MemberEntity.builder().userNo(1L).build())
-                        .regdate(new Date())
                 .build());
     }
 
