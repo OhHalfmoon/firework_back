@@ -82,6 +82,19 @@ public class AlarmRepositoryTests {
     public void findByUserNoTest() {
         Long userNo = 1L;
 
-        List<AlarmEntity> alarmEntityList = alamRepository.findAllByUserNo(1L);
+        List<AlarmEntity> alarmEntityList = alamRepository.findAllByAlarmReceiver(memberRepository.findById(userNo).orElse(null));
+
+        log.info("{}", alarmEntityList);
+    }
+
+    @Test
+    public void deleteAlarm() {
+        Long alarmNo= 10L;
+
+        alamRepository.deleteById(alarmNo);
+
+        AlarmEntity alarm = alamRepository.findById(alarmNo).orElse(null);
+
+        Assertions.assertThat(alarm).isNull();
     }
 }
