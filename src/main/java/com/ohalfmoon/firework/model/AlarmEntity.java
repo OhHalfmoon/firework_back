@@ -4,8 +4,10 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -29,6 +31,7 @@ import java.util.Date;
 @Builder
 @EqualsAndHashCode()
 @ToString
+@EntityListeners(AuditingEntityListener.class)
 public class AlarmEntity {
 
     @Id
@@ -49,7 +52,7 @@ public class AlarmEntity {
     private String alarmTitle;
 
     @CreatedDate
-    private LocalDateTime regdate;
+    private LocalDate regdate;
 
     @ManyToOne
     @JoinColumn(name = "boardNo")
