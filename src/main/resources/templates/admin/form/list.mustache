@@ -38,7 +38,16 @@
             <div class="container-fluid">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">문서양식 목록</h3>
+
+                        <div class="d-flex justify-content-between">
+                            <div class="form-group row my-0">
+                                <label for="search" class="align-self-center my-0">양식명 검색</label>
+                                <input class="form-control col-md-6 mx-2" type="text" id="search">
+                                <button class="btn btn-primary">검색</button>
+                            </div>
+
+                            <button class="btn btn-primary">글 등록</button>
+                        </div>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -49,27 +58,27 @@
                                 <th>문서양식 명</th>
                                 <th>사용여부</th>
                                 <th>등록일</th>
-                                <th>사용여부</th>
                                 <th>조회수</th>
                                 <th>관리</th>
-                                <th style="width: 40px">Label</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
                                 {{#dtoList}}
-                                <td>{{formNo}}</td>
-                                <td>{{formName}}</td>
-                                <td>{{#isUsed}}
-                                    사용중
-                                {{/isUsed}}
-                                    {{^isUsed}}
-                                        미사용
-                                    {{/isUsed}}
-                                </td>
-                                <td><span class="badge bg-danger">55%</span></td>
+                                    <tr>
+                                        <td>{{formNo}}</td>
+                                        <td>{{formName}}</td>
+                                        <td>{{#isUsed}}
+                                            사용중
+                                        {{/isUsed}}
+                                            {{^isUsed}}
+                                                미사용
+                                            {{/isUsed}}
+                                        </td>
+                                        <td>{{regdate}}</td>
+                                        <td>조회수 추가</td>
+                                        <td><button class="btn btn-warning mr-2">수정</button><button class="btn btn-danger">삭제</button></td>
+                                    </tr>
                                 {{/dtoList}}
-                            </tr>
                             </tbody>
                         </table>
                     </div>
