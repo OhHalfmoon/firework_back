@@ -76,5 +76,4 @@ public class MemberDTO {
                 .startdate(startdate)
                 .build();
     }
-
 }

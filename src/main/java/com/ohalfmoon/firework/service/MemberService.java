@@ -1,6 +1,8 @@
 package com.ohalfmoon.firework.service;
 
 import com.ohalfmoon.firework.dto.member.MemberDTO;
+import com.ohalfmoon.firework.dto.member.MemberUpdateDTO;
+import com.ohalfmoon.firework.dto.member.MemberUpdatePwDTO;
 import com.ohalfmoon.firework.dto.role.RoleDTO;
 import com.ohalfmoon.firework.model.DeptEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
@@ -52,6 +54,33 @@ public class MemberService {
 
 }
 
+    public Long update(Long userNo, MemberUpdateDTO dto) {
+        MemberEntity entity = memberRepository.findById(userNo)
+                .orElseThrow(() -> new IllegalArgumentException("해당 id가 존재하지 않습니다." + userNo));
+
+        DeptEntity byId = deptRepository
+                .findById(dto.getDeptNo())
+                .orElseThrow(() -> new IllegalArgumentException(""));
+        entity.updateDeptNo(byId);
+
+        PositionEntity byId2 = positionRepository
+                .findById(dto.getPositionNo())
+                .orElseThrow(() -> new IllegalArgumentException(""));
+        entity.updatePositionNo(byId2);
+
+        entity.update(dto.getEmail(), dto.getPhoneNum(), dto.getName(), dto.getBirthdate(), dto.getStartdate());
+
+        return userNo;
+}
+    public Long updatePw(Long userNo, MemberUpdatePwDTO dto) {
+        MemberEntity entity = memberRepository.findById(userNo)
+                .orElseThrow(() -> new IllegalArgumentException("해당 id가 존재하지 않습니다." + userNo));
+
+        entity.updatePw(dto.getPassword());
+
+        return userNo;
+
+    }
 
     public MemberEntity login (final String username, final String password) {
         return memberRepository.findByUsernameAndPassword(username, password);

@@ -48,10 +48,15 @@ public class MemberController {
     @PostMapping("signin")
     public String login(@RequestParam String username, @RequestParam String password, HttpServletRequest request) {
         MemberEntity member = memberService.login(username, password);
-        HttpSession session = request.getSession();
-        session.setAttribute("member", memberService.get(username));
-        log.info("{}", session);
-        return "redirect:/";
+        if(member != null) {
+            HttpSession session = request.getSession();
+            session.setAttribute("member", memberService.get(username));
+            log.info("{}", session.getId());
+            return "redirect:/";
+        }
+        else {
+            return "redirect:/auth/signin";
+        }
     }
 
     @GetMapping("agree")

@@ -2,12 +2,14 @@ package com.ohalfmoon.firework.member;
 
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.persistence.MemberRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
 
+@Slf4j
 @SpringBootTest
 public class MemberServiceTests {
 
