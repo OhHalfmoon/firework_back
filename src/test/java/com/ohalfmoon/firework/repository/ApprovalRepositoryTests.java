@@ -2,6 +2,7 @@ package com.ohalfmoon.firework.repository;
 
 import com.ohalfmoon.firework.model.*;
 import com.ohalfmoon.firework.persistence.ApprovalRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Date;
 
 @SpringBootTest
+@Slf4j
 public class ApprovalRepositoryTests {
     @Autowired
     ApprovalRepository approvalRepository;
