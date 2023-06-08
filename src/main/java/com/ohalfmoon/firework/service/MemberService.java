@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class MemberService {
     @Autowired
@@ -54,6 +56,7 @@ public class MemberService {
 
 }
 
+    @Transactional
     public Long update(Long userNo, MemberUpdateDTO dto) {
         MemberEntity entity = memberRepository.findById(userNo)
                 .orElseThrow(() -> new IllegalArgumentException("해당 id가 존재하지 않습니다." + userNo));
@@ -72,6 +75,7 @@ public class MemberService {
 
         return userNo;
 }
+    @Transactional
     public Long updatePw(Long userNo, MemberUpdatePwDTO dto) {
         MemberEntity entity = memberRepository.findById(userNo)
                 .orElseThrow(() -> new IllegalArgumentException("해당 id가 존재하지 않습니다." + userNo));
@@ -86,7 +90,7 @@ public class MemberService {
         return memberRepository.findByUsernameAndPassword(username, password);
     }
 
-    public MemberEntity get (final String username) {
+    public List<MemberEntity> get (final String username) {
         return memberRepository.findByUsername(username);
     }
 }
