@@ -1,13 +1,10 @@
 package com.ohalfmoon.firework.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.ohalfmoon.firework.dto.approval.ApprovalResponseDto;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Getter
 @NoArgsConstructor
@@ -16,7 +13,8 @@ import java.util.Date;
 @Table(name = "tbl_approval")
 @DynamicInsert
 @Builder
-public class ApprovalEntity {
+@ToString
+public class ApprovalEntity extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long approvalNo;
@@ -24,32 +22,56 @@ public class ApprovalEntity {
     @Column(nullable = false)
     private String approvalName;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "formNo")
     private FormEntity formEntity;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "lineNo")
     private MasterLineEntity masterLineEntity;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "docboxNo")
     private DocboxEntity docboxEntity;
 
     @Column(nullable = false)
     private String approContent;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "userNo")
     private MemberEntity memberEntity;
 
     @Column(nullable = false)
-    private int save;
+    private boolean storage;
 
     @Column(nullable = false)
     private int approvalState;
 
-    private Date regdate;
+//    private Date regdate;
+//
+//    private Date updatedate;
 
-    private Date updatedate;
+
+    public ApprovalResponseDto toDto() {
+        return ApprovalResponseDto.builder()
+                .approvalNo(approvalNo)
+                .approvalName(approvalName)
+                .docboxNo(docboxEntity.getDocboxNo())
+                .docboxName(docboxEntity.getDocboxName())
+                .approContent(approContent)
+                .userNo(memberEntity.getUserNo())
+                .name(memberEntity.getName())
+                .storage(storage)
+                .approvalState(approvalState)
+                .regdate(getRegdate())
+                .build();
+    }
+
+    public void updateStorage(boolean storage) {
+        this.storage = storage;
+    }
+
+    public void updateState(int approvalState) {
+        this.approvalState = approvalState;
+    }
 }

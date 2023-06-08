@@ -21,7 +21,7 @@ public class AttendEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long attendNo;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "userNo")
     private MemberEntity memberEntity;
 
@@ -30,12 +30,4 @@ public class AttendEntity {
 
     private Date leavedate;
 
-/*    @Builder
-    public AttendEntity(
-            Long userNo,
-            Date godate,
-            Date leavedate
-    ) {
-        this.memberEntity =
-    }*/
 }

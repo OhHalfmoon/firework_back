@@ -21,11 +21,11 @@ public class ReservationEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reserveNo;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "supplyNo")
     private SupplyEntity supplyEntity;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "userNo")
     private MemberEntity memberEntity;
 

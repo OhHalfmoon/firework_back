@@ -1,15 +1,27 @@
-package com.ohalfmoon.firework.dto;
+package com.ohalfmoon.firework.dto.dept;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * packageName :  com.ohalfmoon.firework.dto
+ * packageName :  com.ohalfmoon.firework.dto.form
  * fileName : DeptDTO
  * author :  ycy
- * date : 2023-06-08
+ * date : 2023-06-07
  * description :
  * ===========================================================
  * DATE                 AUTHOR                NOTE
  * -----------------------------------------------------------
- * 2023-06-08                ycy             최초 생성
+ * 2023-06-07                ycy             최초 생성
  */
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Builder
 public class DeptDTO {
+    private Long deptNo;
+    private String deptName;
+
 }

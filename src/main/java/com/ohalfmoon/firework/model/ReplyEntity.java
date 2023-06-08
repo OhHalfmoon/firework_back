@@ -25,7 +25,7 @@ public class ReplyEntity {
     @JoinColumn(name = "boardNo")
     private BoardEntity boardEntity;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "userNo")
     private MemberEntity memberEntity;
 

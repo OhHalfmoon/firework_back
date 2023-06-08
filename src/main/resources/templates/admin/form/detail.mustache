@@ -1,21 +1,89 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>2023/06/056:04 PM</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdminLTE 3 | Dashboard</title>
+
+    {{>layout/head}}
 </head>
-<body>
-    결재양식 상세
-    <hr>
-    <div>결재양식 이름</div>
-    <div id="formName"></div>
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
+<div class="wrapper">
 
-    <div>결재양식 내용</div>
-    <div id="formText"></div>
+    {{>layout/header}}
 
-    <div>사용여부</div>
-    <div id="isUsed"></div>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">결재양식 상세</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item">문서양식 관리</li>
+                            <li class="breadcrumb-item active">문서양식 상세</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
 
-    <script src=""></script>
+        <!-- Main content -->
+        <!-- 작업할 때 이 항목 내용을 수정하세요 -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="card card-default color-palette-box">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            문서양식 상세
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                            <div class="col-12 mb-4">
+                                <h5>문서양식 이름</h5>
+                                <div class="col-sm-3 col-md-3">
+                                    {{formDetail.formName}}
+                                </div>
+                            </div>
+
+                            <div class="col-12 mb-4">
+                                <h5>문서양식 내용</h5>
+                                <div class="col-sm-12 col-md-12">
+                                    {{formDetail.formText}}
+                                </div>
+                            </div>
+
+
+                            <div class="col-12 mb-4">
+                                <h5>문서양식 사용여부</h5>
+                                <div class="col-sm-3 col-md-3">
+                                    {{#formDetail.isUsed}}
+                                        사용중
+                                    {{/formDetail.isUsed}}
+                                    {{^formDetail.isUsed}}
+                                        미사용
+                                    {{/formDetail.isUsed}}
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    {{>layout/footer}}
+
+
+</div>
+<!-- ./wrapper -->
+
+{{>layout/library}}
+
 </body>
 </html>
