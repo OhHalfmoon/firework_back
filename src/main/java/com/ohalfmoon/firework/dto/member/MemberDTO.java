@@ -11,7 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TestMemberDTO {
+public class MemberDTO {
     private Long userNo;
     private String username;
     private String password;
@@ -39,7 +39,7 @@ public class TestMemberDTO {
 
 
     @Builder
-    public TestMemberDTO(String username
+    public MemberDTO(String username
             , String password
             , String email
             , String phoneNum

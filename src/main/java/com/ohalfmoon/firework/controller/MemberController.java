@@ -1,6 +1,6 @@
 package com.ohalfmoon.firework.controller;
 
-import com.ohalfmoon.firework.dto.member.TestMemberDTO;
+import com.ohalfmoon.firework.dto.member.MemberDTO;
 import com.ohalfmoon.firework.dto.role.RoleDTO;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.service.MemberService;
@@ -37,7 +37,7 @@ public class MemberController {
 
 
     @PostMapping("signup")
-    public String register(TestMemberDTO memberDTO, RoleDTO roleDTO) {
+    public String register(MemberDTO memberDTO, RoleDTO roleDTO) {
         memberService.register(memberDTO, roleDTO);
         return "redirect:/auth/signin";
     }
