@@ -1,11 +1,10 @@
 package com.ohalfmoon.firework.model;
 
-import com.ohalfmoon.firework.dto.ApprovalResponseDto;
+import com.ohalfmoon.firework.dto.approval.ApprovalResponseDto;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Getter
 @NoArgsConstructor

@@ -1,19 +1,16 @@
 package com.ohalfmoon.firework.service;
 
-import com.ohalfmoon.firework.dto.ApprovalResponseDto;
-import com.ohalfmoon.firework.dto.ApprovalSaveDto;
-import com.ohalfmoon.firework.dto.ApprovalStorageDto;
-import com.ohalfmoon.firework.dto.ApprovalUpdateDto;
+import com.ohalfmoon.firework.dto.approval.ApprovalResponseDto;
+import com.ohalfmoon.firework.dto.approval.ApprovalSaveDto;
+import com.ohalfmoon.firework.dto.approval.ApprovalStorageDto;
+import com.ohalfmoon.firework.dto.approval.ApprovalUpdateDto;
 import com.ohalfmoon.firework.model.ApprovalEntity;
-import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.persistence.ApprovalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
-    @Service
+@Service
     @RequiredArgsConstructor
     public class ApprovalService {
         private final ApprovalRepository approvalRepository;
