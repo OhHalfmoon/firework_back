@@ -1,9 +1,6 @@
 package com.ohalfmoon.firework.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
@@ -27,6 +24,7 @@ import java.util.Date;
 @Table(name = "tbl_docbox")
 @DynamicInsert
 @Builder
+@ToString
 public class DocboxEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

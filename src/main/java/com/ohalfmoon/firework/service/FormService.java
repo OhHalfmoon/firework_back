@@ -4,10 +4,15 @@ import com.ohalfmoon.firework.dto.FormResponseDto;
 import com.ohalfmoon.firework.dto.FormSaveDto;
 import com.ohalfmoon.firework.dto.FormUpdateDto;
 import com.ohalfmoon.firework.model.FormEntity;
-import com.ohalfmoon.firework.repository.FormRepository;
+import com.ohalfmoon.firework.persistence.FormRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 /**
  * packageName    : com.ohalfmoon.firework.service
@@ -54,5 +59,11 @@ public class FormService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 양식이 존재하지 않습니다. formNo = " + formNo));
 
         formRepository.delete(formEntity);
+    }
+
+    public Page<FormResponseDto> searchFormList(Optional<String> formName, Pageable pageRequest) {
+        Page<FormEntity> formEntities = formRepository.findByFormNameContaining(formName.orElse(""), pageRequest);
+
+        return formEntities.map(item -> new FormResponseDto(item));
     }
 }

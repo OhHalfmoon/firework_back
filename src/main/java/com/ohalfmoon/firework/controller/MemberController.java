@@ -1,7 +1,7 @@
 package com.ohalfmoon.firework.controller;
 
-import com.ohalfmoon.firework.dto.form.DeptDTO;
-import com.ohalfmoon.firework.dto.form.MemberDTO;
+import com.ohalfmoon.firework.dto.member.MemberDTO;
+import com.ohalfmoon.firework.dto.role.RoleDTO;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
@@ -37,8 +37,8 @@ public class MemberController {
 
 
     @PostMapping("signup")
-    public String register(MemberDTO memberDTO, DeptDTO deptDTO) {
-        memberService.register(memberDTO);
+    public String register(MemberDTO memberDTO, RoleDTO roleDTO) {
+        memberService.register(memberDTO, roleDTO);
         return "redirect:/auth/signin";
     }
 
@@ -48,10 +48,15 @@ public class MemberController {
     @PostMapping("signin")
     public String login(@RequestParam String username, @RequestParam String password, HttpServletRequest request) {
         MemberEntity member = memberService.login(username, password);
-        HttpSession session = request.getSession();
-        session.setAttribute("member", memberService.get(username));
-        log.info("{}", session);
-        return "redirect:/";
+        if(member != null) {
+            HttpSession session = request.getSession();
+            session.setAttribute("member", memberService.get(username));
+            log.info("{}", session.getId());
+            return "redirect:/";
+        }
+        else {
+            return "redirect:/auth/signin";
+        }
     }
 
     @GetMapping("agree")

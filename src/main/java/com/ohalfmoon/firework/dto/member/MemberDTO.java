@@ -1,18 +1,10 @@
-package com.ohalfmoon.firework.dto.form;
+package com.ohalfmoon.firework.dto.member;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ohalfmoon.firework.model.DeptEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
-import com.ohalfmoon.firework.model.PositionEntity;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.swing.text.Position;
-import java.lang.reflect.Member;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Data
@@ -20,6 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class MemberDTO {
+    private Long userNo;
     private String username;
     private String password;
     private String email;
@@ -75,5 +68,4 @@ public class MemberDTO {
                 .startdate(startdate)
                 .build();
     }
-
 }

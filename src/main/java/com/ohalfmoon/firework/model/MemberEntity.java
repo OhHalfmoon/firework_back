@@ -1,9 +1,6 @@
 package com.ohalfmoon.firework.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -17,6 +14,7 @@ import java.util.Date;
 @Table(name = "tbl_member")
 @DynamicInsert
 @Builder
+@ToString
 public class MemberEntity {
 
     @Id
@@ -76,6 +74,7 @@ public class MemberEntity {
         this.positionEntity = positionEntity;
     }
 
+
     public void updatePw(String password) {
         this.password = password;
     }
@@ -87,6 +86,7 @@ public class MemberEntity {
         this.birthdate = birthdate;
         this.startdate = startdate;
     }
+
 
     @Builder
     public MemberEntity(String username
@@ -101,12 +101,11 @@ public class MemberEntity {
         this.password = password;
         this.email = email;
         this.phoneNum = phoneNum;
-        this.deptEntity = deptEntity;
-//        this.positionEntity.getPositionNo() =
         this.name = name;
         this.birthdate = birthdate;
         this.startdate = startdate;
 
     }
+
 
 }
