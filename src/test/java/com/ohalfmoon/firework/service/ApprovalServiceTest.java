@@ -1,6 +1,6 @@
 package com.ohalfmoon.firework.service;
 
-import com.ohalfmoon.firework.dto.ApprovalSaveDto;
+import com.ohalfmoon.firework.dto.approval.ApprovalSaveDto;
 import com.ohalfmoon.firework.model.ApprovalEntity;
 import com.ohalfmoon.firework.persistence.ApprovalRepository;
 import org.junit.jupiter.api.DisplayName;

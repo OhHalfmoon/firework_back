@@ -1,4 +1,4 @@
-package com.ohalfmoon.firework.dto;
+package com.ohalfmoon.firework.dto.approval;
 
 import com.ohalfmoon.firework.model.ApprovalEntity;
 import lombok.*;
