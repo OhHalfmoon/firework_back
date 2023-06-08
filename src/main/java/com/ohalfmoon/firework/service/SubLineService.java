@@ -1,10 +1,14 @@
 package com.ohalfmoon.firework.service;
 
-import com.ohalfmoon.firework.dto.SubLineDTO;
+import com.ohalfmoon.firework.dto.sub.SubLineResponseDTO;
+import com.ohalfmoon.firework.dto.sub.SubLineSaveDTO;
+import com.ohalfmoon.firework.dto.sub.SubLineUpdateDTO;
+import com.ohalfmoon.firework.model.MasterLineEntity;
 import com.ohalfmoon.firework.model.SubLineEntity;
 import com.ohalfmoon.firework.persistence.SubLineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * packageName    : com.ohalfmoon.firework.service
@@ -22,18 +26,30 @@ public class SubLineService {
     @Autowired
     private SubLineRepository subLineRepository;
 
-    public Long save(SubLineDTO dto) {
+    @Transactional
+    public Long save(SubLineSaveDTO dto) {
         return subLineRepository.save(dto.toEntity()).getSubLineNo();
     }
 
-    public SubLineDTO findBySubLine(Long subLineNo) {
+    @Transactional
+    public Long update(Long subLineNo, SubLineUpdateDTO dto) {
         SubLineEntity entity = subLineRepository.findById(subLineNo)
                 .orElseThrow(() -> new IllegalArgumentException("라인이 존재하지 않습니다."));
-        return new SubLineDTO(entity);
+        entity.update(dto.getOrderLevel(), dto.getUserNo());
+        subLineRepository.save(entity);
+        return subLineNo;
     }
 
-    public void delete(SubLineDTO dto) {
-        SubLineEntity entity = subLineRepository.findById(dto.getSubLineNo())
+    public SubLineResponseDTO findBySubLineNo(Long subLineNo) {
+        SubLineEntity entity = subLineRepository.findById(subLineNo)
+                .orElseThrow(()-> new IllegalArgumentException("라인이 존재하지 않습니다."));
+        return new SubLineResponseDTO(entity);
+    }
+
+    @Transactional
+    public void delete(Long subLineNo) {
+        SubLineEntity entity = subLineRepository
+                .findById(subLineNo)
                 .orElseThrow(() -> new IllegalArgumentException("라인이 존재하지 않습니다."));
         subLineRepository.delete(entity);
     }
