@@ -1,10 +1,10 @@
 package com.ohalfmoon.firework.model;
 
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.Date;
+
 
 /**
  * packageName    : com.ohalfmoon.firework.model
@@ -24,8 +24,10 @@ import java.util.Date;
 @AllArgsConstructor
 @Getter
 @Entity
+@DynamicInsert
 @Table(name="tbl_master_line")
-public class MasterLineEntity extends BaseTimeEntity {
+
+public class MasterLineEntity extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long lineNo;

@@ -2,17 +2,11 @@ package com.ohalfmoon.firework.service;
 import com.ohalfmoon.firework.dto.master.MasterLineResponseDTO;
 import com.ohalfmoon.firework.dto.master.MasterLineSaveDTO;
 import com.ohalfmoon.firework.dto.master.MasterLineUpdateDTO;
-import com.ohalfmoon.firework.dto.sub.SubLineResponseDTO;
-import com.ohalfmoon.firework.model.FormEntity;
 import com.ohalfmoon.firework.model.MasterLineEntity;
-import com.ohalfmoon.firework.model.MemberEntity;
-import com.ohalfmoon.firework.model.SubLineEntity;
 import com.ohalfmoon.firework.persistence.MasterLineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * packageName    : com.ohalfmoon.firework.service
@@ -38,7 +32,8 @@ public class MasterLineService {
 
     // lineNo를 통한 단일 조회
     public MasterLineResponseDTO findByLineNo(Long lineNo) {
-        MasterLineEntity entity = masterLineRepository.findById(lineNo)
+        MasterLineEntity entity = masterLineRepository
+                .findById(lineNo)
                 .orElseThrow(()-> new IllegalArgumentException("라인이 존재하지 않습니다"));
         return new MasterLineResponseDTO(entity);
 
