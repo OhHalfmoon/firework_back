@@ -1,22 +1,20 @@
 package com.ohalfmoon.firework.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.databind.ser.Serializers;
+import lombok.*;
+
 import javax.persistence.*;
-import java.util.Date;
 
 /**
- * packageName    : com.ohalfmoon.firework.model
+ * packageName    : com.ohalfmoon.firework.entity
  * fileName       : SubLineEntity
  * author         : 이지윤
  * date           : 2023/06/07
- * description    : 결재선 설정 시 필요한 정보(결재자, 결재 순서)DTO
+ * description    : 결재 선에 필요한 정보(결재자, 결재 순서)Entity
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2023/06/05        이지윤           최초 생성
+ * 2023/06/07        이지윤           최초 생성
  */
 
 @Builder
@@ -24,8 +22,9 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Entity
+@ToString
 @Table(name="tbl_sub_line")
-public class SubLineEntity {
+public class SubLineEntity extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long subLineNo;
@@ -33,14 +32,18 @@ public class SubLineEntity {
     @Column(nullable = false)
     private Integer orderLevel;
 
-    @Column(nullable = false)
-    private Long lineNo;
+    @ManyToOne
+    @JoinColumn(name = "lineNo")
+    private MasterLineEntity lineNo;
 
-    @Column(nullable = false)
-    private Long userNo;
+    @ManyToOne
+    @JoinColumn(name = "userNo")
+    private MemberEntity userNo;
 
-    @Column(nullable = false)
-    private Date regdate;
-    private Date updatedate;
-
+    public void update(Integer orderLevel, Long userNo) {
+        this.orderLevel = orderLevel; // 결재 순서
+        this.userNo = MemberEntity.builder()
+                .userNo(userNo)
+                .build(); // 결재자
+    }
 }

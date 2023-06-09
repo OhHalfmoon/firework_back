@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdminLTE 3 | Dashboard</title>
+    <link href="../layout/library.mustache">
+</head>
+<body class="hold-transition sidebar-mini">
+{{>layout/head}}
+<div class="col-md-6">
+    <div class="card">
+        <div class="card-body">
+            <form>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>결재 선</label>
+                            <select class="form-control">
+                                {{master}}
+                                <option>{{master.lineName}}</option>
+                                <option>사장 2</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+</div>
+
+<script>
+    $(function () {
+        bsCustomFileInput.init();
+    });
+</script>
+</body>
+</html>

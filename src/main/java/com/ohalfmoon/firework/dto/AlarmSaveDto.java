@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.mapping.ToOne;
 
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 /**
@@ -31,19 +33,18 @@ public class AlarmSaveDto {
 
     private String alarmTitle;
 
-    @OneToOne
-    @JoinColumn(name = "boardNo")
-    private BoardEntity boardNo;
+    private Long boardNo;
 
-    @OneToOne
-    @JoinColumn(name = "approvalNo")
-    private ApprovalEntity approvalNo;
+    private Long approvalNo;
 
-    public AlarmEntity toEntity() {
+    public AlarmEntity toEntity(){
         return AlarmEntity.builder()
                 .alarmReceiver(MemberEntity.builder().userNo(userNo).build())
                 .alarmCategory(alarmCategory)
                 .alarmTitle(alarmTitle)
+                .boardNo(boardNo == null ? null : BoardEntity.builder().boardNo(boardNo).build())
+                .approvalNo(approvalNo == null ? null :ApprovalEntity.builder().approvalNo(approvalNo).build())
                 .build();
     }
+
 }
