@@ -35,7 +35,7 @@ public class SubLineService {
     public Long update(Long subLineNo, SubLineUpdateDTO dto) {
         SubLineEntity entity = subLineRepository.findById(subLineNo)
                 .orElseThrow(() -> new IllegalArgumentException("라인이 존재하지 않습니다."));
-        entity.update(dto.getOrderLevel(), dto.toEntity().getUserNo());
+        entity.update(dto.getOrderLevel(), dto.getUserNo());
         subLineRepository.save(entity);
         return subLineNo;
     }

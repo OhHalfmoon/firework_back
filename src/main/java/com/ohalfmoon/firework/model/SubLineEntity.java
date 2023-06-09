@@ -1,11 +1,9 @@
 package com.ohalfmoon.firework.model;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import lombok.*;
 
 import javax.persistence.*;
-import java.lang.reflect.Member;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * packageName    : com.ohalfmoon.firework.entity
@@ -42,9 +40,10 @@ public class SubLineEntity extends BaseTimeEntity {
     @JoinColumn(name = "userNo")
     private MemberEntity userNo;
 
-    public void update(Integer orderLevel, MemberEntity userNo) {
-        this.orderLevel = orderLevel;
-        this.userNo = userNo;
+    public void update(Integer orderLevel, Long userNo) {
+        this.orderLevel = orderLevel; // 결재 순서
+        this.userNo = MemberEntity.builder()
+                .userNo(userNo)
+                .build(); // 결재자
     }
-
 }
