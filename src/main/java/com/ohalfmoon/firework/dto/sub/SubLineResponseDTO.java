@@ -1,5 +1,6 @@
 package com.ohalfmoon.firework.dto.sub;
 
+import com.ohalfmoon.firework.model.MasterLineEntity;
 import com.ohalfmoon.firework.model.SubLineEntity;
 import lombok.*;
 
@@ -11,8 +12,15 @@ import lombok.*;
 @ToString
 public class SubLineResponseDTO {
     private Long subLineNo;
+    private Integer orderLevel;
+    private Long lineNo;
+    private Long userNo;
+
     public SubLineResponseDTO(final SubLineEntity entity) {
         this.subLineNo = entity.getSubLineNo();
+        this.orderLevel = entity.getOrderLevel();
+        this.lineNo = entity.getLineNo().getLineNo();
+        this.userNo = entity.getUserNo().getUserNo();
     }
 
     public SubLineEntity toEntity(){
@@ -20,4 +28,5 @@ public class SubLineResponseDTO {
                 .subLineNo(subLineNo)
                 .build();
     }
+
 }

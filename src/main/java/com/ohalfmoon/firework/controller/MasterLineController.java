@@ -1,6 +1,7 @@
 package com.ohalfmoon.firework.controller;
 
 import com.ohalfmoon.firework.service.MasterLineService;
+import com.ohalfmoon.firework.service.SubLineService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,10 +16,21 @@ public class MasterLineController {
     @Autowired
     private MasterLineService masterLineService;
 
+    @Autowired
+    private SubLineService subLineService;
+
     @GetMapping("/master")
     public String masterline(Model model) {
         model.addAttribute("master", masterLineService.findByLineNo(5L));
         log.info("{}", masterLineService.findByLineNo(5L));
         return "line/approvalLine";
     }
+
+    @GetMapping("/addLine")
+    public String addline(Model model){
+        model.addAttribute("line");
+        return "line/addLine";
+    }
+
+
 }
