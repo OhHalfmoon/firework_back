@@ -29,10 +29,10 @@ public class ApprovalContoller {
         return approvalService.register(saveDto);
     }
 
-    @PutMapping("{approvalNo}")
-    public ApprovalResponseDto updateStorage(@PathVariable Long approvalNo,  @RequestBody ApprovalStateDto stateDto) {
-        return approvalService.updateState(approvalNo, stateDto);
-    }
+//    @PutMapping("{approvalNo}")
+//    public ApprovalResponseDto updateStorage(@PathVariable Long approvalNo,  @RequestBody ApprovalStateDto stateDto) {
+//        return approvalService.updateState(approvalNo, stateDto);
+//    }
 
     @GetMapping("{approvalNo}")
     public ApprovalResponseDto get (@PathVariable Long approvalNo) {
