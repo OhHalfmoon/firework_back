@@ -13,6 +13,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
 
@@ -47,11 +48,12 @@ public class AlarmRepositoryTests {
 
     @Test
     @Transactional
+    @Rollback(value = false)
     public void saveTests() {
         AlarmEntity alarm = AlarmEntity.builder()
-                .alarmTitle("테스트결재안알림13")
+                .alarmTitle("테스트결재안알림14")
                 .alarmReceiver(memberRepository.findById(1L).orElse(null))
-                .alarmTitle("테스트결재안알림2")
+                .alarmTitle("테스트결재안알림3")
                 .alarmReceiver(MemberEntity.builder().userNo(1L).build())
                 .alarmCategory("결제요청")
                 .boardNo(null)
@@ -64,6 +66,7 @@ public class AlarmRepositoryTests {
         Assertions.assertThat(save).isEqualTo(findAlarm);
         log.info("{}", save.hashCode());
         log.info("{}", findAlarm.hashCode());
+        log.info("{}",findAlarm);
 //        assertThat(save).isSameAs(findAlarm);
     }
 
@@ -88,7 +91,7 @@ public class AlarmRepositoryTests {
     }
 
     @Test
-    public void deleteAlarm() {
+    public void deleteAlarmTest() {
         Long alarmNo= 10L;
 
         alamRepository.deleteById(alarmNo);
@@ -96,5 +99,16 @@ public class AlarmRepositoryTests {
         AlarmEntity alarm = alamRepository.findById(alarmNo).orElse(null);
 
         Assertions.assertThat(alarm).isNull();
+    }
+
+    @Test
+    public void updateAlarmTest() {
+        Long alarmNo = 1L;
+        boolean alarmCheck = true;
+
+        AlarmEntity alarm = alamRepository.findById(alarmNo).orElse(null);
+        alarm.update(true);
+        alamRepository.save(alarm);
+        log.info("{}", alarm);
     }
 }
