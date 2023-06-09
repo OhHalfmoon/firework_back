@@ -1,9 +1,6 @@
 package com.ohalfmoon.firework.service;
 
-import com.ohalfmoon.firework.dto.member.MemberDTO;
-import com.ohalfmoon.firework.dto.member.MemberUpdateDTO;
-import com.ohalfmoon.firework.dto.member.MemberUpdatePwDTO;
-import com.ohalfmoon.firework.dto.role.RoleDTO;
+import com.ohalfmoon.firework.dto.member.*;
 import com.ohalfmoon.firework.model.DeptEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.PositionEntity;
@@ -13,6 +10,7 @@ import com.ohalfmoon.firework.persistence.MemberRepository;
 import com.ohalfmoon.firework.persistence.PositionRepository;
 import com.ohalfmoon.firework.persistence.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +31,7 @@ public class MemberService {
     private RoleRepository roleRepository;
 
     @Transactional // springboot
-    public RoleEntity register(MemberDTO memberDTO, RoleDTO roleDTO) {
+    public RoleEntity register(MemberDTO memberDTO) {
         MemberEntity entity = memberDTO.toEntity();
         DeptEntity byId = deptRepository
                 .findById(memberDTO.getDeptNo())
@@ -86,11 +84,16 @@ public class MemberService {
 
     }
 
-    public MemberEntity login (final String username, final String password) {
-        return memberRepository.findByUsernameAndPassword(username, password);
+    public MemberResponseDTO login (MemberLoginDTO memberLoginDTO) {
+        MemberEntity entity = memberRepository.findByUsername(memberLoginDTO.getUsername());
+
+        if(entity != null && entity.getPassword().equals(memberLoginDTO.getPassword())) {
+            return new MemberResponseDTO(entity);
+        }
+        return null;
     }
 
-    public List<MemberEntity> get (final String username) {
+    public MemberEntity get(final String username) {
         return memberRepository.findByUsername(username);
     }
 }

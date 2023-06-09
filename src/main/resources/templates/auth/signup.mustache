@@ -1,29 +1,29 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>fireworks register</title>
+    <title>AdminLTE 3 | Registration Page (v2)</title>
 
-    <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
-    <!-- icheck bootstrap -->
-    <link rel="stylesheet" href="../../plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
+    {{>layout/head}}
 </head>
-<body class="hold-transition register-page row col-12" style="background-color: white">
-<div class="register-box col-">
-    <img alt="logo" src="../dist/img/FIREWORKS.gif">
-</div>
-<div class="register-box col-6">
-    <div class="card card-outline">
+<style>
+    .input-group-text {
+        width: 40px;
+    }
+</style>
+<body class="hold-transition register-page">
+
+<div class="register-box">
+    <div class="card card-outline card-secondary">
+        <div class="mx-auto">
+            <img style="width: 200px" src="/dist/img/FIREWORKS.gif">
+        </div>
         <div class="card-body">
-            <p class="login-box-msg"></p>
+            <p class="login-box-msg"><strong>FireWork에 오신걸 환영합니다.</strong></p>
 
             <form method="post">
+                <div class="overflow-auto mb-3 scrollCustom" style="height: 300px">
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" name="username" placeholder="아이디를 입력해주세요">
                     <div class="input-group-append">
@@ -52,7 +52,7 @@
                     <input type="text" class="form-control" name="name" placeholder="이름을 입력해주세요">
                     <div class="input-group-append">
                         <div class="input-group-text">
-                            <span class="fas fa-envelope"></span>
+                            <i class="fas fa-pencil-alt"></i>
                         </div>
                     </div>
                 </div>
@@ -68,58 +68,45 @@
                     <input type="text" class="form-control" name="phoneNum" placeholder="연락처를 입력해주세요">
                     <div class="input-group-append">
                         <div class="input-group-text">
-                            <span class="fas fa-envelope"></span>
+                            <span class="fas fa-mobile-alt" style="width: 16px"></span>
                         </div>
                     </div>
                 </div>
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" name="deptNo" placeholder="부서명을 입력해주세요">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-envelope"></span>
-                        </div>
-                    </div>
+                <div class="input-group mb-3" style="width: 100%">
+                        <select class="d-flex custom-select" name="deptNo">
+                            <option selected>부서를 선택해주세요</option>
+                            <option value="1">인사팀</option>
+                            <option value="2">총무팀</option>
+                        </select>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" name="positionNo" placeholder="직급을 입력해주세요">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-envelope"></span>
-                        </div>
-                    </div>
+                        <select class="d-flex custom-select" name="deptNo">
+                            <option selected>직급을 선택해주세요</option>
+                            <option value="1">사원</option>
+                            <option value="2">대리</option>
+                        </select>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" name="birthdate" placeholder="생일을 입력해주세요">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-envelope"></span>
-                        </div>
-                    </div>
+                    <label class="text-center"> 생일을 입력해주세요
+                        <input type="date" class="form-control" name="birthdate" placeholder="생일을 입력해주세요"  style="width: 300px">
+                    </label>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" name="startdate" placeholder="입사일을 입력해주세요">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-envelope"></span>
-                        </div>
-                    </div>
+                    <label class="text-center"> 입사일을 입력해주세요
+                        <input type="date" class="form-control" id="startdate" name="startdate" placeholder="입사일을 입력해주세요" style="width: 300px">
+                    </label>
+                </div>
                 </div>
                 <div class="row">
-                    <div class="col-8">
-                        <div class="icheck-primary">
-                            <input type="checkbox" id="agreeTerms" name="terms" value="agree">
-                            <label for="agreeTerms">
-                                I agree to the <a href="#">terms</a>
-                            </label>
-                        </div>
-                    </div>
                     <!-- /.col -->
-                    <div class="col-4">
-                        <button type="submit" class="btn btn-primary btn-block">Register</button>
+                    <div class="col-12 ">
+
+                        <button type="submit" class="btn btn-secondary btn-block"><i class="fas fa-user-edit" style="color: white;"></i> 회원가입</button>
                     </div>
                     <!-- /.col -->
                 </div>
             </form>
+
 
             <div class="social-auth-links text-center">
                 <a href="#" class="btn btn-block btn-primary">
