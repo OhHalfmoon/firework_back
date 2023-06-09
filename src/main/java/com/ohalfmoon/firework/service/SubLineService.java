@@ -1,21 +1,27 @@
 package com.ohalfmoon.firework.service;
 
+import com.ohalfmoon.firework.dto.AlarmResponseDto;
+import com.ohalfmoon.firework.dto.master.MasterLineResponseDTO;
 import com.ohalfmoon.firework.dto.sub.SubLineResponseDTO;
 import com.ohalfmoon.firework.dto.sub.SubLineSaveDTO;
 import com.ohalfmoon.firework.dto.sub.SubLineUpdateDTO;
 import com.ohalfmoon.firework.model.MasterLineEntity;
 import com.ohalfmoon.firework.model.SubLineEntity;
+import com.ohalfmoon.firework.persistence.MasterLineRepository;
 import com.ohalfmoon.firework.persistence.SubLineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * packageName    : com.ohalfmoon.firework.service
  * fileName       : SubLineService
  * author         : 이지윤
  * date           : 2023/06/07
- * description    : Create, Delete
+ * description    : 저장, 단일 조회, 리스트 조회, 수정, 삭제 기능
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
@@ -25,6 +31,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class SubLineService {
     @Autowired
     private SubLineRepository subLineRepository;
+
+    @Autowired
+    private MasterLineRepository masterLineRepository;
 
     @Transactional
     public Long save(SubLineSaveDTO dto) {
@@ -41,10 +50,38 @@ public class SubLineService {
     }
 
     public SubLineResponseDTO findBySubLineNo(Long subLineNo) {
-        SubLineEntity entity = subLineRepository.findById(subLineNo)
+        SubLineEntity entity = subLineRepository
+                .findById(subLineNo)
                 .orElseThrow(()-> new IllegalArgumentException("라인이 존재하지 않습니다."));
         return new SubLineResponseDTO(entity);
     }
+
+    public List<SubLineResponseDTO> getList() {
+        return subLineRepository.findAll()
+                .stream().map(SubLineResponseDTO::new).collect(Collectors.toList());
+    }
+
+//    @javax.transaction.Transactional
+//    public List<AlarmResponseDto> findAllByAlarmReceiver(Long userNo) {
+//        return alamRepository
+//                .findAllByAlarmReceiver(memberRepository.findById(userNo).orElse(null))
+//                .stream().map(AlarmResponseDto::new).collect(Collectors.toList());
+//    }
+
+//    public MasterLineResponseDTO findByLineNo(Long lineNo) {
+//        MasterLineEntity entity = masterLineRepository
+//                .findById(lineNo)
+//                .orElseThrow(()-> new IllegalArgumentException("라인이 존재하지 않습니다"));
+//        return new MasterLineResponseDTO(entity);
+//
+//    }
+//
+//    // userNo를 통한 리스트 조회
+//    public List<MasterLineResponseDTO> getList(Long userNo) {
+//        return masterLineRepository.findAllByUserNo(memberRepository.findById(userNo).orElse(null))
+//                .stream().map(MasterLineResponseDTO::new).collect(Collectors.toList());
+//    }
+
 
     @Transactional
     public void delete(Long subLineNo) {
