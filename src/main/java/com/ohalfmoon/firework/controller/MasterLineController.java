@@ -28,7 +28,8 @@ public class MasterLineController {
 
     @GetMapping("/addLine")
     public String addline(Model model){
-        model.addAttribute("line");
+        model.addAttribute("master", masterLineService.getList(1L));
+        model.addAttribute("line", subLineService.getList());
         return "line/addLine";
     }
 

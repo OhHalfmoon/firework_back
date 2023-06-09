@@ -44,12 +44,13 @@ public class MasterLineService {
                 .findById(lineNo)
                 .orElseThrow(()-> new IllegalArgumentException("라인이 존재하지 않습니다"));
         return new MasterLineResponseDTO(entity);
-
+//        entity.getLineName();
+//        entity.getUserNo().getUsername();
     }
     
     // userNo를 통한 리스트 조회
     public List<MasterLineResponseDTO> getList(Long userNo) {
-        return masterLineRepository.findAllByUserNo(memberRepository.findById(userNo).orElse(null))
+        return masterLineRepository.findByRegMemberNo(userNo)
                 .stream().map(MasterLineResponseDTO::new).collect(Collectors.toList());
     }
 

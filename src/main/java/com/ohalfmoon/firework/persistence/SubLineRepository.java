@@ -20,5 +20,6 @@ import java.util.List;
  */
 @Repository
 public interface SubLineRepository extends JpaRepository<SubLineEntity, Long> {
-    List<SubLineEntity> findAllByLineNo(MasterLineEntity lineNo);
+//    List<SubLineEntity> findAllByLineNo(MasterLineEntity lineNo);
+//    List<SubLineEntity> findAllByLineNo();
 }

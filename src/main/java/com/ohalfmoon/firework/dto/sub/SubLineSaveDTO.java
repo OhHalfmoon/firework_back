@@ -22,18 +22,18 @@ public class SubLineSaveDTO {
 
     public SubLineSaveDTO(final SubLineEntity entity) {
         this.orderLevel = entity.getOrderLevel();
-        this.lineNo = entity.getLineNo().getLineNo();
-        this.userNo = entity.getUserNo().getUserNo();
+        this.lineNo = entity.getMasterLineEntity().getLineNo();
+        this.userNo = entity.getMemberEntity().getUserNo();
         this.regdate = entity.getRegdate();
     }
 
     public SubLineEntity toEntity(){
         return SubLineEntity.builder()
                 .orderLevel(orderLevel)
-                .lineNo(MasterLineEntity.builder()
+                .masterLineEntity(MasterLineEntity.builder()
                         .lineNo(lineNo)
                         .build())
-                .userNo(MemberEntity.builder()
+                .memberEntity(MemberEntity.builder()
                         .userNo(userNo)
                         .build())
                 .build();

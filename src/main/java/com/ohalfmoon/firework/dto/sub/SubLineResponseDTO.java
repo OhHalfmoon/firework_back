@@ -19,8 +19,8 @@ public class SubLineResponseDTO {
     public SubLineResponseDTO(final SubLineEntity entity) {
         this.subLineNo = entity.getSubLineNo();
         this.orderLevel = entity.getOrderLevel();
-        this.lineNo = entity.getLineNo().getLineNo();
-        this.userNo = entity.getUserNo().getUserNo();
+        this.lineNo = entity.getMasterLineEntity().getLineNo();
+        this.userNo = entity.getMemberEntity().getUserNo();
     }
 
     public SubLineEntity toEntity(){

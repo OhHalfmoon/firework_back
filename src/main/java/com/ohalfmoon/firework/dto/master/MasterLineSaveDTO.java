@@ -30,13 +30,13 @@ public class MasterLineSaveDTO {
 
     public MasterLineSaveDTO(final MasterLineEntity entity) {
         this.lineName = entity.getLineName();
-        this.userNo = entity.getUserNo().getUserNo();
+        this.userNo = entity.getMemberEntity().getUserNo();
     }
 
     public MasterLineEntity toEntity(){
         return MasterLineEntity.builder()
                 .lineName(lineName)
-                .userNo(MemberEntity.builder()
+                .memberEntity(MemberEntity.builder()
                         .userNo(userNo)
                         .build())
                 .build();

@@ -34,7 +34,7 @@ public class MasterLineRepositoryTests {
 
         masterLineRepository.save(MasterLineEntity.builder()
                 .lineName(lineName)
-                .userNo(memberRepository.findById(userNo).orElseThrow(()-> new IllegalArgumentException("실패")))
+                .memberEntity(memberRepository.findById(userNo).orElseThrow(()-> new IllegalArgumentException("실패")))
                 .build());
     }
 
@@ -68,7 +68,7 @@ public class MasterLineRepositoryTests {
     @Test
     public void testList() {
         Long userNo = 1L;
-        List<MasterLineEntity> lists = masterLineRepository.findAllByUserNo(memberRepository.findById(userNo).orElse(null));
+        List<MasterLineEntity> lists = masterLineRepository.findByRegMemberNo(userNo);
         log.info("{}" , lists);
     }
 }

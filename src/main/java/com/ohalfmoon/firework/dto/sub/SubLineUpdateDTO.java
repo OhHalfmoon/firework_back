@@ -18,13 +18,13 @@ public class SubLineUpdateDTO {
 
     public SubLineUpdateDTO(final SubLineEntity entity) {
         this.orderLevel = entity.getOrderLevel();
-        this.userNo = entity.getUserNo().getUserNo();
+        this.userNo = entity.getMemberEntity().getUserNo();
     }
 
     public SubLineEntity toEntity(){
         return SubLineEntity.builder()
                 .orderLevel(orderLevel)
-                .userNo(MemberEntity.builder()
+                .memberEntity(MemberEntity.builder()
                         .userNo(userNo)
                         .build())
                 .build();

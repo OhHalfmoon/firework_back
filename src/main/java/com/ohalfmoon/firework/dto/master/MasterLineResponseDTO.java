@@ -22,7 +22,7 @@ public class MasterLineResponseDTO {
     public MasterLineResponseDTO(final MasterLineEntity entity) {
         this.lineNo = entity.getLineNo();
         this.lineName = entity.getLineName();
-        this.userNo = entity.getUserNo().getUserNo();
+        this.userNo = entity.getMemberEntity().getUserNo();
         this.regdate = entity.getRegdate();
     }
 

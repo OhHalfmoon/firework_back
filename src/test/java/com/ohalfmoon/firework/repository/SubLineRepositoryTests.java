@@ -38,8 +38,8 @@ public class SubLineRepositoryTests {
 
         subLineRepository.save(SubLineEntity.builder()
                 .orderLevel(orderLevel)
-                .lineNo(masterLineRepository.findById(lineNo).orElse(null))
-                .userNo(memberRepository.findById(userNo).orElse(null))
+                .masterLineEntity(masterLineRepository.findById(lineNo).orElse(null))
+                .memberEntity(memberRepository.findById(userNo).orElse(null))
                 .build());
 
     }
