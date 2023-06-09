@@ -2,6 +2,7 @@ package com.ohalfmoon.firework.service;
 
 import com.ohalfmoon.firework.dto.AlarmResponseDto;
 import com.ohalfmoon.firework.dto.AlarmSaveDto;
+import com.ohalfmoon.firework.dto.member.MemberDTO;
 import com.ohalfmoon.firework.model.AlarmEntity;
 import com.ohalfmoon.firework.persistence.AlamRepository;
 import com.ohalfmoon.firework.persistence.ApprovalRepository;
@@ -83,7 +84,7 @@ public class AlarmServiceTest {
     @DisplayName("리스트조회 테스트")
     @Transactional
     void findAllByAlarmReceiverTest() {
-        List<AlarmResponseDto> list = alarmService.findAllByAlarmReceiver(com.ohalfmoon.firework.dto.form.MemberDTO.builder().userNo(1L).build());
+        List<AlarmResponseDto> list = alarmService.findAllByAlarmReceiver(1L);
         log.info("{}", list);
     }
 

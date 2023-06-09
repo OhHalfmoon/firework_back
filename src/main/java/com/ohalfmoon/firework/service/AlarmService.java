@@ -2,6 +2,7 @@ package com.ohalfmoon.firework.service;
 
 import com.ohalfmoon.firework.dto.AlarmResponseDto;
 import com.ohalfmoon.firework.dto.AlarmSaveDto;
+import com.ohalfmoon.firework.dto.member.MemberDTO;
 import com.ohalfmoon.firework.model.AlarmEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.persistence.AlamRepository;
@@ -43,9 +44,9 @@ public class AlarmService {
     }
 
     @Transactional
-    public List<AlarmResponseDto> findAllByAlarmReceiver(com.ohalfmoon.firework.dto.form.MemberDTO memberDTO) {
+    public List<AlarmResponseDto> findAllByAlarmReceiver(Long userNo) {
        return alamRepository
-                .findAllByAlarmReceiver(memberRepository.findById(memberDTO.getUserNo()).orElse(null))
+                .findAllByAlarmReceiver(memberRepository.findById(userNo).orElse(null))
                         .stream().map(AlarmResponseDto::new).collect(Collectors.toList());
     }
 
