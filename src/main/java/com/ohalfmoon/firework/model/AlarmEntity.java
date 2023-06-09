@@ -1,6 +1,7 @@
 package com.ohalfmoon.firework.model;
 
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
@@ -62,4 +63,7 @@ public class AlarmEntity {
     @JoinColumn(name = "approvalNo")
     private ApprovalEntity approvalNo;
 
+    public void update(boolean alarmCheck){
+        this.alarmCheck = alarmCheck;
+    }
 }
