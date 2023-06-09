@@ -6,14 +6,11 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class ApprovalStorageDto {
-    private boolean storage;
+public class ApprovalStateDto {
     private int approvalState;
 
     @Builder
-    public ApprovalStorageDto(boolean storage, int approvalState) {
-
-        this.storage = storage;
+    public ApprovalStateDto(int approvalState) {
         this.approvalState = approvalState;
     }
 }

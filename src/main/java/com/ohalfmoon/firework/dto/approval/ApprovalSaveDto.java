@@ -24,10 +24,9 @@ public class ApprovalSaveDto {
     private Long docboxNo;
     private String approContent;
     private Long userNo;
-    private boolean storage;
-    //임시저장 : false(제출) true(임시저장)
-    private int approvalState;
-    //결재진행상태 : 0(작성중) 1(결재중) 2(결재완료)
+    private boolean storage; //임시저장 : false(제출) true(임시저장)
+    private int approvalState; //결재진행상태 : 0(작성중) 1(결재중) 2(결재완료)
+
     @Builder
     public ApprovalSaveDto(String approvalName, Long formNo, Long lineNo, Long docboxNo, String approContent, Long userNo, boolean storage, int approvalState) {
         this.approvalName = approvalName;
