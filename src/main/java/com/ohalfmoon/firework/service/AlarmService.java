@@ -2,10 +2,8 @@ package com.ohalfmoon.firework.service;
 
 import com.ohalfmoon.firework.dto.AlarmResponseDto;
 import com.ohalfmoon.firework.dto.AlarmSaveDto;
-import com.ohalfmoon.firework.dto.member.MemberDTO;
 import com.ohalfmoon.firework.model.AlarmEntity;
-import com.ohalfmoon.firework.model.MemberEntity;
-import com.ohalfmoon.firework.persistence.AlamRepository;
+import com.ohalfmoon.firework.persistence.AlarmRepository;
 import com.ohalfmoon.firework.persistence.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,15 +26,15 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AlarmService {
-    private final AlamRepository alamRepository;
+    private final AlarmRepository alarmRepository;
     private final MemberRepository memberRepository;
 
     @Transactional
-    public Long save(AlarmSaveDto alarm) { return alamRepository.save(alarm.toEntity()).getAlarmNo();}
+    public Long save(AlarmSaveDto alarm) { return alarmRepository.save(alarm.toEntity()).getAlarmNo();}
 
     @Transactional
     public AlarmResponseDto findByAlarmNo(Long alarmNo) {
-        AlarmEntity alarm = alamRepository
+        AlarmEntity alarm = alarmRepository
                 .findById(alarmNo)
                 .orElseThrow(()-> new NullPointerException("존재하지 않은 알림입니다"));
 
@@ -45,25 +43,25 @@ public class AlarmService {
 
     @Transactional
     public List<AlarmResponseDto> findAllByAlarmReceiver(Long userNo) {
-       return alamRepository
+       return alarmRepository
                 .findAllByAlarmReceiver(memberRepository.findById(userNo).orElse(null))
                         .stream().map(AlarmResponseDto::new).collect(Collectors.toList());
     }
 
     @Transactional
     public Long update(Long alarmNo, boolean alarmCheck){
-        AlarmEntity alarmEntity = alamRepository.findById(alarmNo)
+        AlarmEntity alarmEntity = alarmRepository.findById(alarmNo)
                 .orElseThrow(()->new IllegalArgumentException("존재하지 않은 알림입니다"));
 
         alarmEntity.update(alarmCheck);
-        return alamRepository.save(alarmEntity).getAlarmNo();
+        return alarmRepository.save(alarmEntity).getAlarmNo();
     }
 
     @Transactional
     public void delete(Long alarmNo) {
-        AlarmEntity alarmEntity = alamRepository.findById(alarmNo)
+        AlarmEntity alarmEntity = alarmRepository.findById(alarmNo)
                 .orElseThrow(()->new IllegalArgumentException("존재하지 않은 알림입니다"));
 
-        alamRepository.delete(alarmEntity);
+        alarmRepository.delete(alarmEntity);
     }
 }

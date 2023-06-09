@@ -1,14 +1,11 @@
 package com.ohalfmoon.firework.repository;
 
 import com.ohalfmoon.firework.model.AlarmEntity;
-import com.ohalfmoon.firework.model.ApprovalEntity;
-import com.ohalfmoon.firework.model.FormEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
-import com.ohalfmoon.firework.persistence.AlamRepository;
+import com.ohalfmoon.firework.persistence.AlarmRepository;
 import com.ohalfmoon.firework.persistence.ApprovalRepository;
 import com.ohalfmoon.firework.persistence.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +15,6 @@ import org.springframework.test.annotation.Rollback;
 import javax.transaction.Transactional;
 
 import java.util.List;
-
-import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,12 +28,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2023/06/07        우성준            최초 생성
+ * 2023/06/09        우성준            알람레포지토리 이름 수정
  */
 @SpringBootTest
 @Slf4j
 public class AlarmRepositoryTests {
     @Autowired
-    private AlamRepository alamRepository;
+    private AlarmRepository alarmRepository;
 
     @Autowired
     private MemberRepository memberRepository;
@@ -60,9 +56,9 @@ public class AlarmRepositoryTests {
                 .approvalNo(approvalRepository.findById(3L).orElse(null))
                 .build();
 
-        AlarmEntity save = alamRepository.save(alarm);
+        AlarmEntity save = alarmRepository.save(alarm);
 
-        AlarmEntity findAlarm = alamRepository.findById(save.getAlarmNo()).orElse(null);
+        AlarmEntity findAlarm = alarmRepository.findById(save.getAlarmNo()).orElse(null);
         Assertions.assertThat(save).isEqualTo(findAlarm);
         log.info("{}", save.hashCode());
         log.info("{}", findAlarm.hashCode());
@@ -74,7 +70,7 @@ public class AlarmRepositoryTests {
     public void findOneTest() {
         Long alarmNo = 6L;
 
-        AlarmEntity findAlarm = alamRepository.findById(alarmNo).orElse(null);
+        AlarmEntity findAlarm = alarmRepository.findById(alarmNo).orElse(null);
 
         Assertions.assertThat(alarmNo).isNotNull();
 
@@ -85,7 +81,7 @@ public class AlarmRepositoryTests {
     public void findByUserNoTest() {
         Long userNo = 1L;
 
-        List<AlarmEntity> alarmEntityList = alamRepository.findAllByAlarmReceiver(memberRepository.findById(userNo).orElse(null));
+        List<AlarmEntity> alarmEntityList = alarmRepository.findAllByAlarmReceiver(memberRepository.findById(userNo).orElse(null));
 
         log.info("{}", alarmEntityList);
     }
@@ -94,9 +90,9 @@ public class AlarmRepositoryTests {
     public void deleteAlarmTest() {
         Long alarmNo= 10L;
 
-        alamRepository.deleteById(alarmNo);
+        alarmRepository.deleteById(alarmNo);
 
-        AlarmEntity alarm = alamRepository.findById(alarmNo).orElse(null);
+        AlarmEntity alarm = alarmRepository.findById(alarmNo).orElse(null);
 
         Assertions.assertThat(alarm).isNull();
     }
@@ -106,9 +102,9 @@ public class AlarmRepositoryTests {
         Long alarmNo = 1L;
         boolean alarmCheck = true;
 
-        AlarmEntity alarm = alamRepository.findById(alarmNo).orElse(null);
+        AlarmEntity alarm = alarmRepository.findById(alarmNo).orElse(null);
         alarm.update(true);
-        alamRepository.save(alarm);
+        alarmRepository.save(alarm);
         log.info("{}", alarm);
     }
 }

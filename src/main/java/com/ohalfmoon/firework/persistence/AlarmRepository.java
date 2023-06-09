@@ -17,6 +17,6 @@ import java.util.List;
  * -----------------------------------------------------------
  * 2023/06/07        우성준           최초 생성
  */
-public interface AlamRepository extends JpaRepository<AlarmEntity, Long> {
+public interface AlarmRepository extends JpaRepository<AlarmEntity, Long> {
     List<AlarmEntity> findAllByAlarmReceiver(MemberEntity alarmReceiver);
 }

@@ -2,13 +2,11 @@ package com.ohalfmoon.firework.service;
 
 import com.ohalfmoon.firework.dto.AlarmResponseDto;
 import com.ohalfmoon.firework.dto.AlarmSaveDto;
-import com.ohalfmoon.firework.dto.member.MemberDTO;
 import com.ohalfmoon.firework.model.AlarmEntity;
-import com.ohalfmoon.firework.persistence.AlamRepository;
+import com.ohalfmoon.firework.persistence.AlarmRepository;
 import com.ohalfmoon.firework.persistence.ApprovalRepository;
 import com.ohalfmoon.firework.persistence.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +43,7 @@ public class AlarmServiceTest {
     private ApprovalRepository approvalRepository;
 
     @Autowired
-    private AlamRepository alamRepository;
+    private AlarmRepository alarmRepository;
 
     @Test
     @DisplayName("저장 테스트")
@@ -62,7 +60,7 @@ public class AlarmServiceTest {
 
         Long saveId = alarmService.save(alarmSaveDto);
 
-        AlarmEntity alarm = alamRepository.findById(saveId).orElse(null);
+        AlarmEntity alarm = alarmRepository.findById(saveId).orElse(null);
 
         assertThat(alarm).isNotNull();
 
@@ -76,7 +74,7 @@ public class AlarmServiceTest {
         Long alarmNo = 1L;
         AlarmResponseDto byAlarmNo = alarmService.findByAlarmNo(alarmNo);
         log.info("{}",byAlarmNo);
-        AlarmResponseDto alarmResponseDto = new AlarmResponseDto(alamRepository.findById(alarmNo).orElse(new AlarmEntity()));
+        AlarmResponseDto alarmResponseDto = new AlarmResponseDto(alarmRepository.findById(alarmNo).orElse(new AlarmEntity()));
         assertThat(byAlarmNo).isEqualTo(alarmResponseDto);
     }
 
@@ -94,10 +92,10 @@ public class AlarmServiceTest {
     @Rollback(value = false)
     void updateTest() {
         Long alarmNo = 2L;
-        AlarmEntity alarmEntity = alamRepository.findById(alarmNo).orElse(null);
+        AlarmEntity alarmEntity = alarmRepository.findById(alarmNo).orElse(null);
 
         Long updateAlarmNo = alarmService.update(alarmNo, true);
-        AlarmEntity updateAlarmEntity = alamRepository.findById(updateAlarmNo).orElse(null);
+        AlarmEntity updateAlarmEntity = alarmRepository.findById(updateAlarmNo).orElse(null);
 
         assertThat(alarmEntity).isEqualTo(updateAlarmEntity);
     }
@@ -111,6 +109,6 @@ public class AlarmServiceTest {
 
         alarmService.delete(alarmNo);
 
-        assertThat(alamRepository.findById(alarmNo).orElse(null)).isNull();
+        assertThat(alarmRepository.findById(alarmNo).orElse(null)).isNull();
     }
 }
