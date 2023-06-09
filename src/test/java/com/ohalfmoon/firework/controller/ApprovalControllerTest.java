@@ -1,7 +1,8 @@
 package com.ohalfmoon.firework.controller;
 
 import com.ohalfmoon.firework.dto.approval.ApprovalSaveDto;
-import com.ohalfmoon.firework.model.ApprovalEntity;
+import com.ohalfmoon.firework.dto.approval.ApprovalStateDto;
+import com.ohalfmoon.firework.model.*;
 import com.ohalfmoon.firework.persistence.ApprovalRepository;
 import org.aspectj.lang.annotation.After;
 import org.junit.jupiter.api.Test;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
@@ -70,4 +73,33 @@ public class ApprovalControllerTest {
         assertThat(all.get(2).getMemberEntity().getUserNo()).isEqualTo(userNo);
         assertThat(all.get(2).getApprovalState()).isEqualTo(approvalState);
     }
+
+//    @Test
+//    public void ApprovalUpadateState() throws Exception {
+//        ApprovalEntity updateState = approvalRepository.save(ApprovalEntity.builder()
+//                .approvalName("testtest")
+//                .formEntity(FormEntity.builder().formNo(1L).build())
+//                .masterLineEntity(MasterLineEntity.builder().lineNo(1L).build())
+//                .docboxEntity(DocboxEntity.builder().docboxNo(1L).build())
+//                .approContent("test")
+//                .memberEntity(MemberEntity.builder().userNo(1L).build())
+//                .approvalState(0)
+//                .build());
+//
+//        Long updateId = updateState.getApprovalNo();
+//        int expectedState = 2;
+//        ApprovalStateDto stateDto = ApprovalStateDto.builder().approvalState(expectedState).build();
+//        String url = "http://localhost:" + port + "/api/approval/" + updateId;
+//
+//        HttpEntity<ApprovalStateDto> stateDtoHttpEntity = new HttpEntity<>(stateDto);
+//
+//        ResponseEntity<ApprovalStateDto> approvalEntity = restTemplate.exchange(url, HttpMethod.PUT, stateDtoHttpEntity, ApprovalStateDto.class);
+//
+////        assertThat(approvalEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+////        assertThat(approvalEntity.getBody()).isSameAs(5L);
+//
+//        List<ApprovalEntity> all = approvalRepository.findAll();
+//        assertThat(all.get(6).getApprovalState()).isEqualTo(expectedState);
+//
+//    }
 }
