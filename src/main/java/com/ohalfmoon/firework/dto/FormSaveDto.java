@@ -4,6 +4,7 @@ import com.ohalfmoon.firework.model.FormEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * packageName    : com.ohalfmoon.firework.dto
@@ -18,6 +19,7 @@ import lombok.NoArgsConstructor;
  */
 @Getter
 @NoArgsConstructor
+@Setter
 public class FormSaveDto {
     private String formName;
     private String formText;

@@ -42,7 +42,7 @@ public class ApprovalResponseDto {
         approvalName = approvalEntity.getApprovalName();
         docboxNo = approvalEntity.getDocboxEntity().getDocboxNo();
         docboxName = approvalEntity.getDocboxEntity().getDocboxName();
-        approContent = getApproContent();
+        approContent = approvalEntity.getApproContent();
         userNo = approvalEntity.getMemberEntity().getUserNo();
         name = approvalEntity.getMemberEntity().getName();
         approvalState = approvalEntity.getApprovalState();

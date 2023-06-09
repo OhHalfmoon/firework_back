@@ -1,5 +1,7 @@
 package com.ohalfmoon.firework.persistence;
 
+
+
 import com.ohalfmoon.firework.model.ApprovalEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

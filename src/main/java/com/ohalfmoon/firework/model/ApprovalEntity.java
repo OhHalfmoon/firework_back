@@ -67,8 +67,13 @@ public class ApprovalEntity extends BaseTimeEntity{
                 .build();
     }
 
-    public void updateStorage(boolean storage) {
+    public void updateStorage(String approvalName, Long lineNo, Long docboxNo, String approContent, boolean storage,int approvalState) {
+        this.approvalName = approvalName;
+        this.masterLineEntity = MasterLineEntity.builder().lineNo(lineNo).build();
+        this.docboxEntity = DocboxEntity.builder().docboxNo(docboxNo).build();
+        this.approContent = approContent;
         this.storage = storage;
+        this.approvalState = approvalState;
     }
 
     public void updateState(int approvalState) {

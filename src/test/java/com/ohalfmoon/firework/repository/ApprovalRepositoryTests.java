@@ -42,6 +42,6 @@ public class ApprovalRepositoryTests {
 
     @Test
     public void removeTest() {
-        approvalRepository.delete(ApprovalEntity.builder().approvalNo(4L).build());
+        approvalRepository.delete(ApprovalEntity.builder().approvalNo(10L).build());
     }
 }
