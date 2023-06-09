@@ -21,6 +21,7 @@ import java.util.Date;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2023/06/07        우성준           최초 생성
+ * 2023/06/09        우성준           regdate 타입 localdate -> localdatetime
  */
 @Getter
 @NoArgsConstructor
@@ -39,7 +40,7 @@ public class AlarmResponseDto {
 
     private String alarmTitle;
 
-    private LocalDate regdate;
+    private LocalDateTime regdate;
 
     private Long boardNo;
 

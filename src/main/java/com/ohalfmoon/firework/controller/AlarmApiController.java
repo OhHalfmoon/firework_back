@@ -30,8 +30,8 @@ import java.util.Map;
 public class AlarmApiController {
     private final AlarmService alarmService;
 
-    @GetMapping("/{userNo}")
-    public List<AlarmResponseDto> findAllByAlarmReceiver(@PathVariable("userNo") Long userNo) {
+    @GetMapping("/member/{userNo}")
+    public List<AlarmResponseDto> findAllByAlarmReceiver(@PathVariable Long userNo) {
         return alarmService.findAllByAlarmReceiver(userNo);
     }
 

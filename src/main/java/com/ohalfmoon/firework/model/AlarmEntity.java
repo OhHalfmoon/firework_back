@@ -22,6 +22,7 @@ import java.util.Date;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2023/06/07        우성준           최초 생성
+ * 2023/06/09        우성준           regdate 타입 localdate -> localdatetime
  */
 @Entity
 @Getter
@@ -53,7 +54,7 @@ public class AlarmEntity {
     private String alarmTitle;
 
     @CreatedDate
-    private LocalDate regdate;
+    private LocalDateTime regdate;
 
     @ManyToOne
     @JoinColumn(name = "boardNo")
