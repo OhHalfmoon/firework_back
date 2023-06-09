@@ -15,16 +15,16 @@ import org.springframework.transaction.annotation.Transactional;
     public class ApprovalService {
         private final ApprovalRepository approvalRepository;
 
-//        public ApprovalEntity register1(ApprovalEntity approvalEntity) {
-//            return approvalRepository.save(approvalEntity);
-//        }
+        //임시저장
+        @Transactional
+        public Long storage(ApprovalSaveDto saveDto) {
+            return approvalRepository.save(saveDto.toStorageApproval()).getApprovalNo();
+        }
 
-//        public ApprovalEntity get (final String approvalName) {
-//            return approvalRepository.findByApprovalName(approvalName);
-//        }
+        //기안 제출(결재)
         @Transactional
         public Long register(ApprovalSaveDto saveDto) {
-            return approvalRepository.save(saveDto.toApproval()).getApprovalNo();
+            return approvalRepository.save(saveDto.toSaveApproval()).getApprovalNo();
         }
 
 
@@ -37,20 +37,27 @@ import org.springframework.transaction.annotation.Transactional;
 //            return approvalRepository.findAllByMemberEntity(MemberEntity.builder().userNo(userNo).build());
 //        }
 
-
+        //결재 서류 수정
         @Transactional
-        public ApprovalResponseDto updateStorage(long approvalNo, ApprovalStorageDto storageDto) {
+        public ApprovalResponseDto updateStorage(long approvalNo, ApprovalUpdateDto updateDto) {
             ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
 
-            approvalEntity.updateStorage(storageDto.storage);
+            approvalEntity.updateStorage(
+                    updateDto.getApprovalName(),
+                    updateDto.getLineNo(),
+                    updateDto.getDocboxNo(),
+                    updateDto.getApproContent(),
+                    updateDto.isStorage(),
+                    updateDto.getApprovalState());
 
             return approvalEntity.toDto();
         }
 
-        @Transactional
-        public  ApprovalResponseDto updateState(long approvalNo, ApprovalUpdateDto updateDto) {
-            ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
-            approvalEntity.updateState(updateDto.approvalState);
-            return approvalEntity.toDto();
-        }
+        //결재 서류 수정
+//        @Transactional
+//        public  ApprovalResponseDto updateState(long approvalNo, ApprovalUpdateDto updateDto) {
+//            ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
+//            approvalEntity.updat
+//            return approvalEntity.toDto();
+//        }
 }
