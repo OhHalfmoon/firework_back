@@ -1,8 +1,8 @@
 package com.ohalfmoon.firework.controller;
 
-import com.ohalfmoon.firework.dto.form.FormResponseDto;
-import com.ohalfmoon.firework.dto.form.FormSaveDto;
-import com.ohalfmoon.firework.dto.form.FormUpdateDto;
+import com.ohalfmoon.firework.dto.FormResponseDto;
+import com.ohalfmoon.firework.dto.FormSaveDto;
+import com.ohalfmoon.firework.dto.FormUpdateDto;
 import com.ohalfmoon.firework.service.FormService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

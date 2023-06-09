@@ -1,4 +1,4 @@
-package com.ohalfmoon.firework.dto.form;
+package com.ohalfmoon.firework.dto;
 
 import com.ohalfmoon.firework.model.FormEntity;
 import lombok.*;
@@ -6,7 +6,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 /**
- * packageName    : com.ohalfmoon.firework.dto.form
+ * packageName    : com.ohalfmoon.firework.dto
  * fileName       : FormResponseDto
  * author         : 방한솔
  * date           : 2023/06/05

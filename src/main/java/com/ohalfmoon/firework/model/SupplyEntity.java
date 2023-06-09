@@ -13,13 +13,21 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tbl_dept")
+@Table(name = "tbl_supplies")
 @DynamicInsert
-public class DeptEntity {
+@Builder
+public class SupplyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long deptNo;
-    private String deptName;
+    private Long supplyNo;
+
+    @Column(nullable = false)
+    private int supCategory;
+
+    @Column(nullable = false)
+    private String supName;
+
     private Date regdate;
+
     private Date updatedate;
 }

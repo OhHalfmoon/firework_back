@@ -13,13 +13,32 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tbl_dept")
+@Table(name = "tbl_board")
 @DynamicInsert
-public class DeptEntity {
+@Builder
+public class BoardEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long deptNo;
-    private String deptName;
+    private Long boardNo;
+
+    @Column(nullable = false)
+    private int boardCategory;
+
+    @ManyToOne
+    @JoinColumn(name = "userNo")
+    private MemberEntity memberEntity;
+
+    @Column(nullable = false)
+    String boardTitle;
+
+    @Column(nullable = false)
+    String boardContent;
+
+    @Column(nullable = false)
+    Long boardCount;
+
     private Date regdate;
+
     private Date updatedate;
+
 }
