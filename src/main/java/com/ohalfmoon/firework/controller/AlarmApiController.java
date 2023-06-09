@@ -1,12 +1,11 @@
 package com.ohalfmoon.firework.controller;
 
 import com.ohalfmoon.firework.dto.AlarmResponseDto;
+import com.ohalfmoon.firework.dto.AlarmSaveDto;
+import com.ohalfmoon.firework.dto.member.MemberDTO;
 import com.ohalfmoon.firework.service.AlarmService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,7 +27,12 @@ public class AlarmApiController {
     private final AlarmService alarmService;
 
     @GetMapping("/{userNo}")
-    public List<AlarmResponseDto> findAllByAlarmReceiver(@PathVariable com.ohalfmoon.firework.dto.form.MemberDTO userNo) {
+    public List<AlarmResponseDto> findAllByAlarmReceiver(@PathVariable Long userNo) {
         return alarmService.findAllByAlarmReceiver(userNo);
+    }
+
+    @PostMapping("/")
+    public Long save(@RequestBody AlarmSaveDto alarmSaveDto) {
+        return alarmService.save(alarmSaveDto);
     }
 }
