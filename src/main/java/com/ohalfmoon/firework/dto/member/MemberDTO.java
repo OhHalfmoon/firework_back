@@ -43,8 +43,6 @@ public class MemberDTO {
             , String password
             , String email
             , String phoneNum
-            , Long deptNo
-            , Long positionNo
             , String name
             , Date birthdate
             , Date startdate
@@ -68,4 +66,5 @@ public class MemberDTO {
                 .startdate(startdate)
                 .build();
     }
+
 }

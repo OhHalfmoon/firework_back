@@ -6,7 +6,9 @@ import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +25,8 @@ import javax.servlet.http.HttpSession;
  * -----------------------------------------------------------
  * 2023/06/01        ycy       최초 생성
  */
-@Controller
+//@Controller
+@RestController
 @RequestMapping("auth")
 @Slf4j
 public class MemberController {
@@ -46,17 +49,20 @@ public class MemberController {
     public void login() {}
 
     @PostMapping("signin")
-    public String login(@RequestParam String username, @RequestParam String password, HttpServletRequest request) {
-        MemberEntity member = memberService.login(username, password);
-        if(member != null) {
-            HttpSession session = request.getSession();
-            session.setAttribute("member", memberService.get(username));
-            log.info("{}", session.getId());
-            return "redirect:/";
-        }
-        else {
-            return "redirect:/auth/signin";
-        }
+    public String login(@RequestParam String username, @RequestParam String password, HttpServletRequest request, Model model) {
+        model.addAttribute("member", memberService.get(username));
+//        MemberEntity member = memberService.login(username, password);
+//        if(member != null) {
+//            HttpSession session = request.getSession();
+//            session.setAttribute("member", memberService.get(username));
+//            log.info("{}", session.getId());
+//            return "redirect:/";
+//        }
+//        else {
+//            return "redirect:/auth/signin";
+//        }
+        return null;
+
     }
 
     @GetMapping("agree")

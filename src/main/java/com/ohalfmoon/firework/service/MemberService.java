@@ -1,6 +1,7 @@
 package com.ohalfmoon.firework.service;
 
 import com.ohalfmoon.firework.dto.member.MemberDTO;
+import com.ohalfmoon.firework.dto.member.MemberLoginDTO;
 import com.ohalfmoon.firework.dto.member.MemberUpdateDTO;
 import com.ohalfmoon.firework.dto.member.MemberUpdatePwDTO;
 import com.ohalfmoon.firework.dto.role.RoleDTO;
@@ -13,6 +14,7 @@ import com.ohalfmoon.firework.persistence.MemberRepository;
 import com.ohalfmoon.firework.persistence.PositionRepository;
 import com.ohalfmoon.firework.persistence.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,8 +88,11 @@ public class MemberService {
 
     }
 
-    public MemberEntity login (final String username, final String password) {
-        return memberRepository.findByUsernameAndPassword(username, password);
+    public MemberLoginDTO login (final String username, final String password, PasswordEncoder encoder, MemberLoginDTO memberLoginDTO) {
+
+        MemberEntity entity = memberLoginDTO.toEntity();
+//        return memberRepository.findByUsernameAndPassword(memberLoginDTO.toEntity());
+        return null;
     }
 
     public List<MemberEntity> get (final String username) {
