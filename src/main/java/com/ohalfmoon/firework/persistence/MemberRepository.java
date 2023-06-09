@@ -10,6 +10,6 @@ import java.util.List;
 public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
 //    MemberEntity findByUsernameAndPassword();
 
-    List<MemberEntity> findByUsername(String username);
+    MemberEntity findByUsername(String username);
 
 }

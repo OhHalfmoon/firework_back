@@ -1,10 +1,6 @@
 package com.ohalfmoon.firework.service;
 
-import com.ohalfmoon.firework.dto.member.MemberDTO;
-import com.ohalfmoon.firework.dto.member.MemberLoginDTO;
-import com.ohalfmoon.firework.dto.member.MemberUpdateDTO;
-import com.ohalfmoon.firework.dto.member.MemberUpdatePwDTO;
-import com.ohalfmoon.firework.dto.role.RoleDTO;
+import com.ohalfmoon.firework.dto.member.*;
 import com.ohalfmoon.firework.model.DeptEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.PositionEntity;
@@ -35,7 +31,7 @@ public class MemberService {
     private RoleRepository roleRepository;
 
     @Transactional // springboot
-    public RoleEntity register(MemberDTO memberDTO, RoleDTO roleDTO) {
+    public RoleEntity register(MemberDTO memberDTO) {
         MemberEntity entity = memberDTO.toEntity();
         DeptEntity byId = deptRepository
                 .findById(memberDTO.getDeptNo())
@@ -88,14 +84,16 @@ public class MemberService {
 
     }
 
-    public MemberLoginDTO login (final String username, final String password, PasswordEncoder encoder, MemberLoginDTO memberLoginDTO) {
+    public MemberResponseDTO login (MemberLoginDTO memberLoginDTO) {
+        MemberEntity entity = memberRepository.findByUsername(memberLoginDTO.getUsername());
 
-        MemberEntity entity = memberLoginDTO.toEntity();
-//        return memberRepository.findByUsernameAndPassword(memberLoginDTO.toEntity());
+        if(entity != null && entity.getPassword().equals(memberLoginDTO.getPassword())) {
+            return new MemberResponseDTO(entity);
+        }
         return null;
     }
 
-    public List<MemberEntity> get (final String username) {
+    public MemberEntity get(final String username) {
         return memberRepository.findByUsername(username);
     }
 }

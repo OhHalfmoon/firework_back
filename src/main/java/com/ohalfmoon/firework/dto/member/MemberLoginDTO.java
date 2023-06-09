@@ -23,38 +23,12 @@ import java.util.Date;
 @NoArgsConstructor
 public class MemberLoginDTO {
 
-    private Long userNo;
     private String username;
-    private String email;
-    private String phoneNum;
-    private String name;
-    private boolean manager;
-    private Date birthdate;
-    private Date startdate;
+    private String password;
 
-    @Builder
-    public MemberLoginDTO(Long userNo, String username, String email, String phoneNum, String name, boolean manager, Date birthdate, Date startdate) {
-        this.userNo = userNo;
+    public MemberLoginDTO(String username, String password) {
         this.username = username;
-        this.email = email;
-        this.phoneNum = phoneNum;
-        this.name = name;
-        this.manager = manager;
-        this.birthdate = birthdate;
-        this.startdate = startdate;
-    }
-
-    public MemberEntity toEntity() {
-        return MemberEntity.builder()
-                .userNo(userNo)
-                .username(username)
-                .email(email)
-                .phoneNum(phoneNum)
-                .name(name)
-                .manager(manager)
-                .birthdate(birthdate)
-                .startdate(startdate)
-                .build();
+        this.password = password;
     }
 }
 
