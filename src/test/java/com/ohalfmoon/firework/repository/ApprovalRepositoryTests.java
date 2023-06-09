@@ -2,15 +2,22 @@ package com.ohalfmoon.firework.repository;
 
 import com.ohalfmoon.firework.model.*;
 import com.ohalfmoon.firework.persistence.ApprovalRepository;
-import org.apache.juli.logging.Log;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-
+/**
+ * packageName    : com.ohalfmoon.firework.repository
+ * fileName       : ApprovalRepositoryTests
+ * author         : 오상현
+ * date           : 2023/06/07
+ * description    : 기안 Repository 테스트
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023/06/07        오상현            최초 생성
+ */
 @SpringBootTest
 public class ApprovalRepositoryTests {
     @Autowired

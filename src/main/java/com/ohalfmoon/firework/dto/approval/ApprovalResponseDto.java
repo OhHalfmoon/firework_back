@@ -26,14 +26,12 @@ import java.util.Date;
 public class ApprovalResponseDto {
     private Long approvalNo;
     private String approvalName;
-//    private Long lineNo;
     private Long docboxNo;
     private String docboxName;
     private String approContent;
     private Long userNo;
     private String name;
 
-    private boolean storage;
     private int approvalState;
     private LocalDateTime regdate;
 
