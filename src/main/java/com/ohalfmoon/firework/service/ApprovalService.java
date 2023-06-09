@@ -23,11 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ApprovalService {
     private final ApprovalRepository approvalRepository;
 
-    //임시저장
-    @Transactional
-    public Long storage(ApprovalSaveDto saveDto) {
-        return approvalRepository.save(saveDto.toStorageApproval()).getApprovalNo();
-    }
+
 
     //기안 제출(결재)
     @Transactional
@@ -61,30 +57,16 @@ public class ApprovalService {
                 updateDto.getLineNo(),
                 updateDto.getDocboxNo(),
                 updateDto.getApproContent()
-//                ,
-//                updateDto.isStorage(),
-//                updateDto.getApprovalState()
         );
 
         return approvalEntity.toDto();
     }
 
-    //임시저장중인 기안을 제출
+    //기안 상태값을 변경
     @Transactional
-    public  ApprovalResponseDto updateStorage(long approvalNo, ApprovalStorageDto storageDto) {
+    public  ApprovalResponseDto updateState(long approvalNo ,ApprovalStateDto stateDto) {
         ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
-        approvalEntity.updateStorage(
-                storageDto.isStorage(),
-                storageDto.getApprovalState()
-        );
-
-        return approvalEntity.toDto();
-    }
-
-    //기안을 결재완료로 변경
-    @Transactional
-    public  ApprovalResponseDto updateState(long approvalNo, ApprovalStateDto stateDto) {
-        ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
+//        int approvalstate = approvalEntity.getApprovalState();
         approvalEntity.updateState(
                 stateDto.getApprovalState()
         );
@@ -98,5 +80,22 @@ public class ApprovalService {
         ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
         approvalRepository.delete(approvalEntity);
     }
+
+////    임시저장
+//    @Transactional
+//    public Long storage(ApprovalSaveDto saveDto) {
+//        return approvalRepository.save(saveDto.toStorageApproval()).getApprovalNo();
+//    }
+//
+////    임시저장중인 기안을 제출
+//    @Transactional
+//    public  ApprovalResponseDto updateStorage(long approvalNo, ApprovalStorageDto storageDto) {
+//        ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
+//        approvalEntity.updateStorage(
+//                storageDto.getApprovalState()
+//        );
+//
+//        return approvalEntity.toDto();
+//    }
 
 }

@@ -21,7 +21,7 @@ public class ApprovalStateDto {
 
 
     /*
-    * 결재진행(db값 : 1) 상태에서 최종결재(db값 : 2)로 상태값을 변경하는 dto
+    * 결재진행 상태값을 변경하는 dto
     * */
     @Builder
     public ApprovalStateDto(int approvalState) {

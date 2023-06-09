@@ -29,21 +29,21 @@ public class ApprovalServiceTest {
     @Autowired
     ApprovalRepository approvalRepository;
 
-    @Test
-    @DisplayName("결재 임시저장 테스트")
-    void storage() {
-        ApprovalSaveDto saveDto = ApprovalSaveDto.builder()
-                .approvalName("기안 임시저장")
-                .formNo(1L)
-                .lineNo(1L)
-                .docboxNo(1L)
-                .approContent("서비스임시저장작성중")
-                .userNo(1L)
-                .build();
-        Long saveId = approvalService.storage(saveDto);
-        ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(saveId);
-
-    }
+//    @Test
+//    @DisplayName("결재 임시저장 테스트")
+//    void storage() {
+//        ApprovalSaveDto saveDto = ApprovalSaveDto.builder()
+//                .approvalName("기안 임시저장")
+//                .formNo(1L)
+//                .lineNo(1L)
+//                .docboxNo(1L)
+//                .approContent("서비스임시저장작성중")
+//                .userNo(1L)
+//                .build();
+//        Long saveId = approvalService.storage(saveDto);
+//        ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(saveId);
+//
+//    }
 
     @Test
     @DisplayName("등록 테스트")
@@ -55,6 +55,7 @@ public class ApprovalServiceTest {
                 .docboxNo(1L)
                 .approContent("서비스테스트작성중")
                 .userNo(1L)
+                .approvalState(0)
                 .build();
         Long saveId = approvalService.register(saveDto);
         ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(saveId);
@@ -63,7 +64,7 @@ public class ApprovalServiceTest {
     @Test
     @DisplayName("결재내용 수정 테스트")
     void update() {
-        Long updateId = approvalService.get(14L).getApprovalNo();
+        Long updateId = approvalService.get(17L).getApprovalNo();
         ApprovalUpdateDto updateDto = ApprovalUpdateDto.builder()
                 .approvalName("삭제예정")
                 .lineNo(3L)
@@ -73,21 +74,23 @@ public class ApprovalServiceTest {
         ApprovalResponseDto approvalResponseDto = approvalService.update(updateId, updateDto);
     }
 
+//    @Test
+//    @DisplayName("임시저장 상태변경 테스트")
+//    void updateStorage() {
+//        Long updateId = approvalService.get(17L).getApprovalNo();
+//        ApprovalStorageDto storageDto = ApprovalStorageDto.builder().build();
+//        ApprovalResponseDto approvalResponseDto = approvalService.updateStorage(updateId, storageDto);
+//    }
+
     @Test
     @DisplayName("결재 상태변경 테스트")
     void updateState() {
-        Long updateId = approvalService.get(14L).getApprovalNo();
-        ApprovalStateDto stateDto = ApprovalStateDto.builder().build();
+        Long updateId = approvalService.get(19L).getApprovalNo();
+        ApprovalStateDto stateDto = ApprovalStateDto.builder().approvalState(1).build();
         ApprovalResponseDto approvalResponseDto = approvalService.updateState(updateId, stateDto);
         System.out.println(approvalResponseDto.toString());
     }
-    @Test
-    @DisplayName("임시저장 상태변경 테스트")
-    void updateStorage() {
-        Long updateId = approvalService.get(13L).getApprovalNo();
-        ApprovalStorageDto storageDto = ApprovalStorageDto.builder().build();
-        ApprovalResponseDto approvalResponseDto = approvalService.updateStorage(updateId, storageDto);
-    }
+
 
     @Test
     @DisplayName("결재명 단일조회 테스트")
@@ -108,7 +111,7 @@ public class ApprovalServiceTest {
     @Test
     @DisplayName("결재삭제 테스트")
     void deleteTest() {
-        final Long approvalNo = 14L;
+        final Long approvalNo = 18L;
         approvalService.delete(approvalNo);
         System.out.println("삭제완료");
     }
