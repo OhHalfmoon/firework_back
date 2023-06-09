@@ -5,7 +5,19 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
-
+/**
+ * packageName    : com.ohalfmoon.firework.model
+ * fileName       : ApprovalEntity
+ * author         : 오상현
+ * date           : 2023/06/07
+ * description    : 결재 Entity
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023/06/07        오상현            최초 생성
+ * 2023/06/08        오상현            response 및 register를 위한 toDto 생성
+ * 2023/06/09        오상현            update관련 기능 생성
+ */
 @Getter
 @NoArgsConstructor
 @Entity
