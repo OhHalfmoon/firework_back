@@ -3,6 +3,8 @@ package com.ohalfmoon.firework.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.lang.reflect.Member;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -24,7 +26,7 @@ import java.util.Date;
 @Entity
 @ToString
 @Table(name="tbl_sub_line")
-public class SubLineEntity {
+public class SubLineEntity extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long subLineNo;
@@ -32,13 +34,17 @@ public class SubLineEntity {
     @Column(nullable = false)
     private Integer orderLevel;
 
-    @Column(nullable = false)
-    private Long lineNo;
+    @ManyToOne
+    @JoinColumn(name = "lineNo")
+    private MasterLineEntity lineNo;
 
-    @Column(nullable = false)
-    private Long userNo;
+    @ManyToOne
+    @JoinColumn(name = "userNo")
+    private MemberEntity userNo;
 
-    private Date regdate;
-    private Date updatedate;
+    public void update(Integer orderLevel, MemberEntity userNo) {
+        this.orderLevel = orderLevel;
+        this.userNo = userNo;
+    }
 
 }
