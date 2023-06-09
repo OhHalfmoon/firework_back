@@ -14,7 +14,7 @@ import java.util.Date;
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2023/06/05        이지윤           최초 생성
+ * 2023/06/07        이지윤           최초 생성
  */
 
 @Builder
@@ -32,9 +32,8 @@ public class MasterLineEntity {
     @Column(nullable = false)
     private String lineName;
 
-    private String userNo;
+    private Long userNo;
 
-    @Column(nullable = false)
     private Date regdate;
 
     private Date updatedate;
