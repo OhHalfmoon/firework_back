@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <label>password<input type="password" class="form-control" name="password" placeholder="비밀번호를 입력해주세요"></label>
+                    <input type="password" class="form-control" name="password" placeholder="비밀번호를 입력해주세요">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
@@ -73,36 +73,28 @@
                     </div>
                 </div>
                 <div class="input-group mb-3" style="width: 100%">
-                    <label>부서 선택
-                        <select class="d-flex" name="deptNo">
+                        <select class="d-flex custom-select" name="deptNo">
+                            <option selected>부서를 선택해주세요</option>
                             <option value="1">인사팀</option>
                             <option value="2">총무팀</option>
                         </select>
+                </div>
+                <div class="input-group mb-3">
+                        <select class="d-flex custom-select" name="deptNo">
+                            <option selected>직급을 선택해주세요</option>
+                            <option value="1">사원</option>
+                            <option value="2">대리</option>
+                        </select>
+                </div>
+                <div class="input-group mb-3">
+                    <label class="text-center"> 생일을 입력해주세요
+                        <input type="date" class="form-control" name="birthdate" placeholder="생일을 입력해주세요"  style="width: 300px">
                     </label>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" name="positionNo" placeholder="직급을 입력해주세요">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-user"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" name="birthdate" placeholder="생일을 입력해주세요">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <i class="far fa-calendar-alt"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="input-group mb-3">
-                    <input type="date" class="form-control" id="startdate" name="startdate" placeholder="입사일을 입력해주세요">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <i class="far fa-calendar-alt"></i>
-                        </div>
-                    </div>
+                    <label class="text-center"> 입사일을 입력해주세요
+                        <input type="date" class="form-control" id="startdate" name="startdate" placeholder="입사일을 입력해주세요" style="width: 300px">
+                    </label>
                 </div>
                 </div>
                 <div class="row">

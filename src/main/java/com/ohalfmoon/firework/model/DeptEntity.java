@@ -1,9 +1,6 @@
 package com.ohalfmoon.firework.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
@@ -15,6 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Table(name = "tbl_dept")
 @DynamicInsert
+@ToString
 public class DeptEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

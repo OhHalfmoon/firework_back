@@ -3,6 +3,7 @@ package com.ohalfmoon.firework.model;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.Entity;
@@ -16,6 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Table(name = "tbl_position")
 @DynamicInsert
+@ToString
 public class PositionEntity {
     @Id
     private Long positionNo;

@@ -5,6 +5,7 @@ import com.ohalfmoon.firework.dto.member.MemberLoginDTO;
 import com.ohalfmoon.firework.dto.member.MemberResponseDTO;
 import com.ohalfmoon.firework.dto.role.RoleDTO;
 import com.ohalfmoon.firework.model.MemberEntity;
+import com.ohalfmoon.firework.service.DeptService;
 import com.ohalfmoon.firework.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,9 @@ public class MemberController {
     private MemberService memberService;
 
     @Autowired
+    private DeptService deptService;
+
+    @Autowired
     private HttpSession session;
 
     @GetMapping("signup")
@@ -45,7 +49,8 @@ public class MemberController {
 
 
     @PostMapping("signup")
-    public String register(MemberDTO memberDTO) {
+    public String register(MemberDTO memberDTO, Model model) {
+//        model.addAttribute("dept", deptService.deptEntityList);
         memberService.register(memberDTO);
         return "redirect:/auth/signin";
     }

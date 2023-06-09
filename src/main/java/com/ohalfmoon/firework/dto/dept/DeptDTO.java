@@ -17,11 +17,15 @@ import lombok.NoArgsConstructor;
  * 2023-06-07                ycy             최초 생성
  */
 @NoArgsConstructor
-@AllArgsConstructor
 @Data
 @Builder
 public class DeptDTO {
     private Long deptNo;
     private String deptName;
+
+    public DeptDTO(Long deptNo, String deptName) {
+        this.deptNo = deptNo;
+        this.deptName = deptName;
+    }
 
 }
