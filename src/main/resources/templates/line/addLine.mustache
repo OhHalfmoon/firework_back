@@ -53,9 +53,9 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <ul class="todo-list" data-widget="todo-list">
-                                    {{#line}}
-                                        {{#master}}
+                                {{#masterList}}
+                                    {{#subLineList}}
+                                        <ul class="todo-list" data-widget="todo-list">
                                             <li>
                                                 <!-- drag handle -->
                                                 <span class="handle">
@@ -67,21 +67,21 @@
                                                     <input type="checkbox" value="" name="todo1" id="todoCheck1">
                                                     <label for="todoCheck1"></label>
                                                 </div>
-
                                                 <!-- todo text -->
-
-                                                <span class="text">{{lineName}} : {{subLineNo}}</span>
+                                                <span class="text"> {{lineName}}
+                                                    {{#subLineList}}
+                                                        <span class="text"> {{orderLevel}}</span>
+                                                    {{/subLineList}}
+                                                </span>
                                                 <!-- Emphasis label -->
                                                 <div class="tools">
                                                     <i class="fas fa-edit"></i>
                                                     <i class="fas fa-trash-o"></i>
                                                 </div>
                                             </li>
-
-
-                                        {{/master}}
-                                    {{/line}}
-                                </ul>
+                                        </ul>
+                                    {{/subLineList}}
+                                {{/masterList}}
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer clearfix">
