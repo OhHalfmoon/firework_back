@@ -18,6 +18,7 @@
             <img style="width: 200px" src="/dist/img/FIREWORKS.gif">
         </div>
         <div class="card-body">
+            <form name="frm">
             <p class="login-box-msg"><strong>FireWork 이용약관</strong> </p>
                 <p class="m-2 overflow-auto" style="height: 300px">
                     제 1 조 (목적)
@@ -45,8 +46,8 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="icheck-secondary">
-                            <input type="checkbox" id="agree">
-                            <label for="agree">
+                            <input type="checkbox" id="checkAgree" value="">
+                            <label for="checkAgree">
                                 위 약관에 동의합니다.
                             </label>
                         </div>
@@ -57,11 +58,12 @@
                                 <a class="btn btn-outline-secondary btn-block" href="signin">이전페이지</a>
                             </div>
                             <div class="col-5">
-                                <a class="btn btn-secondary btn-block" href="signup">다음페이지</a>
+                                <button class="btn btn-secondary btn-block" formaction="signup" id="nextPage">다음페이지</button>
                             </div>
                         </div>
                     </div>
                 </div>
+            </form>
         </div>
     </div>
 </div>
@@ -73,5 +75,18 @@
 <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../../dist/js/adminlte.min.js"></script>
+<script>
+    $(document).ready(function() {
+        var checkAgree = $("#checkAgree");
+        var nextPageBtn = $("#nextPage");
+
+        nextPageBtn.click(function(event) {
+            if (!checkAgree.is(":checked")) {
+                event.preventDefault();
+                alert("약관에 동의해주세요.");
+            }
+        });
+    });
+</script>
 </body>
 </html>

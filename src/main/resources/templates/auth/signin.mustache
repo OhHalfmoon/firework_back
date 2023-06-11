@@ -24,6 +24,13 @@
                             <span class="fas fa-envelope"></span>
                         </div>
                     </div>
+                    {{#bindingResult.hasError}}
+                    <div class="error">
+                        {{#bindingResult.fieldErrors}}
+                            <span style="color: red">{{username}} : {{defaultMessage}}</span>
+                        {{/bindingResult.fieldErrors}}
+                    </div>
+                    {{/bindingResult.hasError}}
                 </div>
                 <div class="input-group mb-3">
                     <input type="password" id="pw" name="password" class="form-control" placeholder="비밀번호를 입력해주세요">
@@ -32,6 +39,13 @@
                             <span class="fas fa-lock"></span>
                         </div>
                     </div>
+                    {{#bindingResult.hasError}}
+                        <div class="error">
+                            {{#bindingResult.fieldErrors}}
+                                <span style="color: red">{{password}} : {{defaultMessage}}</span>
+                            {{/bindingResult.fieldErrors}}
+                        </div>
+                    {{/bindingResult.hasError}}
                 </div>
                 <div class="row">
                     <div class="col-8">
@@ -76,15 +90,5 @@
 <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../../dist/js/adminlte.min.js"></script>
-<script>
-    $(function () {
-        $("signin").click(function() {
-            event.preventDefault();
-            var id = $(#id).val();
-            var pw = $(#pw).val();
-
-        })
-    })
-</script>
 </body>
 </html>

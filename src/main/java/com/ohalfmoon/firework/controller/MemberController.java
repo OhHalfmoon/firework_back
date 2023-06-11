@@ -11,9 +11,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * packageName    : com.ohalfmoon.firework.controller
@@ -87,15 +92,23 @@ public class MemberController {
      * @return the string
      */
     @PostMapping("signin")
-    public String login(MemberLoginDTO dto, HttpSession session) {
+    public String login(@Valid MemberLoginDTO dto, HttpSession session, BindingResult bindingResult, Model model) {
         MemberResponseDTO member = memberService.login(dto);
-        if(member != null) {
+        String result = "redirect:/";
+        if(bindingResult.hasErrors() || member == null) {
+            log.info("{}", member);
+            model.addAttribute("userDTO", dto);
+            Map<String, String> errorMap = new HashMap<>();
+
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put("valid_"+error.getField(), error.getDefaultMessage());
+                log.info("error message : {}", error.getDefaultMessage());
+            }
+            return result+"auth/signin";
+        }else {
             session.setAttribute("member", member);
             log.info("session 확인 : {}", session.getAttribute("member"));
-            return "redirect:/";
-
-        }else {
-            return "redirect:/auth/signin";
+            return result;
         }
 
     }
@@ -108,4 +121,16 @@ public class MemberController {
 
     @GetMapping("agree2")
     public void agree2() {}
+
+    /**
+     * 로그아웃
+     *
+     * @param session the session
+     * @return redirect:/auth/signin
+     */
+    @GetMapping("signout")
+    public String signout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/auth/signin";
+    }
 }

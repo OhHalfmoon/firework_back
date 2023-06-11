@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 /**
@@ -24,8 +25,9 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MemberLoginDTO {
-
+    @NotBlank(message = "id를 확인해주세요")
     private String username;
+    @NotBlank(message = "pw를 확인해주세요")
     private String password;
 }
 
