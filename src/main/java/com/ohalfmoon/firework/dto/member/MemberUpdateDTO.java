@@ -12,7 +12,7 @@ import java.util.Date;
  * fileName : MemberUpdateDTO
  * author :  ycy
  * date : 2023-06-08
- * description :
+ * description : 수정된 회원의 정보를 매핑하여 entity로 전달
  * ===========================================================
  * DATE                 AUTHOR                NOTE
  * -----------------------------------------------------------

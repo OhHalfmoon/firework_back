@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
  * DATE                 AUTHOR                NOTE
  * -----------------------------------------------------------
  * 2023-06-09                ycy             최초 생성
+ * 2023-06-09                ycy            deptList 추가
  */
 @Service
 public class DeptService {
@@ -27,11 +28,15 @@ public class DeptService {
     @Autowired
     private DeptRepository deptRepository;
 
+    /**
+     * Dept list 조회
+     * @return the list
+     */
     @Transactional(readOnly = true)
     public List<DeptListResponseDTO> deptList() {
-        return deptRepository.findAll().stream() // 읽기전용의 stream화
-                .map(DeptListResponseDTO::new) // map을 통해 DeptListResponseDTO객체 생성
-                .collect(Collectors.toList()); // toList 출력
+        return deptRepository.findAll().stream()
+                .map(DeptListResponseDTO::new) // map을 통해 DeptListResponseDTO로 형변환
+                .collect(Collectors.toList()); // List형태로 출력
     }
 
 

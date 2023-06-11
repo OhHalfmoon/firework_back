@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
  * fileName : MemberUpdatePw
  * author :  ycy
  * date : 2023-06-08
- * description :
+ * description : 변경된 회원의 pw를 매핑하여 entity로 전달
  * ===========================================================
  * DATE                 AUTHOR                NOTE
  * -----------------------------------------------------------

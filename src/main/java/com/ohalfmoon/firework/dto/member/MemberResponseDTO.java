@@ -11,7 +11,7 @@ import java.util.Date;
  * fileName : MemberResponseDTO
  * author :  ycy
  * date : 2023-06-09
- * description :
+ * description : session에 저장될 회원 정보를 매핑하여 view로 전달
  * ===========================================================
  * DATE                 AUTHOR                NOTE
  * -----------------------------------------------------------

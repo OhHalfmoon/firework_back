@@ -12,7 +12,7 @@ import java.util.Date;
  * fileName : DeptDTO
  * author :  ycy
  * date : 2023-06-07
- * description :
+ * description : 부서 ResponseDTO
  * ===========================================================
  * DATE                 AUTHOR                NOTE
  * -----------------------------------------------------------
@@ -24,6 +24,10 @@ public class DeptListResponseDTO {
     private Long deptNo;
     private String deptName;
 
+    /**
+     * 부서 List Response
+     * @param entity the entity
+     */
     public DeptListResponseDTO(DeptEntity entity) {
         deptNo = entity.getDeptNo();
         deptName = entity.getDeptName();

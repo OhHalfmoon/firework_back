@@ -9,6 +9,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Date;
 
+/**
+ * packageName :  com.ohalfmoon.firework.dto.member
+ * fileName : MemberDTO
+ * author :  ycy
+ * date : 2023-06-09
+ * description : view에서 전달받은 회원가입 정보를 매핑하여 entity로 전송
+ * ===========================================================
+ * DATE                 AUTHOR                NOTE
+ * -----------------------------------------------------------
+ * 2023-06-01                ycy             최초 생성
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
  * DATE                 AUTHOR                NOTE
  * -----------------------------------------------------------
  * 2023-06-09                ycy             최초 생성
+ * 2023-06-09                ycy            PositionList 추가
  */
 @Service
 public class PositionService {
@@ -27,6 +28,11 @@ public class PositionService {
     @Autowired
     private PositionRepository positionRepository;
 
+    /**
+     * Position list 조회
+     *
+     * @return the list
+     */
     @Transactional(readOnly = true)
     public List<PositionListResponseDTO> positionList() {
         System.out.println("들어왔슴");
