@@ -56,11 +56,18 @@ public class SubLineServiceTests {
     @Test
     @DisplayName("리스트 조회 테스트")
     public void testGetList() {
-        List<SubLineResponseDTO> subLineSaveDTO = subLineService.getList();
-        log.info("subLineSaveDTO : {}", subLineSaveDTO);
+        List<SubLineResponseDTO> subLineResponseDTOList = subLineService.getList();
+        log.info("subLineResponseDTOList: {}", subLineResponseDTOList);
     }
 
-
+    @Test
+    @DisplayName("lineNo를 통한 리스트 조회 테스트")
+    public void testGetListByLineNo() {
+        Long lineNo = 1L;
+        List<SubLineResponseDTO> subLineResponseDTOList = subLineService.getListByLineNo(lineNo);
+        log.info("subLineResponseDTOList: {}", subLineResponseDTOList);
+    }
+    
     // 수정 - 성공
     @Test
     @Transactional
