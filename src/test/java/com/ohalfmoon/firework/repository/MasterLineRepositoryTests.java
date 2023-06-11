@@ -12,6 +12,18 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
+/**
+ * packageName    : com.ohalfmoon.firework.repository
+ * fileName       : MasterLineRepositoryTests
+ * author         : 이지윤
+ * date           : 2023/06/09
+ * description    : 마스터 라인 레파지토리 테스트
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023/06/09        이지윤           최초 생성
+ */
+
 @SpringBootTest
 @Slf4j
 public class MasterLineRepositoryTests {
@@ -68,7 +80,7 @@ public class MasterLineRepositoryTests {
     @Test
     public void testList() {
         Long userNo = 1L;
-        List<MasterLineEntity> lists = masterLineRepository.findByRegMemberNo(userNo);
+        List<MasterLineEntity> lists = masterLineRepository.findByMemberEntity_UserNo(userNo);
         log.info("{}" , lists);
     }
 }

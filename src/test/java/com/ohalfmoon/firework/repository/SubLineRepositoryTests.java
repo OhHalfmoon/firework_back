@@ -12,6 +12,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * packageName    : com.ohalfmoon.firework.repository
+ * fileName       : SubLineRepositoryTests
+ * author         : 이지윤
+ * date           : 2023/06/09
+ * description    : 서브 라인 레파지토리 테스트
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023/06/09        이지윤           최초 생성
+ */
+
 @Slf4j
 @SpringBootTest
 public class SubLineRepositoryTests {
@@ -59,12 +71,24 @@ public class SubLineRepositoryTests {
     }
 
     // 서브 라인 subLineNo를 통한 단일 조회 - 성공
-    // userNo가 객체 형태임....
     @Test
     public void testFindBySubLineNo(){
         Long subLineNo = 2L;
         subLineRepository.findById(subLineNo);
         log.info("{}", subLineRepository.findById(subLineNo));
+    }
+
+    @Test
+    public void testGetList() {
+        subLineRepository.findAll();
+        log.info("{}", subLineRepository.findAll());
+    }
+
+    @Test
+    public void testGetListByLineNo() {
+        Long lineNo = 1L;
+        subLineRepository.findAllByMasterLineEntity_LineNo(lineNo);
+        log.info("{}", subLineRepository.findAllByMasterLineEntity_LineNo(lineNo));
     }
 
     // 서브 라인 삭제 - 성공
