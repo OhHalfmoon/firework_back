@@ -1,8 +1,10 @@
 package com.ohalfmoon.firework.persistence;
 
+import com.ohalfmoon.firework.dto.dept.DeptListResponseDTO;
 import com.ohalfmoon.firework.model.DeptEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
+
+import java.util.List;
 
 /**
  * packageName :  com.ohalfmoon.firework.persistence
@@ -16,4 +18,5 @@ import org.springframework.data.jpa.repository.support.JpaRepositoryImplementati
  * 2023-06-07                ycy             최초 생성
  */
 public interface DeptRepository extends JpaRepository<DeptEntity, Long> {
+    List<DeptEntity> findAll();
 }

@@ -1,9 +1,6 @@
 package com.ohalfmoon.firework.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.Entity;
@@ -18,6 +15,7 @@ import java.util.Date;
 @Table(name = "tbl_position")
 @DynamicInsert
 @ToString
+@Builder
 public class PositionEntity {
     @Id
     private Long positionNo;

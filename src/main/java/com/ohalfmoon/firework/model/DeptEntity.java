@@ -13,6 +13,7 @@ import java.util.Date;
 @Table(name = "tbl_dept")
 @DynamicInsert
 @ToString
+@Builder
 public class DeptEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
