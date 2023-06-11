@@ -50,7 +50,7 @@ public class MasterLineService {
     
     // userNo를 통한 리스트 조회
     public List<MasterLineResponseDTO> getList(Long userNo) {
-        return masterLineRepository.findByRegMemberNo(userNo)
+        return masterLineRepository.findByMemberEntity_UserNo(userNo)
                 .stream().map(MasterLineResponseDTO::new).collect(Collectors.toList());
     }
 

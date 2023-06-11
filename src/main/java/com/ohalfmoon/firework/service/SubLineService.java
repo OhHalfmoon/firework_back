@@ -61,27 +61,10 @@ public class SubLineService {
                 .stream().map(SubLineResponseDTO::new).collect(Collectors.toList());
     }
 
-//    @javax.transaction.Transactional
-//    public List<AlarmResponseDto> findAllByAlarmReceiver(Long userNo) {
-//        return alamRepository
-//                .findAllByAlarmReceiver(memberRepository.findById(userNo).orElse(null))
-//                .stream().map(AlarmResponseDto::new).collect(Collectors.toList());
-//    }
-
-//    public MasterLineResponseDTO findByLineNo(Long lineNo) {
-//        MasterLineEntity entity = masterLineRepository
-//                .findById(lineNo)
-//                .orElseThrow(()-> new IllegalArgumentException("라인이 존재하지 않습니다"));
-//        return new MasterLineResponseDTO(entity);
-//
-//    }
-//
-//    // userNo를 통한 리스트 조회
-//    public List<MasterLineResponseDTO> getList(Long userNo) {
-//        return masterLineRepository.findAllByUserNo(memberRepository.findById(userNo).orElse(null))
-//                .stream().map(MasterLineResponseDTO::new).collect(Collectors.toList());
-//    }
-
+    public List<SubLineResponseDTO> getListByLineNo(Long lineNo) {
+        return subLineRepository.findAllByMasterLineEntity_LineNo(lineNo)
+                .stream().map(SubLineResponseDTO::new).collect(Collectors.toList());
+    }
 
     @Transactional
     public void delete(Long subLineNo) {
