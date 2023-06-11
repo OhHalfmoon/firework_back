@@ -10,16 +10,17 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
- * packageName    : com.ohalfmoon.firework.dto
- * fileName       : MasterLineDTO
+ * packageName    : com.ohalfmoon.firework.dto.master
+ * fileName       : MasterLineSaveDTO
  * author         : 이지윤
- * date           : 2023/06/07
- * description    : 결재 선에 필요한 정보(기안자, 결재선 명)DTO
+ * date           : 2023/06/08
+ * description    : 결재 선 저장 시 필요한 정보 DTO
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2023/06/07        이지윤           최초 생성
+ * 2023/06/08        이지윤           최초 생성
  */
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
