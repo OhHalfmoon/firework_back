@@ -31,7 +31,6 @@ public class MasterLineResponseDTO {
     private Long userNo;
     private LocalDateTime regdate;
     private String name;
-    private String phoneNum;
 
     public MasterLineResponseDTO(final MasterLineEntity entity) {
         this.lineNo = entity.getLineNo();
@@ -39,7 +38,6 @@ public class MasterLineResponseDTO {
         this.userNo = entity.getMemberEntity().getUserNo();
         this.regdate = entity.getRegdate();
         this.name = entity.getMemberEntity().getName();
-        this.phoneNum = entity.getMemberEntity().getPhoneNum();
     }
 
     public MasterLineEntity toEntity(){
