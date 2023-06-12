@@ -8,6 +8,18 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * packageName    : com.ohalfmoon.firework.dto.sub
+ * fileName       : SubLineUpdateDTO
+ * author         : 이지윤
+ * date           : 2023/06/08
+ * description    : 결재 선 수정 시 필요한 정보 DTO
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023/06/08        이지윤           최초 생성
+ */
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,13 +30,13 @@ public class SubLineUpdateDTO {
 
     public SubLineUpdateDTO(final SubLineEntity entity) {
         this.orderLevel = entity.getOrderLevel();
-        this.userNo = entity.getUserNo().getUserNo();
+        this.userNo = entity.getMemberEntity().getUserNo();
     }
 
     public SubLineEntity toEntity(){
         return SubLineEntity.builder()
                 .orderLevel(orderLevel)
-                .userNo(MemberEntity.builder()
+                .memberEntity(MemberEntity.builder()
                         .userNo(userNo)
                         .build())
                 .build();

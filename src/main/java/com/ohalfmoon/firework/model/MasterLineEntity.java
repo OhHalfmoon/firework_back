@@ -36,8 +36,8 @@ public class MasterLineEntity extends BaseTimeEntity{
     private String lineName;
 
     @ManyToOne
-    @JoinColumn(name="userNo")
-    private MemberEntity userNo;
+    @JoinColumn(name="regMemberNo")
+    private MemberEntity memberEntity;
 
     public void update(String lineName) {
         this.lineName = lineName;

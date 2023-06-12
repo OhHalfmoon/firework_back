@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdminLTE 3 | Dashboard</title>
+
+    {{>layout/head}}
+</head>
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
+<div class="wrapper">
+
+    {{>layout/header}}
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">Dashboard</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Dashboard v1</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <!-- 작업할 때 이 항목 내용을 수정하세요 -->
+        <section class="content">
+            <div class="container-fluid">
+                <!-- Small boxes (Stat box) -->
+                <div class="row">
+
+                </div>
+                <!-- /.row -->
+                <!-- Main row -->
+                <div class="row">
+                    <!-- Left col -->
+                    <section class="col-lg-7 connectedSortable">
+                        <!-- TO DO List -->
+                        <div class="card">
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-default">나의 결재선</button>
+                                <a href="addApprovLine" type="button" class="btn btn-info float-right ">결재선 추가</a>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                {{#masterList}}
+                                    {{#subLineList}}
+                                        <ul class="todo-list" data-widget="todo-list">
+                                            <li>
+                                                <!-- drag handle -->
+                                                <span class="handle">
+                                                  <i class="fas fa-ellipsis-v"></i>
+                                                  <i class="fas fa-ellipsis-v"></i>
+                                                </span>
+                                                <!-- checkbox -->
+                                                <div  class="icheck-primary d-inline ml-2">
+                                                    <input type="checkbox" value="" name="todo1" id="todoCheck1">
+                                                    <label for="todoCheck1"></label>
+                                                </div>
+                                                <!-- todo text -->
+                                                <span class="text"> {{lineName}}
+                                                    {{#subLineList}}
+                                                        <span class="text"> {{orderLevel}}</span>
+                                                    {{/subLineList}}
+                                                </span>
+                                                <!-- Emphasis label -->
+                                                <div class="tools">
+                                                    <i class="fas fa-edit"></i>
+                                                    <i class="fas fa-trash-o"></i>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    {{/subLineList}}
+                                {{/masterList}}
+                            </div>
+                            <!-- /.card-body -->
+                            <div class="card-footer clearfix">
+                                <button type="button" class="btn btn-primary float-right"><i class="fas fa-plus"></i> Add item</button>
+                            </div>
+                        </div>
+                        <!-- /.card -->
+                    </section>
+                    <!-- /.Left col -->
+                    <!-- right col -->
+                </div>
+                <!-- /.row (main row) -->
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    {{>layout/footer}}
+
+
+</div>
+<!-- ./wrapper -->
+{{>layout/library}}
+
+</body>
+</html>
