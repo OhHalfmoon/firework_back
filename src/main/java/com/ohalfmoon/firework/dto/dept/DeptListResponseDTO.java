@@ -1,16 +1,18 @@
 package com.ohalfmoon.firework.dto.dept;
 
-import lombok.AllArgsConstructor;
+import com.ohalfmoon.firework.model.DeptEntity;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
 
 /**
  * packageName :  com.ohalfmoon.firework.dto.form
  * fileName : DeptDTO
  * author :  ycy
  * date : 2023-06-07
- * description :
+ * description : 부서 ResponseDTO
  * ===========================================================
  * DATE                 AUTHOR                NOTE
  * -----------------------------------------------------------
@@ -18,14 +20,16 @@ import lombok.NoArgsConstructor;
  */
 @NoArgsConstructor
 @Data
-@Builder
-public class DeptDTO {
+public class DeptListResponseDTO {
     private Long deptNo;
     private String deptName;
 
-    public DeptDTO(Long deptNo, String deptName) {
-        this.deptNo = deptNo;
-        this.deptName = deptName;
+    /**
+     * 부서 List Response
+     * @param entity the entity
+     */
+    public DeptListResponseDTO(DeptEntity entity) {
+        deptNo = entity.getDeptNo();
+        deptName = entity.getDeptName();
     }
-
 }

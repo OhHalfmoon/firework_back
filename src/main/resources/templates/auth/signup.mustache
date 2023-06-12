@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>AdminLTE 3 | Registration Page (v2)</title>
-
     {{>layout/head}}
 </head>
 <style>
@@ -13,14 +12,13 @@
     }
 </style>
 <body class="hold-transition register-page">
-
 <div class="register-box">
     <div class="card card-outline card-secondary">
         <div class="mx-auto">
             <img style="width: 200px" src="/dist/img/FIREWORKS.gif">
         </div>
         <div class="card-body">
-            <p class="login-box-msg"><strong>FireWork에 오신걸 환영합니다.</strong></p>
+            <p class="login-box-msg"><strong>FireWork 회원가입</strong></p>
 
             <form method="post">
                 <div class="overflow-auto mb-3 scrollCustom" style="height: 300px">
@@ -72,18 +70,20 @@
                         </div>
                     </div>
                 </div>
-                <div class="input-group mb-3" style="width: 100%">
+                <div class="input-group mb-3">
                         <select class="d-flex custom-select" name="deptNo">
                             <option selected>부서를 선택해주세요</option>
-                            <option value="1">인사팀</option>
-                            <option value="2">총무팀</option>
+                            {{#dept}}
+                            <option value="{{deptNo}}">{{deptName}}</option>
+                            {{/dept}}
                         </select>
                 </div>
                 <div class="input-group mb-3">
-                        <select class="d-flex custom-select" name="deptNo">
+                        <select class="d-flex custom-select" name="positionNo">
                             <option selected>직급을 선택해주세요</option>
-                            <option value="1">사원</option>
-                            <option value="2">대리</option>
+                            {{#position}}
+                            <option value="{{positionNo}}">{{positionName}}</option>
+                            {{/position}}
                         </select>
                 </div>
                 <div class="input-group mb-3">

@@ -1,8 +1,8 @@
 package com.ohalfmoon.firework.service;
 
-import com.ohalfmoon.firework.dto.dept.DeptListResponseDTO;
-import com.ohalfmoon.firework.model.DeptEntity;
-import com.ohalfmoon.firework.persistence.DeptRepository;
+import com.ohalfmoon.firework.dto.position.PositionListResponseDTO;
+import com.ohalfmoon.firework.model.PositionEntity;
+import com.ohalfmoon.firework.persistence.PositionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 /**
  * packageName :  com.ohalfmoon.firework.service
- * fileName : DeptService
+ * fileName : PositionService
  * author :  ycy
  * date : 2023-06-09
  * description :
@@ -20,24 +20,24 @@ import java.util.stream.Collectors;
  * DATE                 AUTHOR                NOTE
  * -----------------------------------------------------------
  * 2023-06-09                ycy             최초 생성
- * 2023-06-09                ycy            deptList 추가
+ * 2023-06-09                ycy            PositionList 추가
  */
 @Service
-public class DeptService {
+public class PositionService {
 
     @Autowired
-    private DeptRepository deptRepository;
+    private PositionRepository positionRepository;
 
     /**
-     * Dept list 조회
+     * Position list 조회
+     *
      * @return the list
      */
     @Transactional(readOnly = true)
-    public List<DeptListResponseDTO> deptList() {
-        return deptRepository.findAll().stream()
-                .map(DeptListResponseDTO::new) // map을 통해 DeptListResponseDTO로 형변환
-                .collect(Collectors.toList()); // List형태로 출력
+    public List<PositionListResponseDTO> positionList() {
+        System.out.println("들어왔슴");
+        return positionRepository.findAll().stream()
+                .map(PositionListResponseDTO::new)
+                .collect(Collectors.toList());
     }
-
-
 }

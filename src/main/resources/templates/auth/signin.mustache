@@ -18,20 +18,34 @@
 
             <form method="post">
                 <div class="input-group mb-3">
-                    <input type="text" name="username" class="form-control" placeholder="id를 입력해주세요">
+                    <input type="text" id="id" name="username" class="form-control" placeholder="id를 입력해주세요">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
                         </div>
                     </div>
+                    {{#bindingResult.hasError}}
+                    <div class="error">
+                        {{#bindingResult.fieldErrors}}
+                            <span style="color: red">{{username}} : {{defaultMessage}}</span>
+                        {{/bindingResult.fieldErrors}}
+                    </div>
+                    {{/bindingResult.hasError}}
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" name="password" class="form-control" placeholder="비밀번호를 입력해주세요">
+                    <input type="password" id="pw" name="password" class="form-control" placeholder="비밀번호를 입력해주세요">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
                         </div>
                     </div>
+                    {{#bindingResult.hasError}}
+                        <div class="error">
+                            {{#bindingResult.fieldErrors}}
+                                <span style="color: red">{{password}} : {{defaultMessage}}</span>
+                            {{/bindingResult.fieldErrors}}
+                        </div>
+                    {{/bindingResult.hasError}}
                 </div>
                 <div class="row">
                     <div class="col-8">
@@ -44,7 +58,7 @@
                     </div>
                     <!-- /.col -->
                     <div class="col-4">
-                        <button class="btn btn-secondary btn-block">Login</button>
+                        <button class="btn btn-secondary btn-block" id="signin">Login</button>
                     </div>
                     <!-- /.col -->
                 </div>
