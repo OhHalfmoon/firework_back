@@ -53,7 +53,10 @@ public class MasterLineService {
         return masterLineRepository.findByMemberEntity_UserNo(userNo)
                 .stream().map(MasterLineResponseDTO::new).collect(Collectors.toList());
     }
-
+    // userNo를 통한 리스트 조회
+    public String getMasterName(Long userNo) {
+        return memberRepository.findById(userNo).orElseThrow(()-> new IllegalArgumentException("사용자가 존재하지 않습니다")).getName();
+    }
     @Transactional
     public Long update(Long lineNo, MasterLineUpdateDTO dto) {
         MasterLineEntity entity = masterLineRepository
