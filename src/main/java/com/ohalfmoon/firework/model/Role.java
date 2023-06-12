@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
  * fileName : Role
  * author :  ycy
  * date : 2023-06-07
- * description :
+ * description : security권한
  * ===========================================================
  * DATE                 AUTHOR                NOTE
  * -----------------------------------------------------------

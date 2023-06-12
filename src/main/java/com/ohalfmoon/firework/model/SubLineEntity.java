@@ -34,15 +34,15 @@ public class SubLineEntity extends BaseTimeEntity {
 
     @ManyToOne
     @JoinColumn(name = "lineNo")
-    private MasterLineEntity lineNo;
+    private MasterLineEntity masterLineEntity;
 
     @ManyToOne
-    @JoinColumn(name = "userNo")
-    private MemberEntity userNo;
+    @JoinColumn(name = "subMemberNo")
+    private MemberEntity memberEntity;
 
     public void update(Integer orderLevel, Long userNo) {
         this.orderLevel = orderLevel; // 결재 순서
-        this.userNo = MemberEntity.builder()
+        this.memberEntity = MemberEntity.builder()
                 .userNo(userNo)
                 .build(); // 결재자
     }

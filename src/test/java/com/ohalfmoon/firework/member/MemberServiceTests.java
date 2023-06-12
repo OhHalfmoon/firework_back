@@ -17,7 +17,7 @@ public class MemberServiceTests {
     MemberRepository memberRepository;
 
     @Test
-    public void memberSave() {
+    public void memberSaveTests() {
         memberRepository.save(MemberEntity.builder()
                         .username("cksdyd")
                         .password("1234")

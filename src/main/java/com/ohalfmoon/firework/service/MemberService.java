@@ -1,9 +1,6 @@
 package com.ohalfmoon.firework.service;
 
-import com.ohalfmoon.firework.dto.member.MemberDTO;
-import com.ohalfmoon.firework.dto.member.MemberUpdateDTO;
-import com.ohalfmoon.firework.dto.member.MemberUpdatePwDTO;
-import com.ohalfmoon.firework.dto.role.RoleDTO;
+import com.ohalfmoon.firework.dto.member.*;
 import com.ohalfmoon.firework.model.DeptEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.PositionEntity;
@@ -13,11 +10,31 @@ import com.ohalfmoon.firework.persistence.MemberRepository;
 import com.ohalfmoon.firework.persistence.PositionRepository;
 import com.ohalfmoon.firework.persistence.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+
+/**
+ * packageName :  com.ohalfmoon.firework.service
+ * fileName : MemberService
+ * author :  ycy
+ * date : 2023-06-02
+ * description : 회원 서비스
+ * ===========================================================
+ * DATE                 AUTHOR                NOTE
+ * -----------------------------------------------------------
+ * 2023-06-02                ycy             최초 생성
+ * 2023-06-02                ycy            register 추가
+ * 2023-06-06                ycy            update 추가
+ * 2023-06-06                ycy            updatePw 추가
+ * 2023-06-07                ycy            get 추가
+ * 2023-06-07                ycy            login 추가
+ * 2023-06-09                ycy            login 수정
+ * 
+ */
 @Service
 public class MemberService {
     @Autowired
@@ -32,8 +49,14 @@ public class MemberService {
     @Autowired
     private RoleRepository roleRepository;
 
+    /**
+     * 회원가입 기능
+     *
+     * @param memberDTO the member dto
+     * @return the role entity
+     */
     @Transactional // springboot
-    public RoleEntity register(MemberDTO memberDTO, RoleDTO roleDTO) {
+    public RoleEntity register(MemberDTO memberDTO) {
         MemberEntity entity = memberDTO.toEntity();
         DeptEntity byId = deptRepository
                 .findById(memberDTO.getDeptNo())
@@ -56,6 +79,13 @@ public class MemberService {
 
 }
 
+    /**
+     * 회원정보 수정
+     *
+     * @param userNo the user no
+     * @param dto    the dto
+     * @return the long
+     */
     @Transactional
     public Long update(Long userNo, MemberUpdateDTO dto) {
         MemberEntity entity = memberRepository.findById(userNo)
@@ -75,6 +105,14 @@ public class MemberService {
 
         return userNo;
 }
+
+    /**
+     * 비밀번호 수정
+     *
+     * @param userNo the user no
+     * @param dto    the dto
+     * @return the long
+     */
     @Transactional
     public Long updatePw(Long userNo, MemberUpdatePwDTO dto) {
         MemberEntity entity = memberRepository.findById(userNo)
@@ -86,11 +124,28 @@ public class MemberService {
 
     }
 
-    public MemberEntity login (final String username, final String password) {
-        return memberRepository.findByUsernameAndPassword(username, password);
+    /**
+     * 로그인
+     *
+     * @param memberLoginDTO the member login dto
+     * @return the member response dto
+     */
+    public MemberResponseDTO login (MemberLoginDTO memberLoginDTO) {
+        MemberEntity entity = memberRepository.findByUsername(memberLoginDTO.getUsername());
+
+        if(entity != null && entity.getPassword().equals(memberLoginDTO.getPassword())) {
+            return new MemberResponseDTO(entity);
+        }
+        return null;
     }
 
-    public List<MemberEntity> get (final String username) {
+    /**
+     * 멤버 username(id) 단일조회
+     *
+     * @param username the username
+     * @return the member entity
+     */
+    public MemberEntity get(final String username) {
         return memberRepository.findByUsername(username);
     }
 }

@@ -8,7 +8,7 @@ import lombok.*;
  * fileName       : MasterLineUpdateDTO
  * author         : 이지윤
  * date           : 2023/06/08
- * description    : 결재 선에 필요한 정보(기안자, 결재선 명)DTO
+ * description    : 결재 선 수정 시 필요한 정보(기안자, 결재선 명)DTO
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------

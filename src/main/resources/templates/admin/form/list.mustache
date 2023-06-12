@@ -63,10 +63,10 @@
                             </tr>
                             </thead>
                             <tbody>
-                                {{#dtoList}}
+                                {{#pageDto.dtoList}}
                                     <tr>
                                         <td>{{formNo}}</td>
-                                        <td>{{formName}}</td>
+                                        <td><a href="{{contextPath}}/admin/form/detail/{{formNo}}">{{formName}}</a></td>
                                         <td>{{#isUsed}}
                                             사용중
                                         {{/isUsed}}
@@ -78,17 +78,22 @@
                                         <td>조회수 추가</td>
                                         <td><button class="btn btn-warning mr-2">수정</button><button class="btn btn-danger">삭제</button></td>
                                     </tr>
-                                {{/dtoList}}
+                                {{/pageDto.dtoList}}
                             </tbody>
                         </table>
                     </div>
                     <!-- /.card-body -->
+
+
                     <div class="card-footer clearfix">
                         <ul class="pagination pagination-sm m-0 float-right">
                             <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+
+                            <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
+                            {{#pageDto.pageNumList}}
+                                <li class="page-item"><a class="page-link" href="{{contextPath}}/admin/form?page={{.}}">{{.}}</a></li>
+                            {{/pageDto.pageNumList}}
+                            <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
                             <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
                         </ul>
                     </div>

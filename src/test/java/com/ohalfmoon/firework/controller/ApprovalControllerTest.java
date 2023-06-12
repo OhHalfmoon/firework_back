@@ -1,7 +1,9 @@
 package com.ohalfmoon.firework.controller;
 
 import com.ohalfmoon.firework.dto.approval.ApprovalSaveDto;
-import com.ohalfmoon.firework.model.ApprovalEntity;
+import com.ohalfmoon.firework.dto.approval.ApprovalStateDto;
+import com.ohalfmoon.firework.dto.approval.ApprovalUpdateDto;
+import com.ohalfmoon.firework.model.*;
 import com.ohalfmoon.firework.persistence.ApprovalRepository;
 import org.aspectj.lang.annotation.After;
 import org.junit.jupiter.api.Test;
@@ -9,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
@@ -70,4 +74,74 @@ public class ApprovalControllerTest {
         assertThat(all.get(2).getMemberEntity().getUserNo()).isEqualTo(userNo);
         assertThat(all.get(2).getApprovalState()).isEqualTo(approvalState);
     }
+
+    @Test
+    public void ApprovalUpadateState() throws Exception {
+        ApprovalEntity updateState = approvalRepository.save(ApprovalEntity.builder()
+                .approvalName("상태변경test")
+                .formEntity(FormEntity.builder().formNo(1L).build())
+                .masterLineEntity(MasterLineEntity.builder().lineNo(1L).build())
+                .docboxEntity(DocboxEntity.builder().docboxNo(1L).build())
+                .approContent("컨트롤러기안상태변경테스트기안")
+                .memberEntity(MemberEntity.builder().userNo(1L).build())
+                .approvalState(0)
+                .build());
+
+        Long updateId = updateState.getApprovalNo();
+        int expectedState = 1;
+        ApprovalStateDto stateDto = ApprovalStateDto.builder().approvalState(expectedState).build();
+        String url = "http://localhost:" + port + "/api/approval/" + "/state/" + updateId;
+
+        HttpEntity<ApprovalStateDto> stateDtoHttpEntity = new HttpEntity<>(stateDto);
+
+        ResponseEntity<Long> approvalEntity = restTemplate.exchange(url, HttpMethod.PUT, stateDtoHttpEntity, Long.class);
+
+        assertThat(approvalEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(approvalEntity.getBody()).isGreaterThan(5L);
+
+        List<ApprovalEntity> all = approvalRepository.findAll();
+        assertThat(all.get(5).getApprovalState()).isEqualTo(expectedState);
+    }
+
+    @Test
+    public void ApprovalUpadate() throws Exception {
+        ApprovalEntity update = approvalRepository.save(ApprovalEntity.builder()
+                .approvalName("test")
+                .formEntity(FormEntity.builder().formNo(1L).build())
+                .masterLineEntity(MasterLineEntity.builder().lineNo(1L).build())
+                .docboxEntity(DocboxEntity.builder().docboxNo(1L).build())
+                .approContent("컨트롤러기안")
+                .memberEntity(MemberEntity.builder().userNo(1L).build())
+                .approvalState(0)
+                .build());
+
+        Long updateId = update.getApprovalNo();
+        String expectedName = "내용변경테스트";
+        Long expectedLine = 3L;
+        Long expectedDocbox = 1L;
+        String expectedContent ="컨트롤러기안내용변경테스트기안";
+        ApprovalUpdateDto updateDto = ApprovalUpdateDto.builder()
+                .approvalName(expectedName)
+                .lineNo(expectedLine)
+                .docboxNo(expectedDocbox)
+                .approContent(expectedContent)
+                .build();
+
+        String url = "http://localhost:" + port + "/api/approval/" + updateId;
+
+        HttpEntity<ApprovalUpdateDto>updateDtoHttpEntity = new HttpEntity<>(updateDto);
+
+        ResponseEntity<Long> approvalEntity = restTemplate.exchange(url, HttpMethod.PUT, updateDtoHttpEntity, Long.class);
+
+        assertThat(approvalEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(approvalEntity.getBody()).isGreaterThan(7L);
+
+        List<ApprovalEntity> all = approvalRepository.findAll();
+        assertThat(all.get(7).getApprovalName()).isEqualTo(expectedName);
+        assertThat(all.get(7).getMasterLineEntity().getLineNo()).isEqualTo(expectedLine);
+        assertThat(all.get(7).getDocboxEntity().getDocboxNo()).isEqualTo(expectedDocbox);
+        assertThat(all.get(7).getApproContent()).isEqualTo(expectedContent);
+    }
+
+
 }
