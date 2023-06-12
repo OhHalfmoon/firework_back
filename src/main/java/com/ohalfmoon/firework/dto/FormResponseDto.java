@@ -1,5 +1,6 @@
 package com.ohalfmoon.firework.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ohalfmoon.firework.model.FormEntity;
 import lombok.*;
 
@@ -25,6 +26,7 @@ public class FormResponseDto {
     private String formName;
     private String formText;
     private Boolean isUsed;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime regdate;
 
     public FormResponseDto(FormEntity entity) {
