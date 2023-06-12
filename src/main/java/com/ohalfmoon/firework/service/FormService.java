@@ -3,12 +3,10 @@ package com.ohalfmoon.firework.service;
 import com.ohalfmoon.firework.dto.FormResponseDto;
 import com.ohalfmoon.firework.dto.FormSaveDto;
 import com.ohalfmoon.firework.dto.FormUpdateDto;
-import com.ohalfmoon.firework.dto.PageResponseDTO;
 import com.ohalfmoon.firework.model.FormEntity;
 import com.ohalfmoon.firework.persistence.FormRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,16 +88,14 @@ public class FormService {
 
 
     /**
-     * Search form list page response dto.
+     * Search form list page.
      *
      * @param formName    the form name
      * @param pageRequest the page request
-     * @return the page response dto
+     * @return the page
      */
-    public PageResponseDTO<FormEntity, FormResponseDto> searchFormList(Optional<String> formName, Pageable pageRequest) {
-        Page<FormEntity> formEntities = formRepository.findByFormNameContaining(formName.orElse(""), pageRequest);
-
-        return new PageResponseDTO<>(formEntities, FormResponseDto::new);
+    public Page<FormEntity> searchFormList(Optional<String> formName, Pageable pageRequest) {
+         return formRepository.findByFormNameContaining(formName.orElse(""), pageRequest);
     }
 
     /**
