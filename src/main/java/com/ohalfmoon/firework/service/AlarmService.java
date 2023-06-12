@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2023/06/08        우성준           최초 생성
+ * 2023/06/12        우성준           알림 리스트 출력 수정(상위 5개만) 및 알림 개수 출력 추가
  */
 @Service
 @RequiredArgsConstructor
@@ -42,9 +43,9 @@ public class AlarmService {
     }
 
     @Transactional
-    public List<AlarmResponseDto> findAllByAlarmReceiver(Long userNo) {
+    public List<AlarmResponseDto>findTop5ByAlarmReceiver(Long userNo, Long alarmNo) {
        return alarmRepository
-                .findAllByAlarmReceiver(memberRepository.findById(userNo).orElse(null))
+                .findTop5ByAlarmReceiverAndAlarmNoGreaterThanOrderByRegdateDesc(memberRepository.findById(userNo).orElse(null), alarmNo)
                         .stream().map(AlarmResponseDto::new).collect(Collectors.toList());
     }
 
@@ -63,5 +64,10 @@ public class AlarmService {
                 .orElseThrow(()->new IllegalArgumentException("존재하지 않은 알림입니다"));
 
         alarmRepository.delete(alarmEntity);
+    }
+
+    @Transactional
+    public Long countAlarmByAlarmReceiver(Long userNo) {
+        return alarmRepository.countAlarmEntitiesByAlarmReceiver(memberRepository.findById(userNo).orElse(null));
     }
 }

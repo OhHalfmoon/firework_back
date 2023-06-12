@@ -29,6 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * -----------------------------------------------------------
  * 2023/06/07        우성준            최초 생성
  * 2023/06/09        우성준            알람레포지토리 이름 수정
+ * 2023/06/12        우성준            알림 리스트 출력 수정(상위 5개만) 및 알림 개수 출력 추가
  */
 @SpringBootTest
 @Slf4j
@@ -78,10 +79,13 @@ public class AlarmRepositoryTests {
     }
 
     @Test
-    public void findByUserNoTest() {
+    public void findTop5ByAlarmReceiverAndAlarmNoGreaterThanOrderByRegdateDescTest() {
         Long userNo = 1L;
 
-        List<AlarmEntity> alarmEntityList = alarmRepository.findAllByAlarmReceiver(memberRepository.findById(userNo).orElse(null));
+        List<AlarmEntity> alarmEntityList =
+                alarmRepository.
+                        findTop5ByAlarmReceiverAndAlarmNoGreaterThanOrderByRegdateDesc(memberRepository.
+                                findById(userNo).orElse(null), 55L);
 
         log.info("{}", alarmEntityList);
     }
@@ -106,5 +110,12 @@ public class AlarmRepositoryTests {
         alarm.update(true);
         alarmRepository.save(alarm);
         log.info("{}", alarm);
+    }
+
+    @Test
+    public void countAlarmByAlarmReceiverTest(){
+        Long userNo = 1L;
+        Long count = alarmRepository.countAlarmEntitiesByAlarmReceiver(memberRepository.findById(userNo).orElse(null));
+        log.info("{}", count);
     }
 }

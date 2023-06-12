@@ -16,7 +16,10 @@ import java.util.List;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2023/06/07        우성준           최초 생성
+ * 2023/06/12        우성준           알림 리스트 출력 수정(상위 5개만) 및 알림 개수 출력 추가
  */
 public interface AlarmRepository extends JpaRepository<AlarmEntity, Long> {
-    List<AlarmEntity> findAllByAlarmReceiver(MemberEntity alarmReceiver);
+    List<AlarmEntity> findTop5ByAlarmReceiverAndAlarmNoGreaterThanOrderByRegdateDesc(MemberEntity alarmReceiver, Long last);
+
+    Long countAlarmEntitiesByAlarmReceiver(MemberEntity alarmReceiver);
 }
