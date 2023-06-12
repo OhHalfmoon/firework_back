@@ -2,11 +2,16 @@ package com.ohalfmoon.firework.controller;
 
 import com.ohalfmoon.firework.dto.FormResponseDto;
 import com.ohalfmoon.firework.dto.FormSaveDto;
+import com.ohalfmoon.firework.dto.PageResponseDTO;
+import com.ohalfmoon.firework.model.FormEntity;
 import com.ohalfmoon.firework.service.FormService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -47,16 +52,22 @@ public class FormViewController {
 
     @GetMapping
     public String list(
-            Optional<String> formName
-            , Pageable pageRequest
-            , Model model
+            Optional<String> formName,
+            @PageableDefault(size = 10, page = 1)
+            @SortDefault.SortDefaults({
+                    @SortDefault(sort = "formNo", direction = Sort.Direction.DESC)
+            })
+            Pageable pageRequest,
+            Model model
     ) {
-        Page<FormResponseDto> formDtos = formService.searchFormList(formName, pageRequest);
+        // toMap
+        // Page<FormResponseDto> formDtos = formService.searchFormList(formName, pageRequest);
+        PageResponseDTO<FormEntity, FormResponseDto> pageDto = formService.searchFormList(formName, pageRequest);
 
-        List<FormResponseDto> content = formDtos.getContent();
+        //content
+        // List<FormResponseDto> content = formDtos.getContent();
 
-        model.addAttribute("dtoList", content);
-        model.addAttribute("pageInfo", formDtos.getPageable());
+        model.addAttribute("pageDto", pageDto);
 
         return "admin/form/list";
     }
