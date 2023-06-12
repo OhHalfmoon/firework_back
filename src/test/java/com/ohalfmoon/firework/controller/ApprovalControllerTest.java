@@ -59,7 +59,7 @@ public class ApprovalControllerTest {
                 .approvalState(approvalState)
                 .build();
 
-        String url = "http://localhost:" + port + "/api/approval/";
+        String url = "http://localhost:" + port + "/approval/";
 
         ResponseEntity<Long> approvalEntity = restTemplate.postForEntity(url, saveDto, Long.class);
         assertThat(approvalEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -90,7 +90,7 @@ public class ApprovalControllerTest {
         Long updateId = updateState.getApprovalNo();
         int expectedState = 1;
         ApprovalStateDto stateDto = ApprovalStateDto.builder().approvalState(expectedState).build();
-        String url = "http://localhost:" + port + "/api/approval/" + "/state/" + updateId;
+        String url = "http://localhost:" + port + "/approval/" + "/state/" + updateId;
 
         HttpEntity<ApprovalStateDto> stateDtoHttpEntity = new HttpEntity<>(stateDto);
 
@@ -127,7 +127,7 @@ public class ApprovalControllerTest {
                 .approContent(expectedContent)
                 .build();
 
-        String url = "http://localhost:" + port + "/api/approval/" + updateId;
+        String url = "http://localhost:" + port + "/approval/" + updateId;
 
         HttpEntity<ApprovalUpdateDto>updateDtoHttpEntity = new HttpEntity<>(updateDto);
 
