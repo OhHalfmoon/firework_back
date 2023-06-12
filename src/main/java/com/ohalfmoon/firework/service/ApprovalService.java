@@ -2,10 +2,15 @@ package com.ohalfmoon.firework.service;
 
 import com.ohalfmoon.firework.dto.approval.*;
 import com.ohalfmoon.firework.model.ApprovalEntity;
+import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.persistence.ApprovalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * packageName    : com.ohalfmoon.firework.service
  * fileName       : ApprovalService
@@ -17,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
  * -----------------------------------------------------------
  * 2023/06/08        오상현           최초 생성, save관련 (임시저장, 제출)
  * 2023/06/09        오상현           update관련 (문서수정, 임시저장->제출, 결재완료)
+ * 2023/06/12        오상현           update 리턴 타입 변경 -> Long, getList 기능 추가
  */
 @Service
 @RequiredArgsConstructor
@@ -43,13 +49,15 @@ public class ApprovalService {
         return new ApprovalResponseDto(approvalEntity);
     }
 
-//    public List getMyList (final Long userNo) {
-//        return approvalRepository.findAllByMemberEntity(MemberEntity.builder().userNo(userNo).build());
-//    }
+    public List<ApprovalResponseDto> getMyList (final Long userNo) {
+        return approvalRepository
+                .findAllByMemberEntity(MemberEntity.builder().userNo(userNo).build())
+                .stream().map(ApprovalResponseDto::new).collect(Collectors.toList());
+    }
 
     //결재 서류 수정
     @Transactional
-    public ApprovalResponseDto update(long approvalNo, ApprovalUpdateDto updateDto) {
+    public Long update(long approvalNo, ApprovalUpdateDto updateDto) {
         ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
 
         approvalEntity.update(
@@ -59,19 +67,19 @@ public class ApprovalService {
                 updateDto.getApproContent()
         );
 
-        return approvalEntity.toDto();
+        return approvalNo;
     }
 
     //기안 상태값을 변경
     @Transactional
-    public  ApprovalResponseDto updateState(long approvalNo ,ApprovalStateDto stateDto) {
+    public  Long updateState(long approvalNo ,ApprovalStateDto stateDto) {
         ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
 //        int approvalstate = approvalEntity.getApprovalState();
         approvalEntity.updateState(
                 stateDto.getApprovalState()
         );
 
-        return approvalEntity.toDto();
+        return approvalNo;
     }
 
     //기안 삭제
