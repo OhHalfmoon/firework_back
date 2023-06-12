@@ -27,11 +27,17 @@ public class MasterLineController {
     }
 
     @GetMapping("/addLine")
-    public String addline(Model model){
-        model.addAttribute("master", masterLineService.getList(1L));
-        model.addAttribute("line", subLineService.getList());
+    public String addline(Model model) {
+        // 로그인 한 사용자 regMemberNo가 getList의 parameter로
+        model.addAttribute("masterList", masterLineService.getList(1L));
+        // 특정 lineNo에 해당하는 subLineList를 가져옴
+        model.addAttribute("subLineList", subLineService.getListByLineNo(1L));
+        model.addAttribute("subMemberName", subLineService);
+//        for (Long i = 0L; i < subLineService.getList().size(); i++) {
+//            model.addAttribute("subMemberName", subLineService.getListByLineNo((i)));
+//            log.info("{}", subLineService.getListByLineNo((i)));
+//        }
+        //model.addAttribute("deptName", subLineService.findBySubLineNo(1L).getDeptName());
         return "line/addLine";
     }
-
-
 }

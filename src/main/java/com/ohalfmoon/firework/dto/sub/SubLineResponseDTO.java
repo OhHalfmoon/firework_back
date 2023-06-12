@@ -26,12 +26,20 @@ public class SubLineResponseDTO {
     private Integer orderLevel;
     private Long lineNo;
     private Long userNo;
+    private String name; // memberEntity
+    private String phoneNum;
+    private String deptName; // deptEntity
+    private String positionName; // positionEntity
 
     public SubLineResponseDTO(final SubLineEntity entity) {
         this.subLineNo = entity.getSubLineNo();
         this.orderLevel = entity.getOrderLevel();
         this.lineNo = entity.getMasterLineEntity().getLineNo();
         this.userNo = entity.getMemberEntity().getUserNo();
+        this.name = entity.getMemberEntity().getName();
+        this.deptName = entity.getMemberEntity().getDeptEntity().getDeptName();
+        this.positionName = entity.getMemberEntity().getPositionEntity().getPositionName();
+        this.phoneNum = entity.getMemberEntity().getPhoneNum();
     }
 
     public SubLineEntity toEntity(){
