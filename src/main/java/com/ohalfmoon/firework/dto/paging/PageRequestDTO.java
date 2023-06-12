@@ -1,4 +1,4 @@
-package com.ohalfmoon.firework.dto;
+package com.ohalfmoon.firework.dto.paging;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
