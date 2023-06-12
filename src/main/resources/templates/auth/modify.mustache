@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdminLTE 3 | Dashboard</title>
+
+    {{>layout/head}}
+</head>
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
+<div class="wrapper">
+
+    {{>layout/header}}
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        {{#user}}
+                            <h1 class="m-0">{{name}}님의 회원정보 수정</h1>
+                        {{/user}}
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item"><a href="mypage">mypage</a></li>
+                            <li class="breadcrumb-item active">modify</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <!-- 작업할 때 이 항목 내용을 수정하세요 -->
+        <section class="content mt-5">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-md-3">
+
+                        <!-- Profile Image -->
+                        <div class="card card-success card-outline">
+                            <div class="card-body box-profile">
+                                <div class="text-center">
+                                    <img class="profile-user-img img-fluid img-square"
+                                         src="/dist/img/FIREWORKS.gif">
+                                </div>
+                                {{#user}}
+                                    <h3 class="profile-username text-center">회원 정보 수정</h3>
+                                    <form method="post">
+                                        <ul class="list-group list-group-unbordered mb-3 overflow-y-auto" style="height: 300px; overflow-x: hidden">
+                                            <li class="list-group-item">
+                                                <label class="row">
+                                                    <b class="my-auto col-6">이름을 입력해주세요</b>
+                                                    <input type="text" name="name" value="{{name}}" class="form-control col-5" placeholder="변경하실 이름을 입력해주세요">
+                                                </label>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <label class="row">
+                                                    <b class="my-auto col-6">email을 입력해주세요</b>
+                                                    <input type="text" name="email" value="{{email}}" class="form-control col-5" placeholder="변경하실 email을 입력해주세요">
+                                                </label>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <label class="row">
+                                                    <b class="my-auto col-6">연락처를 입력해주세요</b>
+                                                    <input type="text" name="phoneNum" value="{{phoneNum}}" class="form-control col-5" placeholder="변경하실 연락처를 입력해주세요">
+                                                </label>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <label class="row justify-content-center col-12"> 부서를 선택해주세요
+                                                    <select class="d-flex custom-select" name="deptNo">
+                                                        <option selected>부서를 선택해주세요</option>
+                                                        {{#dept}}
+                                                            <option value="{{deptNo}}">{{deptName}}</option>
+                                                        {{/dept}}
+                                                    </select>
+                                                </label>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <label class="row justify-content-center col-12"> 직급을 선택해주세요
+                                                    <select class="d-flex custom-select" name="positionNo">
+                                                        <option selected>직급을 선택해주세요</option>
+                                                        {{#position}}
+                                                            <option value="{{positionNo}}">{{positionName}}</option>
+                                                        {{/position}}
+                                                    </select>
+                                                </label>
+                                            </li>
+                                            <li class="list-group-item ">
+                                                <label class="row justify-content-center col-12"> 생일을 입력해주세요
+                                                    <input type="date" class="form-control col-12" name="birthdate" placeholder="생일을 입력해주세요" value="{{birthdate}}" style="width: 300px">
+                                                </label>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <label class="row justify-content-center col-12"> 입사일을 입력해주세요
+                                                    <input type="date" class="form-control col-12" name="birthdate" placeholder="생일을 입력해주세요" value="{{startdate}}" style="width: 300px">
+                                                </label>
+                                            </li>
+
+                                        </ul>
+                                    {{/user}}
+                                    <div class="row col-12 justify-content-center mt-5">
+                                        <div class="col-4">
+                                            <a href="userinfo" class="btn btn-outline-dark btn-block"><b>이전으로</b></a>
+                                        </div>
+                                        <div class="col-4">
+                                            <button type="submit" class="btn btn-success btn-block"><b>수정하기</b></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <!-- /.col -->
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    {{>layout/footer}}
+</div>
+<!-- ./wrapper -->
+{{>layout/library}}
+
+</body>
+</html>
