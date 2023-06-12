@@ -1,6 +1,8 @@
 package com.ohalfmoon.firework.controller;
 
+import com.ohalfmoon.firework.service.DeptService;
 import com.ohalfmoon.firework.service.MasterLineService;
+import com.ohalfmoon.firework.service.MemberService;
 import com.ohalfmoon.firework.service.SubLineService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MasterLineController {
     @Autowired
     private MasterLineService masterLineService;
-
+    @Autowired
+    private MemberService memberService;
     @Autowired
     private SubLineService subLineService;
+
+    @Autowired
+    private DeptService deptService;
+
 
     @GetMapping("/master")
     public String masterline(Model model) {
@@ -29,7 +36,9 @@ public class MasterLineController {
     @GetMapping("/addLine")
     public String addline(Model model) {
         // 로그인 한 사용자 regMemberNo가 getList의 parameter로
-        model.addAttribute("masterList", masterLineService.getList(1L));
+        model.addAttribute("masterList", masterLineService.getList(1L) );
+
+        model.addAttribute("masterName", masterLineService.getMasterName(1L));
         // 특정 lineNo에 해당하는 subLineList를 가져옴
         model.addAttribute("subLineList", subLineService.getListByLineNo(1L));
         model.addAttribute("subMemberName", subLineService);
@@ -38,6 +47,9 @@ public class MasterLineController {
 //            log.info("{}", subLineService.getListByLineNo((i)));
 //        }
         //model.addAttribute("deptName", subLineService.findBySubLineNo(1L).getDeptName());
+
+        model.addAttribute("deptList", deptService.deptList());
+
         return "line/addLine";
     }
 }
