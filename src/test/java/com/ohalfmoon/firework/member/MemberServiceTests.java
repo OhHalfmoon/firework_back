@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -29,5 +30,15 @@ public class MemberServiceTests {
                         .birthdate(new Date())
                         .startdate(new Date())
                 .build());
+    }
+
+    // 23.06.13 방한솔
+    // 회원 단일조회 테스트
+    @Transactional
+    @Test
+    public void findMemberTest(){
+        MemberEntity memberEntity = memberRepository.findByUsername("ycy123");
+
+        log.info("{}", memberEntity);
     }
 }

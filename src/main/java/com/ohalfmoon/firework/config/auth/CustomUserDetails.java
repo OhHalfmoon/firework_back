@@ -5,8 +5,10 @@ import com.ohalfmoon.firework.dto.member.MemberResponseDTO;
 import com.ohalfmoon.firework.model.DeptEntity;
 import com.ohalfmoon.firework.model.PositionEntity;
 import com.ohalfmoon.firework.model.RoleEntity;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +29,8 @@ import java.util.Date;
  */
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
     private Long userNo;
     private String username;
