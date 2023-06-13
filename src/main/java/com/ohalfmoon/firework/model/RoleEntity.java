@@ -32,18 +32,12 @@ public class RoleEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long adminNo; // 권한번호
-
-    @ManyToOne()
-    @JoinColumn(name = "userNo")
-    private MemberEntity memberEntity; // 회원번호(fk)
+    private Long roleNo; // 권한번호
 
     @Column(nullable = false)
-    private String authName; // 권한 이름
+    private String roleName; // 권한 이름
 
     @Column(nullable = false)
-    private boolean roleCheck; // 권한 허용 여부
-
     private Date regdate;
 
     private Date updatedate;
