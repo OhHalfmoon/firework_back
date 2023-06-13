@@ -1,13 +1,8 @@
 package com.ohalfmoon.firework.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.DynamicInsert;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,7 +10,7 @@ import java.util.List;
  * fileName : RoleEntity
  * author :  ycy
  * date : 2023-06-07
- * description :
+ * description : 권한 역할 엔티티
  * ===========================================================
  * DATE                 AUTHOR                NOTE
  * -----------------------------------------------------------
@@ -29,7 +24,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Table(name = "tbl_role")
-@DynamicInsert
+@ToString
 public class RoleEntity extends BaseTimeEntity {
 
     @Id
