@@ -8,6 +8,7 @@ import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * packageName :  com.ohalfmoon.firework.model
@@ -19,6 +20,7 @@ import java.util.Date;
  * DATE                 AUTHOR                NOTE
  * -----------------------------------------------------------
  * 2023-06-07                ycy             최초 생성
+ * 2023-06-13             방한솔
  */
 
 @Entity
@@ -28,23 +30,15 @@ import java.util.Date;
 @Builder
 @Table(name = "tbl_role")
 @DynamicInsert
-public class RoleEntity {
+public class RoleEntity extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long adminNo; // 권한번호
-
-    @ManyToOne()
-    @JoinColumn(name = "userNo")
-    private MemberEntity memberEntity; // 회원번호(fk)
+    private Long roleNo; // 권한번호
 
     @Column(nullable = false)
-    private String authName; // 권한 이름
+    private String roleName; // 권한 이름
 
-    @Column(nullable = false)
-    private boolean roleCheck; // 권한 허용 여부
-
-    private Date regdate;
-
-    private Date updatedate;
+    @OneToMany(mappedBy = "roleEntity")
+    List<RolePrivilegeEntity> rolePrivilegeList;
 }

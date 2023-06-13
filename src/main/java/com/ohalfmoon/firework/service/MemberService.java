@@ -1,10 +1,7 @@
 package com.ohalfmoon.firework.service;
 
 import com.ohalfmoon.firework.dto.member.*;
-import com.ohalfmoon.firework.model.DeptEntity;
-import com.ohalfmoon.firework.model.MemberEntity;
-import com.ohalfmoon.firework.model.PositionEntity;
-import com.ohalfmoon.firework.model.RoleEntity;
+import com.ohalfmoon.firework.model.*;
 import com.ohalfmoon.firework.persistence.DeptRepository;
 import com.ohalfmoon.firework.persistence.MemberRepository;
 import com.ohalfmoon.firework.persistence.PositionRepository;
@@ -71,8 +68,7 @@ public class MemberService {
         memberRepository.save(entity);
 
         RoleEntity entityBuilder = RoleEntity.builder()
-                .memberEntity(entity)
-                .authName("GUEST")
+                .roleName(Role.GUEST.getKey())
                 .build();
 
         return roleRepository.save(entityBuilder);
