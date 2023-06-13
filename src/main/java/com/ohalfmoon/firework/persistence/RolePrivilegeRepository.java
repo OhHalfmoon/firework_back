@@ -1,5 +1,6 @@
 package com.ohalfmoon.firework.persistence;
 
+import com.ohalfmoon.firework.model.RoleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -13,5 +14,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * -----------------------------------------------------------
  * 2023/06/13        방한솔            최초 생성
  */
-public interface RolePrivilegeRepository extends JpaRepository<RolePrivilegeRepository, Long> {
+public interface RolePrivilegeRepository extends JpaRepository<RoleEntity, Long> {
 }
