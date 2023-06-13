@@ -25,14 +25,14 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class RoleDTO {
-    private Long userNo;
-    private String authName;
+    private Long roleNo;
+    private String roleName;
     private Date regdate;
     private Date updatedate;
 
     public RoleEntity toEntity() {
         return RoleEntity.builder()
-                .authName("GUEST")
+                .roleName("GUEST")
                 .build();
     }
 }

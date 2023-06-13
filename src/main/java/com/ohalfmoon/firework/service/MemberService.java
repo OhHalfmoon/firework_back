@@ -10,11 +10,8 @@ import com.ohalfmoon.firework.persistence.MemberRepository;
 import com.ohalfmoon.firework.persistence.PositionRepository;
 import com.ohalfmoon.firework.persistence.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 
 /**
@@ -70,9 +67,9 @@ public class MemberService {
 
         memberRepository.save(entity);
 
+        // security 적용시 수정예정
         RoleEntity entityBuilder = RoleEntity.builder()
-                .memberEntity(entity)
-                .authName("GUEST")
+                .roleName("GUEST")
                 .build();
 
         return roleRepository.save(entityBuilder);
