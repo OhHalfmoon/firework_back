@@ -67,6 +67,7 @@ public class MemberService {
 
         memberRepository.save(entity);
 
+        // security 적용시 수정예정
         RoleEntity entityBuilder = RoleEntity.builder()
                 .roleName(Role.GUEST.getKey())
                 .build();
