@@ -63,22 +63,23 @@
                             </tr>
                             </thead>
                             <tbody>
-                                {{#pageDto.dtoList}}
+                                {{#formList}}
                                     <tr>
                                         <td>{{formNo}}</td>
                                         <td><a href="{{contextPath}}/admin/form/detail/{{formNo}}">{{formName}}</a></td>
-                                        <td>{{#isUsed}}
-                                            사용중
-                                        {{/isUsed}}
+                                        <td>
+                                            {{#isUsed}}
+                                                사용중
+                                            {{/isUsed}}
                                             {{^isUsed}}
                                                 미사용
                                             {{/isUsed}}
                                         </td>
                                         <td>{{regdate}}</td>
-                                        <td>조회수 추가</td>
+                                        <td>{{useCount}}</td>
                                         <td><button class="btn btn-warning mr-2">수정</button><button class="btn btn-danger">삭제</button></td>
                                     </tr>
-                                {{/pageDto.dtoList}}
+                                {{/formList}}
                             </tbody>
                         </table>
                     </div>
@@ -87,14 +88,46 @@
 
                     <div class="card-footer clearfix">
                         <ul class="pagination pagination-sm m-0 float-right">
-                            <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-
-                            <li class="page-item"><a class="page-link" href="#">&lt;</a></li>
-                            {{#pageDto.pageNumList}}
-                                <li class="page-item"><a class="page-link" href="{{contextPath}}/admin/form?page={{.}}">{{.}}</a></li>
-                            {{/pageDto.pageNumList}}
-                            <li class="page-item"><a class="page-link" href="#">&gt;</a></li>
-                            <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                            {{#pageDto}}
+                                {{#hasPrevBlock}}
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{contextPath}}/admin/form?page={{pageDto.prevBlockNum}}">
+                                            &laquo;
+                                        </a>
+                                    </li>
+                                {{/hasPrevBlock}}
+                                {{#prev}}
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{contextPath}}/admin/form?page={{pageDto.prevPageNum}}">
+                                            &lt;
+                                        </a>
+                                    </li>
+                                {{/prev}}
+                                {{#pageInfoList}}
+                                    {{#isCurrent}}
+                                        <li class="page-item active">
+                                            <a class="page-link" href="{{contextPath}}/admin/form?page={{pageNum}}">{{pageNum}}</a>
+                                        </li>
+                                    {{/isCurrent}}
+                                    {{^isCurrent}}
+                                        <li class="page-item">
+                                            <a class="page-link" href="{{contextPath}}/admin/form?page={{pageNum}}">{{pageNum}}</a>
+                                        </li>
+                                    {{/isCurrent}}
+                                {{/pageInfoList}}
+                                {{#next}}
+                                <li class="page-item">
+                                    <a class="page-link" href="{{contextPath}}/admin/form?page={{pageDto.nextPageNum}}">&gt;</a>
+                                </li>
+                                {{/next}}
+                                {{#hasNextBlock}}
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{&contextPath}}/admin/form?page={{pageDto.nextBlockNum}}">&raquo;
+                                        </a>
+                                    </li>
+                                {{/hasNextBlock}}
+                            {{/pageDto}}
+<!--                            <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>-->
                         </ul>
                     </div>
                 </div>

@@ -22,80 +22,80 @@
 
             <form method="post">
                 <div class="overflow-auto mb-3 scrollCustom" style="height: 300px">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" name="username" placeholder="아이디를 입력해주세요">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-user"></span>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="username" placeholder="아이디를 입력해주세요">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-user"></span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="input-group mb-3">
-                    <input type="password" class="form-control" name="password" placeholder="비밀번호를 입력해주세요">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-lock"></span>
+                    <div class="input-group mb-3">
+                        <input type="password" class="form-control" name="password" placeholder="비밀번호를 입력해주세요">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="input-group mb-3">
-                    <input type="password" class="form-control" placeholder="비밀번호를 한번 더 입력해주세요">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-lock"></span>
+                    <div class="input-group mb-3">
+                        <input type="password" class="form-control" placeholder="비밀번호를 한번 더 입력해주세요">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" name="name" placeholder="이름을 입력해주세요">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <i class="fas fa-pencil-alt"></i>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="name" placeholder="이름을 입력해주세요">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <i class="fas fa-pencil-alt"></i>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="input-group mb-3">
-                    <input type="email" class="form-control" name="email" placeholder="Email을 입력해주세요">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-envelope"></span>
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" name="email" placeholder="Email을 입력해주세요">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" name="phoneNum" placeholder="연락처를 입력해주세요">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-mobile-alt" style="width: 16px"></span>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="phoneNum" placeholder="연락처를 입력해주세요">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-mobile-alt" style="width: 16px"></span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="input-group mb-3">
-                        <select class="d-flex custom-select" name="deptNo">
-                            <option selected>부서를 선택해주세요</option>
-                            {{#dept}}
-                            <option value="{{deptNo}}">{{deptName}}</option>
-                            {{/dept}}
-                        </select>
-                </div>
-                <div class="input-group mb-3">
-                        <select class="d-flex custom-select" name="positionNo">
-                            <option selected>직급을 선택해주세요</option>
-                            {{#position}}
-                            <option value="{{positionNo}}">{{positionName}}</option>
-                            {{/position}}
-                        </select>
-                </div>
-                <div class="input-group mb-3">
-                    <label class="text-center"> 생일을 입력해주세요
-                        <input type="date" class="form-control" name="birthdate" placeholder="생일을 입력해주세요"  style="width: 300px">
-                    </label>
-                </div>
-                <div class="input-group mb-3">
-                    <label class="text-center"> 입사일을 입력해주세요
-                        <input type="date" class="form-control" id="startdate" name="startdate" placeholder="입사일을 입력해주세요" style="width: 300px">
-                    </label>
-                </div>
+                    <div class="input-group mb-3">
+                            <select class="d-flex custom-select" name="deptNo">
+                                <option selected>부서를 선택해주세요</option>
+                                {{#dept}}
+                                <option value="{{deptNo}}">{{deptName}}</option>
+                                {{/dept}}
+                            </select>
+                    </div>
+                    <div class="input-group mb-3">
+                            <select class="d-flex custom-select" name="positionNo">
+                                <option selected>직급을 선택해주세요</option>
+                                {{#position}}
+                                <option value="{{positionNo}}">{{positionName}}</option>
+                                {{/position}}
+                            </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <label class="text-center"> 생일을 입력해주세요
+                            <input type="date" class="form-control" name="birthdate" placeholder="생일을 입력해주세요"  style="width: 300px">
+                        </label>
+                    </div>
+                    <div class="input-group mb-3">
+                        <label class="text-center"> 입사일을 입력해주세요
+                            <input type="date" class="form-control" id="startdate" name="startdate" placeholder="입사일을 입력해주세요" style="width: 300px">
+                        </label>
+                    </div>
                 </div>
                 <div class="row">
                     <!-- /.col -->
@@ -131,5 +131,8 @@
 <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../../dist/js/adminlte.min.js"></script>
+<script>
+    document.getElementById('startdate').value = new Date().toISOString().substring(0, 10);
+</script>
 </body>
 </html>

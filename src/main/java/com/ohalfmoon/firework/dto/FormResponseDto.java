@@ -26,6 +26,8 @@ public class FormResponseDto {
     private String formName;
     private String formText;
     private Boolean isUsed;
+    private int useCount;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime regdate;
 
@@ -33,6 +35,7 @@ public class FormResponseDto {
         formNo = entity.getFormNo();
         formName = entity.getFormName();
         formText = entity.getFormText();
+        useCount = entity.getUseCount();
         isUsed = entity.getIsUsed();
         regdate = entity.getRegdate();
     }
