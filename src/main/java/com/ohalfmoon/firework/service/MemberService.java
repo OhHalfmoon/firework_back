@@ -46,6 +46,9 @@ public class MemberService {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private PasswordEncoder encoder;
+
     /**
      * 회원가입 기능
      *
@@ -54,7 +57,9 @@ public class MemberService {
      */
     @Transactional // springboot
     public RoleEntity register(MemberDTO memberDTO) {
+        memberDTO.setPassword(encoder.encode(memberDTO.getPassword()));
         MemberEntity entity = memberDTO.toEntity();
+
         DeptEntity byId = deptRepository
                 .findById(memberDTO.getDeptNo())
                 .orElseThrow(() -> new IllegalArgumentException(""));

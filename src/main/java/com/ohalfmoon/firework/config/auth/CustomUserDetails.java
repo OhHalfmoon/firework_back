@@ -30,7 +30,6 @@ import java.util.Date;
 @Getter
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
     private Long userNo;
 
