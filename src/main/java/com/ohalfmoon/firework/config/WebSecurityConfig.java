@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors()
                 .and().csrf().disable()
                 .formLogin().loginPage("/auth/signin") // 커스텀 로그인폼 사용
-                .permitAll() // 권한없이 사용
+                .permitAll() // 권한없이 사용 (임시)
                 .and().httpBasic()
 //                .httpBasic().disable() // 기본 로그인폼 사용안함
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // session방식 사용
