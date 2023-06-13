@@ -1,5 +1,7 @@
 package com.ohalfmoon.firework.model;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 
 /**
@@ -14,6 +16,7 @@ import javax.persistence.*;
  * 2023/06/13        banghansol       최초 생성
  */
 @Entity
+@Getter
 @Table(name = "tbl_role_privilege")
 public class RolePrivilegeEntity extends BaseTimeEntity {
     @Id

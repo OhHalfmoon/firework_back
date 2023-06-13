@@ -29,7 +29,9 @@ import java.util.Date;
 @Builder
 public class CustomUserDetails implements UserDetails {
     private Long userNo;
+
     private String username;
+
     private String password;
     private String email;
     private String phoneNum;
@@ -41,17 +43,33 @@ public class CustomUserDetails implements UserDetails {
     private PositionEntity positionEntity;
     private RoleEntity roleEntity;
 
-    public CustomUserDetails(MemberResponseDTO dto) {
-        this.userNo = dto.getUserNo();
-        this.username = dto.getUsername();
-        this.email = dto.getEmail();
-        this.phoneNum = dto.getPhoneNum();
-        this.name = dto.getName();
-        this.manager = dto.isManager();
-        this.birthdate = dto.getBirthdate();
-        this.startdate = dto.getStartdate();
-        this.deptEntity = dto.getDeptEntity();
-        this.positionEntity = dto.getPositionEntity();
+//    public CustomUserDetails(MemberResponseDTO dto) {
+//        this.userNo = dto.getUserNo();
+//        this.username = dto.getUsername();
+//        this.email = dto.getEmail();
+//        this.phoneNum = dto.getPhoneNum();
+//        this.name = dto.getName();
+//        this.manager = dto.isManager();
+//        this.birthdate = dto.getBirthdate();
+//        this.startdate = dto.getStartdate();
+//        this.deptEntity = dto.getDeptEntity();
+//        this.positionEntity = dto.getPositionEntity();
+//    }
+
+
+    public CustomUserDetails(Long userNo, String username, String password, String email, String phoneNum, String name, boolean manager, Date birthdate, Date startdate, DeptEntity deptEntity, PositionEntity positionEntity, RoleEntity roleEntity) {
+        this.userNo = userNo;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.phoneNum = phoneNum;
+        this.name = name;
+        this.manager = manager;
+        this.birthdate = birthdate;
+        this.startdate = startdate;
+        this.deptEntity = deptEntity;
+        this.positionEntity = positionEntity;
+        this.roleEntity = roleEntity;
     }
 
     @Override
