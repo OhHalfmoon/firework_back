@@ -1,17 +1,17 @@
 package com.ohalfmoon.firework.service;
 
 import com.ohalfmoon.firework.dto.member.*;
-import com.ohalfmoon.firework.model.DeptEntity;
-import com.ohalfmoon.firework.model.MemberEntity;
-import com.ohalfmoon.firework.model.PositionEntity;
-import com.ohalfmoon.firework.model.RoleEntity;
+import com.ohalfmoon.firework.model.*;
 import com.ohalfmoon.firework.persistence.DeptRepository;
 import com.ohalfmoon.firework.persistence.MemberRepository;
 import com.ohalfmoon.firework.persistence.PositionRepository;
 import com.ohalfmoon.firework.persistence.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 
 /**
@@ -69,7 +69,7 @@ public class MemberService {
 
         // security 적용시 수정예정
         RoleEntity entityBuilder = RoleEntity.builder()
-                .roleName("GUEST")
+                .roleName(Role.GUEST.getKey())
                 .build();
 
         return roleRepository.save(entityBuilder);
