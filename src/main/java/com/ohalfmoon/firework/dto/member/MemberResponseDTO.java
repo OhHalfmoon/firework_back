@@ -28,6 +28,8 @@ public class MemberResponseDTO {
     private boolean manager;
     private Date birthdate;
     private Date startdate;
+    private String deptName;
+    private String positionName;
 
     public MemberResponseDTO(MemberEntity entity) {
         userNo = entity.getUserNo();
@@ -38,5 +40,7 @@ public class MemberResponseDTO {
         manager = entity.isManager();
         birthdate = entity.getBirthdate();
         startdate = entity.getStartdate();
+        deptName = entity.getDeptEntity().getDeptName();
+        positionName = entity.getPositionEntity().getPositionName();
     }
 }
