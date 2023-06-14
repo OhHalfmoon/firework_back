@@ -1,6 +1,7 @@
 package com.ohalfmoon.firework.service;
 
 import com.ohalfmoon.firework.dto.member.*;
+import com.ohalfmoon.firework.dto.sub.SubLineResponseDTO;
 import com.ohalfmoon.firework.model.DeptEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.PositionEntity;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -148,4 +150,11 @@ public class MemberService {
     public MemberEntity get(final String username) {
         return memberRepository.findByUsername(username);
     }
+
+   // get member list
+    public List<MemberResponseDTO> getMemberList() {
+        return memberRepository.findAll()
+                .stream().map(MemberResponseDTO::new).collect(Collectors.toList());
+    }
+
 }

@@ -1,13 +1,12 @@
 package com.ohalfmoon.firework.dto.master;
 
+import com.ohalfmoon.firework.dto.sub.SubLineSaveDTO;
 import com.ohalfmoon.firework.model.MasterLineEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * packageName    : com.ohalfmoon.firework.dto.master
@@ -25,11 +24,16 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class MasterLineSaveDTO {
+    private Long lineNo;
     private String lineName;
     private Long userNo;
+    private List<SubLineSaveDTO> subLineSaveDTOS;
+
 
     public MasterLineSaveDTO(final MasterLineEntity entity) {
+        this.lineNo = entity.getLineNo();
         this.lineName = entity.getLineName();
         this.userNo = entity.getMemberEntity().getUserNo();
     }

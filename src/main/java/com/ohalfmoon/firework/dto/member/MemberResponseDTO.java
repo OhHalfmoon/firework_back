@@ -1,8 +1,6 @@
 package com.ohalfmoon.firework.dto.member;
 
-import com.ohalfmoon.firework.model.DeptEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
-import com.ohalfmoon.firework.model.PositionEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -30,8 +28,8 @@ public class MemberResponseDTO {
     private boolean manager;
     private Date birthdate;
     private Date startdate;
-    private DeptEntity deptEntity;
-    private PositionEntity positionEntity;
+    private String deptName;
+    private String positionName;
 
     public MemberResponseDTO(MemberEntity entity) {
         userNo = entity.getUserNo();
@@ -42,7 +40,7 @@ public class MemberResponseDTO {
         manager = entity.isManager();
         birthdate = entity.getBirthdate();
         startdate = entity.getStartdate();
-        deptEntity = entity.getDeptEntity();
-        positionEntity = entity.getPositionEntity();
+        deptName = entity.getDeptEntity().getDeptName();
+        positionName = entity.getPositionEntity().getPositionName();
     }
 }
