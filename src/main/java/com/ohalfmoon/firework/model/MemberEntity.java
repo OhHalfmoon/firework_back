@@ -53,6 +53,10 @@ public class MemberEntity {
     @JoinColumn(name = "positionNo") // foreign key column name
     private PositionEntity positionEntity; // 직급번호
 
+    @ManyToOne
+    @JoinColumn(name = "roleNo")
+    private RoleEntity roleEntity;
+
     @Column(nullable = false)
     private String name; // 이름
 

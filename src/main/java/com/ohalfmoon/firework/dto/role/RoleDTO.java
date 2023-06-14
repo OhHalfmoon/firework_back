@@ -18,21 +18,25 @@ import java.util.Date;
  * DATE                 AUTHOR                NOTE
  * -----------------------------------------------------------
  * 2023-06-07                ycy             최초 생성
+ * 2023-06-13             방한솔             dto 필드 & 엔티티 변경 메서드 수정
  */
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class RoleDTO {
-    private Long userNo;
-    private String authName;
-    private Date regdate;
-    private Date updatedate;
+    private Long roleNo;
+    private String roleName;
 
+    /**
+     * dto -> 엔티티 변경 메서드
+     *
+     * @return RoleEntity 권한 엔티티
+     */
     public RoleEntity toEntity() {
         return RoleEntity.builder()
-                .authName("GUEST")
+//                .authName("GUEST")
+                .roleName(roleName)
                 .build();
     }
 }
