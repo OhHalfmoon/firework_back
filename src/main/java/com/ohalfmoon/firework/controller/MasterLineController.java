@@ -38,17 +38,22 @@ public class MasterLineController {
     }
 
     @GetMapping("/addLine")
+//    @ResponseBody
     public String addline(Model model) {
         // 로그인 한 사용자 regMemberNo가 getList의 parameter로
+
+        List<MasterLineResponseDTO> list = masterLineService.getList(1L);
+
+        log.info("{}", list);
         model.addAttribute("masterList", masterLineService.getList(1L) );
 
-        model.addAttribute("name", masterLineService.getMasterName(1L));
-        // 특정 lineNo에 해당하는 subLineList를 가져옴
-        model.addAttribute("subLineList", subLineService.getListByLineNo(1L));
-        model.addAttribute("subMemberName", subLineService);
+//        model.addAttribute("name", masterLineService.getMasterName(1L));
+//        // 특정 lineNo에 해당하는 subLineList를 가져옴
+//        model.addAttribute("subLineList", subLineService.getListByLineNo(1L));
+//        model.addAttribute("subMemberName", subLineService);
         model.addAttribute("memberList", memberService.getMemberList());
-
-        model.addAttribute("deptList", deptService.deptList());
+//
+//        model.addAttribute("deptList", deptService.deptList());
 
         return "line/addLine";
     }
@@ -60,6 +65,7 @@ public class MasterLineController {
 //            List<SubLineSaveDTO> subLineSaveDTO,
             //String lineName, Long subLine1, Long subLine2, Long subLine3,
             @RequestParam(required = false, defaultValue = "1") Long memberNo) {
+        masterLineSaveDTO.setUserNo(memberNo);
 //        log.info("lineName : {}", lineName);
 //        // 로그인한 사용자
 //        MasterLineSaveDTO dto = new MasterLineSaveDTO().builder()
@@ -87,12 +93,17 @@ public class MasterLineController {
 //        subLineService.save(dto3);
 //        MasterLineSaveDTO dto = masterLineService.save(masterLineSaveDTO);
 
-
+        masterLineService.save(masterLineSaveDTO);
         log.info("{}", masterLineSaveDTO);
 
 
-        return null;
+        return "redirect:/line/addLine";
     }
-//    @PostMapping("/addLine/{id}")
-//    public void
+
+    @DeleteMapping("/delete")
+    public String deleteLine(@RequestParam Long lineNo) {
+        masterLineService.delete(lineNo);
+        return "redirect:/line/addLine";
+    }
+
 }

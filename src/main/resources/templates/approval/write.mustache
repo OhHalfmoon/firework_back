@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdminLTE 3 | Dashboard</title>
+
+    {{>layout/head}}
+</head>
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
+<div class="wrapper">
+
+    {{>layout/header}}
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">기안 작성</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <!-- 작업할 때 이 항목 내용을 수정하세요 -->
+
+        <section class="content">
+            <div class="container-fluid">
+                <form method="post">
+                <div class="card">
+                    <div class="card-header">
+<!--                        <div class=""-->
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td>기안제목</td>
+                                        <td><input type="text" class="form-control" name="approvalName" placeholder="기안명을 입력해주세요"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>기안일자</td>
+                                        <td><input type="date" class="form-control" name="regdate"></td>
+                                    </tr>
+                                    <tr><td>공개라인</td></tr>
+                                    <tr><td>결재라인</td></tr>
+                                    <tr><td>소속팀</td></tr>
+                                    <tr><td>문서함</td></tr>
+                                </table>
+                            </div>
+<!--                            <tbody>-->
+<!--                            {{#listDto}}-->
+<!--                                <tr>-->
+<!--                                    <td>{{formName}}</td>-->
+<!--                                    <td>{{regdate}}</td>-->
+<!--                                </tr>-->
+<!--                            {{/listDto}}-->
+<!--                            </tbody>-->
+
+                    <!-- /.card-body -->
+                </div>
+                </form>
+            </div>
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    {{>layout/footer}}
+
+
+</div>
+<!-- ./wrapper -->
+
+{{>layout/library}}
+
+</body>
+<script>
+    // document.getElementsByName('regdate').value= new Date().toISOString().substring(0, 10);
+</script>
+</html>
