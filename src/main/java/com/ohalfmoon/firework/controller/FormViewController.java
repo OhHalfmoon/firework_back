@@ -85,4 +85,13 @@ public class FormViewController {
 
         return "redirect:/admin/form/detail/" + save;
     }
+
+    @GetMapping("/update/{formNo}")
+    public String updateForm(@PathVariable Long formNo, Model model) {
+        FormResponseDto formDto = formService.findByFormNo(formNo);
+
+        model.addAttribute("formDto", formDto);
+
+        return "admin/form/form-update";
+    }
 }
