@@ -39,32 +39,61 @@
                 <form method="post">
                 <div class="card">
                     <div class="card-header">
-<!--                        <div class=""-->
-                                <table class="table table-bordered">
-                                    <tr>
-                                        <td>기안제목</td>
-                                        <td><input type="text" class="form-control" name="approvalName" placeholder="기안명을 입력해주세요"></td>
-                                    </tr>
-                                    <tr>
-                                        <td>기안일자</td>
-                                        <td><input type="date" class="form-control" name="regdate"></td>
-                                    </tr>
-                                    <tr><td>공개라인</td></tr>
-                                    <tr><td>결재라인</td></tr>
-                                    <tr><td>소속팀</td></tr>
-                                    <tr><td>문서함</td></tr>
-                                </table>
-                            </div>
-<!--                            <tbody>-->
-<!--                            {{#listDto}}-->
-<!--                                <tr>-->
-<!--                                    <td>{{formName}}</td>-->
-<!--                                    <td>{{regdate}}</td>-->
-<!--                                </tr>-->
-<!--                            {{/listDto}}-->
-<!--                            </tbody>-->
-
-                    <!-- /.card-body -->
+                        <div class="row">
+                            <div class="col">기안제목</div>
+                            <input type="text" class="form-control" name="approvalName" placeholder="기안명을 입력해주세요">
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col">기안일자</div>
+                            <input type="date" class="form-control" name="regdate">
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col">공개라인</div>
+                            <select class="d-flex custom-select" name="positionNo">
+                                <option selected>공개라인을 선택해주세요</option>
+                                {{#position}}
+                                    <option value="{{positionNo}}">{{positionName}} 이상</option>
+                                {{/position}}
+                            </select>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col">결재선</div>
+                            <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">
+                                결재선 선택
+                            </button>
+                            <br>
+                            <div class="col-12" id="applyLine" style="border: 1px solid; border-color: #ced4da; padding: 5px; margin-top: 3px; border-radius: 5px">결재선이 선택되지 않았습니다</div>
+                            <div class="col-12 testBox"></div>
+                            <input type="hidden" class="form-control applyBox" id="applyVal" name="lineNo" readonly>
+                        </div>
+<!--                        <br>-->
+<!--                        <div class="row">-->
+<!--                            <div class="col">소속팀</div>-->
+<!--                            <select class="d-flex custom-select" name="deptNo">-->
+<!--                                <option selected>부서를 선택해주세요</option>-->
+<!--                                {{#deptList}}-->
+<!--                                    <option value="{{deptNo}}">{{deptName}}</option>-->
+<!--                                {{/deptList}}-->
+<!--                            </select>-->
+<!--                        </div>-->
+                        <br>
+                        <div class="row">
+                            <div class="col">문서함</div>
+                            <select class="d-flex custom-select" name="docboxNo">
+                                <option selected>문서함을 선택해주세요</option>
+                                {{#docboxList}}
+                                    <option value="{{docboxNo}}">{{docboxName}}</option>
+                                {{/docboxList}}
+                            </select>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col">작성</div>
+                        </div>
+                    </div>
                 </div>
                 </form>
             </div>
@@ -79,9 +108,88 @@
 <!-- ./wrapper -->
 
 {{>layout/library}}
+<!-- The Modal -->
+<div class="modal" id="myModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">결재선 목록</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="card-body">
+                    <table id="example2" class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>결재선 명</th>
+                            <th style="width : 12%">기안자</th>
+                            <th>결재자 1</th>
+                            <th>결재자 2</th>
+                            <th>결재자 3</th>
+                            <th style="width : 10%">선택</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#masterList}}
+                            <tr>
+                                <td id="lineName">{{lineName}}</td>
+                                <td id="masterName">{{masterName}}</td>
+                                {{#subLineList}}
+                                    <td id="subfull"> [{{positionName}}] [{{deptName}}] {{name}} </td>
+                                {{/subLineList}}
+                                <td><!-- checkbox -->
+                                    <div class="icheck-primary d-inline ml-2 mx-auto">
+                                        <input class="mx-auto ckBox" type="radio" id="todoCheck{{lineNo}}" name="todo" value="{{lineNo}}">
+                                        <label for="todoCheck{{lineNo}}"></label>
+                                    </div>
+                                </td>
+                            </tr>
+                        {{/masterList}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary btn-sm" id="apply" >적용</button>
+                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">닫기</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 </body>
 <script>
-    // document.getElementsByName('regdate').value= new Date().toISOString().substring(0, 10);
+    $(function () {
+        $(".ckBox").click(function (){
+            // console.log(this)
+            // console.log(this.closest('tr'));
+            // console.log(this.closest('tr'));
+            var no = this.value;
+            var approlist = this.closest('tr').innerHTML;
+            var cut = approlist.split('<td>');
+            // console.log("no의 값 :" +no);
+            // console.log("table의 값 :" + approlist);
+            // console.log(cut[0]);
+
+
+
+
+            $("#apply").click(function () {
+                const element = document.getElementById('applyLine');
+//                element.innerHTML = '<div class="col-12">' + no +'</div>';
+                element.innerHTML = '<tr>' + cut[0] + '</tr>';
+                $("#applyVal").val(no);
+                $(".modal").modal("hide");
+            });
+        })
+
+    })
 </script>
 </html>

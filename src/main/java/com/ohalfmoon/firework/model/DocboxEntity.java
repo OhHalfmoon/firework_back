@@ -23,25 +23,19 @@ import java.util.Date;
 @AllArgsConstructor
 @Table(name = "tbl_docbox")
 @DynamicInsert
-@Builder
 @ToString
+@Builder
 public class DocboxEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long docboxNo;
+    private Long docboxNo; //문서함 번호
 
     @Column(nullable = false)
-    private String docboxName;
+    private String docboxName; //문서함 명
 
-    private Date regdate;
+    private Date regdate; // 등록일
 
-    private Date updatedate;
+    private Date updatedate; // 수정일
 
-    @Builder
-    public DocboxEntity(
-            String docboxName
-    ) {
-        this.docboxName = docboxName;
-    }
 
 }

@@ -1,15 +1,11 @@
 package com.ohalfmoon.firework.dto.member;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ohalfmoon.firework.model.DeptEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.PositionEntity;
 import com.ohalfmoon.firework.model.RoleEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -36,11 +32,7 @@ public class MemberResponseDTO {
     private String phoneNum;
     private String name;
     private boolean manager;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd", timezone = "Asia/Seoul")
     private Date birthdate;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd", timezone = "Asia/Seoul")
     private Date startdate;
     private DeptEntity deptEntity;
     private PositionEntity positionEntity;
