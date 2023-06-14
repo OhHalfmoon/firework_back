@@ -94,7 +94,8 @@
                             <div class="col">작성</div>
                         </div>
 <!--                        기안 작성되는 부분 -->
-                            <section class="content" id="detailcheck">
+<!--                            <section class="content" id="detailcheck">-->
+                            <section class="content">
                                 <div class="container-fluid">
                                     <div class="card card-default color-palette-box">
                                         <div class="card-header">
@@ -103,24 +104,46 @@
                                             </h3>
                                         </div>
                                         <div class="card-body">
-                                            <div class="col-12 mb-4">
-                                                <div class="col-sm-12 col-md-12">
-                                                    <div id="toolbar-container"></div>
-                                                    <div id="editor">{{{formDetail.formText}}}</div>
+<!--                                            <div class="col-12 mb-4">-->
+<!--                                                <div class="col-sm-12 col-md-12">-->
+<!--                                                    <div id="toolbar-container"></div>-->
+<!--                                                    <div id="editor">{{{formDetail.formText}}}</div>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+                                            <div class="form-group">
+                                                <label for="formName">양식명</label>
+                                                <input type="text" class="form-control" id="formName" name="formName">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="editor">양식내용</label>
+
+                                                <div class="centered">
+                                                    <div class="row">
+                                                        <div class="document-editor__toolbar"></div>
+                                                    </div>
+                                                    <div class="row row-editor">
+                                                        <div class="editor-container">
+                                                            <div class="editor">
+                                                                <div class="ck-toolbar"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
+                                                <input type="hidden" name="approContent" class="approContent">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </section>
                     </div>
-                </div>
                     <div class="col-2">
-                        <input type="hidden" class="form-control approContent" name="approContent" readonly>
+                        <!--                        <input type="hidden" class="form-control approContent" name="approContent" readonly>-->
                         <input type="hidden" class="form-control approvalState" name="approvalState" readonly>
                         <input type="hidden" class="form-control userNo" name="userNo" readonly>
-                        <button class="btn btn-secondary btn-block" id="storage" type="submit">임시저장</button>
+                        <button class="btn btn-secondary" id="storage" type="submit">임시저장</button>
                     </div>
+                </div>
+
                 </form>
                 <br>
 <!--                <div class="col-2">-->
@@ -206,14 +229,25 @@
     let data;
     let editor;
 
-    DecoupledEditor
-            .create( document.querySelector( '#editor' ) )
-            .then( createdEditor => {
-                editor = createdEditor;
-                const toolbarContainer = document.querySelector( '#toolbar-container' );
+    var test = `{{{formDetail.formText}}}`;
 
-                toolbarContainer.appendChild( editor.ui.view.toolbar.element );
-            });
+    DecoupledDocumentEditor
+            .create( document.querySelector( '.editor' )
+            )
+            .then( editor => {
+                window.editor = editor;
+
+                console.log(editor.ui.view.toolbar.element);
+
+                // Set a custom container for the toolbar.
+                document.querySelector( '.document-editor__toolbar' ).appendChild( editor.ui.view.toolbar.element );
+                document.querySelector( '.ck-toolbar' ).classList.add( 'ck-reset_all' );
+
+                // const toolbarContainer = document.querySelector( '.document-editor__toolbar'  );
+
+                // toolbarContainer.appendChild( editor.ui.view.toolbar.element );
+                editor.setData(test);
+            } )
 
     $(function () {
         $(".ckBox").click(function (){
