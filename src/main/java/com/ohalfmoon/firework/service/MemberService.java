@@ -89,6 +89,23 @@ public class MemberService {
 }
 
     /**
+     * 비밀번호 수정
+     *
+     * @param userNo the user no
+     * @param dto    the dto
+     * @return the long
+     */
+    @Transactional
+    public Long updatePw(Long userNo, MemberUpdatePwDTO dto) {
+        MemberEntity entity = memberRepository.findById(userNo)
+                .orElseThrow(() -> new IllegalArgumentException("해당 id가 존재하지 않습니다." + userNo));
+
+        entity.updatePw(dto.getPassword());
+
+        return userNo;
+
+    }
+    /**
      * 회원정보 수정
      *
      * @param userNo the user no
@@ -115,23 +132,6 @@ public class MemberService {
         return userNo;
 }
 
-    /**
-     * 비밀번호 수정
-     *
-     * @param userNo the user no
-     * @param dto    the dto
-     * @return the long
-     */
-    @Transactional
-    public Long updatePw(Long userNo, MemberUpdatePwDTO dto) {
-        MemberEntity entity = memberRepository.findById(userNo)
-                .orElseThrow(() -> new IllegalArgumentException("해당 id가 존재하지 않습니다." + userNo));
-
-        entity.updatePw(dto.getPassword());
-
-        return userNo;
-
-    }
 
     /**
      * 로그인

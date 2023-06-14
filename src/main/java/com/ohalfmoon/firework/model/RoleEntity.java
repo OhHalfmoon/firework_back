@@ -34,6 +34,6 @@ public class RoleEntity extends BaseTimeEntity {
     @Column(nullable = false)
     private String roleName; // 권한 이름
 
-    @OneToMany(mappedBy = "roleEntity")
+    @OneToMany(mappedBy = "roleEntity", fetch = FetchType.EAGER)
     List<RolePrivilegeEntity> rolePrivilegeList;
 }
