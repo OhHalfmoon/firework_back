@@ -62,7 +62,9 @@
                                     {{#masterList}}
                                     <tr>
                                         <td>{{lineName}}</td>
-                                        <td>{{masterName}}</td>
+
+
+                                        <td>{{name}}</td>
                                         {{#subLineList}}
                                             <td> [{{positionName}}] [{{deptName}}] {{name}} </td>
                                         {{/subLineList}}
@@ -91,84 +93,99 @@
         <!-- /.content -->
         <section class="content">
             <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <button type="button" class="btn btn-outline-secondary btn-sm float-right ml-3">수정</button>
-                                <button type="button" class="btn btn-outline-secondary btn-sm float-right ml-3">삭제</button>
-                                <button type="button" class="btn btn-outline-secondary btn-sm float-right">추가</button>
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <table id="example2" class="table table-bordered table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>결재선 명</th>
-                                        <th>기안자</th>
-                                        <th>결재자 1</th>
-                                        <th>결재자 2</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
+                <form method="post">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <button type="submit" class="btn btn-outline-secondary btn-sm float-right" id="addBtn">추가</button>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body">
+                                    <table id="example2" class="table table-bordered table-hover">
+                                        <thead>
                                         <tr>
-                                            <td><input type="text"></td>
-                                        <td>
-                                            {{masterName}}
-                                        </td>
-                                            <td>
-                                                <div class="col-sm-6">
-                                                    <div class="form-group">
-                                                        <select class="custom-select">
-                                                            {{#deptList}}
-
-                                                            {{/deptList}}
-
-
-                                                            <option></option>
-                                                            <option>option 2</option>
-                                                            <option>option 3</option>
-                                                            <option>option 4</option>
-                                                            <option>option 5</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="col-sm-6">
-                                                    <div class="form-group">
-                                                        <select class="custom-select">
-                                                            <option>option 1</option>
-                                                            <option>option 2</option>
-                                                            <option>option 3</option>
-                                                            <option>option 4</option>
-                                                            <option>option 5</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </td>
+                                            <th>결재선 명</th>
+                                            <th>기안자</th>
+                                            <th>결재자 1</th>
+                                            <th>결재자 2</th>
+                                            <th>결재자 3</th>
                                         </tr>
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><input type="text" name="lineName"></td>
+                                                <input type="hidden" name="userNo">
+                                            <td>
+                                                {{#masterList}}
+                                                <div name="{{lineNo}}">{{name}}</div>
+                                                {{/masterList}}
+                                            </td>
+                                                <td>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <select class="custom-select" name="subLine1">
+                                                            {{#memberList}}
+                                                                <option value="{{userNo}}">[{{deptName}}] [{{positionName}}] {{name}}</option>
+                                                            {{/memberList}}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <select class="custom-select" id="masterLine" name="subLine2">
+                                                                {{#memberList}}
+                                                                    <option value="{{userNo}}">[{{deptName}}] [{{positionName}}] {{name}}</option>
+                                                                {{/memberList}}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <select class="custom-select" name="subLine3">
+                                                                {{#memberList}}
+                                                                    <option value="{{userNo}}">[{{deptName}}] [{{positionName}}] {{name}}</option>
+                                                                {{/memberList}}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
                             </div>
-                            <!-- /.card-body -->
+                            <!-- /.card -->
                         </div>
-                        <!-- /.card -->
+                        <!-- /.col -->
                     </div>
-                    <!-- /.col -->
-                </div>
+                </form>
                 <!-- /.row -->
             </div>
             <!-- /.container-fluid -->
         </section>
-
+    </div>
     <!-- /.content-wrapper -->
     {{>layout/footer}}
-
 
 </div>
 <!-- ./wrapper -->
 {{>layout/library}}
+    <script>
+        let val = $("#addBtn").val();
+        $("#addBtn").click(function () {
+            console.log("클릭됨")
+            console.log(val)
+        })
 
+
+
+
+    </script>
 </body>
 </html>

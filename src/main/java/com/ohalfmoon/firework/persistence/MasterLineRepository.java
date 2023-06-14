@@ -23,11 +23,6 @@ import java.util.List;
 
 @Repository
 public interface MasterLineRepository extends JpaRepository<MasterLineEntity, Long> {
-    //List<MasterLineEntity> findAllByUserNo(MemberEntity userNo);
-
-//    List<MasterLineEntity> findByRegMemberNo(Long userNo);
-
     @Query("select m from MasterLineEntity m where m.memberEntity.userNo = ?1")
     List<MasterLineEntity> findByMemberEntity_UserNo(Long userNo);
-
 }

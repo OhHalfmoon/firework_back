@@ -5,9 +5,11 @@ import com.ohalfmoon.firework.dto.approval.ApprovalResponseDto;
 import com.ohalfmoon.firework.dto.approval.ApprovalSaveDto;
 import com.ohalfmoon.firework.dto.approval.ApprovalStateDto;
 import com.ohalfmoon.firework.dto.approval.ApprovalUpdateDto;
-import com.ohalfmoon.firework.service.ApprovalService;
-import com.ohalfmoon.firework.service.FormService;
+import com.ohalfmoon.firework.dto.dept.DeptListResponseDTO;
+import com.ohalfmoon.firework.dto.docbox.DocboxListResponseDTO;
+import com.ohalfmoon.firework.service.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +33,23 @@ import java.util.List;
 @Controller
 @RequestMapping("/approval")
 public class ApprovalContoller {
-    private final ApprovalService approvalService;
-    private final FormService formService;
+
+    @Autowired
+    private ApprovalService approvalService;
+    @Autowired
+    private FormService formService;
+    @Autowired
+    private PositionService positionService;
+    @Autowired
+    private MasterLineService masterLineService;
+    @Autowired
+    private MemberService memberService;
+    @Autowired
+    private SubLineService subLineService;
+    @Autowired
+    private DeptService deptService;
+    @Autowired
+    private  DocboxService docboxService;
     // 기안 등록
     @PostMapping("/")
     public Long register( @RequestBody ApprovalSaveDto saveDto) {
@@ -69,7 +86,17 @@ public class ApprovalContoller {
     }
 
     @GetMapping("/write")
-    public void write() {
+    public void write(Model model) {
+        model.addAttribute("position", positionService.positionList());
+        model.addAttribute("masterList", masterLineService.getList(1L) );
+        model.addAttribute("masterName", masterLineService.getMasterName(1L));
+        model.addAttribute("subLineList", subLineService.getListByLineNo(1L));
+        model.addAttribute("subMemberName", subLineService);
 
+        List<DeptListResponseDTO> deptListResponseDTOS = deptService.deptList();
+        model.addAttribute("deptList", deptListResponseDTOS);
+        List< DocboxListResponseDTO> docboxListResponseDTOS = docboxService.docboxList();
+        model.addAttribute("docboxList", docboxListResponseDTOS);
+//        model.addAttribute("member", memberService);
     }
 }

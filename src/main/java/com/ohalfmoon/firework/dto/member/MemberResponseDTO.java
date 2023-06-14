@@ -3,6 +3,7 @@ package com.ohalfmoon.firework.dto.member;
 import com.ohalfmoon.firework.model.DeptEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.PositionEntity;
+import com.ohalfmoon.firework.model.RoleEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,6 +26,7 @@ public class MemberResponseDTO {
     private Long userNo;
     private String username;
     private String email;
+    private String password;
     private String phoneNum;
     private String name;
     private boolean manager;
@@ -32,6 +34,7 @@ public class MemberResponseDTO {
     private Date startdate;
     private DeptEntity deptEntity;
     private PositionEntity positionEntity;
+    private RoleEntity roleEntity;
 
     public MemberResponseDTO(MemberEntity entity) {
         userNo = entity.getUserNo();

@@ -3,10 +3,7 @@ package com.ohalfmoon.firework.dto.sub;
 import com.ohalfmoon.firework.model.MasterLineEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.SubLineEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * packageName    : com.ohalfmoon.firework.dto.sub
@@ -24,6 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class SubLineUpdateDTO {
     private Integer orderLevel;
     private Long userNo;

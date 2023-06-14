@@ -19,6 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class MemberUpdatePwDTO {
+    private Long userNo;
     private String password;
 
     @Builder
@@ -28,6 +29,7 @@ public class MemberUpdatePwDTO {
 
     public MemberEntity toEntity() {
         return MemberEntity.builder()
+                .userNo(userNo)
                 .password(password)
                 .build();
     }
