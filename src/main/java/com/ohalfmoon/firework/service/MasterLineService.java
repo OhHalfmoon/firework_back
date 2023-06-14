@@ -64,8 +64,6 @@ public class MasterLineService {
     
     // userNo를 통한 리스트 조회
     public List<MasterLineResponseDTO> getList(Long userNo) {
-
-
         return masterLineRepository.findByMemberEntity_UserNo(userNo)
                 .stream().map((masterLineEntity) -> {
                   MasterLineResponseDTO masterLineResponseDTO = new MasterLineResponseDTO(masterLineEntity);
@@ -93,6 +91,7 @@ public class MasterLineService {
         MasterLineEntity entity = masterLineRepository
                 .findById(lineNo)
                 .orElseThrow(() -> new IllegalArgumentException("결재 선이 존재하지 않습니다"));
+        List<SubLineEntity> subLineEntities = subLineRepository.findAllByMasterLineEntity_LineNo(lineNo);
         masterLineRepository.delete(entity);
 
     }

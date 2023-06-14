@@ -100,8 +100,12 @@ public class MasterLineController {
         return "redirect:/line/addLine";
     }
 
-    @DeleteMapping("/delete")
-    public String deleteLine(@RequestParam Long lineNo) {
+//    @DeleteMapping("/delete/{lineNo}")
+    @GetMapping("/delete/{lineNo}")
+    public String delete(@PathVariable Long lineNo) {
+        log.info("lineNo : {}", lineNo);
+        List<SubLineResponseDTO> subLineList = subLineService.getListByLineNo(lineNo);
+//        if()
         masterLineService.delete(lineNo);
         return "redirect:/line/addLine";
     }
