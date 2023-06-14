@@ -10,6 +10,10 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
@@ -116,5 +120,15 @@ public class AlarmRepositoryTests {
         Long userNo = 1L;
         Long count = alarmRepository.countAlarmEntitiesByAlarmReceiver(memberRepository.findById(userNo).orElse(null));
         log.info("{}", count);
+    }
+
+    @Test
+    public void findListBySlice() {
+        Pageable pageable = PageRequest.of(1, 5, Sort.Direction.DESC, "alarmReceiver");
+        Slice<AlarmEntity> alarmEntities =
+                alarmRepository.findSliceByAlarmReceiver(MemberEntity.builder()
+                        .userNo(1L)
+                        .build(), pageable);
+        log.info("{}", alarmEntities.getContent());
     }
 }

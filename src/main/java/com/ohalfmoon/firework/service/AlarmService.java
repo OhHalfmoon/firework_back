@@ -6,6 +6,8 @@ import com.ohalfmoon.firework.model.AlarmEntity;
 import com.ohalfmoon.firework.persistence.AlarmRepository;
 import com.ohalfmoon.firework.persistence.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -69,5 +71,11 @@ public class AlarmService {
     @Transactional
     public Long countAlarmByAlarmReceiver(Long userNo) {
         return alarmRepository.countAlarmEntitiesByAlarmReceiver(memberRepository.findById(userNo).orElse(null));
+    }
+
+    @Transactional
+    public Slice<AlarmResponseDto> findListBySlice(Long userNo, Pageable pageable) {
+        return alarmRepository.findSliceByAlarmReceiver(memberRepository.findById(userNo).orElse(null), pageable)
+                .map(AlarmResponseDto::new);
     }
 }

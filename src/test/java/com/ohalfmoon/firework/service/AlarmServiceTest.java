@@ -3,6 +3,7 @@ package com.ohalfmoon.firework.service;
 import com.ohalfmoon.firework.dto.AlarmResponseDto;
 import com.ohalfmoon.firework.dto.AlarmSaveDto;
 import com.ohalfmoon.firework.model.AlarmEntity;
+import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.persistence.AlarmRepository;
 import com.ohalfmoon.firework.persistence.ApprovalRepository;
 import com.ohalfmoon.firework.persistence.MemberRepository;
@@ -11,6 +12,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
@@ -112,4 +117,15 @@ public class AlarmServiceTest {
 
         assertThat(alarmRepository.findById(alarmNo).orElse(null)).isNull();
     }
+
+    @Test
+    @DisplayName("슬라이스 리스트 테스트")
+    @Transactional
+    @Rollback(value = false)
+    void findListBySlice() {
+        Pageable pageable = PageRequest.of(1, 5, Sort.Direction.DESC, "alarmNo");
+        Slice<AlarmResponseDto> slice = alarmService.findListBySlice(1L, pageable);
+        log.info("{}", slice.getContent());
+    }
+
 }

@@ -71,7 +71,7 @@ public class MessageService {
 
     @Transactional
     public Long countMessage(Long receiverNo) {
-        return messageRepository.countMessageEntitiesByReceiver(memberRepository.findById(receiverNo).orElse(null));
+        return messageRepository.countMessageEntitiesByReceiverAndMessageCheckFalse(memberRepository.findById(receiverNo).orElse(null));
     }
 
     @Transactional
@@ -81,4 +81,6 @@ public class MessageService {
                         .findById(senderNo).orElse(null), messageNo)
                 .stream().map(MessageResponseDto::new).collect(Collectors.toList());
     }
+
+
 }

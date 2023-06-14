@@ -1,4 +1,3 @@
-console.log("Alarm Module");
 var xhr = new XMLHttpRequest();
 var alarmService = (function () {
     //
@@ -48,8 +47,7 @@ var alarmService = (function () {
 
     // 사용자에 따른 알림 리스트 출력
     function getList(obj, callback, error) {
-        var url = "/api/alarm/member/" + obj.userNo + "/" + (obj.alarmNo || "");
-        // console.log(url);
+        var url = "/api/alarm/member/" + obj.userNo + "/" + (obj.pageNum ? "?page=" + obj.pageNum : "");
         $.getJSON(url)
             .done(function(data) {
                 if(callback) {
