@@ -11,6 +11,8 @@ import com.ohalfmoon.firework.persistence.DeptRepository;
 import com.ohalfmoon.firework.persistence.MemberRepository;
 import com.ohalfmoon.firework.persistence.PositionRepository;
 import com.ohalfmoon.firework.persistence.RoleRepository;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -63,6 +65,7 @@ public class MemberService {
      */
     @Transactional // springboot
     public RoleEntity register(MemberDTO memberDTO) {
+        memberDTO.setPassword(encoder.encode(memberDTO.getPassword()));
         MemberEntity entity = memberDTO.toEntity();
         DeptEntity byId = deptRepository
                 .findById(memberDTO.getDeptNo())

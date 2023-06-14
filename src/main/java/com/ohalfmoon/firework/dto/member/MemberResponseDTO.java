@@ -22,8 +22,6 @@ import java.util.Date;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class MemberResponseDTO {
     private Long userNo;
     private String username;

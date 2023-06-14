@@ -5,6 +5,7 @@ import com.ohalfmoon.firework.dto.member.MemberLoginDTO;
 import com.ohalfmoon.firework.dto.member.MemberResponseDTO;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.persistence.MemberRepository;
+import com.ohalfmoon.firework.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,16 +37,20 @@ import java.util.Collection;
 @RequiredArgsConstructor
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-    @Autowired
+
     private MemberRepository memberRepository;
+    @Autowired
+    public CustomUserDetailsService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        MemberResponseDTO dto = memberRepository.findByUsername(username);
         MemberEntity entity = memberRepository.findByUsername(username);
-//        MemberResponseDTO dto = new MemberResponseDTO(entity);
-
-        return entity == null ? null : new CustomUser(entity.getUsername(), entity.getPassword(), entity.getRoleEntity());
+        if(entity != null) {
+            return new CustomUserDetails(entity);
+        }
+        return null;
     }
 
 }
