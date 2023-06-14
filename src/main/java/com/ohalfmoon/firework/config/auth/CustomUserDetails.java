@@ -11,10 +11,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 /**
  * packageName :  com.ohalfmoon.firework.config.auth
@@ -28,77 +31,47 @@ import java.util.Date;
  * 2023-06-13                ycy             최초 생성
  */
 @Getter
-@Builder
 @NoArgsConstructor
 public class CustomUserDetails implements UserDetails {
-    private Long userNo;
 
-    private String username;
+    private Long username;    // pk값
+    private String password;    // pw
+    private boolean accountNonLocked = true; // 잠금여부
+    private boolean accountNonExpired = true; // 계정 만료 없음
+    private boolean credentialsNonExpired = true; // 비밀번호 만료 없음
+    private boolean enabled = true; // 활성화 여부
+    private Collection<? extends GrantedAuthority> authorities; // 권한목록
 
-    private String password;
-    private String email;
-    private String phoneNum;
-    private String name;
-    private boolean manager;
-    private Date birthdate;
-    private Date startdate;
-    private DeptEntity deptEntity;
-    private PositionEntity positionEntity;
-    private RoleEntity roleEntity;
+    private String realId; // id(username)
+    private String email; // email
+    private String phoneNum; // 연락처
+    private String name; // 이름
+    private boolean manager; // 관리자 여부
+    private Date birthdate; // 생일
+    private Date startdate; // 입사일
+    private DeptEntity deptEntity; // 부서
+    private PositionEntity positionEntity; // 직급
+    private RoleEntity roleEntity; // 권한
 
-//    public CustomUserDetails(MemberResponseDTO dto) {
-//        this.userNo = dto.getUserNo();
-//        this.username = dto.getUsername();
-//        this.email = dto.getEmail();
-//        this.phoneNum = dto.getPhoneNum();
-//        this.name = dto.getName();
-//        this.manager = dto.isManager();
-//        this.birthdate = dto.getBirthdate();
-//        this.startdate = dto.getStartdate();
-//        this.deptEntity = dto.getDeptEntity();
-//        this.positionEntity = dto.getPositionEntity();
-//    }
-
-
-    public CustomUserDetails(Long userNo, String username, String password, String email, String phoneNum, String name, boolean manager, Date birthdate, Date startdate, DeptEntity deptEntity, PositionEntity positionEntity, RoleEntity roleEntity) {
-        this.userNo = userNo;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.phoneNum = phoneNum;
-        this.name = name;
-        this.manager = manager;
-        this.birthdate = birthdate;
-        this.startdate = startdate;
-        this.deptEntity = deptEntity;
-        this.positionEntity = positionEntity;
-        this.roleEntity = roleEntity;
+    public String getUsername() {
+        return realId;
     }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        Collection<>
-        return null;
-    }
-
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
+    public CustomUserDetails(MemberResponseDTO dto) {
+        this.username = dto.getUserNo();
+        this.password = dto.getPassword();
+        this.realId = dto.getUsername();
+        this.email = dto.getEmail();
+        this.phoneNum = dto.getPhoneNum();
+        this.name = dto.getName();
+        this.manager = dto.isManager();
+        this.birthdate = dto.getBirthdate();
+        this.startdate = dto.getStartdate();
+        this.deptEntity = dto.getDeptEntity();
+        this.positionEntity = dto.getPositionEntity();
+        Collection<GrantedAuthority> roles =
+                Arrays.stream(dto.getRoleEntity().getRoleName().split(","))
+                        .map(role -> new SimpleGrantedAuthority(getUsername()))
+                        .collect(Collectors.toList());
+        this.authorities = roles;
     }
 }

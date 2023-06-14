@@ -135,7 +135,9 @@ public class MemberService {
     public MemberResponseDTO login (MemberLoginDTO memberLoginDTO) {
         MemberEntity entity = memberRepository.findByUsername(memberLoginDTO.getUsername());
 
-        if(entity != null && entity.getPassword().equals(memberLoginDTO.getPassword())) {
+//        if(entity != null && entity.getPassword().equals(memberLoginDTO.getPassword())) {
+        if(entity != null && encoder.matches(memberLoginDTO.getPassword(), entity.getPassword())) {
+
             return new MemberResponseDTO(entity);
         }
         return null;

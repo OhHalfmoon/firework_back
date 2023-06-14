@@ -1,7 +1,10 @@
 package com.ohalfmoon.firework.config.auth;
 
 import com.ohalfmoon.firework.dto.member.MemberLoginDTO;
+import com.ohalfmoon.firework.dto.member.MemberResponseDTO;
+import com.ohalfmoon.firework.model.MemberEntity;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
@@ -21,7 +24,6 @@ import java.util.Collection;
 @Getter
 public class CustomUser extends User {
 
-    private MemberLoginDTO memberLoginDTO;
 
     public CustomUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
