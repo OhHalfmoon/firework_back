@@ -2,24 +2,14 @@ package com.ohalfmoon.firework.service;
 
 import com.ohalfmoon.firework.dto.member.*;
 import com.ohalfmoon.firework.model.*;
-import com.ohalfmoon.firework.dto.sub.SubLineResponseDTO;
-import com.ohalfmoon.firework.model.DeptEntity;
-import com.ohalfmoon.firework.model.MemberEntity;
-import com.ohalfmoon.firework.model.PositionEntity;
-import com.ohalfmoon.firework.model.RoleEntity;
 import com.ohalfmoon.firework.persistence.DeptRepository;
 import com.ohalfmoon.firework.persistence.MemberRepository;
 import com.ohalfmoon.firework.persistence.PositionRepository;
 import com.ohalfmoon.firework.persistence.RoleRepository;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 /**
@@ -67,6 +57,7 @@ public class MemberService {
     public RoleEntity register(MemberDTO memberDTO) {
         memberDTO.setPassword(encoder.encode(memberDTO.getPassword()));
         MemberEntity entity = memberDTO.toEntity();
+
         DeptEntity byId = deptRepository
                 .findById(memberDTO.getDeptNo())
                 .orElseThrow(() -> new IllegalArgumentException(""));
@@ -159,11 +150,4 @@ public class MemberService {
     public MemberEntity get(final String username) {
         return memberRepository.findByUsername(username);
     }
-
-   // get member list
-    public List<MemberResponseDTO> getMemberList() {
-        return memberRepository.findAll()
-                .stream().map(MemberResponseDTO::new).collect(Collectors.toList());
-    }
-
 }
