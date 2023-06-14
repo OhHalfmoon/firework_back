@@ -32,8 +32,8 @@ public class IndexController {
 
     @GetMapping
     public String index(HttpSession session, @AuthenticationPrincipal CustomUserDetails details, Model model) {
-        model.addAttribute("member", details);
-        log.info("security session : {}", model.getAttribute("member"));
+        model.addAttribute("user", details);
+        log.info("security session : {}", model.getAttribute("user"));
         log.info("session :{}", session.getAttribute("member"));
         return "index";
     }
