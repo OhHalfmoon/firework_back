@@ -42,7 +42,9 @@
                         <div class="card">
                             <div class="card-header">
                                 <button type="button" class="btn btn-outline-secondary btn-sm float-right ml-3">수정</button>
-                                <button type="button" class="btn btn-outline-secondary btn-sm float-right ml-3">삭제</button>
+                                <form id="deleteFrm" method="DELETE" >
+                                    <button type="button" class="btn btn-outline-secondary btn-sm float-right ml-3" id="deleteLine">삭제</button>
+                                </form>
                                 <button type="button" class="btn btn-outline-secondary btn-sm float-right">추가</button>
                             </div>
                             <!-- /.card-header -->
@@ -60,17 +62,15 @@
                                     </thead>
                                     <tbody>
                                     {{#masterList}}
-                                    <tr>
+                                    <tr class="myLine data-lineNo={{lineNo}}">
                                         <td>{{lineName}}</td>
-
-
-                                        <td>{{name}}</td>
-                                        {{#subLineList}}
-                                            <td> [{{positionName}}] [{{deptName}}] {{name}} </td>
-                                        {{/subLineList}}
+                                        <td>{{userName}}</td>
+                                        {{#subLineResponseDTOS}}
+                                            <td> [{{deptName}}] [{{positionName}}] {{#name}}{{name}}{{/name}}{{^name}}{{-}}{{/name}}</td>
+                                        {{/subLineResponseDTOS}}
                                         <td><!-- checkbox -->
                                             <div class="icheck-primary d-inline ml-2 mx-auto">
-                                                <input class="mx-auto" type="radio" id="todoCheck{{lineNo}}" name="todo" value="{{lineNo}}">
+                                                <input class="mx-auto ckBox" type="radio" name="pickRadio" id="todoCheck{{lineNo}}" value="{{lineNo}}">
                                                 <label for="todoCheck{{lineNo}}"></label>
                                             </div>
                                         </td>
@@ -91,6 +91,7 @@
         </section>
 
         <!-- /.content -->
+
         <section class="content">
             <div class="container-fluid">
                 <form method="post">
@@ -113,48 +114,48 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td><input type="text" name="lineName"></td>
-                                                <input type="hidden" name="userNo">
+                                        <tr>
+                                            <td><input type="text" name="lineName"></td>
+                                            <input type="hidden" name="userNo">
                                             <td>
                                                 {{#masterList}}
-                                                <div name="{{lineNo}}">{{name}}</div>
+                                                    <div name="{{!lineNo}}">{{!userName}}</div>
                                                 {{/masterList}}
                                             </td>
-                                                <td>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <select class="custom-select" name="subLine1">
+                                            <td>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <select class="custom-select" name="userNos[0]">
                                                             {{#memberList}}
                                                                 <option value="{{userNo}}">[{{deptName}}] [{{positionName}}] {{name}}</option>
                                                             {{/memberList}}
-                                                            </select>
-                                                        </div>
+                                                        </select>
                                                     </div>
-                                                </td>
-                                                <td>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <select class="custom-select" id="masterLine" name="subLine2">
-                                                                {{#memberList}}
-                                                                    <option value="{{userNo}}">[{{deptName}}] [{{positionName}}] {{name}}</option>
-                                                                {{/memberList}}
-                                                            </select>
-                                                        </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <select class="custom-select" id="masterLine" name="userNos[1]">
+                                                            {{#memberList}}
+                                                                <option value="{{userNo}}">[{{deptName}}] [{{positionName}}] {{name}}</option>
+                                                            {{/memberList}}
+                                                        </select>
                                                     </div>
-                                                </td>
-                                                <td>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <select class="custom-select" name="subLine3">
-                                                                {{#memberList}}
-                                                                    <option value="{{userNo}}">[{{deptName}}] [{{positionName}}] {{name}}</option>
-                                                                {{/memberList}}
-                                                            </select>
-                                                        </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <select class="custom-select" name="userNos[2]">
+                                                            {{#memberList}}
+                                                                <option value="{{userNo}}">[{{deptName}}] [{{positionName}}] {{name}}</option>
+                                                            {{/memberList}}
+                                                        </select>
                                                     </div>
-                                                </td>
-                                            </tr>
+                                                </div>
+                                            </td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -169,6 +170,7 @@
             </div>
             <!-- /.container-fluid -->
         </section>
+
     </div>
     <!-- /.content-wrapper -->
     {{>layout/footer}}
@@ -177,12 +179,46 @@
 <!-- ./wrapper -->
 {{>layout/library}}
     <script>
-        let val = $("#addBtn").val();
-        $("#addBtn").click(function () {
-            console.log("클릭됨")
-            console.log(val)
-        })
+        $(function (){
+            $("#deleteLine").click(function(){
+                if($('input:radio[name="pickRadio"]:checked').length === 0){
+                    alert("삭제할 결재선을 선택해주세요.");
+                    return;
+                }
+            })
 
+            $(".ckBox").click(function (){
+                let lineNo = this.value;
+                console.log(lineNo)
+
+                $("#deleteLine").click(function(e){
+                    e.preventDefault();
+                    $("#deleteFrm").attr("action", "/line/delete/"+lineNo);
+                    $("#deleteFrm").attr("method", "DELETE");
+                    $("#deleteFrm").submit();
+
+
+
+                    // $('input:radio[name="pickRadio"]:checked').closest("tr").remove();
+                    // $.ajax({
+                    //     url: "/line/delete" + "?lineNo=" + lineNo,
+                    //     method: "DELETE",
+                    //     dataType: "json",
+                    //     success : function (data) {
+                    //         console.log(data)
+                    //         if(data == 1) {
+                    //             alert("삭제되었습니다.");
+                    //         }
+                    //     }
+                    // })
+                })
+
+            })
+
+
+
+
+        })
 
 
 

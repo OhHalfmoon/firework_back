@@ -1,12 +1,15 @@
 package com.ohalfmoon.firework.dto.master;
 
 
+import com.ohalfmoon.firework.dto.sub.SubLineResponseDTO;
 import com.ohalfmoon.firework.model.FormEntity;
 import com.ohalfmoon.firework.model.MasterLineEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
+import com.ohalfmoon.firework.model.SubLineEntity;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * packageName    : com.ohalfmoon.firework.dto.master
@@ -29,15 +32,18 @@ public class MasterLineResponseDTO {
     private Long lineNo;
     private String lineName;
     private Long userNo;
-    private LocalDateTime regdate;
-    private String name;
+    private String userName;
+    @Setter
+    private List<SubLineResponseDTO> subLineResponseDTOS;
+//    private LocalDateTime regdate;
+//    private String name;
 
     public MasterLineResponseDTO(final MasterLineEntity entity) {
-        this.lineNo = entity.getLineNo();
-        this.lineName = entity.getLineName();
-        this.userNo = entity.getMemberEntity().getUserNo();
-        this.regdate = entity.getRegdate();
-        this.name = entity.getMemberEntity().getName();
+        lineNo = entity.getLineNo();
+        lineName = entity.getLineName();
+        userNo = entity.getMemberEntity().getUserNo();
+//        this.regdate = entity.getRegdate();
+        userName = entity.getMemberEntity().getName();
     }
 
     public MasterLineEntity toEntity(){
@@ -45,5 +51,4 @@ public class MasterLineResponseDTO {
                 .lineNo(lineNo)
                 .build();
     }
-
 }

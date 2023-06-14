@@ -53,7 +53,7 @@ public class FormViewController {
     @GetMapping
     public String list(
             Optional<String> formName,
-            @PageableDefault(size = 10, page = 1)
+            @PageableDefault(page = 1)
             @SortDefault.SortDefaults({
                     @SortDefault(sort = "formNo", direction = Sort.Direction.DESC)
             })
@@ -84,5 +84,14 @@ public class FormViewController {
         Long save = formService.save(saveDto);
 
         return "redirect:/admin/form/detail/" + save;
+    }
+
+    @GetMapping("/update/{formNo}")
+    public String updateForm(@PathVariable Long formNo, Model model) {
+        FormResponseDto formDto = formService.findByFormNo(formNo);
+
+        model.addAttribute("formDto", formDto);
+
+        return "admin/form/form-update";
     }
 }
