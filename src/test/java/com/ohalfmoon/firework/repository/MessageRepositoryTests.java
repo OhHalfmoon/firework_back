@@ -99,7 +99,7 @@ public class MessageRepositoryTests {
 
     @Test
     public void countMessageTest(){
-        Long count = messageRepository.countMessageEntitiesByReceiver(memberRepository.findById(1L).orElse(null));
+        Long count = messageRepository.countMessageEntitiesByReceiverAndMessageCheckFalse(memberRepository.findById(1L).orElse(null));
         log.info("{}", count);
     }
 }

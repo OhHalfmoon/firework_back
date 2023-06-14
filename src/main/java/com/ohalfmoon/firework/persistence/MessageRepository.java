@@ -2,6 +2,7 @@ package com.ohalfmoon.firework.persistence;
 
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.MessageEntity;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -20,7 +21,9 @@ import java.util.List;
 public interface MessageRepository extends JpaRepository<MessageEntity, Long> {
     List<MessageEntity> findTop5ByReceiverAndMessageNoLessThanOrderByMessageNoDesc(MemberEntity receiver, Long last);
 
+    List<MessageEntity> findAllByReceiverOrderByMessageNoDesc(MemberEntity receiver, Pageable pageable);
+
     List<MessageEntity> findTop5BySenderAndMessageNoLessThanOrderByMessageNoDesc(MemberEntity sender, Long last);
 
-    Long countMessageEntitiesByReceiver(MemberEntity receiver);
+    Long countMessageEntitiesByReceiverAndMessageCheckFalse(MemberEntity receiver);
 }
