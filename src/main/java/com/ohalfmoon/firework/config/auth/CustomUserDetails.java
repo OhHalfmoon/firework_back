@@ -30,7 +30,6 @@ import java.util.Date;
 @ToString
 public class CustomUserDetails implements UserDetails {
 
-    // private MemberEntity user;
     private String username;
     private String password;
     private String name;
@@ -62,21 +61,6 @@ public class CustomUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Arrays.asList(new SimpleGrantedAuthority("ROLE_MEMBER"));
     }
-
-//    @Override
-//    public String getUsername() {
-//        return user.getUsername();
-//    }
-//
-//    public String getName() {
-//        return user.getName();
-//    }
-//
-//    @Override
-//    public String getPassword() {
-//        return user.getPassword();
-//    }
-
 
     @Override
     public boolean isAccountNonExpired() {

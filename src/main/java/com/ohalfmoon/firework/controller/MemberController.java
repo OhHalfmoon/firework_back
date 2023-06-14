@@ -55,6 +55,8 @@ public class MemberController {
     @Autowired
     private HttpSession session;
 
+    String redirect = "redirect:/";
+
     /**
      * 회원가입 (Get)
      * 가입시 필요한 deptList, positionList 출력
@@ -78,7 +80,7 @@ public class MemberController {
     @PostMapping("signup")
     public String register(MemberDTO memberDTO) {
         memberService.register(memberDTO);
-        return "redirect:/auth/signin";
+        return redirect+"auth/signin";
     }
 
     @GetMapping("signin")
@@ -93,11 +95,10 @@ public class MemberController {
     @PostMapping("signin")
     public String login(MemberLoginDTO dto, Model model) {
         MemberResponseDTO member = memberService.login(dto);
-        String result = "redirect:/";
         if(member == null) {
-            return result+"auth/signin";
+            return redirect+"auth/signin";
         }else {
-            return result;
+            return redirect;
         }
 
     }
@@ -127,18 +128,40 @@ public class MemberController {
         model.addAttribute("user", details);
     }
 
+    /**
+     * 회원 정보 확인
+     *
+     * @param details the details
+     * @param model   the model
+     */
     @GetMapping("userinfo")
-    public void userInfo(@AuthenticationPrincipal CustomUserDetails details, Model model, HttpSession session){
+    public void userInfo(@AuthenticationPrincipal CustomUserDetails details, Model model){
         model.addAttribute("user", details);
         log.info("session : {}", model.addAttribute("user", details));
         log.info("session : {}", details);
     }
 
+    /**
+     * 회원정보수정 중 기본 회원값 입력
+     *
+     * @param model   the model
+     * @param details the details
+     */
     @GetMapping("modify")
-    public void modify(Model model) {
-        model.addAttribute("user", session.getAttribute("member"));
+    public void modify(Model model, @AuthenticationPrincipal CustomUserDetails details) {
+        model.addAttribute("user", details);
         model.addAttribute("dept", deptService.deptList());
         model.addAttribute("position", positionService.positionList());
+    }
+
+    /**
+     * 회원정보 수정 중 입력한 값을 받아 회원 정보 수정
+     *
+     * @return login page return
+     */
+    @PostMapping("modify")
+    public String modify() {
+        return redirect;
     }
 
 }
