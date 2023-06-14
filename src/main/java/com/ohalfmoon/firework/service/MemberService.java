@@ -11,6 +11,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 /**
  * packageName :  com.ohalfmoon.firework.service
@@ -149,5 +152,10 @@ public class MemberService {
      */
     public MemberEntity get(final String username) {
         return memberRepository.findByUsername(username);
+    }
+
+    public List<MemberResponseDTO> getMemberList() {
+        return memberRepository.findAll()
+                .stream().map(MemberResponseDTO::new).collect(Collectors.toList());
     }
 }

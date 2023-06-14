@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -49,6 +50,7 @@ public class ApprovalControllerTest {
         String approContent = "서비스테스트작성중";
         Long userNo = 1L;
         int approvalState = 0;
+        Date regdate = new Date();
         ApprovalSaveDto saveDto = ApprovalSaveDto.builder()
                 .approvalName(approvalName)
                 .formNo(formNo)
@@ -57,6 +59,7 @@ public class ApprovalControllerTest {
                 .approContent(approContent)
                 .userNo(userNo)
                 .approvalState(approvalState)
+                .regdate(regdate)
                 .build();
 
         String url = "http://localhost:" + port + "/approval/";
@@ -73,6 +76,7 @@ public class ApprovalControllerTest {
         assertThat(all.get(2).getApproContent()).isEqualTo(approContent);
         assertThat(all.get(2).getMemberEntity().getUserNo()).isEqualTo(userNo);
         assertThat(all.get(2).getApprovalState()).isEqualTo(approvalState);
+        assertThat(all.get(2).getRegdate()).isEqualTo(regdate);
     }
 
     @Test
@@ -85,6 +89,7 @@ public class ApprovalControllerTest {
                 .approContent("컨트롤러기안상태변경테스트기안")
                 .memberEntity(MemberEntity.builder().userNo(1L).build())
                 .approvalState(0)
+                .regdate(new Date())
                 .build());
 
         Long updateId = updateState.getApprovalNo();
@@ -113,6 +118,7 @@ public class ApprovalControllerTest {
                 .approContent("컨트롤러기안")
                 .memberEntity(MemberEntity.builder().userNo(1L).build())
                 .approvalState(0)
+                .regdate(new Date())
                 .build());
 
         Long updateId = update.getApprovalNo();

@@ -9,6 +9,7 @@ import com.ohalfmoon.firework.dto.dept.DeptListResponseDTO;
 import com.ohalfmoon.firework.dto.docbox.DocboxListResponseDTO;
 import com.ohalfmoon.firework.service.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +33,7 @@ import java.util.List;
 //@RestController
 @Controller
 @RequestMapping("/approval")
+@Slf4j
 public class ApprovalContoller {
 
     @Autowired
@@ -50,10 +52,13 @@ public class ApprovalContoller {
     private DeptService deptService;
     @Autowired
     private  DocboxService docboxService;
+
     // 기안 등록
-    @PostMapping("/")
-    public Long register( @RequestBody ApprovalSaveDto saveDto) {
-        return approvalService.register(saveDto);
+    @PostMapping("/write/{formNo}")
+    public String register(@ModelAttribute ApprovalSaveDto saveDto) {
+        log.info("{}",saveDto);
+        approvalService.register(saveDto);
+        return "redirect:/";
     }
 
     //상태값 변경 : 임시저장후 기안제출 / 결재완료처리
@@ -69,8 +74,11 @@ public class ApprovalContoller {
     }
 
     @GetMapping("/{approvalNo}")
-    public ApprovalResponseDto get (@PathVariable Long approvalNo) {
-        return approvalService.get(approvalNo);
+    public String get (@PathVariable Long approvalNo, Model model) {
+        ApprovalResponseDto approvalGet = approvalService.get(approvalNo);
+
+        model.addAttribute("approvalGet", approvalGet);
+        return "approval/get";
     }
 
     @GetMapping("/list/{userNo}")
@@ -85,18 +93,21 @@ public class ApprovalContoller {
         return "approval/formList";
     }
 
-    @GetMapping("/write")
-    public void write(Model model) {
+    @GetMapping("/write/{formNo}")
+    public String write(@PathVariable Long formNo, Model model) {
         model.addAttribute("position", positionService.positionList());
         model.addAttribute("masterList", masterLineService.getList(1L) );
         model.addAttribute("masterName", masterLineService.getMasterName(1L));
         model.addAttribute("subLineList", subLineService.getListByLineNo(1L));
         model.addAttribute("subMemberName", subLineService);
+        model.addAttribute("formDetail", formService.findByFormNo(formNo));
 
         List<DeptListResponseDTO> deptListResponseDTOS = deptService.deptList();
         model.addAttribute("deptList", deptListResponseDTOS);
         List< DocboxListResponseDTO> docboxListResponseDTOS = docboxService.docboxList();
         model.addAttribute("docboxList", docboxListResponseDTOS);
-//        model.addAttribute("member", memberService);
+        log.info("{}",formNo);
+        return "approval/write";
+
     }
 }

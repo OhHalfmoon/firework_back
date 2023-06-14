@@ -93,13 +93,50 @@
                         <div class="row">
                             <div class="col">작성</div>
                         </div>
+<!--                        기안 작성되는 부분 -->
+                            <section class="content" id="detailcheck">
+                                <div class="container-fluid">
+                                    <div class="card card-default color-palette-box">
+                                        <div class="card-header">
+                                            <h3 class="card-title">
+                                                {{formDetail.formName}}
+                                            </h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="col-12 mb-4">
+                                                <div class="col-sm-12 col-md-12">
+                                                    <div id="toolbar-container"></div>
+                                                    <div id="editor">{{{formDetail.formText}}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
                     </div>
                 </div>
+                    <div class="col-2">
+                        <input type="hidden" class="form-control approContent" name="approContent" readonly>
+                        <input type="hidden" class="form-control approvalState" name="approvalState" readonly>
+                        <input type="hidden" class="form-control userNo" name="userNo" readonly>
+                        <button class="btn btn-secondary btn-block" id="storage" type="submit">임시저장</button>
+                    </div>
                 </form>
+                <br>
+<!--                <div class="col-2">-->
+<!--                    <input type="hidden" class="form-control approContent" name="approContent" readonly>-->
+<!--                    <input type="hidden" class="form-control approvalState" name="approvalState" readonly>-->
+<!--                    <input type="hidden" class="form-control userNo" name="userNo" readonly>-->
+<!--                    <button class="btn btn-secondary btn-block" id="storage" type="submit">임시저장</button>-->
+<!--                </div>-->
+                <br>
+                <br>
             </div>
         </section>
         <!-- /.content -->
     </div>
+
+
     <!-- /.content-wrapper -->
     {{>layout/footer}}
 
@@ -166,6 +203,18 @@
 
 </body>
 <script>
+    let data;
+    let editor;
+
+    DecoupledEditor
+            .create( document.querySelector( '#editor' ) )
+            .then( createdEditor => {
+                editor = createdEditor;
+                const toolbarContainer = document.querySelector( '#toolbar-container' );
+
+                toolbarContainer.appendChild( editor.ui.view.toolbar.element );
+            });
+
     $(function () {
         $(".ckBox").click(function (){
             // console.log(this)
@@ -189,6 +238,21 @@
                 $(".modal").modal("hide");
             });
         })
+
+        $("#storage").click(function (){
+            console.log("성공")
+            console.log($("#detailcheck").data());
+            console.log($("#detailcheck").value);
+            const editText = editor.getData();
+            console.log(editText);
+            var state = 0;
+            var user = 1;
+            $(".approvalState").val(state);
+            $(".userNo").val(user);
+            $(".approContent").val(editText);
+            // console.log($("#testtest").value);
+
+        });
 
     })
 </script>

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Date;
 import java.util.List;
 /**
  * packageName    : com.ohalfmoon.firework.repository
@@ -32,6 +33,8 @@ public class ApprovalRepositoryTests {
                         .docboxEntity(DocboxEntity.builder().docboxNo(1L).build())
                         .approContent("가나다라마바사아자차카타파하")
                         .memberEntity(MemberEntity.builder().userNo(1L).build())
+                        .approvalState(0)
+                        .regdate(new Date())
                 .build());
     }
 
