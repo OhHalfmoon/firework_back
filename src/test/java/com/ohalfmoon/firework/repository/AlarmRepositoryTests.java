@@ -51,7 +51,6 @@ public class AlarmRepositoryTests {
                 .alarmTitle("테스트결재안알림14")
                 .alarmReceiver(memberRepository.findById(1L).orElse(null))
                 .alarmTitle("테스트결재안알림3")
-                .alarmReceiver(MemberEntity.builder().userNo(1L).build())
                 .alarmCategory("결제요청")
                 .boardNo(null)
                 .approvalNo(approvalRepository.findById(3L).orElse(null))
@@ -79,12 +78,12 @@ public class AlarmRepositoryTests {
     }
 
     @Test
-    public void findTop5ByAlarmReceiverAndAlarmNoGreaterThanOrderByRegdateDescTest() {
+    public void findTop5ByAlarmReceiverAndAlarmNoLessThanOrderByAlarmNoDescTest() {
         Long userNo = 1L;
 
         List<AlarmEntity> alarmEntityList =
                 alarmRepository.
-                        findTop5ByAlarmReceiverAndAlarmNoGreaterThanOrderByRegdateDesc(memberRepository.
+                        findTop5ByAlarmReceiverAndAlarmNoLessThanOrderByAlarmNoDesc(memberRepository.
                                 findById(userNo).orElse(null), 55L);
 
         log.info("{}", alarmEntityList);

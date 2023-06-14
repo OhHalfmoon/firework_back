@@ -82,7 +82,7 @@ public class AlarmServiceTest {
     @Test
     @DisplayName("리스트조회 테스트")
     @Transactional
-    void findTop5ByAlarmReceiverAndAlarmNoGreaterThanOrderByRegdateDescTest() {
+    void findTop5ByAlarmReceiverAndAlarmNoLessThanOrderByAlarmNoDescTest() {
         List<AlarmResponseDto> list = alarmService.findTop5ByAlarmReceiver(1L, 55L);
         log.info("{}", list);
     }

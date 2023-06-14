@@ -3,11 +3,15 @@ package com.ohalfmoon.firework.controller;
 import com.ohalfmoon.firework.dto.AlarmResponseDto;
 import com.ohalfmoon.firework.dto.AlarmSaveDto;
 import com.ohalfmoon.firework.dto.member.MemberDTO;
+import com.ohalfmoon.firework.dto.member.MemberLoginDTO;
 import com.ohalfmoon.firework.service.AlarmService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -34,7 +38,8 @@ public class AlarmApiController {
 
     // 사용자의 따른 알림 리스트 출력
     @GetMapping({"/member/{userNo}","/member/{userNo}/{alarmNo}"})
-    public List<AlarmResponseDto>findTop5ByAlarmReceiver(@PathVariable Long userNo, @PathVariable(required = false) Optional<Long> alarmNo) {
+    public List<AlarmResponseDto>findTop5ByAlarmReceiver(@AuthenticationPrincipal MemberLoginDTO memberLoginDTO, @PathVariable Long userNo, @PathVariable(required = false) Optional<Long> alarmNo) {
+        log.info("{}", memberLoginDTO);
         return alarmService.findTop5ByAlarmReceiver(userNo, alarmNo.orElse(0L));
     }
 

@@ -45,7 +45,7 @@ public class AlarmService {
     @Transactional
     public List<AlarmResponseDto>findTop5ByAlarmReceiver(Long userNo, Long alarmNo) {
        return alarmRepository
-                .findTop5ByAlarmReceiverAndAlarmNoGreaterThanOrderByRegdateDesc(memberRepository.findById(userNo).orElse(null), alarmNo)
+                .findTop5ByAlarmReceiverAndAlarmNoLessThanOrderByAlarmNoDesc(memberRepository.findById(userNo).orElse(null), alarmNo)
                         .stream().map(AlarmResponseDto::new).collect(Collectors.toList());
     }
 
