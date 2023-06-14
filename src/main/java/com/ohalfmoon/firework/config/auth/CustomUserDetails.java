@@ -1,26 +1,18 @@
 package com.ohalfmoon.firework.config.auth;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ohalfmoon.firework.dto.member.MemberLoginDTO;
-import com.ohalfmoon.firework.dto.member.MemberResponseDTO;
 import com.ohalfmoon.firework.model.DeptEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.PositionEntity;
-import com.ohalfmoon.firework.model.RoleEntity;
-import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 /**
  * packageName :  com.ohalfmoon.firework.config.auth
@@ -38,25 +30,52 @@ import java.util.stream.Collectors;
 @ToString
 public class CustomUserDetails implements UserDetails {
 
-    private MemberEntity user;
+    // private MemberEntity user;
+    private String username;
+    private String password;
+    private String name;
+    private String email;
+    private Long userNo;
+    private String phoneNum;
+    private DeptEntity deptEntity;
+    private PositionEntity positionEntity;
+    private boolean manager;
+    private Date birthdate;
+    private Date Startdate;
+
 
     public CustomUserDetails(MemberEntity user) {
-        this.user = user;
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.name = user.getName();
+        this.email = user.getEmail();
+        this.userNo = user.getUserNo();
+        this.phoneNum = user.getPhoneNum();
+        this.deptEntity = user.getDeptEntity();
+        this.positionEntity = user.getPositionEntity();
+        this.manager = user.isManager();
+        this.birthdate = user.getBirthdate();
+        this.Startdate = user.getStartdate();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Arrays.asList(new SimpleGrantedAuthority("ROLE_MEMBER"));
     }
-    @Override
-    public String getUsername() {
-        return user.getUsername();
-    }
 
-    @Override
-    public String getPassword() {
-        return user.getPassword();
-    }
+//    @Override
+//    public String getUsername() {
+//        return user.getUsername();
+//    }
+//
+//    public String getName() {
+//        return user.getName();
+//    }
+//
+//    @Override
+//    public String getPassword() {
+//        return user.getPassword();
+//    }
 
 
     @Override
@@ -79,44 +98,5 @@ public class CustomUserDetails implements UserDetails {
         return true;
     }
 
-    //    private Long username;    // pk값
-//    private String password;    // pw
-//    private boolean accountNonLocked = true; // 잠금여부
-//    private boolean accountNonExpired = true; // 계정 만료 없음
-//    private boolean credentialsNonExpired = true; // 비밀번호 만료 없음
-//    private boolean enabled = true; // 활성화 여부
-//    private Collection<? extends GrantedAuthority> authorities; // 권한목록
-//
-//    private String realId; // id(username)
-//    private String email; // email
-//    private String phoneNum; // 연락처
-//    private String name; // 이름
-//    private boolean manager; // 관리자 여부
-//    private Date birthdate; // 생일
-//    private Date startdate; // 입사일
-//    private DeptEntity deptEntity; // 부서
-//    private PositionEntity positionEntity; // 직급
-//    private RoleEntity roleEntity; // 권한
-//
-//    public String getUsername() {
-//        return realId;
-//    }
-//    public CustomUserDetails(MemberResponseDTO dto) {
-//        this.username = dto.getUserNo();
-//        this.password = dto.getPassword();
-//        this.realId = dto.getUsername();
-//        this.email = dto.getEmail();
-//        this.phoneNum = dto.getPhoneNum();
-//        this.name = dto.getName();
-//        this.manager = dto.isManager();
-//        this.birthdate = dto.getBirthdate();
-//        this.startdate = dto.getStartdate();
-//        this.deptEntity = dto.getDeptEntity();
-//        this.positionEntity = dto.getPositionEntity();
-//        Collection<GrantedAuthority> roles =
-//                Arrays.stream(dto.getRoleEntity().getRoleName().split(","))
-//                        .map(role -> new SimpleGrantedAuthority(getUsername()))
-//                        .collect(Collectors.toList());
-//        this.authorities = roles;
-//    }
+
 }

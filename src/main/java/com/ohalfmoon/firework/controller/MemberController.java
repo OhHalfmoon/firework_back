@@ -1,5 +1,6 @@
 package com.ohalfmoon.firework.controller;
 
+import com.ohalfmoon.firework.config.auth.CustomUserDetails;
 import com.ohalfmoon.firework.dto.member.MemberDTO;
 import com.ohalfmoon.firework.dto.member.MemberLoginDTO;
 import com.ohalfmoon.firework.dto.member.MemberResponseDTO;
@@ -9,6 +10,7 @@ import com.ohalfmoon.firework.service.PositionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -112,23 +114,24 @@ public class MemberController {
 
     /**
      * 로그아웃
-     *
-     * @param session the session
-     * @return redirect:/auth/signin
+     * security 추가로 인해 사용안하게됨
      */
-    @GetMapping("signout")
-    public String signout(HttpSession session) {
-        session.invalidate();
-        return "redirect:/auth/signin";
-    }
+//    @GetMapping("signout")
+//    public String signout(HttpSession session) {
+//        session.invalidate();
+//        return "redirect:/auth/signin";
+//    }
 
     @GetMapping("mypage")
-    public void mypage() {}
+    public void mypage(@AuthenticationPrincipal CustomUserDetails details, Model model) {
+        model.addAttribute("user", details);
+    }
 
     @GetMapping("userinfo")
-    public void userInfo(@AuthenticationPrincipal MemberLoginDTO memberLoginDTO, Model model, HttpSession session){
-        model.addAttribute("user", session.getAttribute("member"));
-        log.info("session : {}", session.getAttribute("member"));
+    public void userInfo(@AuthenticationPrincipal CustomUserDetails details, Model model, HttpSession session){
+        model.addAttribute("user", details);
+        log.info("session : {}", model.addAttribute("user", details));
+        log.info("session : {}", details);
     }
 
     @GetMapping("modify")
