@@ -19,6 +19,7 @@
 <script src="{{contextPath}}/plugins/jquery-knob/jquery.knob.min.js"></script>
 <!-- daterangepicker -->
 <script src="{{contextPath}}/plugins/moment/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/locale/ko.js"></script>
 <script src="{{contextPath}}/plugins/daterangepicker/daterangepicker.js"></script>
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="{{contextPath}}/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
@@ -40,33 +41,65 @@
 <script src="/dist/js/alarm.js"></script>
 <script>
     $(function() {
-        var alarmNo = 1;
+        var userNo = 1;
         moment.locale('ko');
-        alarmService.getList(alarmNo, function (result) {
-            var length = 0;
-            for (var i in result) {
-                console.log(result[i].alarmCheck);
-                if(result[i].alarmCheck == false) {
-                    length += 1;
-                }
-            }
-            $(".alarmcount").html(length);
+        alarmService.getCount(userNo, function (result) {
+            $(".alarmcount").html(result);
+        })
+
+        alarmService.getList({userNo:userNo}, function (result) {
             var str = "";
-            for (var j in result) {
+            for (var i in result) {
                 str += getAlarmLiStr(result[i]);
             }
-            str += `<div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item dropdown-footer">더보기</a>`
-            $(".alarm").html(str);
+            $(".alarms").html(str);
         });
 
         function getAlarmLiStr(obj) {
-            return `<div class="dropdown-divider" data-alarmno="${obj.alarmNo}"></div>
-				<a href="#" class="dropdown-item">
-                ${obj.alarmTitle}
-				<span class="float-right text-muted text-sm">${moment(obj.regdate).fromNow()}</span>
-                </a>
-				`;
+                return `<div class="alarm-divider dropdown-divider" data-alarmno="${obj.alarmNo}"></div>
+				    <a href="#" class="alarm dropdown-item" data-alarmno="${obj.alarmNo}" style="background: lightgrey">
+                    ${obj.alarmTitle}
+				    <span class="float-right text-muted text-sm">${moment(obj.regdate).fromNow()}</span>
+                    </a>
+				    `;
+
         }
+
+        // $(".alarm").on("click", "a", function () {
+        //     event.preventDefault();
+        //     var $this = $(this);
+        //     console.log($this);
+        //     var obj = {alarmNo: $this.data("alarmno"), alarmCheck: true}
+        //     alarmService.modify(obj, function (result) {
+        //         // console.log(result);
+        //     });
+        // });
+
+        $(".alarms").on("click", ".alarm", function () {
+            event.stopPropagation();
+            var $this = $(this);
+            var alarmNo = $this.data("alarmno");
+            alarmService.remove(alarmNo, function (result) {
+                // console.log(result);
+            });
+        });
+
+        $(".btn-more").on("click", function () {
+                event.stopPropagation();
+            var alarmNo = $(".alarms .alarm-divider:last").data("alarmno");
+            console.log(alarmNo);
+            alarmService.getList({userNo:userNo, alarmNo:alarmNo}, function(result){
+                console.log(result);
+                if(!result.length) {
+                    $(".btn-more").prop("disabled", true);
+                    return;
+                }
+                var str = "";
+                for(var i in result) {
+                    str += getAlarmLiStr(result[i]);
+                }
+                $(".alarms").append(str);
+            });
+        })
     });
 </script>
