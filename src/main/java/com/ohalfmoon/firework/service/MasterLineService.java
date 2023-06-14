@@ -3,14 +3,19 @@ import com.ohalfmoon.firework.dto.AlarmResponseDto;
 import com.ohalfmoon.firework.dto.master.MasterLineResponseDTO;
 import com.ohalfmoon.firework.dto.master.MasterLineSaveDTO;
 import com.ohalfmoon.firework.dto.master.MasterLineUpdateDTO;
+import com.ohalfmoon.firework.dto.sub.SubLineResponseDTO;
 import com.ohalfmoon.firework.model.MasterLineEntity;
+import com.ohalfmoon.firework.model.MemberEntity;
+import com.ohalfmoon.firework.model.SubLineEntity;
 import com.ohalfmoon.firework.persistence.MasterLineRepository;
 import com.ohalfmoon.firework.persistence.MemberRepository;
+import com.ohalfmoon.firework.persistence.SubLineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -33,9 +38,18 @@ public class MasterLineService {
     @Autowired
     private MemberRepository memberRepository;
 
+    @Autowired
+    private SubLineRepository subLineRepository;
+
     @Transactional
     public Long save(MasterLineSaveDTO dto) {
-        return masterLineRepository.save(dto.toEntity()).getLineNo();
+        MasterLineEntity mle = masterLineRepository.save(dto.toEntity());
+        AtomicInteger idx = new AtomicInteger(1);
+        List<SubLineEntity> subLineEntities = dto.getUserNos().stream().map(userNo ->
+            SubLineEntity.builder().orderLevel(idx.getAndIncrement()).masterLineEntity(mle).memberEntity(MemberEntity.builder().userNo(userNo).build()).build()
+        ).collect(Collectors.toList());
+        subLineRepository.saveAll(subLineEntities);
+        return mle.getLineNo();
     }
 
     // lineNo를 통한 단일 조회
@@ -51,7 +65,12 @@ public class MasterLineService {
     // userNo를 통한 리스트 조회
     public List<MasterLineResponseDTO> getList(Long userNo) {
         return masterLineRepository.findByMemberEntity_UserNo(userNo)
-                .stream().map(MasterLineResponseDTO::new).collect(Collectors.toList());
+                .stream().map((masterLineEntity) -> {
+                  MasterLineResponseDTO masterLineResponseDTO = new MasterLineResponseDTO(masterLineEntity);
+                    masterLineResponseDTO.setSubLineResponseDTOS(subLineRepository.findAllByMasterLineEntity_LineNo(masterLineEntity.getLineNo()).stream().map(SubLineResponseDTO::new).collect(Collectors.toList()));
+                    return masterLineResponseDTO;
+                })
+                .collect(Collectors.toList());
     }
 
     public String getMasterName(Long userNo) {
@@ -72,6 +91,7 @@ public class MasterLineService {
         MasterLineEntity entity = masterLineRepository
                 .findById(lineNo)
                 .orElseThrow(() -> new IllegalArgumentException("결재 선이 존재하지 않습니다"));
+        List<SubLineEntity> subLineEntities = subLineRepository.findAllByMasterLineEntity_LineNo(lineNo);
         masterLineRepository.delete(entity);
 
     }

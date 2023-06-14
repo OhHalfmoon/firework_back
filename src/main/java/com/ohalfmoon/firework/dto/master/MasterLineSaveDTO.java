@@ -21,19 +21,17 @@ import java.util.List;
  */
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @ToString
 public class MasterLineSaveDTO {
-    private Long lineNo;
     private String lineName;
     private Long userNo;
-    private List<SubLineSaveDTO> subLineSaveDTOS;
-
+    private List<Long> userNos;
 
     public MasterLineSaveDTO(final MasterLineEntity entity) {
-        this.lineNo = entity.getLineNo();
         this.lineName = entity.getLineName();
         this.userNo = entity.getMemberEntity().getUserNo();
     }
