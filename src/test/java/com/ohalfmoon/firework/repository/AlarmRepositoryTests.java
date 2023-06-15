@@ -34,6 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * 2023/06/07        우성준            최초 생성
  * 2023/06/09        우성준            알람레포지토리 이름 수정
  * 2023/06/12        우성준            알림 리스트 출력 수정(상위 5개만) 및 알림 개수 출력 추가
+ * 2023/06/14        우성준            알림 리스트->슬라이스로 변경
  */
 @SpringBootTest
 @Slf4j
@@ -53,7 +54,7 @@ public class AlarmRepositoryTests {
     public void saveTests() {
         AlarmEntity alarm = AlarmEntity.builder()
                 .alarmTitle("테스트결재안알림14")
-                .alarmReceiver(memberRepository.findById(1L).orElse(null))
+                .alarmReceiver(MemberEntity.builder().userNo(1L).build())
                 .alarmTitle("테스트결재안알림3")
                 .alarmCategory("결제요청")
                 .boardNo(null)
@@ -72,7 +73,7 @@ public class AlarmRepositoryTests {
 
     @Test
     public void findOneTest() {
-        Long alarmNo = 6L;
+        Long alarmNo = 51L;
 
         AlarmEntity findAlarm = alarmRepository.findById(alarmNo).orElse(null);
 
@@ -81,17 +82,17 @@ public class AlarmRepositoryTests {
         log.info("{}", findAlarm);
     }
 
-    @Test
-    public void findTop5ByAlarmReceiverAndAlarmNoLessThanOrderByAlarmNoDescTest() {
-        Long userNo = 1L;
-
-        List<AlarmEntity> alarmEntityList =
-                alarmRepository.
-                        findTop5ByAlarmReceiverAndAlarmNoLessThanOrderByAlarmNoDesc(memberRepository.
-                                findById(userNo).orElse(null), 55L);
-
-        log.info("{}", alarmEntityList);
-    }
+//    @Test
+//    public void findTop5ByAlarmReceiverAndAlarmNoLessThanOrderByAlarmNoDescTest() {
+//        Long userNo = 1L;
+//
+//        List<AlarmEntity> alarmEntityList =
+//                alarmRepository.
+//                        findTop5ByAlarmReceiverAndAlarmNoLessThanOrderByAlarmNoDesc(memberRepository.
+//                                findById(userNo).orElse(null), 55L);
+//
+//        log.info("{}", alarmEntityList);
+//    }
 
     @Test
     public void deleteAlarmTest() {
@@ -124,11 +125,9 @@ public class AlarmRepositoryTests {
 
     @Test
     public void findListBySlice() {
-        Pageable pageable = PageRequest.of(1, 5, Sort.Direction.DESC, "alarmReceiver");
+        Pageable pageable = PageRequest.of(0, 3, Sort.Direction.DESC, "alarmReceiver");
         Slice<AlarmEntity> alarmEntities =
-                alarmRepository.findSliceByAlarmReceiver(MemberEntity.builder()
-                        .userNo(1L)
-                        .build(), pageable);
+                alarmRepository.findSliceByAlarmReceiver(MemberEntity.builder().userNo(1L).build(), pageable);
         log.info("{}", alarmEntities.getContent());
     }
 }

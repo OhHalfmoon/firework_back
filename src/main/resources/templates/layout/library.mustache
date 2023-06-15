@@ -86,7 +86,7 @@
 
         $(".btn-more").on("click", function () {
             event.stopPropagation();
-            var pageNum = 1;
+            var pageNum = 2;
             alarmService.getList({userNo:userNo, pageNum:pageNum}, function(result){
                 if(!result.content.length) {
                     $(".btn-more").prop("disabled", true);

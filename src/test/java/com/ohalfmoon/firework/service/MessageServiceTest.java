@@ -10,6 +10,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
@@ -104,5 +108,15 @@ public class MessageServiceTest {
     void deleteTest() {
         messageService.delete(2L);
         Assertions.assertThat(messageRepository.findById(2L).orElse(null)).isNull();
+    }
+
+    @Test
+    @DisplayName("페이징 리스트 테스트")
+    @Transactional
+    @Rollback(value = false)
+    void pagingTest() {
+        Pageable pageable = PageRequest.of(0, 5, Sort.Direction.DESC, "messageNo");
+        Page<MessageEntity> dtos = messageService.messageListByPaging(1L, pageable);
+        log.info("{}", dtos.getContent());
     }
 }

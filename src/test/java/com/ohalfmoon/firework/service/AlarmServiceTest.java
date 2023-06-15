@@ -35,6 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * -----------------------------------------------------------
  * 2023/06/08        우성준           최초 생성
  * 2023/06/12        우성준           알림 리스트 출력 수정(상위 5개만) 및 알림 개수 출력 추가
+ * 2023/06/14        우성준           알림 리스트->슬라이스로 변경
  */
 @SpringBootTest
 @Slf4j
@@ -84,13 +85,13 @@ public class AlarmServiceTest {
         assertThat(byAlarmNo).isEqualTo(alarmResponseDto);
     }
 
-    @Test
-    @DisplayName("리스트조회 테스트")
-    @Transactional
-    void findTop5ByAlarmReceiverAndAlarmNoLessThanOrderByAlarmNoDescTest() {
-        List<AlarmResponseDto> list = alarmService.findTop5ByAlarmReceiver(1L, 55L);
-        log.info("{}", list);
-    }
+//    @Test
+//    @DisplayName("리스트조회 테스트")
+//    @Transactional
+//    void findTop5ByAlarmReceiverAndAlarmNoLessThanOrderByAlarmNoDescTest() {
+//        List<AlarmResponseDto> list = alarmService.findTop5ByAlarmReceiver(1L, 55L);
+//        log.info("{}", list);
+//    }
 
     @Test
     @DisplayName("수정 테스트")
