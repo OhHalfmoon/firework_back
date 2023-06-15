@@ -2,6 +2,7 @@ package com.ohalfmoon.firework.dto.member;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ohalfmoon.firework.model.MemberEntity;
+import com.ohalfmoon.firework.model.Role;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -48,6 +49,7 @@ public class MemberDTO {
     private int state;
     private Date regdate;
     private Date updatedate;
+    private int roleName;
 
     @Builder
     public MemberDTO(String username
@@ -57,6 +59,7 @@ public class MemberDTO {
             , String name
             , Date birthdate
             , Date startdate
+                     , int roleName
     ) {
         this.username = username;
         this.password = password;
@@ -65,6 +68,7 @@ public class MemberDTO {
         this.name = name;
         this.birthdate = birthdate;
         this.startdate = startdate;
+        this.roleName = roleName;
     }
     public MemberEntity toEntity() {
         return MemberEntity.builder()
@@ -75,6 +79,7 @@ public class MemberDTO {
                 .name(name)
                 .birthdate(birthdate)
                 .startdate(startdate)
+                .roleName(Role.ROLE_GUEST)
                 .build();
     }
 

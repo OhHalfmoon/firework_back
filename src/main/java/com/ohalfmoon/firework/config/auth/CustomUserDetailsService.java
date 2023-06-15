@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * packageName :  com.ohalfmoon.firework.config.auth
@@ -52,5 +54,16 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
         return null;
     }
+
+//    private UserDetails createUserDetails(MemberEntity entity) {
+//        String role = entity.getRoleEntity().getRoleName().toString();
+//        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role);
+//
+//        return new User(String.valueOf(entity.getUserNo()),
+//                entity.getPassword(),
+//                Collections.singleton(grantedAuthority));
+//    }
+
+
 
 }

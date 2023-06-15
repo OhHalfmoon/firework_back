@@ -6,6 +6,7 @@ import com.ohalfmoon.firework.persistence.DeptRepository;
 import com.ohalfmoon.firework.persistence.MemberRepository;
 import com.ohalfmoon.firework.persistence.PositionRepository;
 import com.ohalfmoon.firework.persistence.RoleRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,7 @@ import java.util.stream.Collectors;
  * 
  */
 @Service
+@RequiredArgsConstructor
 public class MemberService {
     @Autowired
     private MemberRepository memberRepository;
@@ -57,7 +59,7 @@ public class MemberService {
      * @return the role entity
      */
     @Transactional // springboot
-    public RoleEntity register(MemberDTO memberDTO) {
+    public MemberEntity register(MemberDTO memberDTO) {
         memberDTO.setPassword(encoder.encode(memberDTO.getPassword()));
         MemberEntity entity = memberDTO.toEntity();
 
@@ -71,14 +73,18 @@ public class MemberService {
                 .orElseThrow(() -> new IllegalArgumentException(""));
         entity.updatePositionNo(byId2);
 
-        memberRepository.save(entity);
+//        memberRepository.save(entity);
 
         // security 적용시 수정예정
-        RoleEntity entityBuilder = RoleEntity.builder()
-                .roleName(Role.GUEST.getKey())
-                .build();
+//        RoleEntity entityBuilder = RoleEntity.builder()
+//                .roleName(Role.GUEST.getKey())
+//                .build();
+//        RoleEntity entityBuilder = RoleEntity.builder()
+//                .roleName(Role.ROLE_GUEST)
+//                .build();
 
-        return roleRepository.save(entityBuilder);
+//        return roleRepository.save(entityBuilder);
+        return memberRepository.save(entity);
 
 }
 
