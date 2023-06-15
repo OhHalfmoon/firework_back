@@ -37,8 +37,13 @@ import TableToolbar from '@ckeditor/ckeditor5-table/src/tabletoolbar.js';
 import TextTransformation from '@ckeditor/ckeditor5-typing/src/texttransformation.js';
 import TodoList from '@ckeditor/ckeditor5-list/src/todolist';
 import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline.js';
+import SimpleUploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/simpleuploadadapter';
+import SourceEditing from '@ckeditor/ckeditor5-source-editing/src/sourceediting';
+
 
 class Editor extends DecoupledDocumentEditor {}
+// SimpleUploadAdapter, ImageResize, Alignment 추가해야함
+// 그리고 npm run build를 해줘야함
 
 // Plugins to include in the build.
 Editor.builtinPlugins = [
@@ -68,7 +73,9 @@ Editor.builtinPlugins = [
 	MediaEmbed,
 	Paragraph,
 	PasteFromOffice,
+	SimpleUploadAdapter,
 	Strikethrough,
+	SourceEditing,
 	Table,
 	TableCellProperties,
 	TableProperties,
@@ -134,6 +141,8 @@ Editor.defaultConfig = {
 			'tableCellProperties',
 			'tableProperties'
 		]
+	}, simpleUpload: {
+		uploadUrl: '/upload' // 파일 업로드를 처리할 서버 엔드포인트 URL
 	}
 };
 
