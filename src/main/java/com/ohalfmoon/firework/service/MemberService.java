@@ -158,4 +158,5 @@ public class MemberService {
         return memberRepository.findAll()
                 .stream().map(MemberResponseDTO::new).collect(Collectors.toList());
     }
+
 }
