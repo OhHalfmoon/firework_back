@@ -2,12 +2,16 @@ package com.ohalfmoon.firework.service;
 
 import com.ohalfmoon.firework.dto.approval.*;
 import com.ohalfmoon.firework.model.ApprovalEntity;
+import com.ohalfmoon.firework.model.MasterLineEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
+import com.ohalfmoon.firework.model.SubLineEntity;
 import com.ohalfmoon.firework.persistence.ApprovalRepository;
+import com.ohalfmoon.firework.persistence.SubLineRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +32,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ApprovalService {
     private final ApprovalRepository approvalRepository;
+    private final SubLineRepository subLineRepository;
 
 
 
@@ -54,6 +59,15 @@ public class ApprovalService {
                 .findAllByMemberEntity(MemberEntity.builder().userNo(userNo).build())
                 .stream().map(ApprovalResponseDto::new).collect(Collectors.toList());
     }
+
+//    public List<ApprovalLineDto> getApprovalUserName (final Long approvalNo) {
+//
+//        ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
+//        MasterLineEntity masterLineEntity = approvalEntity.getMasterLineEntity();
+//        subLineRepository.findAllByMasterLineEntity_LineNo(masterLineEntity.getLineNo())
+//                .add()
+//                .stream().map(ApprovalLineDto::).collect(Collectors.toList());
+//    }
 
     //결재 서류 수정
     @Transactional
