@@ -2,6 +2,7 @@ package com.ohalfmoon.firework.model;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 /**
  * packageName :  com.ohalfmoon.firework.model
@@ -18,12 +19,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum Role {
 
-    GUEST("ROLE_GUEST", "손님"),
-    EMPLOYEE("ROLE_EMPLOYEE", "사원"),
-    TL("ROLE_TL", "팀장"),
-    CEO("ROLE_CEO", "사장");
+    ROLE_SECESSION(0, "ROLE_SECESSION", "탈퇴회원"),
+    ROLE_GUEST(1,"ROLE_GUEST", "손님"),
+    ROLE_EMPLOYEE(2,"ROLE_EMPLOYEE", "사원"),
+    ROLE_TL(3,"ROLE_TL", "팀장"),
+    ROLE_CEO(4,"ROLE_CEO", "사장"),
+    ROLE_ADMIN(5, "ROLE_ADMIN", "관리자");
 
-
-    private final String key;
+    private final int key;
+    private final String name;
     private final String title;
 }
