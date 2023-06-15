@@ -74,7 +74,7 @@ public class PageResponseDTO <Entity> {
         Pageable pageable = entityPage.getPageable();
 
         // Pageable 의 page 번호가 0부터 시작함
-        this.page = pageable.getPageNumber();
+        this.page = pageable.getPageNumber() + 1;
         this.size = pageable.getPageSize();
 
         // 페이지 목록 계산용 임시 변수
