@@ -105,6 +105,14 @@ public class ApprovalServiceTest {
         System.out.println("삭제완료");
     }
 
+    @Test
+    @DisplayName("결재자리스트 테스트")
+    void getApprovalMemberTest() {
+        final Long approvalNo = 37L;
+        List<ApprovalLineDto> lineDtos = approvalService.getApprovalUserName(approvalNo);
+        log.info("subLineResponseDTOList: {}",lineDtos);
+    }
+
     //    @Test
 //    @DisplayName("결재 임시저장 테스트")
 //    void storage() {
