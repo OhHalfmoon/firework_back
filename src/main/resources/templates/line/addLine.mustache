@@ -41,11 +41,10 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <button type="button" class="btn btn-outline-secondary btn-sm float-right ml-3">수정</button>
-                                <form id="deleteFrm" method="DELETE" >
+                                <form id="deleteFrm" method="POST">
                                     <button type="button" class="btn btn-outline-secondary btn-sm float-right ml-3" id="deleteLine">삭제</button>
                                 </form>
-                                <button type="button" class="btn btn-outline-secondary btn-sm float-right">추가</button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm float-right" id="addBtn">추가</button>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
@@ -92,14 +91,14 @@
 
         <!-- /.content -->
 
-        <section class="content">
+        <section id="addSection" class="content">
             <div class="container-fluid">
                 <form method="post">
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <button type="submit" class="btn btn-outline-secondary btn-sm float-right" id="addBtn">추가</button>
+                                    <button type="submit" class="btn btn-outline-secondary btn-sm float-right" id="addBtn">저장</button>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -111,11 +110,16 @@
                                             <th>결재자 1</th>
                                             <th>결재자 2</th>
                                             <th>결재자 3</th>
+                                            <th></th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr>
-                                            <td><input type="text" name="lineName"></td>
+                                            <td><input type="text" class="form-control" placeholder="결재선 명"></td>
+<!--                                            <div class="form-group">-->
+<!--                                                <label for="exampleInputEmail1">Email address</label>-->
+<!--                                                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">-->
+<!--                                            </div>-->
                                             <input type="hidden" name="userNo">
                                             <td>
                                                 {{#masterList}}
@@ -155,6 +159,13 @@
                                                     </div>
                                                 </div>
                                             </td>
+                                            <td>
+                                                <div class="d-inline m-auto">
+<!--                                                    <input class="mx-auto" type="button" name="btnSave" id="btnSave" value="저장">-->
+<!--                                                    <label for="btnSave"></label>-->
+                                                        <button class="btn btn-outline-secondary btn-sm float-right overflow-hidden" id="btnSave">저장</button>
+                                                </div>
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -180,6 +191,14 @@
 {{>layout/library}}
     <script>
         $(function (){
+
+            function moveToAddSection(){
+                let offset = $("#addSection").offset();
+                $('html, body').animate({scrollTop : offset.top}, 400);
+            }
+
+            $("#addSection").css("display", "none");
+
             $("#deleteLine").click(function(){
                 if($('input:radio[name="pickRadio"]:checked').length === 0){
                     alert("삭제할 결재선을 선택해주세요.");
@@ -187,17 +206,23 @@
                 }
             })
 
+            $("#addBtn").click(function (){
+                console.log("addBtn");
+                $("#addSection").css("display", "block");
+                $(this).addClass("active").siblings().removeClass("active");
+                moveToAddSection($(this).data("id"));
+            })
+
+
+
             $(".ckBox").click(function (){
                 let lineNo = this.value;
                 console.log(lineNo)
 
                 $("#deleteLine").click(function(e){
                     e.preventDefault();
-                    $("#deleteFrm").attr("action", "/line/delete/"+lineNo);
-                    $("#deleteFrm").attr("method", "DELETE");
+                    $("#deleteFrm").attr("action", "/line/"+lineNo);
                     $("#deleteFrm").submit();
-
-
 
                     // $('input:radio[name="pickRadio"]:checked').closest("tr").remove();
                     // $.ajax({
@@ -214,9 +239,6 @@
                 })
 
             })
-
-
-
 
         })
 
