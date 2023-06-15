@@ -72,10 +72,10 @@ public class MasterLineServiceTests {
 
     // 삭제 - 성공
     @Test
-    @Transactional
+//    @Transactional
     @DisplayName("삭제 테스트")
     public void testDelete(){
-        Long lineNo = 4L;
+        Long lineNo = 20L;
         masterLineService.delete(lineNo);
     }
 }
