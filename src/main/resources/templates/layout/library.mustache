@@ -34,14 +34,14 @@
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <!--<script src="{{contextPath}}/dist/js/pages/dashboard.js"></script>-->
 
-<script src="https://cdn.ckeditor.com/ckeditor5/38.0.1/decoupled-document/ckeditor.js"></script>
-
+<script src="{{contextPath}}/plugins/ckeditor5/build/ckeditor.js"></script>
 
 <!-- 알림 -->
 <script src="/dist/js/alarm.js"></script>
 <script>
     $(function() {
         var userNo = 1;
+        // member.userNo로 바꿀 예정!!
         moment.locale('ko');
         alarmService.getCount(userNo, function (result) {
             $(".alarmcount").html(result);
@@ -49,8 +49,8 @@
 
         alarmService.getList({userNo:userNo}, function (result) {
             var str = "";
-            for (var i in result) {
-                str += getAlarmLiStr(result[i]);
+            for (var i in result.content) {
+                str += getAlarmLiStr(result.content[i]);
             }
             $(".alarms").html(str);
         });
@@ -85,21 +85,20 @@
         });
 
         $(".btn-more").on("click", function () {
-                event.stopPropagation();
-            var alarmNo = $(".alarms .alarm-divider:last").data("alarmno");
-            console.log(alarmNo);
-            alarmService.getList({userNo:userNo, alarmNo:alarmNo}, function(result){
-                console.log(result);
-                if(!result.length) {
+            event.stopPropagation();
+            var pageNum = 1;
+            alarmService.getList({userNo:userNo, pageNum:pageNum}, function(result){
+                if(!result.content.length) {
                     $(".btn-more").prop("disabled", true);
                     return;
                 }
                 var str = "";
-                for(var i in result) {
-                    str += getAlarmLiStr(result[i]);
+                for(var i in result.content) {
+                    str += getAlarmLiStr(result.content[i]);
                 }
                 $(".alarms").append(str);
             });
+            pageNum++;
         })
     });
 </script>

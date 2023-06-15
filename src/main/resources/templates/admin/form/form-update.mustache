@@ -1,10 +1,148 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>2023/06/056:07 PM</title>
-</head>
-<body>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdminLTE 3 | Dashboard</title>
 
+    {{>layout/head}}
+
+</head>
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
+<div class="wrapper">
+
+    {{>layout/header}}
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">문서양식 관리</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item">문서양식 관리</li>
+                            <li class="breadcrumb-item active">문서양식 관리</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <!-- 작업할 때 이 항목 내용을 수정하세요 -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="card">
+                    <div class="card-header">
+                        글 작성
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <form method="post" id="approvalForm">
+
+
+                            <div class="form-group">
+                                <label for="formName">양식명</label>
+                                <input type="text" class="form-control" id="formName" name="formName">
+                            </div>
+                            <div class="form-group">
+                                <label for="editor">양식내용</label>
+
+                                <div class="centered">
+                                    <div class="row">
+                                        <div class="document-editor__toolbar"></div>
+                                    </div>
+                                    <div class="row row-editor">
+                                        <div class="editor-container">
+                                            <div class="editor">
+                                                <div class="ck-toolbar"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="formText" id="formText">
+                            </div>
+                            <div class="form-group">
+                                <label for="isUsed">사용여부</label>
+                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                    <label class="btn bg-olive active">
+                                        <input type="radio" name="isUsed" id="option_b1" value="true"> 사용
+                                    </label>
+                                    <label class="btn bg-warning">
+                                        <input type="radio" name="isUsed" id="option_b2" value="false"> 미사용
+                                    </label>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" id="btnSubmit" type="button">글 등록</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    {{>layout/footer}}
+
+
+</div>
+<!-- ./wrapper -->
+
+{{>layout/library}}
+
+<script>
+    let data;
+    let editor;
+
+    var test = `{{{formDto.formText}}}`;
+
+    DecoupledDocumentEditor
+            .create( document.querySelector( '.editor' )
+            )
+            .then( editor => {
+                window.editor = editor;
+
+                console.log(editor.ui.view.toolbar.element);
+
+                // Set a custom container for the toolbar.
+                document.querySelector( '.document-editor__toolbar' ).appendChild( editor.ui.view.toolbar.element );
+                document.querySelector( '.ck-toolbar' ).classList.add( 'ck-reset_all' );
+
+                // const toolbarContainer = document.querySelector( '.document-editor__toolbar'  );
+
+                // toolbarContainer.appendChild( editor.ui.view.toolbar.element );
+                editor.setData(test);
+            } )
+            .catch( error => {
+                console.error( 'Oops, something went wrong!' );
+                console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
+                console.warn( 'Build id: mhijpyjl1akp-mumjti75eytr' );
+                console.error( error );
+            } );
+
+    $(()=>{
+        $("#btnSubmit").on("click", function () {
+            event.preventDefault();
+            console.log("폼 입력 테스트")
+
+            const editText = editor.getData();
+
+            console.log('editText', editText);
+
+            $("#formText").val(editText);
+
+            //$("#formText").setValue()
+
+            $("#approvalForm").submit();
+        })
+    })
+
+</script>
 </body>
 </html>

@@ -4,10 +4,12 @@ import com.ohalfmoon.firework.dto.FormResponseDto;
 import com.ohalfmoon.firework.dto.FormSaveDto;
 import com.ohalfmoon.firework.dto.FormUpdateDto;
 import com.ohalfmoon.firework.model.FormEntity;
+import com.ohalfmoon.firework.model.FormEntity_;
 import com.ohalfmoon.firework.persistence.FormRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -95,7 +97,13 @@ public class FormService {
      * @return the page
      */
     public Page<FormEntity> searchFormList(Optional<String> formName, Pageable pageRequest) {
-         return formRepository.findByFormNameContaining(formName.orElse(""), pageRequest);
+
+
+        //Page<FormEntity> all = formRepository.findAll(nameLike(formName.orElse("")), pageRequest);
+
+        //return formRepository.findByFormNameContaining(formName.orElse(""), pageRequest);
+
+        return formRepository.findAll(nameLike(formName.orElse("")), pageRequest);
     }
 
     /**
@@ -107,5 +115,10 @@ public class FormService {
         List<FormEntity> formEntityList = formRepository.findAll();
 
         return formEntityList.stream().map(FormResponseDto::new).collect(Collectors.toList());
+    }
+
+    private Specification<FormEntity> nameLike(String name) {
+        return ((root, query, criteriaBuilder) ->
+                criteriaBuilder.like(root.get(FormEntity_.FORM_NAME), "%"+name+"%"));
     }
 }
