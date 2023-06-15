@@ -10,11 +10,14 @@ import com.ohalfmoon.firework.service.MemberService;
 import com.ohalfmoon.firework.service.SubLineService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Controller
 @RequestMapping("line")
@@ -31,9 +34,7 @@ public class MasterLineController {
 
 
     @GetMapping("/master")
-    public String masterline(Model model) {
-        model.addAttribute("master", masterLineService.findByLineNo(5L));
-        log.info("{}", masterLineService.findByLineNo(5L));
+    public String masterline() {
         return "line/approvalLine";
     }
 
@@ -101,13 +102,11 @@ public class MasterLineController {
     }
 
 //    @DeleteMapping("/delete/{lineNo}")
-    @GetMapping("/delete/{lineNo}")
+
+    @PostMapping("{lineNo}")
     public String delete(@PathVariable Long lineNo) {
         log.info("lineNo : {}", lineNo);
-        List<SubLineResponseDTO> subLineList = subLineService.getListByLineNo(lineNo);
-//        if()
         masterLineService.delete(lineNo);
         return "redirect:/line/addLine";
     }
-
 }
