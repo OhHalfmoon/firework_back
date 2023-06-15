@@ -10,10 +10,10 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @ToString
-public class AttendUpdateDTO {
+public class AttendSaveLeaveWorkDTO {
     private Date leavedate;
 
-    public AttendUpdateDTO(final AttendEntity entity) {
+    public AttendSaveLeaveWorkDTO(final AttendEntity entity) {
         this.leavedate = entity.getLeavedate();
     }
 
