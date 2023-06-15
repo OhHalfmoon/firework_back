@@ -36,8 +36,7 @@ public class MasterLineController {
     private MasterLineService masterLineService;
     @Autowired
     private MemberService memberService;
-
-
+    
     @GetMapping("/master")
     public String masterline() {
         return "line/approvalLine";
@@ -72,7 +71,3 @@ public class MasterLineController {
         return "redirect:/line/addLine";
     }
 }
-
-
-
-
