@@ -1,10 +1,7 @@
 package com.ohalfmoon.firework.controller;
 
 import com.ohalfmoon.firework.dto.FormResponseDto;
-import com.ohalfmoon.firework.dto.approval.ApprovalResponseDto;
-import com.ohalfmoon.firework.dto.approval.ApprovalSaveDto;
-import com.ohalfmoon.firework.dto.approval.ApprovalStateDto;
-import com.ohalfmoon.firework.dto.approval.ApprovalUpdateDto;
+import com.ohalfmoon.firework.dto.approval.*;
 import com.ohalfmoon.firework.dto.dept.DeptListResponseDTO;
 import com.ohalfmoon.firework.dto.docbox.DocboxListResponseDTO;
 import com.ohalfmoon.firework.service.*;
@@ -62,22 +59,26 @@ public class ApprovalContoller {
     }
 
     //상태값 변경 : 임시저장후 기안제출 / 결재완료처리
-    @PutMapping("/state/{approvalNo}")
+    @PutMapping("/{approvalNo}")
     public Long updateStorage(@PathVariable Long approvalNo,  @RequestBody ApprovalStateDto stateDto) {
         return approvalService.updateState(approvalNo, stateDto);
     }
 
     //기안 내용 수정
-    @PutMapping("/{approvalNo}")
+    @PutMapping("/state/{approvalNo}")
     public Long update(@PathVariable Long approvalNo,  @RequestBody ApprovalUpdateDto updateDto) {
         return approvalService.update(approvalNo, updateDto);
     }
 
     @GetMapping("/{approvalNo}")
     public String get (@PathVariable Long approvalNo, Model model) {
+        model.addAttribute("masterList", masterLineService.getList(1L) );
+        model.addAttribute("masterName", masterLineService.getMasterName(1L));
+        model.addAttribute("subLineList", subLineService.getListByLineNo(1L));
         ApprovalResponseDto approvalGet = approvalService.get(approvalNo);
-
         model.addAttribute("approvalGet", approvalGet);
+        List<ApprovalLineDto> approvalLineDto = approvalService.getApprovalUserName(approvalNo);
+        model.addAttribute("approUserList", approvalLineDto);
         return "approval/get";
     }
 

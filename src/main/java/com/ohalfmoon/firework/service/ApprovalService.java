@@ -60,14 +60,19 @@ public class ApprovalService {
                 .stream().map(ApprovalResponseDto::new).collect(Collectors.toList());
     }
 
-//    public List<ApprovalLineDto> getApprovalUserName (final Long approvalNo) {
-//
-//        ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
-//        MasterLineEntity masterLineEntity = approvalEntity.getMasterLineEntity();
-//        subLineRepository.findAllByMasterLineEntity_LineNo(masterLineEntity.getLineNo())
-//                .add()
-//                .stream().map(ApprovalLineDto::).collect(Collectors.toList());
-//    }
+    public List<ApprovalLineDto> getApprovalUserName (final Long approvalNo) {
+
+        ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
+        MasterLineEntity masterLineEntity = approvalEntity.getMasterLineEntity();
+        Long userNo = approvalEntity.getMemberEntity().getUserNo();
+        String userName = masterLineEntity.getMemberEntity().getName();
+        String userDept = masterLineEntity.getMemberEntity().getDeptEntity().getDeptName();
+        String userPosition = masterLineEntity.getMemberEntity().getPositionEntity().getPositionName();
+
+       return subLineRepository.findAllByMasterLineEntity_LineNo(masterLineEntity.getLineNo())
+                .stream().map(ApprovalLineDto::new).collect(Collectors.toList());
+
+    }
 
     //결재 서류 수정
     @Transactional

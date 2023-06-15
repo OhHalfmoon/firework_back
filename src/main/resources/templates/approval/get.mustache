@@ -36,6 +36,7 @@
 
         <section class="content">
             <div class="container-fluid">
+                <form method="put">
                     <div class="card">
                         <div class="card-header">
                             <div class="row">
@@ -59,9 +60,28 @@
                             <!--                        </div>-->
                             <br>
                             <div class="row">
-                                <div class="col">결재선</div>
+                                <div class="col">결재자</div>
                                 <br>
-                                <div class="col-12" id="applyLine" style="border: 1px solid; border-color: #ced4da; padding: 5px; margin-top: 3px; border-radius: 5px">결재선이 선택되지 않았습니다</div>
+                                <table id="example2" class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>부서</th>
+                                        <th style="width : 12%">직책</th>
+                                        <th style="width : 10%">이름</th>
+                                        <th style="width : 10%">결재여부</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#approUserList}}
+                                            <tr>
+                                                <td id="masterName">{{userDept}}</td>
+                                                <td id="masterName">{{userPosition}}</td>
+                                                <td id="userName">{{userName}}</td>
+                                                <th style="width : 10%"></th>
+                                            </tr>
+                                        {{/approUserList}}
+                                    </tbody>
+                                </table>
                                 <div class="col-12 testBox"></div>
 <!--                                <input type="hidden" class="form-control applyBox" id="applyVal" name="lineNo" readonly>-->
                             </div>
@@ -78,7 +98,7 @@
                             <br>
                             <div class="row">
                                 <div class="col">문서함</div>
-                                <div class="col-12" id="approvalName">{{approvalGet.docboxNo}}</div>
+                                <div class="col-12" id="approvalName">{{approvalGet.docboxName}}</div>
                                 <!--                            <select class="d-flex custom-select" name="docboxNo">-->
                                 <!--                                <option selected>문서함을 선택해주세요</option>-->
                                     <!--                                {{#docboxList}}-->
@@ -107,9 +127,10 @@
                             </section>
                         </div>
                         <div class="col-2">
-                            <button class="btn btn-secondary" id="storage" type="submit">임시저장</button>
+                            <button class="btn btn-secondary" id="storage" type="submit">결재승인</button>
                         </div>
                     </div>
+                </form>
                 <br>
             </div>
             <br>
