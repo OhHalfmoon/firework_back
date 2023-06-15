@@ -1,6 +1,7 @@
 package com.ohalfmoon.firework.service;
 
 import com.ohalfmoon.firework.dto.member.MemberUpdatePwDTO;
+import com.ohalfmoon.firework.dto.member.MemberUpdateStateDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,13 @@ public class MemberServiceTest {
         dto.toEntity();
         memberService.updatePw(16L, dto);
 //        }
-
+    }
+    @Test
+    @DisplayName("회원 상태값 변경 테스트")
+    public void updateState() {
+        MemberUpdateStateDTO dto = new MemberUpdateStateDTO();
+        dto.setState(1);
+        dto.toEntity();
+        memberService.recognize(2L, dto);
     }
 }

@@ -73,17 +73,6 @@ public class MemberService {
                 .orElseThrow(() -> new IllegalArgumentException(""));
         entity.updatePositionNo(byId2);
 
-//        memberRepository.save(entity);
-
-        // security 적용시 수정예정
-//        RoleEntity entityBuilder = RoleEntity.builder()
-//                .roleName(Role.GUEST.getKey())
-//                .build();
-//        RoleEntity entityBuilder = RoleEntity.builder()
-//                .roleName(Role.ROLE_GUEST)
-//                .build();
-
-//        return roleRepository.save(entityBuilder);
         return memberRepository.save(entity);
 
 }
@@ -99,11 +88,17 @@ public class MemberService {
     public Long updatePw(Long userNo, MemberUpdatePwDTO dto) {
         MemberEntity entity = memberRepository.findById(userNo)
                 .orElseThrow(() -> new IllegalArgumentException("해당 id가 존재하지 않습니다." + userNo));
-
         entity.updatePw(dto.getPassword());
-
         return userNo;
+    }
 
+    @Transactional
+    public Long recognize(Long userNo, MemberUpdateStateDTO dto) {
+        MemberEntity entity =
+                memberRepository.findById(userNo)
+                        .orElseThrow(() -> new IllegalArgumentException("해당 ID가 존재하지 않습니다." + userNo));
+        entity.updateState(dto.getState());
+        return userNo;
     }
     /**
      * 회원정보 수정
@@ -165,4 +160,13 @@ public class MemberService {
                 .stream().map(MemberResponseDTO::new).collect(Collectors.toList());
     }
 
+    /**
+     * state값이 0인 회원 return
+     *
+     * @return the state by zero
+     */
+    public List<MemberResponseDTO> getStateByZero() {
+        return memberRepository.findAllByState(0)
+                .stream().map(MemberResponseDTO::new).collect(Collectors.toList());
+    }
 }

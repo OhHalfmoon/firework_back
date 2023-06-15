@@ -65,7 +65,7 @@ public class CustomUserDetails implements UserDetails {
 //        return Arrays.asList(new SimpleGrantedAuthority(roles.getRoleName().getKey()));
 //        return Arrays.asList(new SimpleGrantedAuthority(new RoleEntity().getRoleName().toString()));
 //        return Arrays.asList(new SimpleGrantedAuthority(list.toString()));
-        return Arrays.asList(new SimpleGrantedAuthority(roleName.getName()));
+        return Collections.singletonList(new SimpleGrantedAuthority(roleName.getName()));
     }
 
     @Override
