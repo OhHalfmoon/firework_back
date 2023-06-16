@@ -23,6 +23,9 @@ public class ApprovalUpdateDto {
     private Long lineNo;
     private Long docboxNo;
     private String approContent;
+    private int approvalOrder;
+    private int approvalState;
+
 
 /*
  * 글 수정
@@ -30,10 +33,12 @@ public class ApprovalUpdateDto {
  * storage와 state를 파라미터로 받을시 기본값으로 초기화되어 파라미터에서 삭제. 테스트를 통해 현재값 유지 확인
  * */
     @Builder
-    public ApprovalUpdateDto(String approvalName, Long lineNo, Long docboxNo, String approContent) {
+    public ApprovalUpdateDto(String approvalName, Long lineNo, Long docboxNo, String approContent, int approvalOrder, int approvalState) {
         this.approvalName = approvalName;
         this.lineNo = lineNo;
         this.docboxNo = docboxNo;
         this.approContent = approContent;
+        this.approvalOrder = approvalOrder;
+        this.approvalState = approvalState;
     }
 }

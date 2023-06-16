@@ -74,6 +74,7 @@ public class ApprovalContoller {
 
     @GetMapping("/{approvalNo}")
     public String get (@PathVariable Long approvalNo, @AuthenticationPrincipal CustomUserDetails user, Model model) {
+        log.info("테스트:{}", approvalNo);
         model.addAttribute("user", user);
         model.addAttribute("masterList", masterLineService.getList(user.getUserNo()));
         model.addAttribute("masterName", masterLineService.getMasterName(user.getUserNo()));

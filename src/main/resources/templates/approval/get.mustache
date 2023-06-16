@@ -36,7 +36,7 @@
 
         <section class="content">
             <div class="container-fluid">
-                <form method="post">
+                <form id="approvalPut">
                     <div class="card">
                         <div class="card-header">
                             <div class="row">
@@ -48,16 +48,10 @@
                                 <div class="col">기안일자</div>
                                 <div class="col-12" id="approvalName">{{approvalGet.regdate}}</div>
                             </div>
-                            <!--                        <br>-->
-                            <!--                        <div class="row">-->
-                            <!--                            <div class="col">공개라인</div>-->
-                            <!--                            <select class="d-flex custom-select" name="positionNo">-->
-                            <!--                                <option selected>공개라인을 선택해주세요</option>-->
-                                <!--                                {{#position}}-->
-                            <!--                                    <option value="{{positionNo}}">{{positionName}} 이상</option>-->
-                                <!--                                {{/position}}-->
-                            <!--                            </select>-->
-                            <!--                        </div>-->
+                            <div class="row" style="display: none">
+                                <div class="col">기안번호</div>
+                                <input type="number" id="approvalNo" value="{{approvalGet.approvalNo}}" readonly>
+                            </div>
                             <br>
                             <div class="row">
                                 <div class="col">작성자</div>
@@ -77,6 +71,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+
                                         {{#approUserList}}
                                             <tr>
                                                 <td id="masterName">{{userDept}}</td>
@@ -90,26 +85,10 @@
                                 <div class="col-12 testBox"></div>
 <!--                                <input type="hidden" class="form-control applyBox" id="applyVal" name="lineNo" readonly>-->
                             </div>
-                            <!--                        <br>-->
-                            <!--                        <div class="row">-->
-                            <!--                            <div class="col">소속팀</div>-->
-                            <!--                            <select class="d-flex custom-select" name="deptNo">-->
-                            <!--                                <option selected>부서를 선택해주세요</option>-->
-                                <!--                                {{#deptList}}-->
-                            <!--                                    <option value="{{deptNo}}">{{deptName}}</option>-->
-                                <!--                                {{/deptList}}-->
-                            <!--                            </select>-->
-                            <!--                        </div>-->
                             <br>
                             <div class="row">
                                 <div class="col">문서함</div>
                                 <div class="col-12" id="approvalName">{{approvalGet.docboxName}}</div>
-                                <!--                            <select class="d-flex custom-select" name="docboxNo">-->
-                                <!--                                <option selected>문서함을 선택해주세요</option>-->
-                                    <!--                                {{#docboxList}}-->
-                                <!--                                    <option value="{{docboxNo}}">{{docboxName}}</option>-->
-                                    <!--                                {{/docboxList}}-->
-                                <!--                            </select>-->
                             </div>
                             <br>
                             <div class="row">
@@ -125,14 +104,30 @@
                                             </h3>
                                         </div>
                                         <div class="card-body">
-                                            <div class="centered">{{{approvalGet.approContent}}}</div>
+                                            <div class="centered">
+                                                <div class="row">
+                                                    <div class="centered document-editor__toolbar" style="z-index: 999"></div>
+                                                </div>
+                                                <br>
+                                                <br>
+                                                <div class="row row-editor">
+                                                    <div class="editor-container">
+                                                        <div class="editor detail">
+                                                            <div class="ck-toolbar"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
+<!--                                        <div class="card-body">-->
+<!--                                            <div class="centered detail">{{!approvalGet.approContent}}</div>-->
+<!--                                        </div>-->
                                     </div>
                                 </div>
                             </section>
                         </div>
                         <div class="col-2">
-                            <button class="btn btn-secondary" id="change" type="submit">결재승인</button>
+                            <button type="button" class="btn btn-secondary" id="change" >결재승인</button>
                         </div>
                     </div>
                 </form>
@@ -157,22 +152,67 @@
 
 </body>
 <script>
-    var user = {{user.userNo}};
-    console.log(user);
+   console.log($('.detail').text());
+   console.log($('.detail').val());
+    <!--console.log(user);-->
+    <!--console.log($("#{{!user.userNo}}")[0])-->
+    <!--console.log($("#{{!user.userNo}}")[0].id)-->
+    // console.log($(".detail .table:eq(0)").find("tr:eq(2) td:eq(0)"))
+   let data;
+   var editor;
+   var user = {{user.userNo}};
+   var test = `{{{approvalGet.approContent}}}`;
+   console.log(user);
+
+   DecoupledDocumentEditor
+           .create( document.querySelector( '.editor' )
+           )
+           .then( editor => {
+               window.editor = editor;
+               editor.setData(test);
+               editor.enableReadOnlyMode( 'my-feature-id' );
+               editor.isReadOnly;
+
+           } )
+           .catch( error => {
+               console.error( 'Oops, something went wrong!' );
+               console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
+               console.warn( 'Build id: mhijpyjl1akp-mumjti75eytr' );
+               console.error( error );
+           });
 
     $(function () {
 
-        $("#change").click(function (){
-            event.preventDefault();
-            if (user == $("#user")) {
-                $("#user").innerText = "결재승인";
-                alert("결재가 승인되었습니다.")
-                } else {
-                alert("결재 권한이 없습니다")
-            };
-
-        });
-
     })
+    <!--$(function () {-->
+
+    <!--    $("#change").click(function (){-->
+    <!--        event.preventDefault();-->
+    <!--        if (($("#{{!user.userNo}}")[0] != undefined) && (user == $("#{{!user.userNo}}")[0].id)) {-->
+    <!--            $("#{{!user.userNo}}")[0].innerText = "결재승인";-->
+    <!--            $(".detail .table:eq(0)").find("tr:eq(2) td:eq()").text("결재승인");-->
+    <!--                var data = {-->
+    <!--                    approContent : $('.detail').text()-->
+    <!--                };-->
+    <!--                var id = $('#approvalNo').val();-->
+
+    <!--                $.ajax({-->
+    <!--                    type: 'PUT',-->
+    <!--                    url : '/approval/state/' + id,-->
+    <!--                    datatype: 'json',-->
+    <!--                    contentType: 'application/json; charset=utf-8',-->
+    <!--                    data: JSON.stringify(data)-->
+    <!--                }).done(function () {-->
+    <!--                    alert("결재가 승인되었습니다.")-->
+    <!--                    $("#approvalPut").submit();-->
+    <!--                })-->
+
+    <!--        } else {-->
+    <!--            alert("결재 권한이 없습니다")-->
+    <!--        };-->
+
+    <!--    });-->
+
+    <!--})-->
 </script>
 </html>

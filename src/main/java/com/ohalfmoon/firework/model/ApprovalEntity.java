@@ -55,6 +55,10 @@ public class ApprovalEntity {
     @JoinColumn(name = "userNo")
     private MemberEntity memberEntity;
 
+    //approvalOrder : 중간결재 상태 1= 작성완료, 1번 결재자에게 요청 || 2= 1번결재자 결재완료, 2번결재자에게 요청 ...
+    @Column(nullable = false)
+    private int approvalOrder;
+
     // approvalState : 결재진행상태 0 = 작성중/임시저장 || 1 = 결재중 || 2 = 결재완료
     @Column(nullable = false)
     private int approvalState;
@@ -69,6 +73,7 @@ public class ApprovalEntity {
                 .approvalName(approvalName)
                 .docboxNo(docboxEntity.getDocboxNo())
                 .docboxName(docboxEntity.getDocboxName())
+                .approvalOrder(approvalOrder)
                 .approContent(approContent)
                 .userNo(memberEntity.getUserNo())
                 .name(memberEntity.getName())
@@ -78,11 +83,13 @@ public class ApprovalEntity {
     }
 
     //작성중인 문서 내용 수정
-    public void update(String approvalName, Long lineNo, Long docboxNo, String approContent) {
+    public void update(String approvalName, Long lineNo, Long docboxNo, String approContent, int approvalOrder, int approvalState) {
         this.approvalName = approvalName;
         this.masterLineEntity = MasterLineEntity.builder().lineNo(lineNo).build();
         this.docboxEntity = DocboxEntity.builder().docboxNo(docboxNo).build();
         this.approContent = approContent;
+        this.approvalOrder = approvalOrder;
+        this.approvalState = approvalState;
     }
 
     // 임시 저장했던 기안을 결재진행 상태로 변경
@@ -91,8 +98,8 @@ public class ApprovalEntity {
 //    }
 
     // 진행중인 결재서류를 결재완료
-    public void updateState(int approvalState) {
-
+    public void updateState(int approvalOrder, int approvalState) {
+        this.approvalOrder = approvalOrder;
         this.approvalState = approvalState;
     }
 }

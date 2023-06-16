@@ -31,7 +31,7 @@ public class ApprovalResponseDto {
     private String approContent;
     private Long userNo;
     private String name;
-
+    private int approvalOrder;
     private int approvalState;
     private Date regdate;
 
@@ -43,6 +43,7 @@ public class ApprovalResponseDto {
         approContent = approvalEntity.getApproContent();
         userNo = approvalEntity.getMemberEntity().getUserNo();
         name = approvalEntity.getMemberEntity().getName();
+        approvalOrder = approvalEntity.getApprovalOrder();
         approvalState = approvalEntity.getApprovalState();
         regdate = approvalEntity.getRegdate();
 
