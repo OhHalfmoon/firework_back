@@ -38,18 +38,6 @@ import java.util.stream.Collectors;
 public class MessageApiController {
     private final MessageService messageService;
 
-    // 받은 쪽지 리스트 출력
-//    @GetMapping({"/receiver/{receiverNo}","/receiver/{receiverNo}/{messageNo}"})
-//    public List<MessageResponseDto> findListByReceiver(@PathVariable Long receiverNo, @PathVariable(required = false)Optional<Long> messageNo){
-//        return messageService.findListByReceiver(receiverNo, messageNo.orElse(null));
-//    }
-
-    // 보낸 쪽지 리스트 출력
-    @GetMapping({"/sender/{senderNo}","/sender/{senderNo}/{messageNo}"})
-    public List<MessageResponseDto> findListBySender(@PathVariable Long senderNo, @PathVariable(required = false)Optional<Long> messageNo){
-        return messageService.findListByReceiver(senderNo, messageNo.orElse(0L));
-    }
-
     // 받은 쪽지
     @GetMapping("/count/{receiverNo}")
     public Long countMessage(@PathVariable Long receiverNo) {
@@ -77,22 +65,24 @@ public class MessageApiController {
         return messageService.findByMessageNo(messageNo);
     }
 
-//    @GetMapping("/receiver/{receiverNo}")
-//    public Page<MessageResponseDto> findByPaging(@PathVariable  Long receiverNo,
-//                                                 @PageableDefault(page = 0,
-//                                                         size = 5,
-//                                                         direction = Sort.Direction.DESC,
-//                                                         sort = "messageNo") Pageable pageable) {
-//        return messageService.messageListByPaging(receiverNo, pageable);
-//    }
 
     @GetMapping("/receiver/{receiverNo}")
-    public MessagePageDto findByPaging(@PathVariable  Long receiverNo,
+    public MessagePageDto findAllByReceiver(@PathVariable  Long receiverNo,
                                        @PageableDefault(
                                                size = 5,
                                                direction = Sort.Direction.DESC,
                                                sort = "messageNo") Pageable pageable) {
-       Page<MessageEntity> entities = messageService.messageListByPaging(receiverNo, pageable);
+       Page<MessageEntity> entities = messageService.messageListByReceiver(receiverNo, pageable);
        return new MessagePageDto(new PageResponseDTO<>(entities), entities.map(MessageResponseDto::new));
+    }
+
+    @GetMapping("/sender/{senderNo}")
+    public MessagePageDto findAllBySender(@PathVariable  Long senderNo,
+                                       @PageableDefault(
+                                               size = 5,
+                                               direction = Sort.Direction.DESC,
+                                               sort = "messageNo") Pageable pageable) {
+        Page<MessageEntity> entities = messageService.messageListBySender(senderNo, pageable);
+        return new MessagePageDto(new PageResponseDTO<>(entities), entities.map(MessageResponseDto::new));
     }
 }

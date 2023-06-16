@@ -20,11 +20,8 @@ import java.util.List;
  * 2023/06/13        우성준           최초 생성
  */
 public interface MessageRepository extends JpaRepository<MessageEntity, Long> {
-    List<MessageEntity> findTop5ByReceiverAndMessageNoLessThanOrderByMessageNoDesc(MemberEntity receiver, Long last);
-
     Page<MessageEntity> findAllByReceiver(MemberEntity receiver, Pageable pageable);
 
-    List<MessageEntity> findTop5BySenderAndMessageNoLessThanOrderByMessageNoDesc(MemberEntity sender, Long last);
-
+    Page<MessageEntity> findAllBySender(MemberEntity sender, Pageable pageable);
     Long countMessageEntitiesByReceiverAndMessageCheckFalse(MemberEntity receiver);
 }

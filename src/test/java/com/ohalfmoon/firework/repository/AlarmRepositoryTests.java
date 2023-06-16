@@ -55,7 +55,6 @@ public class AlarmRepositoryTests {
         AlarmEntity alarm = AlarmEntity.builder()
                 .alarmTitle("테스트결재안알림14")
                 .alarmReceiver(MemberEntity.builder().userNo(1L).build())
-                .alarmTitle("테스트결재안알림3")
                 .alarmCategory("결제요청")
                 .boardNo(null)
                 .approvalNo(approvalRepository.findById(3L).orElse(null))
