@@ -1,5 +1,6 @@
 package com.ohalfmoon.firework.controller;
 
+import com.ohalfmoon.firework.config.auth.CustomUserDetails;
 import com.ohalfmoon.firework.dto.FormResponseDto;
 import com.ohalfmoon.firework.dto.approval.*;
 import com.ohalfmoon.firework.dto.dept.DeptListResponseDTO;
@@ -8,6 +9,7 @@ import com.ohalfmoon.firework.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -60,7 +62,7 @@ public class ApprovalContoller {
 
     //상태값 변경 : 임시저장후 기안제출 / 결재완료처리
     @PutMapping("/{approvalNo}")
-    public Long updateStorage(@PathVariable Long approvalNo,  @RequestBody ApprovalStateDto stateDto) {
+    public Long updateStorage(@PathVariable Long approvalNo, @RequestBody ApprovalStateDto stateDto) {
         return approvalService.updateState(approvalNo, stateDto);
     }
 
@@ -71,10 +73,11 @@ public class ApprovalContoller {
     }
 
     @GetMapping("/{approvalNo}")
-    public String get (@PathVariable Long approvalNo, Model model) {
-        model.addAttribute("masterList", masterLineService.getList(1L) );
-        model.addAttribute("masterName", masterLineService.getMasterName(1L));
-        model.addAttribute("subLineList", subLineService.getListByLineNo(1L));
+    public String get (@PathVariable Long approvalNo, @AuthenticationPrincipal CustomUserDetails user, Model model) {
+        model.addAttribute("user", user);
+        model.addAttribute("masterList", masterLineService.getList(user.getUserNo()));
+        model.addAttribute("masterName", masterLineService.getMasterName(user.getUserNo()));
+        model.addAttribute("subLineList", subLineService.getListByLineNo(user.getUserNo()));
         ApprovalResponseDto approvalGet = approvalService.get(approvalNo);
         model.addAttribute("approvalGet", approvalGet);
         List<ApprovalLineDto> approvalLineDto = approvalService.getApprovalUserName(approvalNo);
@@ -95,11 +98,14 @@ public class ApprovalContoller {
     }
 
     @GetMapping("/write/{formNo}")
-    public String write(@PathVariable Long formNo, Model model) {
+    public String write(@PathVariable Long formNo, @AuthenticationPrincipal CustomUserDetails user, Model model) {
+        model.addAttribute("user", user);
+        model.getAttribute("user");
+        log.info("{}","유저정보", user, user.getUserNo());
         model.addAttribute("position", positionService.positionList());
-        model.addAttribute("masterList", masterLineService.getList(1L) );
-        model.addAttribute("masterName", masterLineService.getMasterName(1L));
-        model.addAttribute("subLineList", subLineService.getListByLineNo(1L));
+        model.addAttribute("masterList", masterLineService.getList(user.getUserNo()));
+        model.addAttribute("masterName", masterLineService.getMasterName(user.getUserNo()));
+        //model.addAttribute("subLineList", subLineService.getListByLineNo(user.getUserNo()));
         model.addAttribute("subMemberName", subLineService);
         model.addAttribute("formDetail", formService.findByFormNo(formNo));
 

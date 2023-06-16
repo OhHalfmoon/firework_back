@@ -36,7 +36,7 @@
 
         <section class="content">
             <div class="container-fluid">
-                <form method="put">
+                <form method="post">
                     <div class="card">
                         <div class="card-header">
                             <div class="row">
@@ -60,6 +60,11 @@
                             <!--                        </div>-->
                             <br>
                             <div class="row">
+                                <div class="col">작성자</div>
+                                <div class="col-12" id="approvalName">{{approvalGet.name}}</div>
+                            </div>
+                            <br>
+                            <div class="row">
                                 <div class="col">결재자</div>
                                 <br>
                                 <table id="example2" class="table table-bordered table-hover">
@@ -77,7 +82,7 @@
                                                 <td id="masterName">{{userDept}}</td>
                                                 <td id="masterName">{{userPosition}}</td>
                                                 <td id="userName">{{userName}}</td>
-                                                <th style="width : 10%"></th>
+                                                <th id="{{userNo}}" style="width : 10%"></th>
                                             </tr>
                                         {{/approUserList}}
                                     </tbody>
@@ -127,7 +132,7 @@
                             </section>
                         </div>
                         <div class="col-2">
-                            <button class="btn btn-secondary" id="storage" type="submit">결재승인</button>
+                            <button class="btn btn-secondary" id="change" type="submit">결재승인</button>
                         </div>
                     </div>
                 </form>
@@ -152,6 +157,22 @@
 
 </body>
 <script>
+    var user = {{user.userNo}};
+    console.log(user);
 
+    $(function () {
+
+        $("#change").click(function (){
+            event.preventDefault();
+            if (user == $("#user")) {
+                $("#user").innerText = "결재승인";
+                alert("결재가 승인되었습니다.")
+                } else {
+                alert("결재 권한이 없습니다")
+            };
+
+        });
+
+    })
 </script>
 </html>
