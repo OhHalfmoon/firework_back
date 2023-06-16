@@ -105,8 +105,10 @@
                                         <div class="card-body">
                                             <div class="centered">
                                                 <div class="row">
-                                                    <div class="centered document-editor__toolbar"></div>
+                                                    <div class="centered document-editor__toolbar" style="z-index: 999"></div>
                                                 </div>
+                                                <br>
+                                                <br>
                                                 <div class="row row-editor">
                                                     <div class="editor-container">
                                                         <div class="editor">
@@ -172,21 +174,36 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {{#masterList}}
-                            <tr>
-                                <td id="lineName">{{lineName}}</td>
-                                <td id="masterName">{{masterName}}</td>
-                                {{#subLineList}}
-                                    <td id="subfull"> [{{positionName}}] [{{deptName}}] {{name}} </td>
-                                {{/subLineList}}
+<!--                        {{#masterList}}-->
+<!--                            <tr>-->
+<!--                                <td id="lineName">{{lineName}}</td>-->
+<!--                                <td id="masterName">{{masterName}}</td>-->
+<!--                                {{#subLineList}}-->
+<!--                                    <td id="subfull"> [{{positionName}}] [{{deptName}}] {{name}} </td>-->
+<!--                                {{/subLineList}}-->
+<!--                                <td>&lt;!&ndash; checkbox &ndash;&gt;-->
+<!--                                    <div class="icheck-primary d-inline ml-2 mx-auto">-->
+<!--                                        <input class="mx-auto ckBox" type="radio" id="todoCheck{{lineNo}}" name="todo" value="{{lineNo}}">-->
+<!--                                        <label for="todoCheck{{lineNo}}"></label>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                        {{/masterList}}-->
+                            {{#masterList}}
+                                <tr class="myLine data-lineNo={{lineNo}}">
+                                <td>{{lineName}}</td>
+                                <td>{{userName}}</td>
+                                {{#subLineResponseDTOS}}
+                                    <td> [{{deptName}}] [{{positionName}}] {{#name}}{{name}}{{/name}}{{^name}}{{-}}{{/name}}</td>
+                                {{/subLineResponseDTOS}}
                                 <td><!-- checkbox -->
                                     <div class="icheck-primary d-inline ml-2 mx-auto">
-                                        <input class="mx-auto ckBox" type="radio" id="todoCheck{{lineNo}}" name="todo" value="{{lineNo}}">
+                                        <input class="mx-auto ckBox" type="radio" name="pickRadio" id="todoCheck{{lineNo}}" value="{{lineNo}}">
                                         <label for="todoCheck{{lineNo}}"></label>
                                     </div>
                                 </td>
-                            </tr>
-                        {{/masterList}}
+                                </tr>
+                            {{/masterList}}
                         </tbody>
                     </table>
                 </div>
@@ -206,8 +223,9 @@
 <script>
     let data;
     var editor;
-    var user = 1;
+    var user = {{user.userNo}};
     var test = `{{{formDetail.formText}}}`;
+    console.log(user);
 
 
     DecoupledDocumentEditor
@@ -235,7 +253,10 @@
 
             var no = this.value;
             var approlist = this.closest('tr').innerHTML;
-            var cut = approlist.split('<td>');
+            var cut = approlist.split('<td><!-- checkbox -->');
+            console.log(no);
+            console.log(approlist);
+            console.log(cut);
 
 
             $("#apply").click(function () {

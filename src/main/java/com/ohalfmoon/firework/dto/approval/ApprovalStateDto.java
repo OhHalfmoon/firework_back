@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ApprovalStateDto {
+    private  int approvalOrder;
     private int approvalState;
 
 
@@ -24,7 +25,9 @@ public class ApprovalStateDto {
     * 결재진행 상태값을 변경하는 dto
     * */
     @Builder
-    public ApprovalStateDto(int approvalState) {
+    public ApprovalStateDto(int approvalOrder, int approvalState) {
+
+        this.approvalOrder = approvalOrder;
         this.approvalState = approvalState;
     }
 }

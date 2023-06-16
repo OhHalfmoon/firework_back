@@ -19,6 +19,7 @@ public class ApprovalLineDto {
     private String userDept;
     private String userPosition;
     private String userName;
+    private int orderLevel;
 
     @Setter
     private List<SubLineResponseDTO> subLineResponseDTOS;
@@ -36,6 +37,7 @@ public class ApprovalLineDto {
         userDept = subLineEntity.getMemberEntity().getDeptEntity().getDeptName();
         userPosition = subLineEntity.getMemberEntity().getPositionEntity().getPositionName();
         userName = subLineEntity.getMemberEntity().getName();
+        orderLevel = subLineEntity.getOrderLevel();
     }
 
 
