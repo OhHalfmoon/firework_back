@@ -33,7 +33,7 @@ public class ApprovalResponseDto {
     private String name;
 
     private int approvalState;
-    private LocalDateTime regdate;
+    private Date regdate;
 
     public ApprovalResponseDto(ApprovalEntity approvalEntity) {
         approvalNo = approvalEntity.getApprovalNo();

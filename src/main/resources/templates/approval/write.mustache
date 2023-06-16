@@ -36,7 +36,7 @@
 
         <section class="content">
             <div class="container-fluid">
-                <form method="post">
+                <form method="post" id="approvalPost">
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
@@ -93,13 +93,51 @@
                         <div class="row">
                             <div class="col">작성</div>
                         </div>
+<!--                        기안 작성되는 부분 -->
+                            <section class="content">
+                                <div class="container-fluid">
+                                    <div class="card card-default color-palette-box">
+                                        <div class="card-header">
+                                            <h3 class="card-title">
+                                                {{formDetail.formName}}
+                                            </h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="centered">
+                                                <div class="row">
+                                                    <div class="centered document-editor__toolbar"></div>
+                                                </div>
+                                                <div class="row row-editor">
+                                                    <div class="editor-container">
+                                                        <div class="editor">
+                                                            <div class="ck-toolbar"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="approContent" class="approContent">
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                    </div>
+                    <div class="col-2">
+                        <input type="hidden" class="form-control approvalState" id="approvalState" name="approvalState"  >
+                        <input type="hidden" class="form-control userNo" name="userNo" >
+                        <button class="btn btn-secondary" id="storage" type="submit">임시저장</button>
                     </div>
                 </div>
+
                 </form>
+                <br>
             </div>
+                <br>
+                <br>
         </section>
         <!-- /.content -->
     </div>
+
+
     <!-- /.content-wrapper -->
     {{>layout/footer}}
 
@@ -166,19 +204,38 @@
 
 </body>
 <script>
+    let data;
+    var editor;
+    var user = 1;
+    var test = `{{{formDetail.formText}}}`;
+
+
+    DecoupledDocumentEditor
+            .create( document.querySelector( '.editor' )
+            )
+            .then( editor => {
+                window.editor = editor;
+                console.log(test)
+                console.log(editor.ui.view.toolbar.element);
+                document.querySelector( '.document-editor__toolbar' ).appendChild( editor.ui.view.toolbar.element );
+                document.querySelector( '.ck-toolbar' ).classList.add( 'ck-reset_all' );
+                editor.setData(test);
+
+            } )
+            .catch( error => {
+                console.error( 'Oops, something went wrong!' );
+                console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
+                console.warn( 'Build id: mhijpyjl1akp-mumjti75eytr' );
+                console.error( error );
+            } );
+
     $(function () {
+
         $(".ckBox").click(function (){
-            // console.log(this)
-            // console.log(this.closest('tr'));
-            // console.log(this.closest('tr'));
+
             var no = this.value;
             var approlist = this.closest('tr').innerHTML;
             var cut = approlist.split('<td>');
-            // console.log("no의 값 :" +no);
-            // console.log("table의 값 :" + approlist);
-            // console.log(cut[0]);
-
-
 
 
             $("#apply").click(function () {
@@ -189,6 +246,18 @@
                 $(".modal").modal("hide");
             });
         })
+
+        $("#storage").click(function (){
+            event.preventDefault();
+            // console.log("성공")
+            // console.log(editor);
+            const editText = editor.getData();
+
+            $("#approvalState").val(0);
+            $(".userNo").val(user);
+            $(".approContent").val(editText);
+            $("#approvalPost").submit();
+        });
 
     })
 </script>

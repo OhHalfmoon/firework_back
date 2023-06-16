@@ -9,16 +9,13 @@ import com.ohalfmoon.firework.service.MemberService;
 import com.ohalfmoon.firework.service.PositionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 /**
  * packageName    : com.ohalfmoon.firework.controller
@@ -52,8 +49,7 @@ public class MemberController {
     @Autowired
     private PositionService positionService;
 
-    @Autowired
-    private HttpSession session;
+    String redirect = "redirect:/";
 
     /**
      * 회원가입 (Get)
@@ -78,7 +74,7 @@ public class MemberController {
     @PostMapping("signup")
     public String register(MemberDTO memberDTO) {
         memberService.register(memberDTO);
-        return "redirect:/auth/signin";
+        return redirect+"auth/signin";
     }
 
     @GetMapping("signin")
@@ -91,13 +87,12 @@ public class MemberController {
      * @return the string
      */
     @PostMapping("signin")
-    public String login(MemberLoginDTO dto, Model model) {
+    public String login(MemberLoginDTO dto) {
         MemberResponseDTO member = memberService.login(dto);
-        String result = "redirect:/";
         if(member == null) {
-            return result+"auth/signin";
+            return redirect+"auth/signin";
         }else {
-            return result;
+            return redirect;
         }
 
     }
@@ -112,33 +107,46 @@ public class MemberController {
     @GetMapping("agree2")
     public void agree2() {}
 
-    /**
-     * 로그아웃
-     * security 추가로 인해 사용안하게됨
-     */
-//    @GetMapping("signout")
-//    public String signout(HttpSession session) {
-//        session.invalidate();
-//        return "redirect:/auth/signin";
-//    }
 
     @GetMapping("mypage")
     public void mypage(@AuthenticationPrincipal CustomUserDetails details, Model model) {
         model.addAttribute("user", details);
     }
 
+    /**
+     * 회원 정보 확인
+     *
+     * @param details the details
+     * @param model   the model
+     */
     @GetMapping("userinfo")
-    public void userInfo(@AuthenticationPrincipal CustomUserDetails details, Model model, HttpSession session){
+    public void userInfo(@AuthenticationPrincipal CustomUserDetails details, Model model){
         model.addAttribute("user", details);
         log.info("session : {}", model.addAttribute("user", details));
         log.info("session : {}", details);
     }
 
+    /**
+     * 회원정보수정 중 기본 회원값 입력
+     *
+     * @param model   the model
+     * @param details the details
+     */
     @GetMapping("modify")
-    public void modify(Model model) {
-        model.addAttribute("user", session.getAttribute("member"));
+    public void modify(Model model, @AuthenticationPrincipal CustomUserDetails details) {
+        model.addAttribute("user", details);
         model.addAttribute("dept", deptService.deptList());
         model.addAttribute("position", positionService.positionList());
+    }
+
+    /**
+     * 회원정보 수정 중 입력한 값을 받아 회원 정보 수정
+     *
+     * @return login page return
+     */
+    @PostMapping("modify")
+    public String modify() {
+        return redirect;
     }
 
 }

@@ -6,6 +6,8 @@ import com.ohalfmoon.firework.model.MessageEntity;
 import com.ohalfmoon.firework.persistence.MemberRepository;
 import com.ohalfmoon.firework.persistence.MessageRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -71,7 +73,7 @@ public class MessageService {
 
     @Transactional
     public Long countMessage(Long receiverNo) {
-        return messageRepository.countMessageEntitiesByReceiver(memberRepository.findById(receiverNo).orElse(null));
+        return messageRepository.countMessageEntitiesByReceiverAndMessageCheckFalse(memberRepository.findById(receiverNo).orElse(null));
     }
 
     @Transactional
@@ -80,5 +82,9 @@ public class MessageService {
                 .findTop5BySenderAndMessageNoLessThanOrderByMessageNoDesc(memberRepository
                         .findById(senderNo).orElse(null), messageNo)
                 .stream().map(MessageResponseDto::new).collect(Collectors.toList());
+    }
+
+    public Page<MessageEntity> messageListByPaging(Long receiver, Pageable pageable) {
+        return messageRepository.findAllByReceiver(memberRepository.findById(receiver).orElse(null),pageable);
     }
 }

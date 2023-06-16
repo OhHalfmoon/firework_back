@@ -1,5 +1,6 @@
 package com.ohalfmoon.firework.dto;
 
+import com.ohalfmoon.firework.dto.paging.PageResponseDTO;
 import com.ohalfmoon.firework.model.MessageEntity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

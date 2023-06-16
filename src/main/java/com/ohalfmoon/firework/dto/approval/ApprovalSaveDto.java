@@ -1,9 +1,12 @@
 package com.ohalfmoon.firework.dto.approval;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ohalfmoon.firework.model.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
+
 /**
  * packageName    : com.ohalfmoon.firework.dto
  * fileName       : ApprovalSaveDto
@@ -16,7 +19,9 @@ import lombok.NoArgsConstructor;
  * 2023/06/08        오상현           최초 생성
  */
 @Getter
+@Setter
 @NoArgsConstructor
+@ToString
 public class ApprovalSaveDto {
     private String approvalName;
     private Long formNo;
@@ -25,9 +30,12 @@ public class ApprovalSaveDto {
     private String approContent;
     private Long userNo;
     private int approvalState; //결재진행상태 : 0(작성중,임시저장) 1(결재중) 2(결재완료)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd", timezone = "Asia/Seoul")
+    private Date regdate;
 
     @Builder
-    public ApprovalSaveDto(String approvalName, Long formNo, Long lineNo, Long docboxNo, String approContent, Long userNo, int approvalState) {
+    public ApprovalSaveDto(String approvalName, Long formNo, Long lineNo, Long docboxNo, String approContent, Long userNo, int approvalState, Date regdate) {
         this.approvalName = approvalName;
         this.formNo = formNo;
         this.lineNo = lineNo;
@@ -35,6 +43,7 @@ public class ApprovalSaveDto {
         this.approContent = approContent;
         this.userNo = userNo;
         this.approvalState = approvalState;
+        this.regdate = regdate;
     }
     /*
      * toSaveApproval : 기안 제출
@@ -49,6 +58,7 @@ public class ApprovalSaveDto {
                 .approContent(approContent)
                 .memberEntity(MemberEntity.builder().userNo(userNo).build())
                 .approvalState(approvalState)
+                .regdate(regdate)
                 .build();
     }
 

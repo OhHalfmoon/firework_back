@@ -1,5 +1,6 @@
 package com.ohalfmoon.firework.dto.role;
 
+import com.ohalfmoon.firework.model.Role;
 import com.ohalfmoon.firework.model.RoleEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,7 +37,7 @@ public class RoleDTO {
     public RoleEntity toEntity() {
         return RoleEntity.builder()
 //                .authName("GUEST")
-                .roleName(roleName)
+                .roleName(Role.ROLE_GUEST)
                 .build();
     }
 }

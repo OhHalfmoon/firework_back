@@ -44,9 +44,9 @@ public class SubLineRepositoryTests {
     // 서브 라인 추가 - 성공
     @Test
     public void testSave() {
-        Integer orderLevel = 1;
-        Long lineNo = 1L;
-        Long userNo = 1L;
+        Integer orderLevel = 3;
+        Long lineNo = 35L;
+        Long userNo = 3L;
 
         subLineRepository.save(SubLineEntity.builder()
                 .orderLevel(orderLevel)

@@ -3,9 +3,12 @@ package com.ohalfmoon.firework.service;
 import com.ohalfmoon.firework.dto.AlarmResponseDto;
 import com.ohalfmoon.firework.dto.AlarmSaveDto;
 import com.ohalfmoon.firework.model.AlarmEntity;
+import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.persistence.AlarmRepository;
 import com.ohalfmoon.firework.persistence.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -23,6 +26,7 @@ import java.util.stream.Collectors;
  * -----------------------------------------------------------
  * 2023/06/08        우성준           최초 생성
  * 2023/06/12        우성준           알림 리스트 출력 수정(상위 5개만) 및 알림 개수 출력 추가
+ * 2023/06/14        우성준           알림 리스트->슬라이스로 변경
  */
 @Service
 @RequiredArgsConstructor
@@ -42,12 +46,12 @@ public class AlarmService {
         return new AlarmResponseDto(alarm);
     }
 
-    @Transactional
-    public List<AlarmResponseDto>findTop5ByAlarmReceiver(Long userNo, Long alarmNo) {
-       return alarmRepository
-                .findTop5ByAlarmReceiverAndAlarmNoLessThanOrderByAlarmNoDesc(memberRepository.findById(userNo).orElse(null), alarmNo)
-                        .stream().map(AlarmResponseDto::new).collect(Collectors.toList());
-    }
+//    @Transactional
+//    public List<AlarmResponseDto>findTop5ByAlarmReceiver(Long userNo, Long alarmNo) {
+//       return alarmRepository
+//                .findTop5ByAlarmReceiverAndAlarmNoLessThanOrderByAlarmNoDesc(memberRepository.findById(userNo).orElse(null), alarmNo)
+//                        .stream().map(AlarmResponseDto::new).collect(Collectors.toList());
+//    }
 
     @Transactional
     public Long update(Long alarmNo, boolean alarmCheck){
@@ -69,5 +73,11 @@ public class AlarmService {
     @Transactional
     public Long countAlarmByAlarmReceiver(Long userNo) {
         return alarmRepository.countAlarmEntitiesByAlarmReceiver(memberRepository.findById(userNo).orElse(null));
+    }
+
+    @Transactional
+    public Slice<AlarmResponseDto> findListBySlice(Long userNo, Pageable pageable) {
+        return alarmRepository.findSliceByAlarmReceiver(MemberEntity.builder().userNo(userNo).build(), pageable)
+                .map(AlarmResponseDto::new);
     }
 }

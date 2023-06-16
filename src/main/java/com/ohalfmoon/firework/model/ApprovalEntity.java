@@ -5,6 +5,8 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.util.Date;
+
 /**
  * packageName    : com.ohalfmoon.firework.model
  * fileName       : ApprovalEntity
@@ -26,7 +28,7 @@ import javax.persistence.*;
 @DynamicInsert
 @Builder
 @ToString
-public class ApprovalEntity extends BaseTimeEntity{
+public class ApprovalEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long approvalNo;
@@ -57,6 +59,10 @@ public class ApprovalEntity extends BaseTimeEntity{
     @Column(nullable = false)
     private int approvalState;
 
+    private Date regdate; // 등록일자
+
+    private Date updatedate; // 업데이트 일자
+
     public ApprovalResponseDto toDto() {
         return ApprovalResponseDto.builder()
                 .approvalNo(approvalNo)
@@ -67,7 +73,7 @@ public class ApprovalEntity extends BaseTimeEntity{
                 .userNo(memberEntity.getUserNo())
                 .name(memberEntity.getName())
                 .approvalState(approvalState)
-                .regdate(getRegdate())
+                .regdate(regdate)
                 .build();
     }
 

@@ -3,6 +3,7 @@ package com.ohalfmoon.firework.repository;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.persistence.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 @Slf4j
 @SpringBootTest
@@ -44,5 +46,12 @@ public class MemberRepositoryTests {
         MemberEntity memberEntity = memberRepository.findByUsername("ycy123");
 
         log.info("{}", memberEntity);
+    }
+
+    @Test
+    @DisplayName("state가 0인 회원 조회")
+    public void zeroStateMemberTest() {
+        List<MemberEntity> entity = memberRepository.findAllByState(0);
+        log.info("state = 0 : {}", entity);
     }
 }

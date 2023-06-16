@@ -1,8 +1,6 @@
 package com.ohalfmoon.firework.config.auth;
 
-import com.ohalfmoon.firework.model.DeptEntity;
-import com.ohalfmoon.firework.model.MemberEntity;
-import com.ohalfmoon.firework.model.PositionEntity;
+import com.ohalfmoon.firework.model.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -10,9 +8,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
+import java.lang.reflect.Member;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * packageName :  com.ohalfmoon.firework.config.auth
@@ -30,7 +28,6 @@ import java.util.Date;
 @ToString
 public class CustomUserDetails implements UserDetails {
 
-    // private MemberEntity user;
     private String username;
     private String password;
     private String name;
@@ -42,6 +39,7 @@ public class CustomUserDetails implements UserDetails {
     private boolean manager;
     private Date birthdate;
     private Date Startdate;
+    private Role roleName;
 
 
     public CustomUserDetails(MemberEntity user) {
@@ -56,27 +54,19 @@ public class CustomUserDetails implements UserDetails {
         this.manager = user.isManager();
         this.birthdate = user.getBirthdate();
         this.Startdate = user.getStartdate();
+        this.roleName = user.getRoleName();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new SimpleGrantedAuthority("ROLE_MEMBER"));
+//        List<String> list = new ArrayList<>();
+//        list.add()
+//        RoleEntity roles = new RoleEntity();
+//        return Arrays.asList(new SimpleGrantedAuthority(roles.getRoleName().getKey()));
+//        return Arrays.asList(new SimpleGrantedAuthority(new RoleEntity().getRoleName().toString()));
+//        return Arrays.asList(new SimpleGrantedAuthority(list.toString()));
+        return Collections.singletonList(new SimpleGrantedAuthority(roleName.getName()));
     }
-
-//    @Override
-//    public String getUsername() {
-//        return user.getUsername();
-//    }
-//
-//    public String getName() {
-//        return user.getName();
-//    }
-//
-//    @Override
-//    public String getPassword() {
-//        return user.getPassword();
-//    }
-
 
     @Override
     public boolean isAccountNonExpired() {

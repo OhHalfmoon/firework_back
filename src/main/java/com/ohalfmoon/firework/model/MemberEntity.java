@@ -6,6 +6,8 @@ import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
+
 /**
  * packageName    : com.ohalfmoon.firework.model
  * fileName       : MemberEntity
@@ -53,9 +55,9 @@ public class MemberEntity {
     @JoinColumn(name = "positionNo") // foreign key column name
     private PositionEntity positionEntity; // 직급번호
 
-    @ManyToOne
-    @JoinColumn(name = "roleNo")
-    private RoleEntity roleEntity;
+    @Column(nullable = false)
+    @Enumerated(EnumType.ORDINAL)
+    private Role roleName;
 
     @Column(nullable = false)
     private String name; // 이름
@@ -125,6 +127,15 @@ public class MemberEntity {
         this.name = name;
         this.birthdate = birthdate;
         this.startdate = startdate;
+    }
+
+    /**
+     * 가입 승인, 탈퇴
+     *
+     * @param state the state
+     */
+    public void updateState(int state) {
+        this.state = state;
     }
 
 

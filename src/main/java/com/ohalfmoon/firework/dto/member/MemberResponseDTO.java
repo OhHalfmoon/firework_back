@@ -32,11 +32,12 @@ public class MemberResponseDTO {
     private boolean manager;
     private Date birthdate;
     private Date startdate;
+    private Long deptNo;
     private String deptName;
+    private Long positionNo;
     private String positionName;
-    private DeptEntity deptEntity;
     private PositionEntity positionEntity;
-    private RoleEntity roleEntity;
+    private int state;
 
     public MemberResponseDTO(MemberEntity entity) {
         userNo = entity.getUserNo();
@@ -47,9 +48,12 @@ public class MemberResponseDTO {
         manager = entity.isManager();
         birthdate = entity.getBirthdate();
         startdate = entity.getStartdate();
+        deptNo = entity.getDeptEntity().getDeptNo();
         deptName = entity.getDeptEntity().getDeptName();
+        positionNo = entity.getPositionEntity().getPositionNo();
         positionName = entity.getPositionEntity().getPositionName();
-        deptEntity = entity.getDeptEntity();
+//        deptEntity = entity.getDeptEntity();
         positionEntity = entity.getPositionEntity();
+        state = entity.getState();
     }
 }

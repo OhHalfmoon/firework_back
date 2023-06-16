@@ -6,10 +6,14 @@ import com.ohalfmoon.firework.persistence.DeptRepository;
 import com.ohalfmoon.firework.persistence.MemberRepository;
 import com.ohalfmoon.firework.persistence.PositionRepository;
 import com.ohalfmoon.firework.persistence.RoleRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -31,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  */
 @Service
+@RequiredArgsConstructor
 public class MemberService {
     @Autowired
     private MemberRepository memberRepository;
@@ -54,7 +59,7 @@ public class MemberService {
      * @return the role entity
      */
     @Transactional // springboot
-    public RoleEntity register(MemberDTO memberDTO) {
+    public MemberEntity register(MemberDTO memberDTO) {
         memberDTO.setPassword(encoder.encode(memberDTO.getPassword()));
         MemberEntity entity = memberDTO.toEntity();
 
@@ -68,14 +73,7 @@ public class MemberService {
                 .orElseThrow(() -> new IllegalArgumentException(""));
         entity.updatePositionNo(byId2);
 
-        memberRepository.save(entity);
-
-        // security 적용시 수정예정
-        RoleEntity entityBuilder = RoleEntity.builder()
-                .roleName(Role.GUEST.getKey())
-                .build();
-
-        return roleRepository.save(entityBuilder);
+        return memberRepository.save(entity);
 
 }
 
@@ -90,11 +88,17 @@ public class MemberService {
     public Long updatePw(Long userNo, MemberUpdatePwDTO dto) {
         MemberEntity entity = memberRepository.findById(userNo)
                 .orElseThrow(() -> new IllegalArgumentException("해당 id가 존재하지 않습니다." + userNo));
-
         entity.updatePw(dto.getPassword());
-
         return userNo;
+    }
 
+    @Transactional
+    public Long recognize(Long userNo, MemberUpdateStateDTO dto) {
+        MemberEntity entity =
+                memberRepository.findById(userNo)
+                        .orElseThrow(() -> new IllegalArgumentException("해당 ID가 존재하지 않습니다." + userNo));
+        entity.updateState(dto.getState());
+        return userNo;
     }
     /**
      * 회원정보 수정
@@ -149,5 +153,20 @@ public class MemberService {
      */
     public MemberEntity get(final String username) {
         return memberRepository.findByUsername(username);
+    }
+
+    public List<MemberResponseDTO> getMemberList() {
+        return memberRepository.findAll()
+                .stream().map(MemberResponseDTO::new).collect(Collectors.toList());
+    }
+
+    /**
+     * state값이 0인 회원 return
+     *
+     * @return the state by zero
+     */
+    public List<MemberResponseDTO> getStateByZero() {
+        return memberRepository.findAllByState(0)
+                .stream().map(MemberResponseDTO::new).collect(Collectors.toList());
     }
 }
