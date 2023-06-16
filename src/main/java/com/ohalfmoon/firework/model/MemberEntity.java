@@ -129,6 +129,15 @@ public class MemberEntity {
         this.startdate = startdate;
     }
 
+    /**
+     * 가입 승인, 탈퇴
+     *
+     * @param state the state
+     */
+    public void updateState(int state) {
+        this.state = state;
+    }
+
 
     /**
      * Member Builder

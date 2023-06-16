@@ -12,8 +12,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * packageName    : com.ohalfmoon.firework.service
+ * fileName       : MasterLineServiceTest
+ * author         : 이지윤
+ * date           : 2023/06/07
+ * description    : 결재 선 Service 테스트
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023/06/07        이지윤           최초 생성
+ */
 @SpringBootTest
 @Slf4j
 public class MasterLineServiceTests {
@@ -23,14 +35,14 @@ public class MasterLineServiceTests {
     @Autowired
     private MasterLineRepository masterLineRepository;
 
-    // 추가 - 성공
+    // 추가 - List<Long> userNos 해당 필드로 변경되면서 값이 안 들어가짐
     @Test
-    @Transactional
+//    @Transactional
     @DisplayName("저장 테스트")
     public void testSave() {
         MasterLineSaveDTO masterLineSaveDTO = MasterLineSaveDTO.builder()
                 .lineName("서비스테스트2")
-                .userNo(3L)
+                .userNos(new ArrayList<>())
                 .build();
 
         Long saveLineNo = masterLineService.save(masterLineSaveDTO);
@@ -72,10 +84,10 @@ public class MasterLineServiceTests {
 
     // 삭제 - 성공
     @Test
-    @Transactional
+//    @Transactional
     @DisplayName("삭제 테스트")
     public void testDelete(){
-        Long lineNo = 4L;
+        Long lineNo = 20L;
         masterLineService.delete(lineNo);
     }
 }

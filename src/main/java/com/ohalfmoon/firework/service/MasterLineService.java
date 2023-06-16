@@ -1,5 +1,4 @@
 package com.ohalfmoon.firework.service;
-import com.ohalfmoon.firework.dto.AlarmResponseDto;
 import com.ohalfmoon.firework.dto.master.MasterLineResponseDTO;
 import com.ohalfmoon.firework.dto.master.MasterLineSaveDTO;
 import com.ohalfmoon.firework.dto.master.MasterLineUpdateDTO;
@@ -37,16 +36,18 @@ public class MasterLineService {
 
     @Autowired
     private MemberRepository memberRepository;
-
     @Autowired
     private SubLineRepository subLineRepository;
+
+    @Autowired
+    private SubLineService subLineService;
 
     @Transactional
     public Long save(MasterLineSaveDTO dto) {
         MasterLineEntity mle = masterLineRepository.save(dto.toEntity());
         AtomicInteger idx = new AtomicInteger(1);
         List<SubLineEntity> subLineEntities = dto.getUserNos().stream().map(userNo ->
-            SubLineEntity.builder().orderLevel(idx.getAndIncrement()).masterLineEntity(mle).memberEntity(MemberEntity.builder().userNo(userNo).build()).build()
+                SubLineEntity.builder().orderLevel(idx.getAndIncrement()).masterLineEntity(mle).memberEntity(MemberEntity.builder().userNo(userNo).build()).build()
         ).collect(Collectors.toList());
         subLineRepository.saveAll(subLineEntities);
         return mle.getLineNo();
@@ -65,12 +66,17 @@ public class MasterLineService {
     // userNo를 통한 리스트 조회
     public List<MasterLineResponseDTO> getList(Long userNo) {
         return masterLineRepository.findByMemberEntity_UserNo(userNo)
-                .stream().map((masterLineEntity) -> {
-                  MasterLineResponseDTO masterLineResponseDTO = new MasterLineResponseDTO(masterLineEntity);
-                    masterLineResponseDTO.setSubLineResponseDTOS(subLineRepository.findAllByMasterLineEntity_LineNo(masterLineEntity.getLineNo()).stream().map(SubLineResponseDTO::new).collect(Collectors.toList()));
-                    return masterLineResponseDTO;
-                })
-                .collect(Collectors.toList());
+        .stream().map((masterLineEntity) -> {
+                                MasterLineResponseDTO masterLineResponseDTO = new MasterLineResponseDTO(masterLineEntity);
+                masterLineResponseDTO.
+                        setSubLineResponseDTOS(subLineRepository.
+                                findAllByMasterLineEntity_LineNo(masterLineEntity.getLineNo()).
+                                stream()
+                                .map(SubLineResponseDTO::new)
+                                .collect(Collectors.toList()));
+                return masterLineResponseDTO;
+            })
+            .collect(Collectors.toList());
     }
 
     public String getMasterName(Long userNo) {
@@ -91,8 +97,26 @@ public class MasterLineService {
         MasterLineEntity entity = masterLineRepository
                 .findById(lineNo)
                 .orElseThrow(() -> new IllegalArgumentException("결재 선이 존재하지 않습니다"));
-        List<SubLineEntity> subLineEntities = subLineRepository.findAllByMasterLineEntity_LineNo(lineNo);
+        subLineRepository.deleteAllByMasterLineEntity_LineNo(lineNo);
+//        List<SubLineEntity> subLineEntities = subLineRepository.findAllByMasterLineEntity_LineNo(lineNo);
+//        subLineRepository.deleteAll(subLineEntities);
+//        AtomicInteger idx = new AtomicInteger(0);
+//        subLineEntities.stream().map(subLineEntity -> {
+//            subLineRepository.delete(subLineEntity);
+////            subLineService.delete(subLineEntity.getSubLineNo());
+//            return subLineEntity;
+//        });
         masterLineRepository.delete(entity);
-
     }
+
+//    @Transactional
+//    public Long save(MasterLineSaveDTO dto) {
+//        MasterLineEntity mle = masterLineRepository.save(dto.toEntity());
+//        AtomicInteger idx = new AtomicInteger(1);
+//        List<SubLineEntity> subLineEntities = dto.getUserNos().stream().map(userNo ->
+//                SubLineEntity.builder().orderLevel(idx.getAndIncrement()).masterLineEntity(mle).memberEntity(MemberEntity.builder().userNo(userNo).build()).build()
+//        ).collect(Collectors.toList());
+//        subLineRepository.saveAll(subLineEntities);
+//        return mle.getLineNo();
+//    }
 }

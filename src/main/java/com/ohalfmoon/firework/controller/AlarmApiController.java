@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,7 @@ import java.util.Optional;
  * 2023/06/08        우성준            최초 생성
  * 2023/06/09        우성준            CRUD 작업
  * 2023/06/12        우성준            알림 리스트 출력 수정(상위 5개만) 및 알림 개수 출력 추가
+ * 2023/06/14        우성준            알림 리스트->슬라이스로 변경
  */
 @RequiredArgsConstructor
 @RequestMapping("/api/alarm")

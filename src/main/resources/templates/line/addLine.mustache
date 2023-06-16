@@ -41,11 +41,10 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <button type="button" class="btn btn-outline-secondary btn-sm float-right ml-3">수정</button>
-                                <form id="deleteFrm" method="DELETE" >
+                                <form id="deleteFrm" method="POST">
                                     <button type="button" class="btn btn-outline-secondary btn-sm float-right ml-3" id="deleteLine">삭제</button>
                                 </form>
-                                <button type="button" class="btn btn-outline-secondary btn-sm float-right">추가</button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm float-right" id="addBtn">추가</button>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
@@ -57,19 +56,19 @@
                                         <th>결재자 1</th>
                                         <th>결재자 2</th>
                                         <th>결재자 3</th>
-                                        <th>선택</th>
+                                        <th><div class="text-center">선택</div></th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {{#masterList}}
                                     <tr class="myLine data-lineNo={{lineNo}}">
                                         <td>{{lineName}}</td>
-                                        <td>{{userName}}</td>
+                                        <td><div>{{userName}}</div></td>
                                         {{#subLineResponseDTOS}}
                                             <td> [{{deptName}}] [{{positionName}}] {{#name}}{{name}}{{/name}}{{^name}}{{-}}{{/name}}</td>
                                         {{/subLineResponseDTOS}}
                                         <td><!-- checkbox -->
-                                            <div class="icheck-primary d-inline ml-2 mx-auto">
+                                            <div class="icheck-primary ml-2 row justify-content-center">
                                                 <input class="mx-auto ckBox" type="radio" name="pickRadio" id="todoCheck{{lineNo}}" value="{{lineNo}}">
                                                 <label for="todoCheck{{lineNo}}"></label>
                                             </div>
@@ -92,15 +91,12 @@
 
         <!-- /.content -->
 
-        <section class="content">
+        <section id="addSection" class="content">
             <div class="container-fluid">
                 <form method="post">
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
-                                <div class="card-header">
-                                    <button type="submit" class="btn btn-outline-secondary btn-sm float-right" id="addBtn">추가</button>
-                                </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
                                     <table id="example2" class="table table-bordered table-hover">
@@ -111,16 +107,17 @@
                                             <th>결재자 1</th>
                                             <th>결재자 2</th>
                                             <th>결재자 3</th>
+                                            <th style="width: 5%"></th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr>
-                                            <td><input type="text" name="lineName"></td>
+                                            <td><input type="text" class="form-control" placeholder="예) 내부 기안" name="lineName"></td>
                                             <input type="hidden" name="userNo">
                                             <td>
-                                                {{#masterList}}
-                                                    <div name="{{!lineNo}}">{{!userName}}</div>
-                                                {{/masterList}}
+                                                {{#userNo}}
+                                                    <div name="{{name}}">{{name}}</div>
+                                                {{/userNo}}
                                             </td>
                                             <td>
                                                 <div class="col-sm-6">
@@ -155,6 +152,11 @@
                                                     </div>
                                                 </div>
                                             </td>
+                                            <td>
+                                                <div class="row justify-content-center">
+                                                    <button type="submit" class="btn btn-outline-secondary btn-sm w-75 row" id="addBtn">저장</button>
+                                                </div>
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -180,11 +182,26 @@
 {{>layout/library}}
     <script>
         $(function (){
+
+            function moveToAddSection(){
+                let offset = $("#addSection").offset();
+                $('html, body').animate({scrollTop : offset.top}, 400);
+            }
+
+            $("#addSection").css("display", "none");
+
             $("#deleteLine").click(function(){
                 if($('input:radio[name="pickRadio"]:checked').length === 0){
                     alert("삭제할 결재선을 선택해주세요.");
                     return;
                 }
+            })
+
+            $("#addBtn").click(function (){
+                console.log("addBtn");
+                $("#addSection").css("display", "block");
+                $(this).addClass("active").siblings().removeClass("active");
+                moveToAddSection($(this).data("id"));
             })
 
             $(".ckBox").click(function (){
@@ -193,30 +210,12 @@
 
                 $("#deleteLine").click(function(e){
                     e.preventDefault();
-                    $("#deleteFrm").attr("action", "/line/delete/"+lineNo);
-                    $("#deleteFrm").attr("method", "DELETE");
+                    $("#deleteFrm").attr("action", "/line/"+lineNo);
                     $("#deleteFrm").submit();
-
-
-
-                    // $('input:radio[name="pickRadio"]:checked').closest("tr").remove();
-                    // $.ajax({
-                    //     url: "/line/delete" + "?lineNo=" + lineNo,
-                    //     method: "DELETE",
-                    //     dataType: "json",
-                    //     success : function (data) {
-                    //         console.log(data)
-                    //         if(data == 1) {
-                    //             alert("삭제되었습니다.");
-                    //         }
-                    //     }
-                    // })
+                    alert("삭제되었습니다.");
                 })
 
             })
-
-
-
 
         })
 

@@ -28,4 +28,5 @@ public interface SubLineRepository extends JpaRepository<SubLineEntity, Long> {
      // using LineNo to find SubLine
      List<SubLineEntity> findAllByMasterLineEntity_LineNo(Long lineNo);
 
+     void deleteAllByMasterLineEntity_LineNo(Long lineNo);
 }
