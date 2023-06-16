@@ -127,28 +127,7 @@
         </div>
     </div>
 </div>
-{{>layout/library}}
-<script>
-    $(function () {
-        // $('[data-toggle="tooltip"]').tooltip()
 
-        $("#goToWork").click(function () {
-            if(confirm("출근 등록을 하시겠습니까?")) {
-                // 출근 등록 시 출근 시간을 기록
-                console.log("출근 등록!")
-            }
-        })
-
-        $("#leaveWork").click(function () {
-            if(confirm("퇴근 등록을 하시겠습니까?")) {
-                // 퇴근 등록 시 퇴근 시간을 기록
-                console.log("퇴근 등록!")
-            }
-        })
-
-
-    })
-</script>
 <!-- Main Sidebar Container -->
 {{>layout/menu}}
 
