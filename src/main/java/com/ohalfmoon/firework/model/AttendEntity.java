@@ -30,4 +30,8 @@ public class AttendEntity {
 
     private Date leavedate;
 
+    public void update(Date leavedate) {
+        this.leavedate = leavedate;
+    }
+
 }
