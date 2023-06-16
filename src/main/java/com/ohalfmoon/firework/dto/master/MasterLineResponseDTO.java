@@ -42,7 +42,7 @@ public class MasterLineResponseDTO {
         lineNo = entity.getLineNo();
         lineName = entity.getLineName();
         userNo = entity.getMemberEntity().getUserNo();
-//        this.regdate = entity.getRegdate();
+//      this.regdate = entity.getRegdate();
         userName = entity.getMemberEntity().getName();
     }
 
