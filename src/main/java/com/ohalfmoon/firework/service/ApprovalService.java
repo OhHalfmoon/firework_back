@@ -77,23 +77,32 @@ public class ApprovalService {
     //결재 서류 수정
     @Transactional
     public Long update(long approvalNo, ApprovalUpdateDto updateDto) {
-        ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
+        List<ApprovalLineDto> lineDtos = getApprovalUserName(approvalNo);
 
-        approvalEntity.update(
-                updateDto.getApprovalName(),
-                updateDto.getLineNo(),
-                updateDto.getDocboxNo(),
-                updateDto.getApproContent(),
-                updateDto.getApprovalOrder(),
-                updateDto.getApprovalState()
-        );
+        for (int i = 0; i < lineDtos.size(); i++) {
+            if (lineDtos.get(i).getOrderLevel() == approvalRepository.findByApprovalNo(approvalNo).getApprovalOrder()) {
+                ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
 
-        return approvalNo;
+                approvalEntity.update(
+                        updateDto.getApprovalName(),
+                        updateDto.getLineNo(),
+                        updateDto.getDocboxNo(),
+                        updateDto.getApproContent(),
+                        updateDto.getApprovalOrder(),
+                        updateDto.getApprovalState()
+                );
+
+                return approvalNo;
+            } else {
+                return null;
+            }
+        }
+        return null;
     }
 
     //기안 상태값을 변경
     @Transactional
-    public  Long updateState(long approvalNo ,ApprovalStateDto stateDto) {
+    public  Long updateState(Long approvalNo ,ApprovalStateDto stateDto) {
         ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
 //        int approvalstate = approvalEntity.getApprovalState();
         approvalEntity.updateState(
