@@ -38,6 +38,7 @@
 
 <!-- 알림 -->
 <script src="/dist/js/alarm.js"></script>
+<script src="/dist/js/message.js"></script>
 <script>
     $(function() {
         var userNo = 1;
@@ -100,6 +101,31 @@
             });
             pageNum++;
         })
+
+        messageService.getListByReceiver({userNo:userNo}, function (result) {
+            console.log(result);
+            var str = "";
+            for (var i in result.receiverMessageList) {
+                str += getReceiveLiStr(result.receiverMessageList[i]);
+            }
+            $(".messages").html(str);
+        });
+
+        function getReceiveLiStr(obj) {
+            return `<div class="col-1 text-center"><input type="checkbox" data-messageno="${obj.messageNo}"></div>
+                    <div class="col-2 text-center">
+				        ${obj.receiver}
+                    </div>
+                    <div class="col-5 text-center">
+				        ${obj.messageTitle}
+                    </div>
+				    <div class="col-4 text-center">
+				        ${obj.regdate}
+                    </div>
+                    </a>
+				    `;
+
+        }
     });
 </script>
 
