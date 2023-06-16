@@ -3,10 +3,12 @@ package com.ohalfmoon.firework.config;
 import com.ohalfmoon.firework.config.auth.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -45,21 +47,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors()
                 .and().csrf().disable()
                 .formLogin().loginPage("/auth/signin") // 커스텀 로그인폼 사용
-                .permitAll() // 권한없이 사용 (임시)
                 .and().httpBasic()
-//                .httpBasic().disable() // 기본 로그인폼 사용안함
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // session방식 사용
-                .and().authorizeRequests()
-                .antMatchers("/line/**").hasRole("EMPLOYEE")
-//                .antMatchers("/auth/**").authenticated()
-                .antMatchers("/auth/login", "/auth/signup").permitAll() // 로그인, 회원가입 페이지는 권한이 없어도 사용 가능
-//                .antMatchers("/").hasRole(Role.EMPLOYEE.name()) // 그 외 모든페이지는 최소 USER권한이 있어야만 사용가능
-                .and().logout().logoutSuccessUrl("/auth/signin");
+                // 배포 전까지 주석 시작
+//                .and().authorizeRequests() // 인증절차에 대한 설정을 진행
+//                .antMatchers("/auth/signin", "/auth/signup", "/auth/agree").permitAll() // 로그인, 회원가입 페이지는 권한이 없어도 사용 가능
+//                .antMatchers("/").hasAnyRole("EMPLOYEE", "TL", "CEO", "ADMIN") // 그 외 페이지는 인증된 사람만 이용가능
+//                .antMatchers("/dist/**", "/plugins/**").permitAll() // 정적파일 호출
+//                .anyRequest().authenticated()
+                // 배포 전까지 주석 끝
+                .and().logout().logoutSuccessUrl("/auth/signin"); // logout시 이동
     }
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(customUserDetailsService)
                 .passwordEncoder(passwordEncoder());
+    }
+
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
 }
