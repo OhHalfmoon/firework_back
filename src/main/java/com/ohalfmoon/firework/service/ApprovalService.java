@@ -83,7 +83,9 @@ public class ApprovalService {
                 updateDto.getApprovalName(),
                 updateDto.getLineNo(),
                 updateDto.getDocboxNo(),
-                updateDto.getApproContent()
+                updateDto.getApproContent(),
+                updateDto.getApprovalOrder(),
+                updateDto.getApprovalState()
         );
 
         return approvalNo;
@@ -95,6 +97,7 @@ public class ApprovalService {
         ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
 //        int approvalstate = approvalEntity.getApprovalState();
         approvalEntity.updateState(
+                stateDto.getApprovalOrder(),
                 stateDto.getApprovalState()
         );
 
