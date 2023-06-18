@@ -3,11 +3,10 @@ package com.ohalfmoon.firework.controller;
 import com.ohalfmoon.firework.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * packageName :  com.ohalfmoon.firework.controller
@@ -20,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
  * -----------------------------------------------------------
  * 2023-06-15                ycy             최초 생성
  */
-@RestController
-@RequestMapping("/admin")
+@Controller
+@RequestMapping("admin")
 @RequiredArgsConstructor
 @Slf4j
 public class AdminController {
@@ -29,7 +28,8 @@ public class AdminController {
     private final MemberService memberService;
 
     @GetMapping
-    public void admin() {
+    public String admin() {
+        return "/admin/index";
     }
 
     /**
