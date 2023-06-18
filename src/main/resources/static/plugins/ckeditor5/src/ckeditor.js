@@ -142,7 +142,7 @@ Editor.defaultConfig = {
 			'tableProperties'
 		]
 	}, simpleUpload: {
-		uploadUrl: '/upload' // 파일 업로드를 처리할 서버 엔드포인트 URL
+		uploadUrl: '/upload/ajax' // 파일 업로드를 처리할 서버 엔드포인트 URL
 	}
 };
 
