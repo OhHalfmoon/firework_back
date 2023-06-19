@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2023/06/16        이지윤            최초 생성
- * 2023/06/17        이지윤            getAttendNo() 추가
+ * 2023/06/19        이지윤            getAttendNo() 추가
  */
 
 @RequiredArgsConstructor
