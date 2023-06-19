@@ -5,7 +5,6 @@ import com.ohalfmoon.firework.dto.approval.ApprovalStateDto;
 import com.ohalfmoon.firework.dto.approval.ApprovalUpdateDto;
 import com.ohalfmoon.firework.model.*;
 import com.ohalfmoon.firework.persistence.ApprovalRepository;
-import org.aspectj.lang.annotation.After;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -59,7 +58,6 @@ public class ApprovalControllerTest {
                 .approContent(approContent)
                 .userNo(userNo)
                 .approvalState(approvalState)
-                .regdate(regdate)
                 .build();
 
         String url = "http://localhost:" + port + "/approval/";
@@ -89,7 +87,6 @@ public class ApprovalControllerTest {
                 .approContent("컨트롤러기안상태변경테스트기안")
                 .memberEntity(MemberEntity.builder().userNo(1L).build())
                 .approvalState(0)
-                .regdate(new Date())
                 .build());
 
         Long updateId = updateState.getApprovalNo();
@@ -118,7 +115,6 @@ public class ApprovalControllerTest {
                 .approContent("컨트롤러기안")
                 .memberEntity(MemberEntity.builder().userNo(1L).build())
                 .approvalState(0)
-                .regdate(new Date())
                 .build());
 
         Long updateId = update.getApprovalNo();

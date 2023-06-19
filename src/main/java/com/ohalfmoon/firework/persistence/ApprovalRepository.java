@@ -25,4 +25,5 @@ public interface ApprovalRepository extends JpaRepository<ApprovalEntity, Long> 
 
     ApprovalEntity findByApprovalNo(Long approvalNo);
 
+
 }

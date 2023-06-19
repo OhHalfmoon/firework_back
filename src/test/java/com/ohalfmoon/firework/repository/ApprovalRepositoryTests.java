@@ -38,7 +38,6 @@ public class ApprovalRepositoryTests {
                         .approContent("가나다라마바사아자차카타파하")
                         .memberEntity(MemberEntity.builder().userNo(1L).build())
                         .approvalState(0)
-                        .regdate(new Date())
                 .build());
     }
 
