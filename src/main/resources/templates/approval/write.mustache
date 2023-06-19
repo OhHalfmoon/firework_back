@@ -124,6 +124,7 @@
                             </section>
                     </div>
                     <div class="col-2">
+                        <input type="hidden" class="form-control approvalOrder" id="approvalOrder" name="approvalOrder"  >
                         <input type="hidden" class="form-control approvalState" id="approvalState" name="approvalState"  >
                         <input type="hidden" class="form-control userNo" name="userNo" >
                         <button class="btn btn-secondary" id="storage" type="submit">임시저장</button>
@@ -273,8 +274,8 @@
             // console.log("성공")
             // console.log(editor);
             const editText = editor.getData();
-
-            $("#approvalState").val(0);
+            $("#approvalOrder").val(1);
+            $("#approvalState").val(1);
             $(".userNo").val(user);
             $(".approContent").val(editText);
             $("#approvalPost").submit();

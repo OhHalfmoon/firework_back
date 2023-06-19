@@ -54,7 +54,8 @@ public class ApprovalContoller {
 
     // 기안 등록
     @PostMapping("/write/{formNo}")
-    public String register(@ModelAttribute ApprovalSaveDto saveDto) {
+    public String register(@AuthenticationPrincipal CustomUserDetails user, @ModelAttribute ApprovalSaveDto saveDto, Model model) {
+        model.addAttribute("user", user);
         log.info("{}",saveDto);
         approvalService.register(saveDto);
         return "redirect:/";
@@ -76,9 +77,6 @@ public class ApprovalContoller {
     public String get (@PathVariable Long approvalNo, @AuthenticationPrincipal CustomUserDetails user, Model model) {
         log.info("테스트:{}", approvalNo);
         model.addAttribute("user", user);
-        model.addAttribute("masterList", masterLineService.getList(user.getUserNo()));
-        model.addAttribute("masterName", masterLineService.getMasterName(user.getUserNo()));
-        model.addAttribute("subLineList", subLineService.getListByLineNo(user.getUserNo()));
         ApprovalResponseDto approvalGet = approvalService.get(approvalNo);
         model.addAttribute("approvalGet", approvalGet);
         List<ApprovalLineDto> approvalLineDto = approvalService.getApprovalUserName(approvalNo);
@@ -92,7 +90,8 @@ public class ApprovalContoller {
     }
 
     @GetMapping("/formList")
-    public String getFormList(Model model) {
+    public String getFormList(@AuthenticationPrincipal CustomUserDetails user, Model model) {
+        model.addAttribute("user", user);
         List<FormResponseDto> listDto = formService.getFormList();
         model.addAttribute("listDto", listDto);
         return "approval/formList";
