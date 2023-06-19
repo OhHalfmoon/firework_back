@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdminLTE 3 | Dashboard</title>
+
+    {{>layout/head}}
+</head>
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
+<div class="wrapper">
+
+    {{>layout/header}}
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        {{#user}}
+                            <h1 class="m-0">{{name}}님의 비밀번호 수정</h1>
+                        {{/user}}
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item"><a href="mypage">mypage</a></li>
+                            <li class="breadcrumb-item active">modifyPw</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <!-- 작업할 때 이 항목 내용을 수정하세요 -->
+        <section class="content mt-5">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-md-3">
+
+                        <!-- Profile Image -->
+                        <div class="card card-success card-outline">
+                            <div class="card-body box-profile">
+                                <div class="text-center">
+                                    <img class="profile-user-img img-fluid img-square"
+                                         src="/dist/img/FIREWORKS.gif">
+                                </div>
+                                {{#user}}
+                                    <h3 class="profile-username text-center my-3"><b>회원 정보 수정</b></h3>
+                                    <form method="post">
+                                        <ul class="list-group list-group-unbordered mb-3 overflow-y-auto">
+                                            <li class="list-unstyled">
+                                                <input type="hidden" name="userNo" value="{{userNo}}">
+                                            </li>
+                                            <li class="list-group-item">
+                                                <label class="row">
+                                                    <b class="m-2">현재 비밀번호를 입력해주세요</b><br>
+                                                    <input type="password" name="name" class="form-control m-1" placeholder="현재 비밀번호를 입력해주세요">
+                                                </label>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <label class="row">
+                                                    <b class="m-2">변경하실 비밀번호를 입력해주세요</b>
+                                                    <input type="password" name="password" class="form-control m-1" placeholder="변경하실 비밀번호를 입력해주세요">
+                                                </label>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <label class="row">
+                                                    <b class="m-2">변경하실 비밀번호를 한번 더 입력해주세요</b>
+                                                    <input type="password" class="form-control m-1" placeholder="변경하실 비밀번호를 한번 더 입력해주세요">
+                                                </label>
+                                            </li>
+
+                                        </ul>
+                                    {{/user}}
+                                    <div class="row col-12 justify-content-center mt-5">
+                                        <div class="col-4">
+                                            <a href="userinfo" class="btn btn-outline-dark btn-block"><b>이전으로</b></a>
+                                        </div>
+                                        <div class="col-4">
+                                            <button type="submit" class="btn btn-danger btn-block"><b>수정하기</b></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <!-- /.col -->
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    {{>layout/footer}}
+</div>
+<!-- ./wrapper -->
+{{>layout/library}}
+
+</body>
+</html>

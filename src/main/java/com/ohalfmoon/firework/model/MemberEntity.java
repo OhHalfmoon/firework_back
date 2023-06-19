@@ -1,12 +1,11 @@
 package com.ohalfmoon.firework.model;
 
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * packageName    : com.ohalfmoon.firework.model
@@ -66,23 +65,23 @@ public class MemberEntity {
     private boolean manager; // 관리자 여부
 
     @Column(nullable = true)
-    private Date birthdate; // 생일
+    private LocalDate birthdate; // 생일
 
     private String authProvider; // login 제공자
 
     private String memberSign; // 전자서명 (base64)
 
     @Column(nullable = false)
-    private Date startdate; // 입사일
+    private LocalDate startdate; // 입사일
 
-    private Date enddate; // 퇴사일
+    private LocalDate enddate; // 퇴사일
 
     @Column(nullable = false)
     private int state; // 가입승인여부
 
-    private Date regdate; // 등록일자
+    private LocalDate regdate; // 등록일자
 
-    private Date updatedate; // 업데이트 일자
+    private LocalDateTime updatedate; // 업데이트 일자
 
     /**
      * Update dept no.
@@ -121,7 +120,7 @@ public class MemberEntity {
      * @param birthdate the birthdate
      * @param startdate the startdate
      */
-    public void update(String email, String phoneNum, String name, Date birthdate, Date startdate) {
+    public void update(String email, String phoneNum, String name, LocalDate birthdate, LocalDate startdate) {
         this.email = email;
         this.phoneNum = phoneNum;
         this.name = name;
@@ -157,8 +156,8 @@ public class MemberEntity {
             , String email
             , String phoneNum
             , String name
-            , Date birthdate
-            , Date startdate
+            , LocalDate birthdate
+            , LocalDate startdate
     ) {
         this.username = username;
         this.password = password;

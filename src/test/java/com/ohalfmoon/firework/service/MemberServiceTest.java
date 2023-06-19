@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -38,7 +39,7 @@ public class MemberServiceTest {
 //        for(long i = 1L; i<=14L; i++) {
         dto.setPassword(encoder.encode("1234"));
         dto.toEntity();
-        memberService.updatePw(16L, dto);
+        memberService.updatePw(1L, dto);
 //        }
     }
     @Test
@@ -59,8 +60,9 @@ public class MemberServiceTest {
         dto.setPositionNo(100L);
         dto.setPhoneNum("01022223333");
         dto.setEmail("bnoc@naver.com");
-        dto.setBirthdate(new Date());
-        dto.setStartdate(new Date());
+        dto.setBirthdate(LocalDate.now());
+        dto.setStartdate(LocalDate.now());
+        dto.setUpdatedate(LocalDate.now());
         dto.toEntity();
         memberService.update(2L, dto);
     }

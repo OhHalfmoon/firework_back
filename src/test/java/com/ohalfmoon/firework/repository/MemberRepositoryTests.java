@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -33,8 +34,8 @@ public class MemberRepositoryTests {
 //                        .deptNo(1L)
 //                        .positionNo(1L)
                         .name("양찬용")
-                        .birthdate(new Date())
-                        .startdate(new Date())
+                        .birthdate(LocalDate.now())
+                        .startdate(LocalDate.now())
                 .build());
     }
 

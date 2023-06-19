@@ -88,6 +88,7 @@ public class MemberService {
     public Long updatePw(Long userNo, MemberUpdatePwDTO dto) {
         MemberEntity entity = memberRepository.findById(userNo)
                 .orElseThrow(() -> new IllegalArgumentException("해당 id가 존재하지 않습니다." + userNo));
+        dto.setPassword(encoder.encode(dto.getPassword()));
         entity.updatePw(dto.getPassword());
         return userNo;
     }

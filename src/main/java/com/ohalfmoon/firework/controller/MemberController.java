@@ -1,10 +1,7 @@
 package com.ohalfmoon.firework.controller;
 
 import com.ohalfmoon.firework.config.auth.CustomUserDetails;
-import com.ohalfmoon.firework.dto.member.MemberDTO;
-import com.ohalfmoon.firework.dto.member.MemberLoginDTO;
-import com.ohalfmoon.firework.dto.member.MemberResponseDTO;
-import com.ohalfmoon.firework.dto.member.MemberUpdateDTO;
+import com.ohalfmoon.firework.dto.member.*;
 import com.ohalfmoon.firework.service.DeptService;
 import com.ohalfmoon.firework.service.MemberService;
 import com.ohalfmoon.firework.service.PositionService;
@@ -18,6 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * packageName    : com.ohalfmoon.firework.controller
@@ -92,9 +91,14 @@ public class MemberController {
     public String login(MemberLoginDTO dto) {
         MemberResponseDTO member = memberService.login(dto);
         if(member == null) {
-            return redirect+"auth/signin";
-        }else {
             return redirect;
+        }else {
+            if(member.getState()==0) {
+                return redirect + "auth/signin";
+            }else {
+                log.warn("state : {}", member.getState());
+                return redirect;
+            }
         }
 
     }
@@ -151,5 +155,17 @@ public class MemberController {
         memberService.update(userNo, dto);
         return redirect+"auth/userinfo";
     }
+    @GetMapping("modifyPw")
+    public void modifyPw(Model model, @AuthenticationPrincipal CustomUserDetails details) {
+        model.addAttribute("user", details);
+        model.addAttribute("dept", deptService.deptList());
+        model.addAttribute("position", positionService.positionList());
+    }
 
+    @PostMapping("modifyPw")
+    public String modifyPw(Long userNo, MemberUpdatePwDTO dto, HttpSession session) {
+        memberService.updatePw(userNo, dto);
+        session.invalidate();
+        return redirect+"auth/signin";
+    }
 }
