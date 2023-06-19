@@ -98,7 +98,15 @@ public class ApprovalService {
         List<ApprovalLineDto> lineDtos = getApprovalUserName(approvalNo);
 
         for (int i = 0; i < lineDtos.size(); i++) {
-
+//            if (i == lineDtos.size()-1) {
+//                ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
+//                approvalEntity.updateState(
+//                        stateDto.getApprovalOrder(),
+//                        stateDto.getApprovalState()
+//                );
+//                return approvalNo;
+//
+//            } else
             if (lineDtos.get(i).getOrderLevel() == approvalRepository.findByApprovalNo(approvalNo).getApprovalOrder()) {
                 ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
 
