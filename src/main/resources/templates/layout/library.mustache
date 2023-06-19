@@ -38,6 +38,11 @@
 
 <!-- 알림 -->
 <script src="/dist/js/alarm.js"></script>
+<script src="/dist/js/message.js"></script>
+
+<!-- 근태 -->
+<script src="/dist/js/attend.js"></script>
+
 <script>
     $(function() {
         var userNo = 1;
@@ -100,5 +105,99 @@
             });
             pageNum++;
         })
+
+        messageService.getListByReceiver({userNo:userNo}, function (result) {
+            var pageStr = "";
+            var str = "";
+            for (var i in result.receiverMessageList.content) {
+                str += getReceiveLiStr(result.receiverMessageList.content[i]);
+            }
+
+            $(".pagination").html(getPage(result.pageResponseDTO));
+            $(".messages").html(str);
+
+        });
+
+        function getPage(obj) {
+            let str = "";
+            if(obj.hasPrevBlock) {
+                str += "<li class='page-item'><a class='page-link' href='#' data-pagenum='" + (obj.startPageNum-1) + "'>"+"<i class='fas fa-angle-double-left'></i></a></li>";
+            }
+            if(obj.prev) {
+                str += "<li class='page-item'><a class='page-link' href='#' data-pagenum='" + (obj.page-1) + "'>"+"<i class='fas fa-angle-left'></i></a></li>";
+            }
+            for(let i = obj.startPageNum ; i <= obj.endPageNum ; i++) {
+                if(obj.page == i)
+                    str += "<li class='page-item active'><a href='#' class='page-link' data-pagenum='" + i + "'>"+ i +"</a></li>";
+                else
+                    str += "<li class='page-item'><a href='#' class='page-link' data-pagenum='" + i + "'>"+ i +"</a></li>";
+            }
+            if(obj.next) {
+                str += "<li class='page-item'><a class='page-link' href='#' data-pagenum='" + (obj.page+1) + "'>"+"<i class='fas fa-angle-right'></i></a></li>";
+            }
+            if(obj.hasNextBlock) {
+                str += "<li class='page-item'><a class='page-link' href='#' data-pagenum='" + (obj.endPageNum+1) + "'>"+"<i class='fas fa-angle-double-right'></i></a></li>";
+            }
+            return str;
+        }
+
+        function getReceiveLiStr(obj) {
+            return `<div class="col-1 text-center"><input type="checkbox" data-messageno="${obj.messageNo}"></div>
+                    <div class="col-2 text-center">
+				        ${obj.senderName}
+                    </div>
+                    <div class="col-5 text-center">
+				        ${obj.messageTitle}
+                    </div>
+				    <div class="col-4 text-center">
+				        ${moment(obj.regdate).locale("ko").format('YYYY/MM/D HH:mm')}
+                    </div>
+                    </a>
+				    `;
+
+        }
+
+        $(".pagination").on("click", ".page-link",function () {
+            event.stopPropagation();
+            var pageNum = $(this).data("pagenum");
+            messageService.getListByReceiver({userNo:userNo, pageNum:pageNum}, function(result){
+                var str = "";
+                for(var i in result.receiverMessageList.content) {
+                    str += getReceiveLiStr(result.receiverMessageList.content[i]);
+                }
+                $(".pagination").html(getPage(result.pageResponseDTO));
+                $(".messages").html(str);
+            });
+        })
+
     });
+</script>
+
+<script>
+    $(function () {
+        // $('[data-toggle="tooltip"]').tooltip()
+        // var userNo = 2
+        var user = $("#user").val();
+        $("#goToWork").click(function (e) {
+            // var obj = {userNo: 1, goToWork: new Date()}
+            if(confirm("출근 등록을 하시겠습니까?")) {
+                let godate = new Date().getTime();
+                console.log("godate :: " + godate);
+                attendService.goToWork({user:user, godate:godate})
+                console.log("출근 등록");
+            }
+        })
+        // var attendNo = $("#attendNo").val()
+        $("#leaveWork").click(function () {
+            if(confirm("퇴근 등록을 하시겠습니까?")) {
+                // 퇴근 등록 시 퇴근 시간을 기록
+                let leavedate = new Date().getTime();
+                console.log("leavedate :: " + leavedate);
+                attendService.leaveWork({attendNo:attendNo, leavedate:leavedate})
+                console.log("퇴근 등록!")
+            }
+        })
+
+
+    })
 </script>

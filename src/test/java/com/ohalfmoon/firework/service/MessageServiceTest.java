@@ -73,22 +73,6 @@ public class MessageServiceTest {
     }
 
     @Test
-    @DisplayName("받은 쪽지리스트조회 테스트")
-    @Transactional
-    void findListByReceiverTest() {
-        List<MessageResponseDto> list = messageService.findListByReceiver(1L, 3L);
-        log.info("{}", list);
-    }
-
-    @Test
-    @DisplayName("보낸 쪽지리스트조회 테스트")
-    @Transactional
-    void findListBySenderTest() {
-        List<MessageResponseDto> list = messageService.findListBySender(2L, 13L);
-        log.info("{}", list);
-    }
-
-    @Test
     @DisplayName("수정 테스트")
     @Transactional
     @Rollback(value = false)
@@ -116,7 +100,7 @@ public class MessageServiceTest {
     @Rollback(value = false)
     void pagingTest() {
         Pageable pageable = PageRequest.of(0, 5, Sort.Direction.DESC, "messageNo");
-        Page<MessageEntity> dtos = messageService.messageListByPaging(1L, pageable);
+        Page<MessageEntity> dtos = messageService.messageListBySender(1L, pageable);
         log.info("{}", dtos.getContent());
     }
 }
