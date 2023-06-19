@@ -39,6 +39,10 @@
 <!-- 알림 -->
 <script src="/dist/js/alarm.js"></script>
 <script src="/dist/js/message.js"></script>
+
+<!-- 근태 -->
+<script src="/dist/js/attend.js"></script>
+
 <script>
     $(function() {
         var userNo = 1;
@@ -172,17 +176,24 @@
 <script>
     $(function () {
         // $('[data-toggle="tooltip"]').tooltip()
-
-        $("#goToWork").click(function () {
+        // var userNo = 2
+        var user = $("#user").val();
+        $("#goToWork").click(function (e) {
+            // var obj = {userNo: 1, goToWork: new Date()}
             if(confirm("출근 등록을 하시겠습니까?")) {
-                // 출근 등록 시 출근 시간을 기록
-                console.log("출근 등록!")
+                let godate = new Date().getTime();
+                console.log("godate :: " + godate);
+                attendService.goToWork({user:user, godate:godate})
+                console.log("출근 등록");
             }
         })
-
+        // var attendNo = $("#attendNo").val()
         $("#leaveWork").click(function () {
             if(confirm("퇴근 등록을 하시겠습니까?")) {
                 // 퇴근 등록 시 퇴근 시간을 기록
+                let leavedate = new Date().getTime();
+                console.log("leavedate :: " + leavedate);
+                attendService.leaveWork({attendNo:attendNo, leavedate:leavedate})
                 console.log("퇴근 등록!")
             }
         })
