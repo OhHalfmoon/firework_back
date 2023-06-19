@@ -42,6 +42,11 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.mybatis/mybatis
 //    implementation 'org.mybatis:mybatis'
 
+	// 파일 이름 관리용
+	// https://mvnrepository.com/artifact/commons-io/commons-io
+	implementation 'commons-io:commons-io:2.11.0'
+
+
 
 }
 

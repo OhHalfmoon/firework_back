@@ -12,9 +12,11 @@ import java.util.Date;
 @ToString
 public class AttendUpdateDTO {
     private Date leavedate;
+    private Long attendNo;
 
     public AttendUpdateDTO(final AttendEntity entity) {
-        this.leavedate = entity.getLeavedate();
+        attendNo = entity.getAttendNo();
+        leavedate = entity.getLeavedate();
     }
 
     public AttendEntity toEntity(){

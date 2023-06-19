@@ -1,10 +1,14 @@
 package com.ohalfmoon.firework.service;
 
 import com.ohalfmoon.firework.dto.attend.AttendSaveDTO;
+import com.ohalfmoon.firework.dto.attend.AttendUpdateDTO;
+import com.ohalfmoon.firework.dto.sub.SubLineSaveDTO;
+import com.ohalfmoon.firework.model.AttendEntity;
 import com.ohalfmoon.firework.persistence.AttendRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * packageName    : com.ohalfmoon.firework.service
@@ -23,13 +27,20 @@ public class AttendService {
     @Autowired
     private AttendRepository attendRepository;
 
-    public void save(AttendSaveDTO dto) {
-        attendRepository.save(dto.toEntity());
+    @Autowired
+    private MemberService memberService;
+
+    // 출근 등록
+    public Long save(AttendSaveDTO dto) {
+        return attendRepository.save(dto.toEntity()).getAttendNo();
     }
 
-    public void saveLeaveWork(Long attendNo, AttendSaveDTO dto) {
-
-        attendRepository.save(dto.toEntity());
+    // 퇴근 등록 (출근 기록이 존재해야만 등록 가능)
+    public void updateAttend(Long attendNo, AttendUpdateDTO dto) {
+        AttendEntity entity = attendRepository.findById(attendNo)
+                .orElseThrow(() -> new IllegalArgumentException("출근 기록이 존재하지 않습니다."));
+        entity.update(dto.getLeavedate());
+        attendRepository.save(entity);
     }
 
 }
