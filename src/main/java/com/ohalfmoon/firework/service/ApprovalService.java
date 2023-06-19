@@ -1,10 +1,8 @@
 package com.ohalfmoon.firework.service;
 
 import com.ohalfmoon.firework.dto.approval.*;
-import com.ohalfmoon.firework.model.ApprovalEntity;
-import com.ohalfmoon.firework.model.MasterLineEntity;
-import com.ohalfmoon.firework.model.MemberEntity;
-import com.ohalfmoon.firework.model.SubLineEntity;
+import com.ohalfmoon.firework.model.*;
+import com.ohalfmoon.firework.persistence.AlarmRepository;
 import com.ohalfmoon.firework.persistence.ApprovalRepository;
 import com.ohalfmoon.firework.persistence.SubLineRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,13 +31,21 @@ import java.util.stream.Collectors;
 public class ApprovalService {
     private final ApprovalRepository approvalRepository;
     private final SubLineRepository subLineRepository;
-
+    private final AlarmRepository alarmRepository;
 
 
     //기안 제출(결재)
     @Transactional
     public Long register(ApprovalSaveDto saveDto) {
-        return approvalRepository.save(saveDto.toSaveApproval()).getApprovalNo();
+         Long no = approvalRepository.save(saveDto.toSaveApproval()).getApprovalNo();
+            alarmRepository.save(AlarmEntity.builder()
+                .approvalNo(ApprovalEntity.builder().approvalNo(no).build())
+                .alarmCategory("결제요청")
+                .alarmTitle("새로운 결제요청-"+getApprovalUserName(no))
+                .alarmReceiver(MemberEntity.builder().userNo(saveDto.getUserNo()).build())
+                .boardNo(null)
+                .build());
+         return no;
     }
 
     //기안명을 통한 단일조회

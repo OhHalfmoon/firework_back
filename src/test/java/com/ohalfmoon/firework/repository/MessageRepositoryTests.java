@@ -68,25 +68,6 @@ public class MessageRepositoryTests {
         log.info("{}", findMessage);
     }
 
-    @Test
-    public void findListByReceiverTest() {
-        List<MessageEntity> messageEntityList =
-                messageRepository.
-                        findTop5ByReceiverAndMessageNoLessThanOrderByMessageNoDesc(memberRepository.
-                                findById(1L).orElse(null), 6L);
-
-        log.info("{}", messageEntityList);
-    }
-
-    @Test
-    public void findListBySenderTest() {
-        List<MessageEntity> messageEntityList =
-                messageRepository.
-                        findTop5BySenderAndMessageNoLessThanOrderByMessageNoDesc(memberRepository.
-                                findById(2L).orElse(null), 6L);
-
-        log.info("{}", messageEntityList);
-    }
 
     @Test
     public void deleteMessageTest() {
@@ -112,23 +93,24 @@ public class MessageRepositoryTests {
     @Test
     @Transactional
     @DisplayName("쪽지 페이징 테스트")
+    @Rollback(value = false)
     public void pagingTest() {
-//        List<MessageEntity> messageEntities = new ArrayList<>();
-//        for(int i = 0; i < 100; i++) {
-//            MessageEntity input = MessageEntity.builder()
-//                    .receiver(MemberEntity.builder().userNo(1L).build())
-//                    .sender(MemberEntity.builder().userNo(2L).build())
-//                    .messageTitle("테스트 쪽지 제목" + i)
-//                    .messageContent("테스트 쪽지 내용" + i)
-//                    .build();
-//
-//            messageEntities.add(input);
-//        }
-//        messageRepository.saveAll(messageEntities);
+        List<MessageEntity> messageEntities = new ArrayList<>();
+        for(int i = 0; i < 100; i++) {
+            MessageEntity input = MessageEntity.builder()
+                    .receiver(MemberEntity.builder().userNo(2L).build())
+                    .sender(MemberEntity.builder().userNo(1L).build())
+                    .messageTitle("테스트 쪽지 제목" + i)
+                    .messageContent("테스트 쪽지 내용" + i)
+                    .build();
+
+            messageEntities.add(input);
+        }
+        messageRepository.saveAll(messageEntities);
 
         PageRequest pageRequest = PageRequest.of(0, 5, Sort.Direction.DESC, "messageNo");
 
-        Page<MessageEntity> entities = messageRepository.findAllByReceiver(MemberEntity.builder()
+        Page<MessageEntity> entities = messageRepository.findAllBySender(MemberEntity.builder()
                 .userNo(1L)
                 .build(), pageRequest);
 
