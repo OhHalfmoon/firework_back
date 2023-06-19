@@ -45,7 +45,7 @@ public class MasterLineController {
     @GetMapping("/addLine")
     public String addline(@AuthenticationPrincipal CustomUserDetails details, Model model) {
         // 로그인 한 사용자
-        model.addAttribute("userNo", details);
+        model.addAttribute("user", details);
         List<MasterLineResponseDTO> list = masterLineService.getList(details.getUserNo());
         log.info("{}", list);
         model.addAttribute("masterList", masterLineService.getList(details.getUserNo()) );

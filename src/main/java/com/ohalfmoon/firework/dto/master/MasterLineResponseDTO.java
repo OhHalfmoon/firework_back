@@ -35,14 +35,11 @@ public class MasterLineResponseDTO {
     private String userName;
     @Setter
     private List<SubLineResponseDTO> subLineResponseDTOS;
-//    private LocalDateTime regdate;
-//    private String name;
 
     public MasterLineResponseDTO(final MasterLineEntity entity) {
         lineNo = entity.getLineNo();
         lineName = entity.getLineName();
         userNo = entity.getMemberEntity().getUserNo();
-//      this.regdate = entity.getRegdate();
         userName = entity.getMemberEntity().getName();
     }
 
