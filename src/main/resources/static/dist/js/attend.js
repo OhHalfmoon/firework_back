@@ -34,10 +34,25 @@ var attendService = (function () {
             })
     }
 
+    function getAttendNo(userNo ,callback, error) {
+        console.log(userNo);
+        let url = "/attend/" + userNo;
+        $.getJSON(url)
+            .done(function(data) {
+                if(callback) {
+                    callback(data);
+                }
+            })
+            .fail(function(xhr) {
+                if(error) {
+                    error(xhr);
+                }
+            })
+    }
+
     return {
         goToWork : goToWork
         , leaveWork : leaveWork
+        , getAttendNo : getAttendNo
     }
-
-
 })();
