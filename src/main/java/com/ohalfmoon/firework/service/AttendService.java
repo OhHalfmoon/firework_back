@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2023/06/15        이지윤           최초 생성
+ * 2023/06/19        이지윤           getAttendNo() 추가
  */
 @Service
 @Slf4j
@@ -36,11 +37,17 @@ public class AttendService {
     }
 
     // 퇴근 등록 (출근 기록이 존재해야만 등록 가능)
-    public void updateAttend(Long attendNo, AttendUpdateDTO dto) {
-        AttendEntity entity = attendRepository.findById(attendNo)
+    public void updateAttend(AttendUpdateDTO dto) {
+        AttendEntity entity = attendRepository.findById(dto.getAttendNo())
                 .orElseThrow(() -> new IllegalArgumentException("출근 기록이 존재하지 않습니다."));
         entity.update(dto.getLeavedate());
         attendRepository.save(entity);
+    }
+
+
+    public Long getAttendNo(Long userNo) {
+        AttendEntity entity = attendRepository.findTopByMemberEntity_UserNoOrderByAttendNoDesc(userNo);
+        return entity.getAttendNo();
     }
 
 }

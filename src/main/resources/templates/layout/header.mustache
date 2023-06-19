@@ -74,17 +74,19 @@
             </div>
         </li>
         <!-- 회원 메뉴탭 끝 -->
+
         <li class="nav-item">
             <a class="nav-link" data-toggle="tooltip" title="출근등록" id="goToWork" data-gotowork="gotowork">
                 <i class="fas fa-building"></i>
-                <span id="user">{{!user}}</span>
-                <input id="goToWork" name="godate" type="hidden">
+                <input id="user" type="hidden" value="{{user}}">
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" data-toggle="tooltip" title="퇴근등록" id="leaveWork">
                 <i class="fas fa-house-user"></i>
-                <input id="leaveWork" name="leavedate" type="hidden">
+                {{#user}}
+                    <input id="userNo" type="hidden" value="{{userNo}}">
+                {{/user}}
             </a>
         </li>
 

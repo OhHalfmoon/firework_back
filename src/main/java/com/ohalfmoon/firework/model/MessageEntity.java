@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2023/06/13        우성준            최초생성
+ * 2023/06/19        우성준            메시지 업데이트데이트 추가
  */
 
 @Entity
@@ -30,7 +31,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode()
 @ToString
 @EntityListeners(AuditingEntityListener.class)
-public class MessageEntity {
+public class MessageEntity extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long messageNo;
@@ -51,9 +52,6 @@ public class MessageEntity {
 
     @Column(nullable = false)
     private String messageContent;
-
-    @CreatedDate
-    private LocalDateTime regdate;
 
     public void update(boolean messageCheck){
         this.messageCheck = messageCheck;

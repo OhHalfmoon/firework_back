@@ -1,5 +1,6 @@
 package com.ohalfmoon.firework.service;
 
+import com.ohalfmoon.firework.dto.attend.AttendResponseDTO;
 import com.ohalfmoon.firework.dto.attend.AttendSaveDTO;
 import com.ohalfmoon.firework.dto.attend.AttendUpdateDTO;
 import com.ohalfmoon.firework.dto.sub.SubLineSaveDTO;
@@ -13,6 +14,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
+
+/**
+ * packageName    : com.ohalfmoon.firework.service
+ * fileName       : AttendServiceTests
+ * author         : 이지윤
+ * date           : 2023/06/15
+ * description    : Attend 서비스 테스트
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023/06/15        이지윤           최초 생성
+ * 2023/06/19        이지윤           출근 번호 조회 테스트 추가
+ */
 
 @SpringBootTest
 @Slf4j
@@ -39,6 +53,16 @@ public class AttendServiceTests {
         AttendUpdateDTO attendUpdateDTO = AttendUpdateDTO.builder()
                 .leavedate(new Date())
                 .build();
-        attendService.updateAttend(13L, attendUpdateDTO);
+        attendService.updateAttend(attendUpdateDTO);
+    }
+
+    @Test
+    @DisplayName("출근 번호 조회 테스트")
+    public void testGetAttendNo() {
+        AttendResponseDTO attendResponseDTO = AttendResponseDTO.builder()
+                .attendNo(1L)
+                .build();
+        attendService.getAttendNo(attendResponseDTO.getAttendNo());
+        log.info("attendNo: " + attendResponseDTO.getAttendNo());
     }
 }
