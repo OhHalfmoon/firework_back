@@ -1,8 +1,10 @@
 package com.ohalfmoon.firework.service;
 
 import com.ohalfmoon.firework.dto.attend.AttendSaveDTO;
-import com.ohalfmoon.firework.dto.attend.AttendSaveLeaveWorkDTO;
+import com.ohalfmoon.firework.dto.attend.AttendUpdateDTO;
+import com.ohalfmoon.firework.dto.sub.SubLineSaveDTO;
 import com.ohalfmoon.firework.model.AttendEntity;
+import com.ohalfmoon.firework.model.SubLineEntity;
 import com.ohalfmoon.firework.persistence.AttendRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -18,18 +20,25 @@ public class AttendServiceTests {
     @Autowired
     private AttendRepository attendRepository;
 
+    @Autowired
+    private AttendService attendService;
+
     @Test
     @DisplayName("출근 등록 테스트")
     public void testSave() {
-        AttendEntity attendEntity = attendRepository.save(AttendSaveDTO.builder()
+        AttendSaveDTO attendSaveDTO = AttendSaveDTO.builder()
+                .userNo(1L)
                 .godate(new Date())
-                .build().toEntity());
+                .build();
+        attendService.save(attendSaveDTO);
     }
+
     @Test
     @DisplayName("퇴근 등록(수정) 테스트")
     public void testUpdate() {
-        AttendEntity attendEntity = AttendSaveLeaveWorkDTO.builder()
+        AttendUpdateDTO attendUpdateDTO = AttendUpdateDTO.builder()
                 .leavedate(new Date())
-                .build().toEntity();
+                .build();
+        attendService.updateAttend(13L, attendUpdateDTO);
     }
 }
