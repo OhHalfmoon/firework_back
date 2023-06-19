@@ -1,5 +1,6 @@
 package com.ohalfmoon.firework.service;
 
+import com.ohalfmoon.firework.dto.member.MemberUpdateDTO;
 import com.ohalfmoon.firework.dto.member.MemberUpdatePwDTO;
 import com.ohalfmoon.firework.dto.member.MemberUpdateStateDTO;
 import org.junit.jupiter.api.DisplayName;
@@ -7,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Date;
 
 /**
  * packageName :  com.ohalfmoon.firework.service
@@ -45,5 +48,20 @@ public class MemberServiceTest {
         dto.setState(1);
         dto.toEntity();
         memberService.recognize(2L, dto);
+    }
+
+    @Test
+    @DisplayName("회원 정보 수정")
+    public void updateTest() {
+        MemberUpdateDTO dto = new MemberUpdateDTO();
+        dto.setName("이지윤2");
+        dto.setDeptNo(1L);
+        dto.setPositionNo(100L);
+        dto.setPhoneNum("01022223333");
+        dto.setEmail("bnoc@naver.com");
+        dto.setBirthdate(new Date());
+        dto.setStartdate(new Date());
+        dto.toEntity();
+        memberService.update(2L, dto);
     }
 }

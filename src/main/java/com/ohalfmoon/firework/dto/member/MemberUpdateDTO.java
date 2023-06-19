@@ -24,17 +24,20 @@ public class MemberUpdateDTO {
     private String email;
     private String phoneNum;
     private String name;
-    @DateTimeFormat(pattern = "yyyyMMdd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd", timezone = "Asia/Seoul")
     private Date birthdate;
-    @DateTimeFormat(pattern = "yyyyMMdd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd", timezone = "Asia/Seoul")
     private Date startdate;
     private Long deptNo;
     private Long positionNo;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd", timezone = "Asia/Seoul")
+    private Date updatedate;
 
     @Builder
-    public MemberUpdateDTO(String email, String phoneNum, String name, Date birthdate, Date startdate, Long deptNo, Long positionNo) {
+    public MemberUpdateDTO(String email, String phoneNum, String name, Date birthdate, Date startdate, Long deptNo, Long positionNo, Date updatedate) {
         this.email = email;
         this.phoneNum = phoneNum;
         this.name = name;
@@ -42,6 +45,7 @@ public class MemberUpdateDTO {
         this.startdate = startdate;
         this.deptNo = deptNo;
         this.positionNo = positionNo;
+        this.updatedate = updatedate;
     }
 
     public MemberEntity toEntity() {
@@ -51,6 +55,7 @@ public class MemberUpdateDTO {
                 .name(name)
                 .birthdate(birthdate)
                 .startdate(startdate)
+                .updatedate(new Date())
                 .build();
     }
 }

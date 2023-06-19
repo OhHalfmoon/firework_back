@@ -4,6 +4,7 @@ import com.ohalfmoon.firework.config.auth.CustomUserDetails;
 import com.ohalfmoon.firework.dto.member.MemberDTO;
 import com.ohalfmoon.firework.dto.member.MemberLoginDTO;
 import com.ohalfmoon.firework.dto.member.MemberResponseDTO;
+import com.ohalfmoon.firework.dto.member.MemberUpdateDTO;
 import com.ohalfmoon.firework.service.DeptService;
 import com.ohalfmoon.firework.service.MemberService;
 import com.ohalfmoon.firework.service.PositionService;
@@ -14,6 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -145,8 +147,9 @@ public class MemberController {
      * @return login page return
      */
     @PostMapping("modify")
-    public String modify() {
-        return redirect;
+    public String modify(Long userNo, MemberUpdateDTO dto) {
+        memberService.update(userNo, dto);
+        return redirect+"auth/userinfo";
     }
 
 }

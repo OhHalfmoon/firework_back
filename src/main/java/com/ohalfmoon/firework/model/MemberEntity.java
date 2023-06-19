@@ -134,7 +134,8 @@ public class MemberEntity {
      *
      * @param state the state
      */
-    public void updateState(int state) {
+    public void updateState(Long userNo, int state) {
+        this.userNo = userNo;
         this.state = state;
     }
 

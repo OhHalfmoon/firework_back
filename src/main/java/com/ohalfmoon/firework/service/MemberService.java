@@ -92,12 +92,19 @@ public class MemberService {
         return userNo;
     }
 
+    /**
+     * (관리자)회원 state 변경
+     *
+     * @param userNo the user no
+     * @param dto    the dto
+     * @return the long
+     */
     @Transactional
     public Long recognize(Long userNo, MemberUpdateStateDTO dto) {
         MemberEntity entity =
                 memberRepository.findById(userNo)
                         .orElseThrow(() -> new IllegalArgumentException("해당 ID가 존재하지 않습니다." + userNo));
-        entity.updateState(dto.getState());
+        entity.updateState(dto.getUserNo(), dto.getState());
         return userNo;
     }
     /**

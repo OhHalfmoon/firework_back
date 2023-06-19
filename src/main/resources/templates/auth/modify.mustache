@@ -53,6 +53,8 @@
                                     <h3 class="profile-username text-center">회원 정보 수정</h3>
                                     <form method="post">
                                         <ul class="list-group list-group-unbordered mb-3 overflow-y-auto" style="height: 300px; overflow-x: hidden">
+                                            <li><input type="hidden" name="userNo" value="{{userNo}}"></li>
+                                            <li><input type="hidden" name="startdate" value="{{startdate}}"></li>
                                             <li class="list-group-item">
                                                 <label class="row">
                                                     <b class="my-auto col-6">이름을 입력해주세요</b>
@@ -74,7 +76,7 @@
                                             <li class="list-group-item">
                                                 <label class="row justify-content-center col-12"> 부서를 선택해주세요
                                                     <select class="d-flex custom-select" name="deptNo">
-                                                        <option selected>부서를 선택해주세요</option>
+                                                        <option selected value="{{deptEntity.deptNo}}">{{deptEntity.deptName}}</option>
                                                         {{#dept}}
                                                             <option value="{{deptNo}}">{{deptName}}</option>
                                                         {{/dept}}
@@ -84,7 +86,7 @@
                                             <li class="list-group-item">
                                                 <label class="row justify-content-center col-12"> 직급을 선택해주세요
                                                     <select class="d-flex custom-select" name="positionNo">
-                                                        <option selected>직급을 선택해주세요</option>
+                                                        <option selected value="{{positionEntity.positionNo}}">{{positionEntity.positionName}}</option>
                                                         {{#position}}
                                                             <option value="{{positionNo}}">{{positionName}}</option>
                                                         {{/position}}

@@ -54,4 +54,9 @@ public class MemberRepositoryTests {
         List<MemberEntity> entity = memberRepository.findAllByState(0);
         log.info("state = 0 : {}", entity);
     }
+
+    @Test
+    @DisplayName("회원 정보 수정")
+    public void updateTest() {
+    }
 }
