@@ -19,7 +19,6 @@ public class TodoRepositoryTests {
     @Test
     public void testSave() {
         todoRepository.save(TodoEntity.builder()
-                .todoCategory(2L)
                 .memberEntity(MemberEntity.builder()
                         .userNo(2L)
                         .build()
@@ -40,14 +39,29 @@ public class TodoRepositoryTests {
         log.info("todoEntity: {}", todoEntity);
     }
 
-    // category를 통한 리스트 조회
     @Test
-    public void testTodoEntitiesFindByCategory() {
-        Long todoCategory = 1L;
+    public void testFindByTodoEntityByMemberEntityUserNo(){
+        Long userNo = 2L;
 
-//        todoRepository.getTodoEntitiesByTodoCategory(todoCategory).forEach(todoEntity -> {
-//            log.info("todoEntity: {}", todoEntity);
-//        });
+        todoRepository.findByMemberEntity_UserNo(userNo).forEach(todoEntity -> {
+            log.info("todoEntity: {}", todoEntity);
+        });
+    }
+
+    @Test
+    public void testFindByMemberEntity_DeptEntity_DeptNo() {
+        Long deptNo = 3L;
+
+        todoRepository.findByMemberEntity_DeptEntity_DeptNo(deptNo).forEach(todoEntity -> {
+            log.info("todoEntity: {}", todoEntity);
+        });
+    }
+
+    @Test
+    public void testFindByHoliday() {
+        todoRepository.findByHoliday(false).forEach(todoEntity -> {
+            log.info("todoEntity: {}", todoEntity);
+        });
     }
 
     @Test
