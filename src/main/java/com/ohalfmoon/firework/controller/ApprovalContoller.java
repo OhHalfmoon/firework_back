@@ -54,7 +54,8 @@ public class ApprovalContoller {
 
     // 기안 등록
     @PostMapping("/write/{formNo}")
-    public String register(@ModelAttribute ApprovalSaveDto saveDto) {
+    public String register(@AuthenticationPrincipal CustomUserDetails user, @ModelAttribute ApprovalSaveDto saveDto, Model model) {
+        model.addAttribute("user", user);
         log.info("{}",saveDto);
         approvalService.register(saveDto);
         return "redirect:/";

@@ -70,10 +70,6 @@ public class ApprovalService {
 
         ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
         MasterLineEntity masterLineEntity = approvalEntity.getMasterLineEntity();
-        Long userNo = approvalEntity.getMemberEntity().getUserNo();
-        String userName = masterLineEntity.getMemberEntity().getName();
-        String userDept = masterLineEntity.getMemberEntity().getDeptEntity().getDeptName();
-        String userPosition = masterLineEntity.getMemberEntity().getPositionEntity().getPositionName();
 
        return subLineRepository.findAllByMasterLineEntity_LineNo(masterLineEntity.getLineNo())
                 .stream().map(ApprovalLineDto::new).collect(Collectors.toList());
