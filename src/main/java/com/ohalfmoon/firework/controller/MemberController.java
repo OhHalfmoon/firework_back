@@ -2,17 +2,16 @@ package com.ohalfmoon.firework.controller;
 
 import com.ohalfmoon.firework.config.auth.CustomUserDetails;
 import com.ohalfmoon.firework.dto.member.*;
+import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.service.DeptService;
 import com.ohalfmoon.firework.service.MemberService;
 import com.ohalfmoon.firework.service.PositionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -88,20 +87,36 @@ public class MemberController {
      * @return the string
      */
     @PostMapping("signin")
-    public String login(MemberLoginDTO dto) {
-        MemberResponseDTO member = memberService.login(dto);
-        if(member == null) {
+    public String login(MemberLoginDTO dto, String username) {
+        MemberEntity entity = memberService.get(username);
+        log.info("entity : {}", memberService.get(username));
+        if(entity == null) {
             return redirect;
-        }else {
-            if(member.getState()==0) {
-                return redirect + "auth/signin";
-            }else {
-                log.warn("state : {}", member.getState());
-                return redirect;
-            }
         }
-
+        else if(entity.getState() == 0 || entity.getState() == 2) {
+            return redirect + "auth/signin";
+        }
+        else {
+            MemberResponseDTO member = memberService.login(dto);
+            log.info("state : {}", member.getState());
+            return redirect + "auth/signin";
+        }
     }
+
+//    @PostMapping("signin")
+//    public String login(MemberLoginDTO dto) {
+//        MemberResponseDTO member = memberService.login(dto);
+//        if(member == null) {
+//            return redirect;
+//        }else {
+//            if(member.getState()==0) {
+//                return redirect + "auth/signin";
+//            }else {
+//                log.warn("state : {}", member.getState());
+//                return redirect;
+//            }
+//        }
+//    }
 
 
     /**

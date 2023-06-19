@@ -21,5 +21,5 @@ import java.util.List;
 public interface TodoRepository extends JpaRepository<TodoEntity, Long> {
 
     // userNo를 통한 리스트 조회
-    List<TodoEntity> FindByTodoEntityByMemberEntityUserNo(Long userNo);
+//    List<TodoEntity> FindByTodoEntityByMemberEntityUserNo(Long userNo);
 }
