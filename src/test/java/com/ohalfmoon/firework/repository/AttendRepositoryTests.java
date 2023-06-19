@@ -1,6 +1,7 @@
 package com.ohalfmoon.firework.repository;
 
 import com.ohalfmoon.firework.model.AttendEntity;
+import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.persistence.AttendRepository;
 import com.ohalfmoon.firework.persistence.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ import java.util.Date;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2023/06/15        이지윤           최초 생성
+ * 2023/06/19        이지윤           attendNo 가져오는 테스트 추가
  */
 @SpringBootTest
 @Slf4j
@@ -45,6 +47,12 @@ public class AttendRepositoryTests {
         AttendEntity attendEntity = attendRepository.findById(3L).orElseThrow(()-> new IllegalArgumentException("실패"));
         attendEntity.update(new Date());
         attendRepository.save(attendEntity);
+    }
+
+    @Test
+    public void testGetAttendNo() {
+        AttendEntity attendNo = attendRepository.findTopByMemberEntity_UserNoOrderByAttendNoDesc(1L);
+        log.info("attendNo : " + attendNo);
     }
 
 }
