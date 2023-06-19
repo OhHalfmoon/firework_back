@@ -45,7 +45,7 @@
 
 <script>
     $(function() {
-        var userNo = {{user.userNo}};
+        var userNo = 1;
         // member.userNo로 바꿀 예정!!
         moment.locale('ko');
         alarmService.getCount(userNo, function (result) {
@@ -175,26 +175,30 @@
 
 <script>
     $(function () {
-        // $('[data-toggle="tooltip"]').tooltip()
-        // var userNo = 2
-        var user = $("#user").val();
+        let user = $("#user").val();
+        let userNo = $("#userNo").val();
+        let checkGoWork = false;
+
         $("#goToWork").click(function (e) {
-            // var obj = {userNo: 1, goToWork: new Date()}
             if(confirm("출근 등록을 하시겠습니까?")) {
                 let godate = new Date().getTime();
-                console.log("godate :: " + godate);
                 attendService.goToWork({user:user, godate:godate})
-                console.log("출근 등록");
+                checkGoWork = true;
             }
         })
-        // var attendNo = $("#attendNo").val()
+
         $("#leaveWork").click(function () {
             if(confirm("퇴근 등록을 하시겠습니까?")) {
-                // 퇴근 등록 시 퇴근 시간을 기록
-                let leavedate = new Date().getTime();
-                console.log("leavedate :: " + leavedate);
-                attendService.leaveWork({attendNo:attendNo, leavedate:leavedate})
-                console.log("퇴근 등록!")
+                if(checkGoWork === false) {
+                    alert("출근 등록을 먼저 해주세요.");
+                    return;
+                }
+                var attendNo = attendService.getAttendNo(userNo, function (result) {
+                    // 퇴근 등록 시 퇴근 시간을 기록
+                    let leavedate = new Date().getTime();
+                    attendService.leaveWork({attendNo:result, leavedate:leavedate})
+                });
+
             }
         })
 

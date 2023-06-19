@@ -4,6 +4,7 @@ import com.ohalfmoon.firework.dto.approval.*;
 import com.ohalfmoon.firework.model.*;
 import com.ohalfmoon.firework.persistence.AlarmRepository;
 import com.ohalfmoon.firework.persistence.ApprovalRepository;
+import com.ohalfmoon.firework.persistence.MemberRepository;
 import com.ohalfmoon.firework.persistence.SubLineRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
  * 2023/06/08        오상현           최초 생성, save관련 (임시저장, 제출)
  * 2023/06/09        오상현           update관련 (문서수정, 임시저장->제출, 결재완료)
  * 2023/06/12        오상현           update 리턴 타입 변경 -> Long, getList 기능 추가
+ * 2023/06/19        우성준           결재 생성 시 알림 추가
  */
 @Service
 @RequiredArgsConstructor
@@ -31,6 +33,7 @@ public class ApprovalService {
     private final ApprovalRepository approvalRepository;
     private final SubLineRepository subLineRepository;
     private final AlarmRepository alarmRepository;
+    private final MemberRepository memberRepository;
 
 
     //기안 제출(결재)
@@ -40,8 +43,8 @@ public class ApprovalService {
             alarmRepository.save(AlarmEntity.builder()
                 .approvalNo(ApprovalEntity.builder().approvalNo(no).build())
                 .alarmCategory("결제요청")
-                .alarmTitle("새로운 결제요청-"+getApprovalUserName(no))
-                .alarmReceiver(MemberEntity.builder().userNo(saveDto.getUserNo()).build())
+                .alarmTitle("새로운 결제요청-"+memberRepository.findById(saveDto.getUserNo()).orElse(null).getName())
+                .alarmReceiver(MemberEntity.builder().userNo(getApprovalUserName(no).get(0).getUserNo()).build())
                 .boardNo(null)
                 .build());
          return no;
@@ -66,7 +69,6 @@ public class ApprovalService {
     }
 
     public List<ApprovalLineDto> getApprovalUserName (final Long approvalNo) {
-
         ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
         MasterLineEntity masterLineEntity = approvalEntity.getMasterLineEntity();
 
