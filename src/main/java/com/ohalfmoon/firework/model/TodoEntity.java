@@ -18,6 +18,7 @@ public class TodoEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long todoNo;
 
+    @Column(nullable = false)
     private boolean holiday;
 
     @ManyToOne
