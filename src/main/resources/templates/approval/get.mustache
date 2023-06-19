@@ -127,6 +127,8 @@
                             </section>
                         </div>
                         <div class="col-2">
+                            <input type="hidden" class="form-control approvalOrder" id="approvalOrder" name="approvalOrder" value="{{approvalGet.approvalOrder}}" >
+                            <input type="hidden" class="form-control approvalState" id="approvalState" name="approvalState" value="{{approvalGet.approvalState}}" >
                             <button type="button" class="btn btn-secondary" id="change" >결재승인</button>
                         </div>
                     </div>
@@ -152,17 +154,20 @@
 
 </body>
 <script>
-   console.log($('.detail').text());
-   console.log($('.detail').val());
+   // console.log($('.detail').text());
+   // console.log($('.detail').val());
     <!--console.log(user);-->
     <!--console.log($("#{{!user.userNo}}")[0])-->
     <!--console.log($("#{{!user.userNo}}")[0].id)-->
     // console.log($(".detail .table:eq(0)").find("tr:eq(2) td:eq(0)"))
+   console.log($('#approvalOrder').val());
+   console.log(typeof ($('#approvalOrder').val()));
+   console.log($('#approvalState').val());
    let data;
    var editor;
    var user = {{user.userNo}};
    var test = `{{{approvalGet.approContent}}}`;
-   console.log(user);
+   // console.log(user);
 
    DecoupledDocumentEditor
            .create( document.querySelector( '.editor' )
@@ -180,39 +185,53 @@
                console.warn( 'Build id: mhijpyjl1akp-mumjti75eytr' );
                console.error( error );
            });
-
     $(function () {
 
+        $("#change").click(function (){
+//            event.preventDefault();
+            var data = {
+//                approContent : $('.detail').text(),
+                approvalOrder : parseInt($('#approvalOrder').val())  + 1,
+                approvalState : $('#approvalState').val()
+             };
+             var id = $('#approvalNo').val();
+            $.ajax({
+                type: 'PUT',
+                url : '/approval/' + id,
+                datatype: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data)
+            }).done(function () {
+                alert("결재가 승인되었습니다.")
+            })
+        });
+
+
+            <!--if (($("#{{!user.userNo}}")[0] != undefined) && (user == $("#{{!user.userNo}}")[0].id)) {-->
+            <!--    $("#{{!user.userNo}}")[0].innerText = "결재승인";-->
+            <!--    $(".detail .table:eq(0)").find("tr:eq(2) td:eq()").text("결재승인");-->
+            <!--        var data = {-->
+            <!--            approContent : $('.detail').text()-->
+            <!--        };-->
+            <!--        var id = $('#approvalNo').val();-->
+
+            <!--        $.ajax({-->
+            <!--            type: 'PUT',-->
+            <!--            url : '/approval/state/' + id,-->
+            <!--            datatype: 'json',-->
+            <!--            contentType: 'application/json; charset=utf-8',-->
+            <!--            data: JSON.stringify(data)-->
+            <!--        }).done(function () {-->
+            <!--            alert("결재가 승인되었습니다.")-->
+            <!--            $("#approvalPut").submit();-->
+            <!--        })-->
+
+            <!--} else {-->
+            <!--    alert("결재 권한이 없습니다")-->
+            <!--};-->
+
+
+
     })
-    <!--$(function () {-->
-
-    <!--    $("#change").click(function (){-->
-    <!--        event.preventDefault();-->
-    <!--        if (($("#{{!user.userNo}}")[0] != undefined) && (user == $("#{{!user.userNo}}")[0].id)) {-->
-    <!--            $("#{{!user.userNo}}")[0].innerText = "결재승인";-->
-    <!--            $(".detail .table:eq(0)").find("tr:eq(2) td:eq()").text("결재승인");-->
-    <!--                var data = {-->
-    <!--                    approContent : $('.detail').text()-->
-    <!--                };-->
-    <!--                var id = $('#approvalNo').val();-->
-
-    <!--                $.ajax({-->
-    <!--                    type: 'PUT',-->
-    <!--                    url : '/approval/state/' + id,-->
-    <!--                    datatype: 'json',-->
-    <!--                    contentType: 'application/json; charset=utf-8',-->
-    <!--                    data: JSON.stringify(data)-->
-    <!--                }).done(function () {-->
-    <!--                    alert("결재가 승인되었습니다.")-->
-    <!--                    $("#approvalPut").submit();-->
-    <!--                })-->
-
-    <!--        } else {-->
-    <!--            alert("결재 권한이 없습니다")-->
-    <!--        };-->
-
-    <!--    });-->
-
-    <!--})-->
 </script>
 </html>

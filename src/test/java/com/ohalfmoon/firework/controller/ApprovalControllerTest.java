@@ -5,7 +5,6 @@ import com.ohalfmoon.firework.dto.approval.ApprovalStateDto;
 import com.ohalfmoon.firework.dto.approval.ApprovalUpdateDto;
 import com.ohalfmoon.firework.model.*;
 import com.ohalfmoon.firework.persistence.ApprovalRepository;
-import org.aspectj.lang.annotation.After;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

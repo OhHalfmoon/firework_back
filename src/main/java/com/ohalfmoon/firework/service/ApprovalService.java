@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -79,10 +78,6 @@ public class ApprovalService {
     //결재 서류 수정
     @Transactional
     public Long update(long approvalNo, ApprovalUpdateDto updateDto) {
-        List<ApprovalLineDto> lineDtos = getApprovalUserName(approvalNo);
-
-        for (int i = 0; i < lineDtos.size(); i++) {
-            if (lineDtos.get(i).getOrderLevel() == approvalRepository.findByApprovalNo(approvalNo).getApprovalOrder()) {
                 ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
 
                 approvalEntity.update(
@@ -95,23 +90,25 @@ public class ApprovalService {
                 );
 
                 return approvalNo;
-            } else {
-                return null;
-            }
-        }
-        return null;
     }
 
     //기안 상태값을 변경
     @Transactional
-    public  Long updateState(Long approvalNo ,ApprovalStateDto stateDto) {
-        ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
-//        int approvalstate = approvalEntity.getApprovalState();
-        approvalEntity.updateState(
-                stateDto.getApprovalOrder(),
-                stateDto.getApprovalState()
-        );
+    public  Long updateState(Long approvalNo , ApprovalStateDto stateDto) {
+        List<ApprovalLineDto> lineDtos = getApprovalUserName(approvalNo);
 
+        for (int i = 0; i < lineDtos.size(); i++) {
+
+            if (lineDtos.get(i).getOrderLevel() == approvalRepository.findByApprovalNo(approvalNo).getApprovalOrder()) {
+                ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
+
+                approvalEntity.updateState(
+                        stateDto.getApprovalOrder(),
+                        stateDto.getApprovalState()
+                );
+                return approvalNo;
+            }
+        }
         return approvalNo;
     }
 
@@ -137,6 +134,31 @@ public class ApprovalService {
 //        );
 //
 //        return approvalEntity.toDto();
+//    }
+
+//    @Transactional
+//    public Long update(long approvalNo, ApprovalUpdateDto updateDto) {
+//        List<ApprovalLineDto> lineDtos = getApprovalUserName(approvalNo);
+//
+//        for (int i = 0; i < lineDtos.size(); i++) {
+//            if (lineDtos.get(i).getOrderLevel() == approvalRepository.findByApprovalNo(approvalNo).getApprovalOrder()) {
+//                ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
+//
+//                approvalEntity.update(
+//                        updateDto.getApprovalName(),
+//                        updateDto.getLineNo(),
+//                        updateDto.getDocboxNo(),
+//                        updateDto.getApproContent(),
+//                        updateDto.getApprovalOrder(),
+//                        updateDto.getApprovalState()
+//                );
+//
+//                return approvalNo;
+//            } else {
+//                return null;
+//            }
+//        }
+//        return null;
 //    }
 
 }

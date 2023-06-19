@@ -73,10 +73,10 @@ public class ApprovalEntity {
                 .approvalName(approvalName)
                 .docboxNo(docboxEntity.getDocboxNo())
                 .docboxName(docboxEntity.getDocboxName())
-                .approvalOrder(approvalOrder)
                 .approContent(approContent)
                 .userNo(memberEntity.getUserNo())
                 .name(memberEntity.getName())
+                .approvalOrder(approvalOrder)
                 .approvalState(approvalState)
                 .regdate(regdate)
                 .build();
@@ -98,8 +98,10 @@ public class ApprovalEntity {
 //    }
 
     // 진행중인 결재서류를 결재완료
-    public void updateState(int approvalOrder, int approvalState) {
+    public void updateState( int approvalOrder, int approvalState) {
         this.approvalOrder = approvalOrder;
         this.approvalState = approvalState;
     }
+
+    
 }

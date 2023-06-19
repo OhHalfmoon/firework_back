@@ -63,8 +63,11 @@ public class ApprovalContoller {
 
     //상태값 변경 : 임시저장후 기안제출 / 결재완료처리
     @PutMapping("/{approvalNo}")
+    @ResponseBody
     public Long updateStorage(@PathVariable Long approvalNo, @RequestBody ApprovalStateDto stateDto) {
+
         return approvalService.updateState(approvalNo, stateDto);
+
     }
 
     //기안 내용 수정
@@ -72,6 +75,8 @@ public class ApprovalContoller {
     public Long update(@PathVariable Long approvalNo,  @RequestBody ApprovalUpdateDto updateDto) {
         return approvalService.update(approvalNo, updateDto);
     }
+
+
 
     @GetMapping("/{approvalNo}")
     public String get (@PathVariable Long approvalNo, @AuthenticationPrincipal CustomUserDetails user, Model model) {

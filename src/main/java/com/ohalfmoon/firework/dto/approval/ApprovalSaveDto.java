@@ -29,19 +29,21 @@ public class ApprovalSaveDto {
     private Long docboxNo;
     private String approContent;
     private Long userNo;
+    private int approvalOrder; // 중간 결재 진행 상태 : 결재작성완료(제출)시 1 부터 올라감.
     private int approvalState; //결재진행상태 : 0(작성중,임시저장) 1(결재중) 2(결재완료)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd", timezone = "Asia/Seoul")
     private Date regdate;
 
     @Builder
-    public ApprovalSaveDto(String approvalName, Long formNo, Long lineNo, Long docboxNo, String approContent, Long userNo, int approvalState, Date regdate) {
+    public ApprovalSaveDto(String approvalName, Long formNo, Long lineNo, Long docboxNo, String approContent, Long userNo,int approvalOrder, int approvalState, Date regdate) {
         this.approvalName = approvalName;
         this.formNo = formNo;
         this.lineNo = lineNo;
         this.docboxNo = docboxNo;
         this.approContent = approContent;
         this.userNo = userNo;
+        this.approvalOrder = approvalOrder;
         this.approvalState = approvalState;
         this.regdate = regdate;
     }
@@ -57,6 +59,7 @@ public class ApprovalSaveDto {
                 .docboxEntity(DocboxEntity.builder().docboxNo(docboxNo).build())
                 .approContent(approContent)
                 .memberEntity(MemberEntity.builder().userNo(userNo).build())
+                .approvalOrder(approvalOrder)
                 .approvalState(approvalState)
                 .regdate(regdate)
                 .build();
