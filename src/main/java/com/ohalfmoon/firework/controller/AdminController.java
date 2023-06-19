@@ -37,7 +37,7 @@ public class AdminController {
      *
      * @param model the model
      */
-    @GetMapping("/memberUpdate")
+    @GetMapping("/member/memberUpdate")
     public void updateState(Model model) {
         model.addAttribute("stateByZeroUser", memberService.getStateByZero());
     }
