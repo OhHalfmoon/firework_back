@@ -19,7 +19,7 @@ public class TodoEntity {
     private Long todoNo;
 
     @Column(nullable = false)
-    private Long todoCategory;
+    private boolean holiday;
 
     @ManyToOne
     @JoinColumn(name = "userNo")
