@@ -90,7 +90,8 @@ public class ApprovalContoller {
     }
 
     @GetMapping("/formList")
-    public String getFormList(Model model) {
+    public String getFormList(@AuthenticationPrincipal CustomUserDetails user, Model model) {
+        model.addAttribute("user", user);
         List<FormResponseDto> listDto = formService.getFormList();
         model.addAttribute("listDto", listDto);
         return "approval/formList";
