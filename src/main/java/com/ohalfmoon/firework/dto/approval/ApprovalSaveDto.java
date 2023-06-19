@@ -5,6 +5,7 @@ import com.ohalfmoon.firework.model.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -33,10 +34,10 @@ public class ApprovalSaveDto {
     private int approvalState; //결재진행상태 : 0(작성중,임시저장) 1(결재중) 2(결재완료)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd", timezone = "Asia/Seoul")
-    private Date regdate;
+    private LocalDate regdate;
 
     @Builder
-    public ApprovalSaveDto(String approvalName, Long formNo, Long lineNo, Long docboxNo, String approContent, Long userNo,int approvalOrder, int approvalState, Date regdate) {
+    public ApprovalSaveDto(String approvalName, Long formNo, Long lineNo, Long docboxNo, String approContent, Long userNo,int approvalOrder, int approvalState, LocalDate regdate) {
         this.approvalName = approvalName;
         this.formNo = formNo;
         this.lineNo = lineNo;

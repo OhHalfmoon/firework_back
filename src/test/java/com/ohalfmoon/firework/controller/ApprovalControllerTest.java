@@ -58,7 +58,6 @@ public class ApprovalControllerTest {
                 .approContent(approContent)
                 .userNo(userNo)
                 .approvalState(approvalState)
-                .regdate(regdate)
                 .build();
 
         String url = "http://localhost:" + port + "/approval/";
@@ -88,7 +87,6 @@ public class ApprovalControllerTest {
                 .approContent("컨트롤러기안상태변경테스트기안")
                 .memberEntity(MemberEntity.builder().userNo(1L).build())
                 .approvalState(0)
-                .regdate(new Date())
                 .build());
 
         Long updateId = updateState.getApprovalNo();
@@ -117,7 +115,6 @@ public class ApprovalControllerTest {
                 .approContent("컨트롤러기안")
                 .memberEntity(MemberEntity.builder().userNo(1L).build())
                 .approvalState(0)
-                .regdate(new Date())
                 .build());
 
         Long updateId = update.getApprovalNo();

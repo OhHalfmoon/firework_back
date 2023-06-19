@@ -44,7 +44,6 @@ public class ApprovalServiceTest {
                 .approContent("서비스테스트작성중")
                 .userNo(1L)
                 .approvalState(0)
-                .regdate(new Date())
                 .build();
         Long saveId = approvalService.register(saveDto);
         ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(saveId);

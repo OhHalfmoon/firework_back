@@ -100,22 +100,36 @@ public class ApprovalService {
         List<ApprovalLineDto> lineDtos = getApprovalUserName(approvalNo);
 
         for (int i = 0; i < lineDtos.size(); i++) {
-//            if (i == lineDtos.size()-1) {
-//                ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
-//                approvalEntity.updateState(
-//                        stateDto.getApprovalOrder(),
-//                        stateDto.getApprovalState()
-//                );
-//                return approvalNo;
-//
-//            } else
-            if (lineDtos.get(i).getOrderLevel() == approvalRepository.findByApprovalNo(approvalNo).getApprovalOrder()) {
+            if (i == lineDtos.size()-1) {
+                ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
+                approvalEntity.updateState(
+                        i+1,
+                        2
+                );
+                alarmRepository.save(AlarmEntity.builder()
+                        .approvalNo(ApprovalEntity.builder().approvalNo(approvalNo).build())
+                        .alarmCategory("결재")
+                        .alarmTitle("결재완료-"+approvalNo)
+                        .alarmReceiver(memberRepository.findById(approvalRepository.findByApprovalNo(approvalNo).getMemberEntity().getUserNo()).orElse(null))
+                        .boardNo(null)
+                        .build());
+                return approvalNo;
+
+            } else if (lineDtos.get(i).getOrderLevel() == approvalRepository.findByApprovalNo(approvalNo).getApprovalOrder()) {
                 ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
 
                 approvalEntity.updateState(
                         stateDto.getApprovalOrder(),
                         stateDto.getApprovalState()
                 );
+                alarmRepository.save(AlarmEntity.builder()
+                        .approvalNo(ApprovalEntity.builder().approvalNo(approvalNo).build())
+                        .alarmCategory("결재요청")
+                        .alarmTitle("새로운 결재요청-"+memberRepository.findById(approvalRepository.findByApprovalNo(approvalNo).getMemberEntity().getUserNo()).orElse(null).getName())
+                        .alarmReceiver(MemberEntity.builder().userNo(lineDtos.get(i+1).getUserNo()).build())
+                        .boardNo(null)
+                        .build());
+                
                 return approvalNo;
             }
         }

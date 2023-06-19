@@ -58,7 +58,7 @@
                                 <div class="col-12" id="approvalName">{{approvalGet.name}}</div>
                             </div>
                             <br>
-                            <div class="row">
+                            <div class="row" style="display: none;">
                                 <div class="col">결재자</div>
                                 <br>
                                 <table id="example2" class="table table-bordered table-hover">
@@ -67,6 +67,7 @@
                                         <th>부서</th>
                                         <th style="width : 12%">직책</th>
                                         <th style="width : 10%">이름</th>
+                                        <th style="width : 10%">결재순서</th>
                                         <th style="width : 10%">결재여부</th>
                                     </tr>
                                     </thead>
@@ -77,15 +78,17 @@
                                                 <td id="masterName">{{userDept}}</td>
                                                 <td id="masterName">{{userPosition}}</td>
                                                 <td id="userName">{{userName}}</td>
-                                                <th id="{{userNo}}" style="width : 10%"></th>
+                                                <td id="{{userNo}}">{{orderLevel}}</td>
+                                                <th class="{{userNo}}" style="width : 10%"></th>
                                             </tr>
                                         {{/approUserList}}
                                     </tbody>
                                 </table>
                                 <div class="col-12 testBox"></div>
 <!--                                <input type="hidden" class="form-control applyBox" id="applyVal" name="lineNo" readonly>-->
-                            </div>
                             <br>
+                            </div>
+
                             <div class="row">
                                 <div class="col">문서함</div>
                                 <div class="col-12" id="approvalName">{{approvalGet.docboxName}}</div>
@@ -156,17 +159,24 @@
 <script>
    // console.log($('.detail').text());
    // console.log($('.detail').val());
-    <!--console.log(user);-->
-    <!--console.log($("#{{!user.userNo}}")[0])-->
-    <!--console.log($("#{{!user.userNo}}")[0].id)-->
-    // console.log($(".detail .table:eq(0)").find("tr:eq(2) td:eq(0)"))
-   console.log($('#approvalOrder').val());
-   console.log(typeof ($('#approvalOrder').val()));
-   console.log($('#approvalState').val());
+   // console.log(typeof ($('#approvalOrder').val()));
+   // console.log($('#approvalState').val());
    let data;
    var editor;
    var user = {{user.userNo}};
    var test = `{{{approvalGet.approContent}}}`;
+   var check = $('#{{user.userNo}}');
+
+   console.log($('#approvalOrder').val());
+   console.log(check);
+   console.log(check[0]);
+   console.log(user);
+
+   // console.log(check[0].id);
+   // console.log(ck);
+
+   <!--var arr = `{{!{approUserList}}}`;-->
+   <!--console.log(arr);-->
    // console.log(user);
 
    DecoupledDocumentEditor
@@ -189,21 +199,28 @@
 
         $("#change").click(function (){
 //            event.preventDefault();
-            var data = {
-//                approContent : $('.detail').text(),
-                approvalOrder : parseInt($('#approvalOrder').val())  + 1,
-                approvalState : $('#approvalState').val()
-             };
-             var id = $('#approvalNo').val();
-            $.ajax({
-                type: 'PUT',
-                url : '/approval/' + id,
-                datatype: 'json',
-                contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify(data)
-            }).done(function () {
-                alert("결재가 승인되었습니다.")
-            })
+            if ((check[0] == undefined) || (parseInt(check.text()) != parseInt($('#approvalOrder').val()))) {
+                alert("권한이 없습니다")
+            } else if($('#approvalState').val() == 2) {
+                alert("결재가 완료된 문서입니다.")
+            }else if (check.text() == $('#approvalOrder').val()) {
+                    var data = {
+                        approvalOrder : parseInt($('#approvalOrder').val()) + 1,
+                        approvalState : $('#approvalState').val()
+                    };
+                    var id = $('#approvalNo').val();
+                    $.ajax({
+                        type: 'PUT',
+                        url : '/approval/' + id,
+                        datatype: 'json',
+                        contentType: 'application/json; charset=utf-8',
+                        data: JSON.stringify(data)
+                    }).done(function () {
+                        alert("결재가 승인되었습니다.")
+                    })
+                }
+
+
         });
 
 

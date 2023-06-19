@@ -3,6 +3,7 @@ package com.ohalfmoon.firework.dto.approval;
 import com.ohalfmoon.firework.model.ApprovalEntity;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -33,7 +34,7 @@ public class ApprovalResponseDto {
     private String name;
     private int approvalOrder;
     private int approvalState;
-    private Date regdate;
+    private LocalDate regdate;
 
     public ApprovalResponseDto(ApprovalEntity approvalEntity) {
         approvalNo = approvalEntity.getApprovalNo();
