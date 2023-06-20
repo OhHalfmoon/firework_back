@@ -10,6 +10,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 
+/**
+ * packageName    : com.ohalfmoon.firework.repository
+ * fileName       : TodoRepositoryTests
+ * author         : 이지윤
+ * date           : 2023/06/19
+ * description    : Todo 레파지토리 테스트
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023/06/19        이지윤           최초 생성
+ */
+
 @SpringBootTest
 @Slf4j
 public class TodoRepositoryTests {
@@ -59,7 +71,7 @@ public class TodoRepositoryTests {
 
     @Test
     public void testFindByHoliday() {
-        todoRepository.findByHoliday(false).forEach(todoEntity -> {
+        todoRepository.findByHoliday(true).forEach(todoEntity -> {
             log.info("todoEntity: {}", todoEntity);
         });
     }
