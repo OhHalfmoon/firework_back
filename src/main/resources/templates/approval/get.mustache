@@ -106,33 +106,33 @@
                                                 {{approvalGet.approvalName}}
                                             </h3>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="editor">양식내용</label>
+                                        <div class="card-body">
                                             <div class="centered">
                                                 <div class="row">
-                                                    <div class="document-editor__toolbar"></div>
+                                                    <div class="centered document-editor__toolbar" style="z-index: 999"></div>
                                                 </div>
+                                                <br>
+                                                <br>
                                                 <div class="row row-editor">
                                                     <div class="editor-container">
-                                                        <div class="editor">
+                                                        <div class="editor here">
                                                             <div class="ck-toolbar"></div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <input type="hidden" name="approContent" id="approContent">
+                                            <input type="hidden" name="approContent" class="approContent">
                                         </div>
-<!--                                        <div class="card-body">-->
-<!--                                            <div class="centered detail">{{!approvalGet.approContent}}</div>-->
-<!--                                        </div>-->
                                     </div>
                                 </div>
                             </section>
                         </div>
+                        <br>
                         <div class="col-2">
                             <input type="hidden" class="form-control approvalOrder" id="approvalOrder" name="approvalOrder" value="{{approvalGet.approvalOrder}}" >
                             <input type="hidden" class="form-control approvalState" id="approvalState" name="approvalState" value="{{approvalGet.approvalState}}" >
                             <button type="button" class="btn btn-secondary" id="change" >결재승인</button>
+                            <button type="button" class="btn btn-secondary" id="reject" >결재반려</button>
                         </div>
                     </div>
                 </form>
@@ -153,11 +153,10 @@
 <!-- ./wrapper -->
 
 {{>layout/library}}
+
+</body>
 <script>
-    // console.log($('.detail').text());
-    // console.log($('.detail').val());
-    // console.log(typeof ($('#approvalOrder').val()));
-    // console.log($('#approvalState').val());
+
     let data;
     var editor;
     var user = {{user.userNo}};
@@ -166,13 +165,6 @@
     console.log($('#approvalOrder').val());
     console.log(check);
     console.log(check[0]);
-    console.log(editText);
-    // console.log(check[0].id);
-    // console.log(ck);
-
-    <!--var arr = `{{!{approUserList}}}`;-->
-    <!--console.log(arr);-->
-    // console.log(user);
 
     DecoupledDocumentEditor
             .create( document.querySelector( '.editor' )
@@ -191,19 +183,18 @@
                 console.error( error );
             });
     $(function () {
-        // console.log($(".editor").html());
-        var editText = $(".editor").html();
         $("#change").click(function (){
-
-//            event.preventDefault();
             if ((check[0] == undefined) || (parseInt(check.text()) != parseInt($('#approvalOrder').val()))) {
                 alert("권한이 없습니다")
             } else if($('#approvalState').val() == 2) {
                 alert("결재가 완료된 문서입니다.")
             }else if (check.text() == $('#approvalOrder').val()) {
 
+                const accept = test.replace('<td>&nbsp;</td>', '<td>결재완료</td>');
+                $('.approContent').val(accept);
+
                 var data = {
-                    // approContent : editText.html($('#approContent').val()),
+                    approContent : $('.approContent').val(),
                     approvalOrder : parseInt($('#approvalOrder').val()) + 1,
                     approvalState : $('#approvalState').val()
                 };
@@ -215,41 +206,40 @@
                     contentType: 'application/json; charset=utf-8',
                     data: JSON.stringify(data)
                 }).done(function () {
-                    alert("결재가 승인되었습니다.")
                 })
+              alert("결재가 승인되었습니다.")
             }
-
-
         });
 
+        $("#reject").click(function (){
+            if ((check[0] == undefined) || (parseInt(check.text()) != parseInt($('#approvalOrder').val()))) {
+                alert("권한이 없습니다")
 
-        <!--if (($("#{{!user.userNo}}")[0] != undefined) && (user == $("#{{!user.userNo}}")[0].id)) {-->
-        <!--    $("#{{!user.userNo}}")[0].innerText = "결재승인";-->
-        <!--    $(".detail .table:eq(0)").find("tr:eq(2) td:eq()").text("결재승인");-->
-        <!--        var data = {-->
-        <!--            approContent : $('.detail').text()-->
-        <!--        };-->
-        <!--        var id = $('#approvalNo').val();-->
+            } else if($('#approvalState').val() == 2) {
+                alert("결재가 완료된 문서입니다.")
 
-        <!--        $.ajax({-->
-        <!--            type: 'PUT',-->
-        <!--            url : '/approval/state/' + id,-->
-        <!--            datatype: 'json',-->
-        <!--            contentType: 'application/json; charset=utf-8',-->
-        <!--            data: JSON.stringify(data)-->
-        <!--        }).done(function () {-->
-        <!--            alert("결재가 승인되었습니다.")-->
-        <!--            $("#approvalPut").submit();-->
-        <!--        })-->
+            }else if (check.text() == $('#approvalOrder').val()) {
 
-        <!--} else {-->
-        <!--    alert("결재 권한이 없습니다")-->
-        <!--};-->
+                const accept = test.replace('<td>결재완료</td>', '<td>&nbsp;</td>');
+                $('.approContent').val(accept);
 
-
-
+                var data = {
+                    approContent : $('.approContent').val(),
+                    approvalOrder : parseInt($('#approvalOrder').val()) - 1,
+                    approvalState : $('#approvalState').val()
+                };
+                var id = $('#approvalNo').val();
+                $.ajax({
+                    type: 'PUT',
+                    url : '/approval/reject/' + id,
+                    datatype: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(data)
+                }).done(function () {
+                })
+                alert("결재가 반려되었습니다.")
+            }
+        });
     })
 </script>
-</body>
-
 </html>

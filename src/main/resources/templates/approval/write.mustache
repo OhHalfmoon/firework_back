@@ -175,21 +175,6 @@
                         </tr>
                         </thead>
                         <tbody>
-<!--                        {{#masterList}}-->
-<!--                            <tr>-->
-<!--                                <td id="lineName">{{lineName}}</td>-->
-<!--                                <td id="masterName">{{masterName}}</td>-->
-<!--                                {{#subLineList}}-->
-<!--                                    <td id="subfull"> [{{positionName}}] [{{deptName}}] {{name}} </td>-->
-<!--                                {{/subLineList}}-->
-<!--                                <td>&lt;!&ndash; checkbox &ndash;&gt;-->
-<!--                                    <div class="icheck-primary d-inline ml-2 mx-auto">-->
-<!--                                        <input class="mx-auto ckBox" type="radio" id="todoCheck{{lineNo}}" name="todo" value="{{lineNo}}">-->
-<!--                                        <label for="todoCheck{{lineNo}}"></label>-->
-<!--                                    </div>-->
-<!--                                </td>-->
-<!--                            </tr>-->
-<!--                        {{/masterList}}-->
                             {{#masterList}}
                                 <tr class="myLine data-lineNo={{lineNo}}">
                                 <td>{{lineName}}</td>
@@ -197,7 +182,7 @@
                                 {{#subLineResponseDTOS}}
                                     <td> [{{deptName}}] [{{positionName}}] {{#name}}{{name}}{{/name}}{{^name}}{{-}}{{/name}}</td>
                                 {{/subLineResponseDTOS}}
-                                <td><!-- checkbox -->
+                                <td>
                                     <div class="icheck-primary d-inline ml-2 mx-auto">
                                         <input class="mx-auto ckBox" type="radio" name="pickRadio" id="todoCheck{{lineNo}}" value="{{lineNo}}">
                                         <label for="todoCheck{{lineNo}}"></label>
@@ -255,14 +240,9 @@
             var no = this.value;
             var approlist = this.closest('tr').innerHTML;
             var cut = approlist.split('<td><!-- checkbox -->');
-            console.log(no);
-            console.log(approlist);
-            console.log(cut);
-
 
             $("#apply").click(function () {
                 const element = document.getElementById('applyLine');
-//                element.innerHTML = '<div class="col-12">' + no +'</div>';
                 element.innerHTML = '<tr>' + cut[0] + '</tr>';
                 $("#applyVal").val(no);
                 $(".modal").modal("hide");
@@ -271,8 +251,6 @@
 
         $("#storage").click(function (){
             event.preventDefault();
-            // console.log("성공")
-            // console.log(editor);
             const editText = editor.getData();
             $("#approvalOrder").val(1);
             $("#approvalState").val(1);

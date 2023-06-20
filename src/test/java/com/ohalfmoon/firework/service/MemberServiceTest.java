@@ -60,9 +60,6 @@ public class MemberServiceTest {
         dto.setPositionNo(100L);
         dto.setPhoneNum("01022223333");
         dto.setEmail("bnoc@naver.com");
-        dto.setBirthdate(LocalDate.now());
-        dto.setStartdate(LocalDate.now());
-        dto.setUpdatedate(LocalDate.now());
         dto.toEntity();
         memberService.update(2L, dto);
     }
