@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdminLTE 3 | Dashboard</title>
+
+    {{>layout/head}}
+</head>
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
+    <div class="wrapper">
+
+        {{>layout/adminHeader}}
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>회원 승인</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="{{contextPath}}/admin">Home</a></li>
+                                <li class="breadcrumb-item active">회원 승인</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div><!-- /.container-fluid -->
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <form method="post">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">가입요청된 회원</h3>
+                                    <button class="float-right btn btn-secondary" id="btn-update">변경</button>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body">
+                                    <table id="example2" class="table table-bordered table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>선택</th>
+                                            <th>id</th>
+                                            <th>사원명</th>
+                                            <th>연락처</th>
+                                            <th>Email</th>
+                                            <th>부서</th>
+                                            <th>직급</th>
+                                            <th>권한</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {{#stateByZeroUser}}
+                                        <tr>
+                                            <input name="userNo" type="hidden" value="{{userNo}}">
+                                            <td>
+                                                <input type="checkbox" name="userCheck" class="checkbox" value="" style="zoom: 2.0">
+                                            </td>
+                                            <td>{{username}}</td>
+                                            <td>{{name}}</td>
+                                            <td>{{phoneNum}}</td>
+                                            <td>{{email}}</td>
+                                            <td>{{deptName}}</td>
+                                            <td>{{positionEntity.positionName}}{{!positionEntity.positionName}}</td>
+                                            <td>
+                                            <select class="custom-select" name="state">
+                                                <option value="0">가입대기</option>
+                                                <option value="1">가입승인</option>
+                                                <option value="2">퇴사처리</option>
+                                            </select>
+                                            </td>
+                                        {{/stateByZeroUser}}
+                                    </table>
+                                </div>
+                                <div class="card-footer clearfix">
+                                    <ul class="pagination pagination-sm m-0 float-right">
+                                        {{#pageDto}}
+                                            {{#hasPrevBlock}}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="{{contextPath}}/admin/form?page={{pageDto.prevBlockNum}}">
+                                                    &laquo;
+                                                    </a>
+                                                </li>
+                                            {{/hasPrevBlock}}
+                                            {{#prev}}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="{{contextPath}}/admin/form?page={{pageDto.prevPageNum}}">
+                                                    &lt;ㅇㄴㅁ
+                                                    </a>
+                                                </li>
+                                            {{/prev}}
+                                            {{#pageInfoList}}
+                                                {{#isCurrent}}
+                                                    <li class="page-item active">
+                                                        <a class="page-link" href="{{contextPath}}/admin/form?page={{pageNum}}">{{pageNum}}</a>
+                                                    </li>
+                                                {{/isCurrent}}
+                                                {{^isCurrent}}
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="{{contextPath}}/admin/form?page={{pageNum}}">{{pageNum}}</a>
+                                                    </li>
+                                                {{/isCurrent}}
+                                            {{/pageInfoList}}
+                                            {{#next}}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="{{contextPath}}/admin/form?page={{pageDto.nextPageNum}}">&gt;</a>
+                                                </li>
+                                            {{/next}}
+                                            {{#hasNextBlock}}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="{{&contextPath}}/admin/form?page={{pageDto.nextBlockNum}}">&raquo;
+                                                    </a>
+                                                </li>
+                                            {{/hasNextBlock}}
+                                        {{/pageDto}}
+                                        <!--                            <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>-->
+                                    </ul>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+
+                            <!-- /.card -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.container-fluid -->
+                </form>
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+        {{>layout/adminFooter}}
+
+
+    </div>
+    <!-- ./wrapper -->
+
+    {{>layout/library}}
+<script>
+    var checkBoxArr = [];
+    $("input:checkbox[name='userCheck']:checked").each(function() {
+        checkBoxArr.push($("#userNo").val());
+        console.log(checkBoxArr);
+    })
+</script>
+</body>
+</html>

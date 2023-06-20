@@ -24,7 +24,8 @@ public class MemberUpdateStateDTO {
     private int state;
 
     @Builder
-    public MemberUpdateStateDTO(int state) {
+    public MemberUpdateStateDTO(Long userNo, int state) {
+        this.userNo = userNo;
         this.state = state;
     }
 

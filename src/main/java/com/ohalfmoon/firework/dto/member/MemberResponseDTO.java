@@ -7,6 +7,7 @@ import com.ohalfmoon.firework.model.RoleEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -30,8 +31,8 @@ public class MemberResponseDTO {
     private String phoneNum;
     private String name;
     private boolean manager;
-    private Date birthdate;
-    private Date startdate;
+    private LocalDate birthdate;
+    private LocalDate startdate;
     private Long deptNo;
     private String deptName;
     private Long positionNo;

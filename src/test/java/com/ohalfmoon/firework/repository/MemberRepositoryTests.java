@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -33,8 +34,8 @@ public class MemberRepositoryTests {
 //                        .deptNo(1L)
 //                        .positionNo(1L)
                         .name("양찬용")
-                        .birthdate(new Date())
-                        .startdate(new Date())
+                        .birthdate(LocalDate.now())
+                        .startdate(LocalDate.now())
                 .build());
     }
 
@@ -56,9 +57,7 @@ public class MemberRepositoryTests {
     }
 
     @Test
-    @DisplayName("자신 빼고 다른 사람들 조회")
-    public void findAllTest() {
-        List<MemberEntity> memberEntities = memberRepository.findAllByUserNoNotLike(1L);
-        log.info("{}", memberEntities);
+    @DisplayName("회원 정보 수정")
+    public void updateTest() {
     }
 }
