@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.lang.reflect.Member;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -37,8 +38,8 @@ public class CustomUserDetails implements UserDetails {
     private DeptEntity deptEntity;
     private PositionEntity positionEntity;
     private boolean manager;
-    private Date birthdate;
-    private Date Startdate;
+    private LocalDate birthdate;
+    private LocalDate Startdate;
     private Role roleName;
 
 

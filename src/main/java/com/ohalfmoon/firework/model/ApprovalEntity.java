@@ -99,7 +99,8 @@ public class ApprovalEntity {
 //    }
 
     // 진행중인 결재서류를 결재완료
-    public void updateState( int approvalOrder, int approvalState) {
+    public void updateState(String approContent, int approvalOrder, int approvalState) {
+        this.approContent = approContent;
         this.approvalOrder = approvalOrder;
         this.approvalState = approvalState;
     }

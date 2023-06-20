@@ -67,7 +67,15 @@ public class ApprovalContoller {
     public Long updateStorage(@PathVariable Long approvalNo, @RequestBody ApprovalStateDto stateDto) {
 
         return approvalService.updateState(approvalNo, stateDto);
+    }
 
+
+    //상태값 변경 : 결재반려
+    @PutMapping("/reject/{approvalNo}")
+    @ResponseBody
+    public Long updatereject(@PathVariable Long approvalNo, @RequestBody ApprovalStateDto stateDto) {
+
+        return approvalService.rejectState(approvalNo, stateDto);
     }
 
     //기안 내용 수정

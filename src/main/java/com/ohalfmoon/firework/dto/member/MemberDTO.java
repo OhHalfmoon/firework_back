@@ -3,12 +3,14 @@ package com.ohalfmoon.firework.dto.member;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.Role;
-import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * packageName :  com.ohalfmoon.firework.dto.member
@@ -37,18 +39,22 @@ public class MemberDTO {
     private boolean manager;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd", timezone = "Asia/Seoul")
-    private Date birthdate;
+    private LocalDate birthdate;
     private String authProvider;
     private String memberSign;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd", timezone = "Asia/Seoul")
-    private Date startdate;
+    private LocalDate startdate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd", timezone = "Asia/Seoul")
-    private Date enddate;
+    private LocalDate enddate;
     private int state;
-    private Date regdate;
-    private Date updatedate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd", timezone = "Asia/Seoul")
+    private LocalDate regdate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd", timezone = "Asia/Seoul")
+    private LocalDateTime updatedate;
     private int roleName;
 
     @Builder
@@ -57,9 +63,9 @@ public class MemberDTO {
             , String email
             , String phoneNum
             , String name
-            , Date birthdate
-            , Date startdate
-                     , int roleName
+            , LocalDate birthdate
+            , LocalDate startdate
+            , int roleName
     ) {
         this.username = username;
         this.password = password;
