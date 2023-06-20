@@ -1,6 +1,5 @@
 package com.ohalfmoon.firework.persistence;
 
-
 import com.ohalfmoon.firework.model.TodoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -18,6 +17,7 @@ import java.util.List;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2023/06/19        이지윤           최초 생성
+ * 2023/06/20        이지윤           회원, 부서, 휴일을 통한 조회 추가
  */
 @Repository
 public interface TodoRepository extends JpaRepository<TodoEntity, Long> {
