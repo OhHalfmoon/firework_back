@@ -45,7 +45,7 @@
 
         <!-- Messages Dropdown Menu -->
         <li class="nav-item dropdown">
-            <a class="nav-link" href="#messageModal" data-toggle="modal">
+            <a class="nav-link" href="#messageListModal" data-toggle="modal">
                 <i class="far fa-comments"></i>
                 <span class="messagecount badge badge-danger navbar-badge"></span>
             </a>
@@ -98,7 +98,9 @@
     </ul>
 </nav>
 <!-- /.navbar -->
-<div class="modal" id="messageModal">
+
+<!-- messageListModal-->
+<div class="modal" id="messageListModal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
 
@@ -113,14 +115,14 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-10 messageCategory">
-                            <a href="#">받은 쪽지</a> | <a style="color:black" href="#">보낸 쪽지</a>
+                            <a class="receive" style="color:purple" href="#">받은 쪽지</a> | <a class="send" style="color:green" href="#">보낸 쪽지</a>
                         </div>
                         <div class="col-2">
-                            <button type="button" class="btn btn-outline-success">쪽지 쓰기</button>
+                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#messageWriteModal">쪽지 쓰기</button>
                         </div>
                     </div>
                     <hr/>
-                    <div class="row">
+                    <div class="division row">
                         <div class="col-1">
 
                         </div>
@@ -155,6 +157,86 @@
     </div>
 </div>
 
+<!-- messageWriteModal-->
+<div class="modal" id="messageWriteModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">쪽지쓰기</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-2 text-center">
+                            <h5>제목</h5>
+                        </div>
+                        <div class="col-10">
+                            <input type="text" size=40 maxlength=30>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-2 text-center">
+                            <button class="btn btn-outline-secondary btn-xs" data-toggle="modal" data-target="#selectReceiverModal">받는 사람</button>
+                        </div>
+                        <div class="col-10 toReceiver">
+
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-2 text-center">
+                            <h5>내용</h5>
+                        </div>
+                        <div class="col-10">
+                            <textarea rows="7" cols="40" style="resize: none" maxlength="300"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success btn-sm">전송</button>
+                <button type="button" class="btn btn-outline-primary btn-sm" data-dismiss="modal">닫기</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- selectReceiverModal-->
+<div class="modal" id="selectReceiverModal">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">사원검색</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="card-body">
+                    
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success btn-sm">전송</button>
+                <button type="button" class="btn btn-outline-primary btn-sm" data-dismiss="modal">닫기</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 <!-- Main Sidebar Container -->
 {{>layout/menu}}
 

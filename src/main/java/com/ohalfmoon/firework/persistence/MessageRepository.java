@@ -18,6 +18,7 @@ import java.util.List;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2023/06/13        우성준           최초 생성
+ * 2023/06/19        우성준           페이징 기능 추가
  */
 public interface MessageRepository extends JpaRepository<MessageEntity, Long> {
     Page<MessageEntity> findAllByReceiver(MemberEntity receiver, Pageable pageable);

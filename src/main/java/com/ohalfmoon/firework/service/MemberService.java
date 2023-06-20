@@ -169,4 +169,12 @@ public class MemberService {
         return memberRepository.findAllByState(0)
                 .stream().map(MemberResponseDTO::new).collect(Collectors.toList());
     }
+    /**
+     * 로그인한 유저 빼고 모든 회원 return
+     *
+     * @return member entity list
+     */
+    public List<MemberResponseDTO> getAllMemeber(Long userNo) {
+        return memberRepository.findAllByUserNoNotLike(userNo).stream().map(MemberResponseDTO::new).collect(Collectors.toList());
+    }
 }

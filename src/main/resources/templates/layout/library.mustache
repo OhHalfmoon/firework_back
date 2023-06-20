@@ -54,7 +54,7 @@
 <script>
     $(function() {
         var userNo = 1;
-        // member.userNo로 바꿀 예정!!
+        // user.userNo로 바꿀 예정!!
         moment.locale('ko');
         alarmService.getCount(userNo, function (result) {
             $(".alarmcount").html(result);
@@ -77,6 +77,7 @@
 				    `;
 
         }
+
 
         // $(".alarm").on("click", "a", function () {
         //     event.preventDefault();
@@ -114,11 +115,13 @@
             pageNum++;
         })
 
+        var divison = false;
+
         messageService.getListByReceiver({userNo:userNo}, function (result) {
             var pageStr = "";
             var str = "";
-            for (var i in result.receiverMessageList.content) {
-                str += getReceiveLiStr(result.receiverMessageList.content[i]);
+            for (var i in result.messageList.content) {
+                str += getReceiveLiStr(result.messageList.content[i]);
             }
 
             $(".pagination").html(getPage(result.pageResponseDTO));
@@ -168,16 +171,98 @@
         $(".pagination").on("click", ".page-link",function () {
             event.stopPropagation();
             var pageNum = $(this).data("pagenum");
-            messageService.getListByReceiver({userNo:userNo, pageNum:pageNum}, function(result){
-                var str = "";
-                for(var i in result.receiverMessageList.content) {
-                    str += getReceiveLiStr(result.receiverMessageList.content[i]);
-                }
-                $(".pagination").html(getPage(result.pageResponseDTO));
-                $(".messages").html(str);
-            });
+            if(divison) {
+                messageService.getListByReceiver({userNo: userNo, pageNum: pageNum}, function (result) {
+                    var str = "";
+                    for (var i in result.messageList.content) {
+                        str += getReceiveLiStr(result.messageList.content[i]);
+                    }
+                    $(".pagination").html(getPage(result.pageResponseDTO));
+                    $(".messages").html(str);
+                });
+            }
+            else {
+                messageService.getListBySender({userNo: userNo, pageNum: pageNum}, function (result) {
+                    var str = "";
+                    for (var i in result.messageList.content) {
+                        str += getSendLiStr(result.messageList.content[i]);
+                    }
+                    $(".pagination").html(getPage(result.pageResponseDTO));
+                    $(".messages").html(str);
+                });
+            }
         })
 
+        $(".messageCategory").on("click", "a", function () {
+            if($(this).attr('class')=='send') {
+                divison = false;
+                messageService.getListBySender({userNo:userNo}, function(result){
+                    var str = "";
+                    for(var i in result.messageList.content) {
+                        str += getSendLiStr(result.messageList.content[i]);
+                    }
+                    $(".pagination").html(getPage(result.pageResponseDTO));
+                    $(".messages").html(str);
+                    $(".division").html(getDivision(divison));
+                });
+            }
+            else {
+                divison = true;
+                messageService.getListByReceiver({userNo:userNo}, function(result){
+                    var str = "";
+                    for(var i in result.messageList.content) {
+                        str += getReceiveLiStr(result.messageList.content[i]);
+                    }
+                    $(".pagination").html(getPage(result.pageResponseDTO));
+                    $(".messages").html(str);
+                    $(".division").html(getDivision(divison));
+                });
+            }
+        })
+
+        function getSendLiStr(obj) {
+            return `<div class="col-1 text-center"><input type="checkbox" data-messageno="${obj.messageNo}"></div>
+                    <div class="col-2 text-center">
+				        ${obj.receiverName}
+                    </div>
+                    <div class="col-5 text-center">
+				        ${obj.messageTitle}
+                    </div>
+				    <div class="col-4 text-center">
+				        ${moment(obj.regdate).locale("ko").format('YYYY/MM/D HH:mm')}
+                    </div>
+                    </a>
+				    `;
+        }
+
+        function getDivision(obj) {
+            if(!obj)
+                return `<div class="col-1">
+
+                        </div>
+                        <div class="col-2 text-center">
+                            받는 사람
+                        </div>
+                        <div class="col-5 text-center">
+                            제목
+                        </div>
+                        <div class="col-4 text-center">
+                            날짜
+                        </div>`
+            else
+                return `<div class="col-1">
+
+                        </div>
+                        <div class="col-2 text-center">
+                            보낸 사람
+                        </div>
+                        <div class="col-5 text-center">
+                            제목
+                        </div>
+                        <div class="col-4 text-center">
+                            날짜
+                        </div>`
+        }
     });
 </script>
 

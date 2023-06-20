@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2023/06/15        우성준           최초 생성
+ * 2023/06/19        우성준           메시지 리스트 이름수정
  */
 
 @Getter
@@ -24,6 +25,6 @@ import org.springframework.data.domain.Page;
 public class MessagePageDto {
     private PageResponseDTO pageResponseDTO;
 
-    private Page<MessageResponseDto> receiverMessageList;
+    private Page<MessageResponseDto> messageList;
 
 }
