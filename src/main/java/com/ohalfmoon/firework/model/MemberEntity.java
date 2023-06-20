@@ -70,7 +70,7 @@ public class MemberEntity {
     private String authProvider; // login 제공자
 
     @OneToOne
-    @JoinColumn(name = "attachNo")
+    @JoinColumn(name = "memberSign")
     private AttachEntity attachEntity; // 전자서명 (base64)
 
     @Column(nullable = false)
