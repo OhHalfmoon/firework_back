@@ -69,7 +69,8 @@ public class MemberEntity {
 
     private String authProvider; // login 제공자
 
-    private String memberSign; // 전자서명 (base64)
+    @OneToOne
+    private AttachEntity attachEntity; // 전자서명 (base64)
 
     @Column(nullable = false)
     private LocalDate startdate; // 입사일
