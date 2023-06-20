@@ -19,7 +19,6 @@ public class TodoRepositoryTests {
     @Test
     public void testSave() {
         todoRepository.save(TodoEntity.builder()
-                .todoCategory(2L)
                 .memberEntity(MemberEntity.builder()
                         .userNo(2L)
                         .build()

@@ -54,4 +54,11 @@ public class MemberRepositoryTests {
         List<MemberEntity> entity = memberRepository.findAllByState(0);
         log.info("state = 0 : {}", entity);
     }
+
+    @Test
+    @DisplayName("자신 빼고 다른 사람들 조회")
+    public void findAllTest() {
+        List<MemberEntity> memberEntities = memberRepository.findAllByUserNoNotLike(1L);
+        log.info("{}", memberEntities);
+    }
 }
