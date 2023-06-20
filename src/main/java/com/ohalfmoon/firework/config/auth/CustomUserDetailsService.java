@@ -46,23 +46,27 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.memberRepository = memberRepository;
     }
 
+    // 배포시 주석 해제
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        MemberEntity entity = memberRepository.findByUsername(username);
+//        log.info("state : {}", entity.getState());
+//        if(entity != null && entity.getState() == 1) { // 가입 승인된 유저만 로그인 가능
+//            return new CustomUserDetails(entity);
+//        }
+//        return null;
+//    }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         MemberEntity entity = memberRepository.findByUsername(username);
+        log.info("state : {}", entity.getState());
         if(entity != null) {
             return new CustomUserDetails(entity);
         }
         return null;
     }
 
-//    private UserDetails createUserDetails(MemberEntity entity) {
-//        String role = entity.getRoleEntity().getRoleName().toString();
-//        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role);
-//
-//        return new User(String.valueOf(entity.getUserNo()),
-//                entity.getPassword(),
-//                Collections.singleton(grantedAuthority));
-//    }
+
 
 
 
