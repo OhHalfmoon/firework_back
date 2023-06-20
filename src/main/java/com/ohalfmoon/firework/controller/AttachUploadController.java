@@ -1,10 +1,12 @@
 package com.ohalfmoon.firework.controller;
 
+import com.ohalfmoon.firework.dto.fileUpload.AttachResponseDto;
+import com.ohalfmoon.firework.dto.fileUpload.AttachSaveDto;
+import com.ohalfmoon.firework.service.AttachService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +22,7 @@ import java.util.UUID;
 
 /**
  * packageName    : com.ohalfmoon.firework.controller
- * fileName       : FileUploadController
+ * fileName       : AttachUploadController
  * author         : 방한솔
  * date           : 2023/06/14
  * description    : 파일업로드 저장 컨트롤러
@@ -30,28 +32,11 @@ import java.util.UUID;
  * 2023/06/14        방한솔           최초 생성
  */
 @RequestMapping("/upload")
+@RequiredArgsConstructor
 @Controller
 @Slf4j
-public class FileUploadController {
-    @Value("${upload.path}")
-    private String uploadDir;
-
-    private String filePath(String uuid, String ext){
-        // 프로젝트 루트 경로 확인용
-        String projectPath = new File("").getAbsolutePath();
-
-        // 실제 업로드 폴더 경로
-        File uploadFolder = new File(projectPath + uploadDir);
-
-        log.info("uploadFolder path : {}", projectPath + uploadDir);
-
-        if(!uploadFolder.exists()){
-            boolean mkdirs = uploadFolder.mkdirs();
-            log.info("업로드 폴더 생성 : {}", mkdirs);
-        }
-
-        return projectPath + File.separator + uploadDir + File.separator + uuid + "." + ext;
-    }
+public class AttachUploadController {
+    private final AttachService service;
 
     @PostMapping(value = "/ajax")
     @ResponseBody
@@ -60,12 +45,14 @@ public class FileUploadController {
 
         String uuid = UUID.randomUUID().toString();
         String ext = FilenameUtils.getExtension(uploadFile.getOriginalFilename());
-//        String uploadId = "/" + uuid + "." + ext;
 
-        String filePath = filePath(uuid, ext);
-        log.info("경로명 : {}", filePath);
+        AttachSaveDto dto = AttachSaveDto.builder()
+                .originName(uploadFile.getOriginalFilename())
+                .uuid(uuid)
+                .ext(ext)
+                .build();
 
-        uploadFile.transferTo(new File(filePath(uuid, ext)));
+        Long fileNo = service.fileSave(dto, uploadFile);
 
 
         Map<String, Object> map = new HashMap<>();
@@ -73,7 +60,7 @@ public class FileUploadController {
         String url = request.getScheme()
                 + "://" + request.getServerName()
                 + ":" + request.getServerPort()
-                + "/upload/imageView?uuid=" + uuid + "&ext=" + ext;
+                + "/upload/imageView?fileNo=" + fileNo;
 
         map.put("url", url);
 
@@ -83,46 +70,46 @@ public class FileUploadController {
 
     @GetMapping("/download")
     @ResponseBody
-    public ResponseEntity<Resource> download(@RequestParam String uuid, @RequestParam String ext) throws MalformedURLException {
+    public ResponseEntity<Resource> download(@RequestParam Long fileNo) throws MalformedURLException {
 
-        log.info("uuid : {}", uuid);
-        // DB 조회용
-        Resource resource = new UrlResource("file:" + uploadDir + "/" + uuid + ext);
+         AttachResponseDto file = service.getFile(fileNo, false);
 
-        log.info("urlResource : {}", "file:" + uploadDir + uuid + "." + ext);
+        Resource resource = service.getFileResource(fileNo);
 
         if(resource.exists()) {
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION
-                            , "attachment; filename=\"" + resource.getFilename() + "\"")
+                            , "attachment; filename=\"" + file.getOriginName() + "\"")
                     .body(resource);
         } else {
             return ResponseEntity.notFound().build();
         }
+
     }
 
     @GetMapping("/imageView")
     @ResponseBody
-    public ResponseEntity<Resource> showImage(@RequestParam String uuid,@RequestParam String ext) throws IOException {
-
-        log.info("uuid : {}", uuid);
-
-        Resource resource = new UrlResource("file:" + filePath(uuid, ext));
+    public ResponseEntity<Resource> showImage(@RequestParam Long fileNo) throws IOException {
+        Resource resource = service.getFileResource(fileNo);
 
 
-        log.info("filePath : {}", filePath(uuid, ext));
 
-        File file = new File("");
-
-        String absolutePath = file.getAbsolutePath();
-        log.info("absolutePath : {}", absolutePath);
-
-
-        if (resource.exists()) {
+        if (resource != null) {
             HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.IMAGE_PNG);
-            headers.setContentType(MediaType.IMAGE_JPEG);
-            headers.setContentType(MediaType.IMAGE_GIF);
+
+            String extension = FilenameUtils.getExtension(resource.getFilename());
+
+            switch (extension.toLowerCase()) {
+                case "png":
+                    headers.setContentType(MediaType.IMAGE_PNG);
+                    break;
+                case "jpeg":
+                    headers.setContentType(MediaType.IMAGE_JPEG);
+                    break;
+                case "gif":
+                    headers.setContentType(MediaType.IMAGE_GIF);
+                    break;
+            }
 
             headers.setContentDisposition(ContentDisposition.inline().build());
 
