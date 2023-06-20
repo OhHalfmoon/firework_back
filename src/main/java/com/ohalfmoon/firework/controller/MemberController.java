@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 
@@ -78,7 +79,10 @@ public class MemberController {
     }
 
     @GetMapping("signin")
-    public void login() {}
+    public void login(@RequestParam(value = "error", required = false)String error, @RequestParam(value = "exception", required = false)String exception, Model model) {
+        model.addAttribute("error", error);
+        model.addAttribute("exception", exception);
+    }
 
     /**
      * 로그인(post)
@@ -87,21 +91,12 @@ public class MemberController {
      * @return the string
      */
     @PostMapping("signin")
-    public String login(MemberLoginDTO dto, String username) {
+    public void login(MemberLoginDTO dto, String username) {
         MemberEntity entity = memberService.get(username);
+        MemberResponseDTO member = memberService.login(dto);
         log.info("entity : {}", memberService.get(username));
-        if(entity == null) {
-            return redirect;
+//            return redirect;
         }
-        else if(entity.getState() == 0 || entity.getState() == 2) {
-            return redirect + "auth/signin";
-        }
-        else {
-            MemberResponseDTO member = memberService.login(dto);
-            log.info("state : {}", member.getState());
-            return redirect + "auth/signin";
-        }
-    }
 
 //    @PostMapping("signin")
 //    public String login(MemberLoginDTO dto) {
