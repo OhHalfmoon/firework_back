@@ -103,6 +103,7 @@ public class ApprovalService {
             if (i == lineDtos.size()-1) {
                 ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
                 approvalEntity.updateState(
+                        stateDto.getApproContent(),
                         i+1,
                         2
                 );
@@ -119,6 +120,7 @@ public class ApprovalService {
                 ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
 
                 approvalEntity.updateState(
+                        stateDto.getApproContent(),
                         stateDto.getApprovalOrder(),
                         stateDto.getApprovalState()
                 );

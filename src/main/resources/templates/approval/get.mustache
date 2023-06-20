@@ -106,21 +106,21 @@
                                                 {{approvalGet.approvalName}}
                                             </h3>
                                         </div>
-                                        <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="editor">양식내용</label>
                                             <div class="centered">
                                                 <div class="row">
-                                                    <div class="centered document-editor__toolbar" style="z-index: 999"></div>
+                                                    <div class="document-editor__toolbar"></div>
                                                 </div>
-                                                <br>
-                                                <br>
                                                 <div class="row row-editor">
                                                     <div class="editor-container">
-                                                        <div class="editor detail">
+                                                        <div class="editor">
                                                             <div class="ck-toolbar"></div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <input type="hidden" name="approContent" id="approContent">
                                         </div>
 <!--                                        <div class="card-body">-->
 <!--                                            <div class="centered detail">{{!approvalGet.approContent}}</div>-->
@@ -153,102 +153,103 @@
 <!-- ./wrapper -->
 
 {{>layout/library}}
-
-
-</body>
 <script>
-   // console.log($('.detail').text());
-   // console.log($('.detail').val());
-   // console.log(typeof ($('#approvalOrder').val()));
-   // console.log($('#approvalState').val());
-   let data;
-   var editor;
-   var user = {{user.userNo}};
-   var test = `{{{approvalGet.approContent}}}`;
-   var check = $('#{{user.userNo}}');
+    // console.log($('.detail').text());
+    // console.log($('.detail').val());
+    // console.log(typeof ($('#approvalOrder').val()));
+    // console.log($('#approvalState').val());
+    let data;
+    var editor;
+    var user = {{user.userNo}};
+    var test = `{{{approvalGet.approContent}}}`;
+    var check = $('#{{user.userNo}}');
+    console.log($('#approvalOrder').val());
+    console.log(check);
+    console.log(check[0]);
+    console.log(editText);
+    // console.log(check[0].id);
+    // console.log(ck);
 
-   console.log($('#approvalOrder').val());
-   console.log(check);
-   console.log(check[0]);
-   console.log(user);
+    <!--var arr = `{{!{approUserList}}}`;-->
+    <!--console.log(arr);-->
+    // console.log(user);
 
-   // console.log(check[0].id);
-   // console.log(ck);
+    DecoupledDocumentEditor
+            .create( document.querySelector( '.editor' )
+            )
+            .then( editor => {
+                window.editor = editor;
+                editor.setData(test);
+                editor.enableReadOnlyMode( 'my-feature-id' );
+                editor.isReadOnly;
 
-   <!--var arr = `{{!{approUserList}}}`;-->
-   <!--console.log(arr);-->
-   // console.log(user);
-
-   DecoupledDocumentEditor
-           .create( document.querySelector( '.editor' )
-           )
-           .then( editor => {
-               window.editor = editor;
-               editor.setData(test);
-               editor.enableReadOnlyMode( 'my-feature-id' );
-               editor.isReadOnly;
-
-           } )
-           .catch( error => {
-               console.error( 'Oops, something went wrong!' );
-               console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
-               console.warn( 'Build id: mhijpyjl1akp-mumjti75eytr' );
-               console.error( error );
-           });
+            } )
+            .catch( error => {
+                console.error( 'Oops, something went wrong!' );
+                console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
+                console.warn( 'Build id: mhijpyjl1akp-mumjti75eytr' );
+                console.error( error );
+            });
     $(function () {
-
+        // console.log($(".editor").html());
+        var editText = $(".editor").html();
         $("#change").click(function (){
+
 //            event.preventDefault();
             if ((check[0] == undefined) || (parseInt(check.text()) != parseInt($('#approvalOrder').val()))) {
                 alert("권한이 없습니다")
             } else if($('#approvalState').val() == 2) {
                 alert("결재가 완료된 문서입니다.")
             }else if (check.text() == $('#approvalOrder').val()) {
-                    var data = {
-                        approvalOrder : parseInt($('#approvalOrder').val()) + 1,
-                        approvalState : $('#approvalState').val()
-                    };
-                    var id = $('#approvalNo').val();
-                    $.ajax({
-                        type: 'PUT',
-                        url : '/approval/' + id,
-                        datatype: 'json',
-                        contentType: 'application/json; charset=utf-8',
-                        data: JSON.stringify(data)
-                    }).done(function () {
-                        alert("결재가 승인되었습니다.")
-                    })
-                }
+
+                var data = {
+                    // approContent : editText.html($('#approContent').val()),
+                    approvalOrder : parseInt($('#approvalOrder').val()) + 1,
+                    approvalState : $('#approvalState').val()
+                };
+                var id = $('#approvalNo').val();
+                $.ajax({
+                    type: 'PUT',
+                    url : '/approval/' + id,
+                    datatype: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(data)
+                }).done(function () {
+                    alert("결재가 승인되었습니다.")
+                })
+            }
 
 
         });
 
 
-            <!--if (($("#{{!user.userNo}}")[0] != undefined) && (user == $("#{{!user.userNo}}")[0].id)) {-->
-            <!--    $("#{{!user.userNo}}")[0].innerText = "결재승인";-->
-            <!--    $(".detail .table:eq(0)").find("tr:eq(2) td:eq()").text("결재승인");-->
-            <!--        var data = {-->
-            <!--            approContent : $('.detail').text()-->
-            <!--        };-->
-            <!--        var id = $('#approvalNo').val();-->
+        <!--if (($("#{{!user.userNo}}")[0] != undefined) && (user == $("#{{!user.userNo}}")[0].id)) {-->
+        <!--    $("#{{!user.userNo}}")[0].innerText = "결재승인";-->
+        <!--    $(".detail .table:eq(0)").find("tr:eq(2) td:eq()").text("결재승인");-->
+        <!--        var data = {-->
+        <!--            approContent : $('.detail').text()-->
+        <!--        };-->
+        <!--        var id = $('#approvalNo').val();-->
 
-            <!--        $.ajax({-->
-            <!--            type: 'PUT',-->
-            <!--            url : '/approval/state/' + id,-->
-            <!--            datatype: 'json',-->
-            <!--            contentType: 'application/json; charset=utf-8',-->
-            <!--            data: JSON.stringify(data)-->
-            <!--        }).done(function () {-->
-            <!--            alert("결재가 승인되었습니다.")-->
-            <!--            $("#approvalPut").submit();-->
-            <!--        })-->
+        <!--        $.ajax({-->
+        <!--            type: 'PUT',-->
+        <!--            url : '/approval/state/' + id,-->
+        <!--            datatype: 'json',-->
+        <!--            contentType: 'application/json; charset=utf-8',-->
+        <!--            data: JSON.stringify(data)-->
+        <!--        }).done(function () {-->
+        <!--            alert("결재가 승인되었습니다.")-->
+        <!--            $("#approvalPut").submit();-->
+        <!--        })-->
 
-            <!--} else {-->
-            <!--    alert("결재 권한이 없습니다")-->
-            <!--};-->
+        <!--} else {-->
+        <!--    alert("결재 권한이 없습니다")-->
+        <!--};-->
 
 
 
     })
 </script>
+</body>
+
 </html>
