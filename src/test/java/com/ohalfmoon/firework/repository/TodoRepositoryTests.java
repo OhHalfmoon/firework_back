@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2023/06/19        이지윤           최초 생성
+ * 2023/06/20        이지윤           리스트 조회 테스트
  */
 
 @SpringBootTest
