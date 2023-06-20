@@ -88,16 +88,24 @@ public class MemberService {
     public Long updatePw(Long userNo, MemberUpdatePwDTO dto) {
         MemberEntity entity = memberRepository.findById(userNo)
                 .orElseThrow(() -> new IllegalArgumentException("해당 id가 존재하지 않습니다." + userNo));
+        dto.setPassword(encoder.encode(dto.getPassword()));
         entity.updatePw(dto.getPassword());
         return userNo;
     }
 
+    /**
+     * (관리자)회원 state 변경
+     *
+     * @param userNo the user no
+     * @param dto    the dto
+     * @return the long
+     */
     @Transactional
     public Long recognize(Long userNo, MemberUpdateStateDTO dto) {
         MemberEntity entity =
                 memberRepository.findById(userNo)
                         .orElseThrow(() -> new IllegalArgumentException("해당 ID가 존재하지 않습니다." + userNo));
-        entity.updateState(dto.getState());
+        entity.updateState(dto.getUserNo(), dto.getState());
         return userNo;
     }
     /**
@@ -168,5 +176,13 @@ public class MemberService {
     public List<MemberResponseDTO> getStateByZero() {
         return memberRepository.findAllByState(0)
                 .stream().map(MemberResponseDTO::new).collect(Collectors.toList());
+    }
+    /**
+     * 로그인한 유저 빼고 모든 회원 return
+     *
+     * @return member entity list
+     */
+    public List<MemberResponseDTO> getAllMemeber(Long userNo) {
+        return memberRepository.findAllByUserNoNotLike(userNo).stream().map(MemberResponseDTO::new).collect(Collectors.toList());
     }
 }

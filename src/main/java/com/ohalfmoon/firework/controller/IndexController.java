@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 
@@ -38,7 +39,7 @@ public class IndexController {
     private AttendService attendService;
 
     @GetMapping
-    public String index(HttpSession session, @AuthenticationPrincipal CustomUserDetails details, Model model) {
+    public String index(HttpSession session, @AuthenticationPrincipal CustomUserDetails details, Model model, HttpServletRequest req) {
         model.addAttribute("user", details);
         log.info("security session : {}", model.getAttribute("user"));
         log.info("session :{}", session.getAttribute("member"));

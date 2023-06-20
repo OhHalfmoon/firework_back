@@ -19,7 +19,9 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Dashboard</h1>
+                            {{#user}}
+                               <h5 class="m-0">{{deptEntity.deptName}} / {{positionEntity.positionName}} <b>{{name}}</b>님 환영합니다!</h5>
+                            {{/user}}
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">

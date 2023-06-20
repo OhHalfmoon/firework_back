@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 /**
  * packageName :  com.ohalfmoon.firework.dto.member
  * fileName : MemberUpdatePw
@@ -19,7 +22,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class MemberUpdatePwDTO {
-    private Long userNo;
     private String password;
 
     @Builder
@@ -29,8 +31,8 @@ public class MemberUpdatePwDTO {
 
     public MemberEntity toEntity() {
         return MemberEntity.builder()
-                .userNo(userNo)
                 .password(password)
+                .updatedate(LocalDateTime.now())
                 .build();
     }
 }

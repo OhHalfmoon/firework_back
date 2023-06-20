@@ -61,6 +61,20 @@ var messageService = (function () {
             })
     }
 
+    function getListBySender(obj, callback, error) {
+        var url = "/api/message/sender/" + obj.userNo + "/" + (obj.pageNum ? "?page=" + obj.pageNum : "");
+        $.getJSON(url)
+            .done(function(data) {
+                if(callback) {
+                    callback(data);
+                }
+            })
+            .fail(function(xhr) {
+                if(error) {
+                    error(xhr);
+                }
+            })
+    }
     // function modify(obj, callback, error) {
     //     $.ajax({
     //         url : "/api/alarm/" + obj.alarmNo,
@@ -93,9 +107,9 @@ var messageService = (function () {
     }
     return {
         // getCount:getCount,
-        // name:"AAAA",
         // add:add,
         getListByReceiver:getListByReceiver,
+        getListBySender:getListBySender,
         // get:get,
         remove:remove,
         // modify:modify
