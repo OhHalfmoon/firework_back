@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * packageName :  com.ohalfmoon.firework.config.auth
@@ -44,13 +46,29 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.memberRepository = memberRepository;
     }
 
+    // 배포시 주석 해제
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        MemberEntity entity = memberRepository.findByUsername(username);
+////                .orElseThrow(() -> new UsernameNotFoundException("사용자가 존재하지 않습니다."));
+//        log.info("state : {}", entity.getState());
+//        if(entity.getState() == 1) { // 가입 승인된 유저만 로그인 가능
+//            return new CustomUserDetails(entity);
+//        }
+//        return null;
+//    }
+
+    // 배포 전 임시 코드
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         MemberEntity entity = memberRepository.findByUsername(username);
-        if(entity != null) {
-            return new CustomUserDetails(entity);
-        }
-        return null;
+//                .orElseThrow(() -> new UsernameNotFoundException("사용자가 존재하지 않습니다."));
+        log.info("state : {}", entity.getState());
+        return new CustomUserDetails(entity);
     }
+
+
+
+
 
 }

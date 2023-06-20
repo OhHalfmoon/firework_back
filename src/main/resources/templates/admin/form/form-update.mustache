@@ -6,6 +6,12 @@
     <title>AdminLTE 3 | Dashboard</title>
 
     {{>layout/head}}
+    <style>
+        .document-editor__toolbar {
+            width: 100%;
+        }
+
+    </style>
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
@@ -97,14 +103,20 @@
 {{>layout/library}}
 
 <script>
+
     let data;
     let editor;
 
     var test = `{{{formDto.formText}}}`;
 
     DecoupledDocumentEditor
-            .create( document.querySelector( '.editor' )
-            )
+            .create( document.querySelector( '.editor' ), {
+                language: "ko",
+                simpleUpload: {
+                    uploadUrl: "/upload/ajax"
+                },
+                sourceEditing: true
+            })
             .then( editor => {
                 window.editor = editor;
 
@@ -117,6 +129,7 @@
                 // const toolbarContainer = document.querySelector( '.document-editor__toolbar'  );
 
                 // toolbarContainer.appendChild( editor.ui.view.toolbar.element );
+                console.log(test);
                 editor.setData(test);
             } )
             .catch( error => {

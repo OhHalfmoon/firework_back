@@ -103,33 +103,28 @@
                                             </h3>
                                         </div>
                                         <div class="card-body">
-                                            <div class="form-group">
-                                                <label for="formName">양식명</label>
-                                                <input type="text" class="form-control" id="formName" name="formName">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="editor">양식내용</label>
-
-                                                <div class="centered">
-                                                    <div class="row">
-                                                        <div class="document-editor__toolbar"></div>
-                                                    </div>
-                                                    <div class="row row-editor">
-                                                        <div class="editor-container">
-                                                            <div class="editor">
-                                                                <div class="ck-toolbar"></div>
-                                                            </div>
+                                            <div class="centered">
+                                                <div class="row">
+                                                    <div class="centered document-editor__toolbar" style="z-index: 999"></div>
+                                                </div>
+                                                <br>
+                                                <br>
+                                                <div class="row row-editor">
+                                                    <div class="editor-container">
+                                                        <div class="editor">
+                                                            <div class="ck-toolbar"></div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <input type="hidden" name="approContent" class="approContent">
                                             </div>
+                                            <input type="hidden" name="approContent" class="approContent">
                                         </div>
                                     </div>
                                 </div>
                             </section>
                     </div>
                     <div class="col-2">
+                        <input type="hidden" class="form-control approvalOrder" id="approvalOrder" name="approvalOrder"  >
                         <input type="hidden" class="form-control approvalState" id="approvalState" name="approvalState"  >
                         <input type="hidden" class="form-control userNo" name="userNo" >
                         <button class="btn btn-secondary" id="storage" type="submit">임시저장</button>
@@ -180,21 +175,21 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {{#masterList}}
-                            <tr>
-                                <td id="lineName">{{lineName}}</td>
-                                <td id="masterName">{{masterName}}</td>
-                                {{#subLineList}}
-                                    <td id="subfull"> [{{positionName}}] [{{deptName}}] {{name}} </td>
-                                {{/subLineList}}
-                                <td><!-- checkbox -->
+                            {{#masterList}}
+                                <tr class="myLine data-lineNo={{lineNo}}">
+                                <td>{{lineName}}</td>
+                                <td>{{userName}}</td>
+                                {{#subLineResponseDTOS}}
+                                    <td> [{{deptName}}] [{{positionName}}] {{#name}}{{name}}{{/name}}{{^name}}{{-}}{{/name}}</td>
+                                {{/subLineResponseDTOS}}
+                                <td>
                                     <div class="icheck-primary d-inline ml-2 mx-auto">
-                                        <input class="mx-auto ckBox" type="radio" id="todoCheck{{lineNo}}" name="todo" value="{{lineNo}}">
+                                        <input class="mx-auto ckBox" type="radio" name="pickRadio" id="todoCheck{{lineNo}}" value="{{lineNo}}">
                                         <label for="todoCheck{{lineNo}}"></label>
                                     </div>
                                 </td>
-                            </tr>
-                        {{/masterList}}
+                                </tr>
+                            {{/masterList}}
                         </tbody>
                     </table>
                 </div>
@@ -214,8 +209,9 @@
 <script>
     let data;
     var editor;
-    var user = 1;
+    var user = {{user.userNo}};
     var test = `{{{formDetail.formText}}}`;
+    console.log(user);
 
 
     DecoupledDocumentEditor
@@ -243,12 +239,10 @@
 
             var no = this.value;
             var approlist = this.closest('tr').innerHTML;
-            var cut = approlist.split('<td>');
-
+            var cut = approlist.split('<td><!-- checkbox -->');
 
             $("#apply").click(function () {
                 const element = document.getElementById('applyLine');
-//                element.innerHTML = '<div class="col-12">' + no +'</div>';
                 element.innerHTML = '<tr>' + cut[0] + '</tr>';
                 $("#applyVal").val(no);
                 $(".modal").modal("hide");
@@ -257,11 +251,9 @@
 
         $("#storage").click(function (){
             event.preventDefault();
-            // console.log("성공")
-            // console.log(editor);
             const editText = editor.getData();
-
-            $("#approvalState").val(0);
+            $("#approvalOrder").val(1);
+            $("#approvalState").val(1);
             $(".userNo").val(user);
             $(".approContent").val(editText);
             $("#approvalPost").submit();

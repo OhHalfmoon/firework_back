@@ -41,8 +41,8 @@ public class MasterLineRepositoryTests {
     // 마스터 라인 생성 - 성공
     @Test
     public void testSave(){
-        String lineName = "팀장님 부재시 - 수정";
-        Long userNo = 1L;
+        String lineName = "결재선 테스트";
+        Long userNo = 15L;
 
         masterLineRepository.save(MasterLineEntity.builder()
                 .lineName(lineName)

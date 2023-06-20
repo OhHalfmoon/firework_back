@@ -2,6 +2,8 @@ package com.ohalfmoon.firework.repository;
 
 import com.ohalfmoon.firework.model.*;
 import com.ohalfmoon.firework.persistence.ApprovalRepository;
+import com.ohalfmoon.firework.persistence.MasterLineRepository;
+import com.ohalfmoon.firework.persistence.SubLineRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,6 +25,8 @@ import java.util.List;
 public class ApprovalRepositoryTests {
     @Autowired
     ApprovalRepository approvalRepository;
+    @Autowired
+    SubLineRepository subLineRepository;
 
     @Test
     public void approvalSave() {
@@ -34,7 +38,6 @@ public class ApprovalRepositoryTests {
                         .approContent("가나다라마바사아자차카타파하")
                         .memberEntity(MemberEntity.builder().userNo(1L).build())
                         .approvalState(0)
-                        .regdate(new Date())
                 .build());
     }
 
@@ -45,9 +48,22 @@ public class ApprovalRepositoryTests {
     }
 
     @Test
-    public void getApproval() {
+    public void getApprovalName() {
         ApprovalEntity test = approvalRepository.findByApprovalName("다시만드는기안");
         System.out.println(test);
+    }
+    @Test
+    public void getApproval() {
+
+
+        ApprovalEntity test = approvalRepository.findByApprovalNo(37L);
+        MasterLineEntity mle = test.getMasterLineEntity();
+
+        System.out.println(mle.getMemberEntity().getName());
+        System.out.println(mle.getMemberEntity().getPositionEntity().getPositionName());
+        subLineRepository.findAllByMasterLineEntity_LineNo(mle.getLineNo()).forEach(sle -> System.out.println(sle.getMemberEntity().getName() + sle.getMemberEntity().getPositionEntity().getPositionName()));
+//        System.out.println(test);
+
     }
 
     @Test

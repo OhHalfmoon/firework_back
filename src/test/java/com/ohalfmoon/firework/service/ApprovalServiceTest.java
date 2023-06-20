@@ -44,7 +44,6 @@ public class ApprovalServiceTest {
                 .approContent("서비스테스트작성중")
                 .userNo(1L)
                 .approvalState(0)
-                .regdate(new Date())
                 .build();
         Long saveId = approvalService.register(saveDto);
         ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(saveId);
@@ -103,6 +102,14 @@ public class ApprovalServiceTest {
         final Long approvalNo = 30L;
         approvalService.delete(approvalNo);
         System.out.println("삭제완료");
+    }
+
+    @Test
+    @DisplayName("결재자리스트 테스트")
+    void getApprovalMemberTest() {
+        final Long approvalNo = 37L;
+        List<ApprovalLineDto> lineDtos = approvalService.getApprovalUserName(approvalNo);
+        log.info("subLineResponseDTOList: {}",lineDtos);
     }
 
     //    @Test

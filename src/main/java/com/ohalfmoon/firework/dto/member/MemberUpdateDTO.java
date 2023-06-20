@@ -5,6 +5,8 @@ import com.ohalfmoon.firework.model.MemberEntity;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -24,17 +26,20 @@ public class MemberUpdateDTO {
     private String email;
     private String phoneNum;
     private String name;
-    @DateTimeFormat(pattern = "yyyyMMdd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd", timezone = "Asia/Seoul")
-    private Date birthdate;
-    @DateTimeFormat(pattern = "yyyyMMdd")
+    private LocalDate birthdate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd", timezone = "Asia/Seoul")
-    private Date startdate;
+    private LocalDate startdate;
     private Long deptNo;
     private Long positionNo;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd", timezone = "Asia/Seoul")
+    private LocalDateTime updatedate;
 
     @Builder
-    public MemberUpdateDTO(String email, String phoneNum, String name, Date birthdate, Date startdate, Long deptNo, Long positionNo) {
+    public MemberUpdateDTO(String email, String phoneNum, String name, LocalDate birthdate, LocalDate startdate, Long deptNo, Long positionNo, LocalDateTime updatedate) {
         this.email = email;
         this.phoneNum = phoneNum;
         this.name = name;
@@ -42,6 +47,7 @@ public class MemberUpdateDTO {
         this.startdate = startdate;
         this.deptNo = deptNo;
         this.positionNo = positionNo;
+        this.updatedate = updatedate;
     }
 
     public MemberEntity toEntity() {
@@ -51,6 +57,7 @@ public class MemberUpdateDTO {
                 .name(name)
                 .birthdate(birthdate)
                 .startdate(startdate)
+                .updatedate(LocalDateTime.now())
                 .build();
     }
 }

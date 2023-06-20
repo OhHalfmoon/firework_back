@@ -1,16 +1,15 @@
 package com.ohalfmoon.firework.controller;
 
+import com.ohalfmoon.firework.config.auth.CustomUserDetails;
 import com.ohalfmoon.firework.dto.FormResponseDto;
-import com.ohalfmoon.firework.dto.approval.ApprovalResponseDto;
-import com.ohalfmoon.firework.dto.approval.ApprovalSaveDto;
-import com.ohalfmoon.firework.dto.approval.ApprovalStateDto;
-import com.ohalfmoon.firework.dto.approval.ApprovalUpdateDto;
+import com.ohalfmoon.firework.dto.approval.*;
 import com.ohalfmoon.firework.dto.dept.DeptListResponseDTO;
 import com.ohalfmoon.firework.dto.docbox.DocboxListResponseDTO;
 import com.ohalfmoon.firework.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -55,29 +54,46 @@ public class ApprovalContoller {
 
     // 기안 등록
     @PostMapping("/write/{formNo}")
-    public String register(@ModelAttribute ApprovalSaveDto saveDto) {
+    public String register(@AuthenticationPrincipal CustomUserDetails user, @ModelAttribute ApprovalSaveDto saveDto, Model model) {
+        model.addAttribute("user", user);
         log.info("{}",saveDto);
         approvalService.register(saveDto);
         return "redirect:/";
     }
 
     //상태값 변경 : 임시저장후 기안제출 / 결재완료처리
-    @PutMapping("/state/{approvalNo}")
-    public Long updateStorage(@PathVariable Long approvalNo,  @RequestBody ApprovalStateDto stateDto) {
+    @PutMapping("/{approvalNo}")
+    @ResponseBody
+    public Long updateStorage(@PathVariable Long approvalNo, @RequestBody ApprovalStateDto stateDto) {
+
         return approvalService.updateState(approvalNo, stateDto);
     }
 
+
+    //상태값 변경 : 결재반려
+    @PutMapping("/reject/{approvalNo}")
+    @ResponseBody
+    public Long updatereject(@PathVariable Long approvalNo, @RequestBody ApprovalStateDto stateDto) {
+
+        return approvalService.rejectState(approvalNo, stateDto);
+    }
+
     //기안 내용 수정
-    @PutMapping("/{approvalNo}")
+    @PutMapping("/state/{approvalNo}")
     public Long update(@PathVariable Long approvalNo,  @RequestBody ApprovalUpdateDto updateDto) {
         return approvalService.update(approvalNo, updateDto);
     }
 
-    @GetMapping("/{approvalNo}")
-    public String get (@PathVariable Long approvalNo, Model model) {
-        ApprovalResponseDto approvalGet = approvalService.get(approvalNo);
 
+
+    @GetMapping("/{approvalNo}")
+    public String get (@PathVariable Long approvalNo, @AuthenticationPrincipal CustomUserDetails user, Model model) {
+        log.info("테스트:{}", approvalNo);
+        model.addAttribute("user", user);
+        ApprovalResponseDto approvalGet = approvalService.get(approvalNo);
         model.addAttribute("approvalGet", approvalGet);
+        List<ApprovalLineDto> approvalLineDto = approvalService.getApprovalUserName(approvalNo);
+        model.addAttribute("approUserList", approvalLineDto);
         return "approval/get";
     }
 
@@ -87,18 +103,22 @@ public class ApprovalContoller {
     }
 
     @GetMapping("/formList")
-    public String getFormList(Model model) {
+    public String getFormList(@AuthenticationPrincipal CustomUserDetails user, Model model) {
+        model.addAttribute("user", user);
         List<FormResponseDto> listDto = formService.getFormList();
         model.addAttribute("listDto", listDto);
         return "approval/formList";
     }
 
     @GetMapping("/write/{formNo}")
-    public String write(@PathVariable Long formNo, Model model) {
+    public String write(@PathVariable Long formNo, @AuthenticationPrincipal CustomUserDetails user, Model model) {
+        model.addAttribute("user", user);
+        model.getAttribute("user");
+        log.info("{}","유저정보", user, user.getUserNo());
         model.addAttribute("position", positionService.positionList());
-        model.addAttribute("masterList", masterLineService.getList(1L) );
-        model.addAttribute("masterName", masterLineService.getMasterName(1L));
-        model.addAttribute("subLineList", subLineService.getListByLineNo(1L));
+        model.addAttribute("masterList", masterLineService.getList(user.getUserNo()));
+        model.addAttribute("masterName", masterLineService.getMasterName(user.getUserNo()));
+        //model.addAttribute("subLineList", subLineService.getListByLineNo(user.getUserNo()));
         model.addAttribute("subMemberName", subLineService);
         model.addAttribute("formDetail", formService.findByFormNo(formNo));
 

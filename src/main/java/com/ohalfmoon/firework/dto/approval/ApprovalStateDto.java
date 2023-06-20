@@ -3,6 +3,8 @@ package com.ohalfmoon.firework.dto.approval;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
  * packageName    : com.ohalfmoon.firework.dto
  * fileName       : ApprovalStateDto
@@ -15,8 +17,11 @@ import lombok.NoArgsConstructor;
  * 2023/06/09        오상현           최초 생성
  */
 @Getter
+@Setter
 @NoArgsConstructor
 public class ApprovalStateDto {
+    private String approContent;
+    private  int approvalOrder;
     private int approvalState;
 
 
@@ -24,7 +29,11 @@ public class ApprovalStateDto {
     * 결재진행 상태값을 변경하는 dto
     * */
     @Builder
-    public ApprovalStateDto(int approvalState) {
+    public ApprovalStateDto(String approContent, int approvalOrder, int approvalState) {
+        this.approContent = approContent;
+        this.approvalOrder = approvalOrder;
         this.approvalState = approvalState;
     }
+
+
 }

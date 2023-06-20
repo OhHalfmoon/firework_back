@@ -1,24 +1,22 @@
 package com.ohalfmoon.firework.controller;
 
 import com.ohalfmoon.firework.config.auth.CustomUserDetails;
-import com.ohalfmoon.firework.dto.member.MemberDTO;
-import com.ohalfmoon.firework.dto.member.MemberLoginDTO;
-import com.ohalfmoon.firework.dto.member.MemberResponseDTO;
+import com.ohalfmoon.firework.dto.member.*;
+import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.service.DeptService;
 import com.ohalfmoon.firework.service.MemberService;
 import com.ohalfmoon.firework.service.PositionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 /**
  * packageName    : com.ohalfmoon.firework.controller
@@ -52,9 +50,6 @@ public class MemberController {
     @Autowired
     private PositionService positionService;
 
-    @Autowired
-    private HttpSession session;
-
     String redirect = "redirect:/";
 
     /**
@@ -84,7 +79,10 @@ public class MemberController {
     }
 
     @GetMapping("signin")
-    public void login() {}
+    public void login(@RequestParam(value = "error", required = false)String error, @RequestParam(value = "exception", required = false)String exception, Model model) {
+        model.addAttribute("error", error);
+        model.addAttribute("exception", exception);
+    }
 
     /**
      * 로그인(post)
@@ -93,15 +91,27 @@ public class MemberController {
      * @return the string
      */
     @PostMapping("signin")
-    public String login(MemberLoginDTO dto, Model model) {
+    public void login(MemberLoginDTO dto, String username) {
+        MemberEntity entity = memberService.get(username);
         MemberResponseDTO member = memberService.login(dto);
-        if(member == null) {
-            return redirect+"auth/signin";
-        }else {
-            return redirect;
+        log.info("entity : {}", memberService.get(username));
+//            return redirect;
         }
 
-    }
+//    @PostMapping("signin")
+//    public String login(MemberLoginDTO dto) {
+//        MemberResponseDTO member = memberService.login(dto);
+//        if(member == null) {
+//            return redirect;
+//        }else {
+//            if(member.getState()==0) {
+//                return redirect + "auth/signin";
+//            }else {
+//                log.warn("state : {}", member.getState());
+//                return redirect;
+//            }
+//        }
+//    }
 
 
     /**
@@ -113,15 +123,6 @@ public class MemberController {
     @GetMapping("agree2")
     public void agree2() {}
 
-    /**
-     * 로그아웃
-     * security 추가로 인해 사용안하게됨
-     */
-//    @GetMapping("signout")
-//    public String signout(HttpSession session) {
-//        session.invalidate();
-//        return "redirect:/auth/signin";
-//    }
 
     @GetMapping("mypage")
     public void mypage(@AuthenticationPrincipal CustomUserDetails details, Model model) {
@@ -160,8 +161,21 @@ public class MemberController {
      * @return login page return
      */
     @PostMapping("modify")
-    public String modify() {
-        return redirect;
+    public String modify(Long userNo, MemberUpdateDTO dto) {
+        memberService.update(userNo, dto);
+        return redirect+"auth/userinfo";
+    }
+    @GetMapping("modifyPw")
+    public void modifyPw(Model model, @AuthenticationPrincipal CustomUserDetails details) {
+        model.addAttribute("user", details);
+        model.addAttribute("dept", deptService.deptList());
+        model.addAttribute("position", positionService.positionList());
     }
 
+    @PostMapping("modifyPw")
+    public String modifyPw(Long userNo, MemberUpdatePwDTO dto, HttpSession session) {
+        memberService.updatePw(userNo, dto);
+        session.invalidate();
+        return redirect+"auth/signin";
+    }
 }

@@ -1,6 +1,9 @@
 package com.ohalfmoon.firework.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
@@ -13,7 +16,6 @@ import java.util.Date;
 @Table(name = "tbl_attend")
 @DynamicInsert
 @Builder
-@ToString
 public class AttendEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

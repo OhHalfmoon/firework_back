@@ -1,17 +1,23 @@
 package com.ohalfmoon.firework.repository;
 
 
+import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.MessageEntity;
 import com.ohalfmoon.firework.persistence.MemberRepository;
 import com.ohalfmoon.firework.persistence.MessageRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,6 +30,7 @@ import java.util.List;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2023/06/13        우성준            최초 생성
+ * 2023/06/19        우성준            페이징 기능 추가
  */
 
 @SpringBootTest
@@ -62,25 +69,6 @@ public class MessageRepositoryTests {
         log.info("{}", findMessage);
     }
 
-    @Test
-    public void findListByReceiverTest() {
-        List<MessageEntity> messageEntityList =
-                messageRepository.
-                        findTop5ByReceiverAndMessageNoLessThanOrderByMessageNoDesc(memberRepository.
-                                findById(1L).orElse(null), 6L);
-
-        log.info("{}", messageEntityList);
-    }
-
-    @Test
-    public void findListBySenderTest() {
-        List<MessageEntity> messageEntityList =
-                messageRepository.
-                        findTop5BySenderAndMessageNoLessThanOrderByMessageNoDesc(memberRepository.
-                                findById(2L).orElse(null), 6L);
-
-        log.info("{}", messageEntityList);
-    }
 
     @Test
     public void deleteMessageTest() {
@@ -101,5 +89,32 @@ public class MessageRepositoryTests {
     public void countMessageTest(){
         Long count = messageRepository.countMessageEntitiesByReceiverAndMessageCheckFalse(memberRepository.findById(1L).orElse(null));
         log.info("{}", count);
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("쪽지 페이징 테스트")
+    @Rollback(value = false)
+    public void pagingTest() {
+        List<MessageEntity> messageEntities = new ArrayList<>();
+        for(int i = 0; i < 100; i++) {
+            MessageEntity input = MessageEntity.builder()
+                    .receiver(MemberEntity.builder().userNo(2L).build())
+                    .sender(MemberEntity.builder().userNo(1L).build())
+                    .messageTitle("테스트 쪽지 제목" + i)
+                    .messageContent("테스트 쪽지 내용" + i)
+                    .build();
+
+            messageEntities.add(input);
+        }
+        messageRepository.saveAll(messageEntities);
+
+        PageRequest pageRequest = PageRequest.of(0, 5, Sort.Direction.DESC, "messageNo");
+
+        Page<MessageEntity> entities = messageRepository.findAllBySender(MemberEntity.builder()
+                .userNo(1L)
+                .build(), pageRequest);
+
+        log.info("{}", entities.getContent());
     }
 }

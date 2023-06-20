@@ -53,7 +53,7 @@ public class FormViewController {
     @GetMapping
     public String list(
             Optional<String> formName,
-            @PageableDefault(page = 1)
+            @PageableDefault
             @SortDefault.SortDefaults({
                     @SortDefault(sort = "formNo", direction = Sort.Direction.DESC)
             })

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdminLTE 3 | Dashboard</title>
+
+    {{>layout/head}}
+</head>
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
+<div class="wrapper">
+
+    {{>layout/header}}
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">기안 정보</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <!-- 작업할 때 이 항목 내용을 수정하세요 -->
+
+        <section class="content">
+            <div class="container-fluid">
+                <form id="approvalPut">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col">기안제목</div>
+                                <div class="col-12" id="approvalName">{{approvalGet.approvalName}}</div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col">기안일자</div>
+                                <div class="col-12" id="approvalName">{{approvalGet.regdate}}</div>
+                            </div>
+                            <div class="row" style="display: none">
+                                <div class="col">기안번호</div>
+                                <input type="number" id="approvalNo" value="{{approvalGet.approvalNo}}" readonly>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col">작성자</div>
+                                <div class="col-12" id="approvalName">{{approvalGet.name}}</div>
+                            </div>
+                            <br>
+                            <div class="row" style="display: none;">
+                                <div class="col">결재자</div>
+                                <br>
+                                <table id="example2" class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>부서</th>
+                                        <th style="width : 12%">직책</th>
+                                        <th style="width : 10%">이름</th>
+                                        <th style="width : 10%">결재순서</th>
+                                        <th style="width : 10%">결재여부</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        {{#approUserList}}
+                                            <tr>
+                                                <td id="masterName">{{userDept}}</td>
+                                                <td id="masterName">{{userPosition}}</td>
+                                                <td id="userName">{{userName}}</td>
+                                                <td id="{{userNo}}">{{orderLevel}}</td>
+                                                <th class="{{userNo}}" style="width : 10%"></th>
+                                            </tr>
+                                        {{/approUserList}}
+                                    </tbody>
+                                </table>
+                                <div class="col-12 testBox"></div>
+<!--                                <input type="hidden" class="form-control applyBox" id="applyVal" name="lineNo" readonly>-->
+                            <br>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">문서함</div>
+                                <div class="col-12" id="approvalName">{{approvalGet.docboxName}}</div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col">기안 내용</div>
+                            </div>
+                            <!--                        기안 작성되는 부분 -->
+                            <section class="content">
+                                <div class="container-fluid">
+                                    <div class="card card-default color-palette-box">
+                                        <div class="card-header">
+                                            <h3 class="card-title">
+                                                {{approvalGet.approvalName}}
+                                            </h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="centered">
+                                                <div class="row">
+                                                    <div class="centered document-editor__toolbar" style="z-index: 999"></div>
+                                                </div>
+                                                <br>
+                                                <br>
+                                                <div class="row row-editor">
+                                                    <div class="editor-container">
+                                                        <div class="editor here">
+                                                            <div class="ck-toolbar"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="approContent" class="approContent">
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                        <br>
+                        <div class="col-2">
+                            <input type="hidden" class="form-control approvalOrder" id="approvalOrder" name="approvalOrder" value="{{approvalGet.approvalOrder}}" >
+                            <input type="hidden" class="form-control approvalState" id="approvalState" name="approvalState" value="{{approvalGet.approvalState}}" >
+                            <button type="button" class="btn btn-secondary" id="change" >결재승인</button>
+                            <button type="button" class="btn btn-secondary" id="reject" >결재반려</button>
+                        </div>
+                    </div>
+                </form>
+                <br>
+            </div>
+            <br>
+            <br>
+        </section>
+        <!-- /.content -->
+    </div>
+
+
+    <!-- /.content-wrapper -->
+    {{>layout/footer}}
+
+
+</div>
+<!-- ./wrapper -->
+
+{{>layout/library}}
+
+</body>
+<script>
+
+    let data;
+    var editor;
+    var user = {{user.userNo}};
+    var test = `{{{approvalGet.approContent}}}`;
+    var check = $('#{{user.userNo}}');
+    console.log($('#approvalOrder').val());
+    console.log(check);
+    console.log(check[0]);
+
+    DecoupledDocumentEditor
+            .create( document.querySelector( '.editor' )
+            )
+            .then( editor => {
+                window.editor = editor;
+                editor.setData(test);
+                editor.enableReadOnlyMode( 'my-feature-id' );
+                editor.isReadOnly;
+
+            } )
+            .catch( error => {
+                console.error( 'Oops, something went wrong!' );
+                console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
+                console.warn( 'Build id: mhijpyjl1akp-mumjti75eytr' );
+                console.error( error );
+            });
+    $(function () {
+        $("#change").click(function (){
+            if ((check[0] == undefined) || (parseInt(check.text()) != parseInt($('#approvalOrder').val()))) {
+                alert("권한이 없습니다")
+            } else if($('#approvalState').val() == 2) {
+                alert("결재가 완료된 문서입니다.")
+            }else if (check.text() == $('#approvalOrder').val()) {
+
+                const accept = test.replace('<td>&nbsp;</td>', '<td>결재완료</td>');
+                $('.approContent').val(accept);
+
+                var data = {
+                    approContent : $('.approContent').val(),
+                    approvalOrder : parseInt($('#approvalOrder').val()) + 1,
+                    approvalState : $('#approvalState').val()
+                };
+                var id = $('#approvalNo').val();
+                $.ajax({
+                    type: 'PUT',
+                    url : '/approval/' + id,
+                    datatype: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(data)
+                }).done(function () {
+                })
+              alert("결재가 승인되었습니다.")
+            }
+        });
+
+        $("#reject").click(function (){
+            if ((check[0] == undefined) || (parseInt(check.text()) != parseInt($('#approvalOrder').val()))) {
+                alert("권한이 없습니다")
+
+            } else if($('#approvalState').val() == 2) {
+                alert("결재가 완료된 문서입니다.")
+
+            }else if (check.text() == $('#approvalOrder').val()) {
+
+                const accept = test.replace('<td>결재완료</td>', '<td>&nbsp;</td>');
+                $('.approContent').val(accept);
+
+                var data = {
+                    approContent : $('.approContent').val(),
+                    approvalOrder : parseInt($('#approvalOrder').val()) - 1,
+                    approvalState : $('#approvalState').val()
+                };
+                var id = $('#approvalNo').val();
+                $.ajax({
+                    type: 'PUT',
+                    url : '/approval/reject/' + id,
+                    datatype: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(data)
+                }).done(function () {
+                })
+                alert("결재가 반려되었습니다.")
+            }
+        });
+    })
+</script>
+</html>

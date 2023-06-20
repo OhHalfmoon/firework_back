@@ -1,12 +1,8 @@
 package com.ohalfmoon.firework.service;
 
-import com.ohalfmoon.firework.dto.master.MasterLineResponseDTO;
-import com.ohalfmoon.firework.dto.master.MasterLineSaveDTO;
-import com.ohalfmoon.firework.dto.master.MasterLineUpdateDTO;
 import com.ohalfmoon.firework.dto.sub.SubLineResponseDTO;
 import com.ohalfmoon.firework.dto.sub.SubLineSaveDTO;
 import com.ohalfmoon.firework.dto.sub.SubLineUpdateDTO;
-import com.ohalfmoon.firework.model.MasterLineEntity;
 import com.ohalfmoon.firework.model.SubLineEntity;
 import com.ohalfmoon.firework.persistence.SubLineRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +13,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+/**
+ * packageName    : com.ohalfmoon.firework.service
+ * fileName       : SubLineServiceTest
+ * author         : 이지윤
+ * date           : 2023/06/07
+ * description    : 결재 선 Service 테스트
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023/06/07        이지윤           최초 생성
+ */
 
 @SpringBootTest
 @Slf4j

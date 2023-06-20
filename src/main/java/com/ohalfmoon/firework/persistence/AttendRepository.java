@@ -18,7 +18,7 @@ import java.util.List;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2023/06/15        이지윤           최초 생성
- * 2023/06/19        이지윤           userNo로 가장 최근 attendNo 조회하는 메서드 추가
+ * 2023/06/19        이지윤           근태 조회
  */
 public interface AttendRepository extends JpaRepository<AttendEntity, Long> {
     AttendEntity findTopByMemberEntity_UserNoOrderByAttendNoDesc(Long userNo);

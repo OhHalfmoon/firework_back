@@ -36,69 +36,51 @@
 
 <script src="{{contextPath}}/plugins/ckeditor5/build/ckeditor.js"></script>
 
+<script>
+    // The Calender
+    $('#calendar').datetimepicker({
+        format: 'L',
+        inline: true
+    })
+</script>
+
 <!-- 알림 -->
 <script src="/dist/js/alarm.js"></script>
+<script src="/dist/js/message.js"></script>
+
+<!-- 근태 -->
+<script src="/dist/js/attend.js"></script>
+
+<script src="/dist/js/alarmandmessage.js"></script>
 <script>
-    $(function() {
-        var userNo = 1;
-        // member.userNo로 바꿀 예정!!
-        moment.locale('ko');
-        alarmService.getCount(userNo, function (result) {
-            $(".alarmcount").html(result);
+    $(function () {
+        let user = $("#user").val();
+        let userNo = $("#userNo").val();
+        let checkGoWork = false;
+
+        $("#goToWork").click(function (e) {
+            if(confirm("출근 등록을 하시겠습니까?")) {
+                let godate = new Date().getTime();
+                attendService.goToWork({user:user, godate:godate})
+                checkGoWork = true;
+            }
         })
 
-        alarmService.getList({userNo:userNo}, function (result) {
-            var str = "";
-            for (var i in result.content) {
-                str += getAlarmLiStr(result.content[i]);
-            }
-            $(".alarms").html(str);
-        });
-
-        function getAlarmLiStr(obj) {
-                return `<div class="alarm-divider dropdown-divider" data-alarmno="${obj.alarmNo}"></div>
-				    <a href="#" class="alarm dropdown-item" data-alarmno="${obj.alarmNo}" style="background: lightgrey">
-                    ${obj.alarmTitle}
-				    <span class="float-right text-muted text-sm">${moment(obj.regdate).fromNow()}</span>
-                    </a>
-				    `;
-
-        }
-
-        // $(".alarm").on("click", "a", function () {
-        //     event.preventDefault();
-        //     var $this = $(this);
-        //     console.log($this);
-        //     var obj = {alarmNo: $this.data("alarmno"), alarmCheck: true}
-        //     alarmService.modify(obj, function (result) {
-        //         // console.log(result);
-        //     });
-        // });
-
-        $(".alarms").on("click", ".alarm", function () {
-            event.stopPropagation();
-            var $this = $(this);
-            var alarmNo = $this.data("alarmno");
-            alarmService.remove(alarmNo, function (result) {
-                // console.log(result);
-            });
-        });
-
-        $(".btn-more").on("click", function () {
-            event.stopPropagation();
-            var pageNum = 1;
-            alarmService.getList({userNo:userNo, pageNum:pageNum}, function(result){
-                if(!result.content.length) {
-                    $(".btn-more").prop("disabled", true);
+        $("#leaveWork").click(function () {
+            if(confirm("퇴근 등록을 하시겠습니까?")) {
+                if(checkGoWork === false) {
+                    alert("출근 등록을 먼저 해주세요.");
                     return;
                 }
-                var str = "";
-                for(var i in result.content) {
-                    str += getAlarmLiStr(result.content[i]);
-                }
-                $(".alarms").append(str);
-            });
-            pageNum++;
+                var attendNo = attendService.getAttendNo(userNo, function (result) {
+                    // 퇴근 등록 시 퇴근 시간을 기록
+                    let leavedate = new Date().getTime();
+                    attendService.leaveWork({attendNo:result, leavedate:leavedate})
+                });
+
+            }
         })
-    });
+
+
+    })
 </script>

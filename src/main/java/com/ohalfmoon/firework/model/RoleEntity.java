@@ -31,8 +31,10 @@ public class RoleEntity extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roleNo; // 권한번호
 
-    @Column(nullable = false)
-    private String roleName; // 권한 이름
+    @Column(nullable = false, name = "roleName")
+    @Enumerated(EnumType.STRING)
+    private Role roleName;
+//    private String roleName; // 권한 이름
 
     @OneToMany(mappedBy = "roleEntity", fetch = FetchType.EAGER)
     List<RolePrivilegeEntity> rolePrivilegeList;
