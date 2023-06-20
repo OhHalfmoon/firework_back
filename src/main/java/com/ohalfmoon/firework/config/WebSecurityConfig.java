@@ -1,8 +1,7 @@
 package com.ohalfmoon.firework.config;
 
+import com.ohalfmoon.firework.config.auth.CustomAuthFailureHandler;
 import com.ohalfmoon.firework.config.auth.CustomUserDetailsService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 /**
  * packageName :  com.ohalfmoon.firework.config
@@ -25,16 +25,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * DATE                 AUTHOR                NOTE
  * -----------------------------------------------------------
  * 2023-06-07                ycy             최초 생성
+ * 2023-06-13                ycy             security 적용완료
+ * 2023-06-20                ycy             로그인 실패 핸들러 적용
  */
 @EnableWebSecurity
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
 
-    public WebSecurityConfig(CustomUserDetailsService customUserDetailsService) {
+    private final CustomAuthFailureHandler customFailureHandler;
+
+    public WebSecurityConfig(CustomUserDetailsService customUserDetailsService, CustomAuthFailureHandler customFailureHandler) {
         this.customUserDetailsService = customUserDetailsService;
+        this.customFailureHandler = customFailureHandler;
     }
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -47,6 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors()
                 .and().csrf().disable()
                 .formLogin().loginPage("/auth/signin") // 커스텀 로그인폼 사용
+                .failureHandler(customFailureHandler) // login 실패 핸들러
                 .and().httpBasic()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // session방식 사용
                 // 배포 전까지 주석 시작
