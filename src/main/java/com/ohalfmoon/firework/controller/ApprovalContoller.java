@@ -81,8 +81,16 @@ public class ApprovalContoller {
     //기안 내용 수정
     @PutMapping("/update/{approvalNo}")
     @ResponseBody
-    public Long update(@PathVariable Long approvalNo,  @RequestBody ApprovalUpdateDto updateDto) {
+    public Long update(@PathVariable Long approvalNo, @RequestBody ApprovalUpdateDto updateDto) {
          return approvalService.update(approvalNo, updateDto);
+
+    }
+
+    @DeleteMapping("/delete/{approvalNo}")
+    @ResponseBody
+    public String delete(@PathVariable Long approvalNo ) {
+        approvalService.delete(approvalNo);
+        return "redirect:/";
 
     }
 
@@ -152,4 +160,6 @@ public class ApprovalContoller {
         model.addAttribute("docboxList", docboxListResponseDTOS);
         return "approval/update";
     }
+
+
 }

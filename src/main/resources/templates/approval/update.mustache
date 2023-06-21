@@ -274,6 +274,7 @@
                     }).done(function () {
                     })
                     alert("문서가 수정되었습니다.")
+                    location.href='/approval/' + id;
                 }
             }
             else {
@@ -312,7 +313,27 @@
                     }).done(function () {
                     })
                     alert("결재가 요청되었습니다.")
+                    location.href='/approval/' + id;
                 }
+            }
+            else {
+                alert("권한이 없습니다.")
+            }
+        });
+
+        $("#delete").click(function (){
+            if ((writer == user) && ($('#approvalState').val() != 2)) {
+                    var id = $('#approvalNo').val();
+                    $.ajax({
+                        type: 'DELETE',
+                        url: '/approval/delete/' + id,
+                        datatype: 'json',
+                        contentType: 'application/json; charset=utf-8',
+                        data: JSON.stringify(data)
+                    }).done(function () {
+                        alert("결재가 삭제되었습니다.")
+                        location.href='/';
+                    })
             }
             else {
                 alert("권한이 없습니다.")
