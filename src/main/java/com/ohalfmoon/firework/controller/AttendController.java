@@ -47,7 +47,6 @@ public class AttendController {
     @PutMapping("/{attendNo}")
     public void leaveWork(@RequestBody AttendUpdateDTO attendUpdateDTO) {
         attendService.updateAttend(attendUpdateDTO);
-
     }
 }
 
