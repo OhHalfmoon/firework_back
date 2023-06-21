@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * packageName :  com.ohalfmoon.firework.controller
  * fileName : AdminController
@@ -25,9 +27,18 @@ public class AdminApiController {
 
     private final MemberService memberService;
 
-    @PostMapping("/member/memberUpdate/{userNo}")
-    public Long updateState(@PathVariable Long userNo, @RequestBody MemberUpdateStateDTO dto) {
-        Long update = memberService.recognize(userNo, dto);
-        return update;
+//    @PostMapping("/member/memberUpdate/{userNo}")
+//    public Long updateState(@PathVariable Long userNo, @RequestBody MemberUpdateStateDTO dto) {
+//        Long update = memberService.recognize(userNo, dto);
+//        return update;
+//    }
+    @PostMapping("/member/memberUpdate")
+    public String updateState(@RequestBody MemberUpdateStateDTO dto) {
+        String result = "error";
+        if(dto != null) {
+            memberService.recognize(dto.getUserNo(), dto);
+            result = "success";
+        }
+        return result;
     }
 }

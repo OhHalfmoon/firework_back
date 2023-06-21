@@ -46,12 +46,12 @@ public class AdminController {
     @GetMapping("/member/memberUpdate")
     public void updateState(Model model) {
         model.addAttribute("stateByZeroUser", memberService.getStateByZero());
-        model.addAttribute("role", Role.values());
+//        model.addAttribute("role", Role.values());
     }
 
-    @PostMapping("/member/memberUpdate")
-    public String updateState(MemberUpdateStateDTO dto) {
-        memberService.recognize(dto.getUserNo(), dto);
-        return "redirect:/admin/member/memberUpdate";
-    }
+//    @PostMapping("/member/memberUpdate")
+//    public String updateState(MemberUpdateStateDTO dto) {
+//        memberService.recognize(dto.getUserNo(), dto);
+//        return "redirect:/admin/member/memberUpdate";
+//    }
 }
