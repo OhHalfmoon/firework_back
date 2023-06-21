@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 @Table(name = "tbl_todo")
 @ToString
-public class TodoEntity {
+public class TodoEntity extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long todoNo;
@@ -36,10 +36,5 @@ public class TodoEntity {
 
     @Column(nullable = false)
     private String todoDetail;
-
-    @Column(nullable = false)
-    private LocalDate regdate;
-
-    private LocalDate updatedate;
 
 }
