@@ -1,5 +1,7 @@
 package com.ohalfmoon.firework.config;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -19,7 +21,9 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class GlobalControllerAdvice {
     @ModelAttribute("contextPath")
-    public String addContextPath(HttpServletRequest request) {
-        return request.getContextPath();
+    public void addContextPath(HttpServletRequest request, Model model) {
+        String contextPath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+
+        model.addAttribute("contextPath", contextPath);
     }
 }

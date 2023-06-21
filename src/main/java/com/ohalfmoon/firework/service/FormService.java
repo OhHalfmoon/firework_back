@@ -84,11 +84,12 @@ public class FormService {
      * @param formNo the form no
      */
     @Transactional
-    public void delete(Long formNo) {
-        FormEntity formEntity = formRepository.findById(formNo)
-                .orElseThrow(() -> new IllegalArgumentException("해당 양식이 존재하지 않습니다. formNo = " + formNo));
+    public boolean delete(Long formNo) {
+        formRepository.deleteById(formNo);
 
-        formRepository.delete(formEntity);
+        Optional<FormEntity> formEntity = formRepository.findById(formNo);
+
+        return !formEntity.isPresent();
     }
 
 

@@ -50,12 +50,12 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <form method="post" id="approvalForm">
+                        <form action="{{contextPath}}/admin/form/" method="post" id="approvalForm">
 
 
                             <div class="form-group">
                                 <label for="formName">양식명</label>
-                                <input type="text" class="form-control" id="formName" name="formName">
+                                <input type="text" class="form-control" id="formName" name="formName" value="{{{formDto.formName}}}">
                             </div>
                             <div class="form-group">
                                 <label for="editor">양식내용</label>
@@ -77,7 +77,7 @@
                             <div class="form-group">
                                 <label for="isUsed">사용여부</label>
                                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                    <label class="btn bg-olive active">
+                                    <label class="btn bg-olive">
                                         <input type="radio" name="isUsed" id="option_b1" value="true"> 사용
                                     </label>
                                     <label class="btn bg-warning">
@@ -85,7 +85,7 @@
                                     </label>
                                 </div>
                             </div>
-                            <button class="btn btn-primary" id="btnSubmit" type="button">글 등록</button>
+                            <button class="btn btn-primary" id="btnSubmit" type="button">글 수정</button>
                         </form>
                     </div>
                 </div>
@@ -104,56 +104,84 @@
 
 <script>
 
-    let data;
-    let editor;
+    $( ()=>{
+        var data;
+        var formData = `{{{formDto.formText}}}`;
 
-    var test = `{{{formDto.formText}}}`;
+        DecoupledDocumentEditor
+                .create( document.querySelector( '.editor' ), {
+                    language: "ko",
+                    simpleUpload: {
+                        uploadUrl: "/upload/ajax"
+                    },
+                    sourceEditing: true
+                })
+                .then( editor => {
+                    window.editor = editor;
 
-    DecoupledDocumentEditor
-            .create( document.querySelector( '.editor' ), {
-                language: "ko",
-                simpleUpload: {
-                    uploadUrl: "/upload/ajax"
-                },
-                sourceEditing: true
-            })
-            .then( editor => {
-                window.editor = editor;
+                    console.log('editor ui~~', editor.ui.view.toolbar.element);
 
-                console.log(editor.ui.view.toolbar.element);
+                    // Set a custom container for the toolbar.
+                    document.querySelector( '.document-editor__toolbar' ).appendChild( editor.ui.view.toolbar.element );
+                    document.querySelector( '.ck-toolbar' ).classList.add( 'ck-reset_all' );
 
-                // Set a custom container for the toolbar.
-                document.querySelector( '.document-editor__toolbar' ).appendChild( editor.ui.view.toolbar.element );
-                document.querySelector( '.ck-toolbar' ).classList.add( 'ck-reset_all' );
+                    // const toolbarContainer = document.querySelector( '.document-editor__toolbar'  );
 
-                // const toolbarContainer = document.querySelector( '.document-editor__toolbar'  );
+                    // toolbarContainer.appendChild( editor.ui.view.toolbar.element );
+                    console.log(formData);
+                    editor.setData(formData);
 
-                // toolbarContainer.appendChild( editor.ui.view.toolbar.element );
-                console.log(test);
-                editor.setData(test);
-            } )
-            .catch( error => {
-                console.error( 'Oops, something went wrong!' );
-                console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
-                console.warn( 'Build id: mhijpyjl1akp-mumjti75eytr' );
-                console.error( error );
-            } );
+                    $("#btnSubmit").on("click", function () {
+                        buttonInit(editor);
+                    })
 
-    $(()=>{
-        $("#btnSubmit").on("click", function () {
+                } )
+                .catch( error => {
+                    console.error( 'Oops, something went wrong!' );
+                    console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
+                    console.warn( 'Build id: mhijpyjl1akp-mumjti75eytr' );
+                    console.error( error );
+                } );
+
+        function buttonInit(editor) {
             event.preventDefault();
             console.log("폼 입력 테스트")
 
-            const editText = editor.getData();
+            console.log(editor);
+
+            var editText = editor.getData();
 
             console.log('editText', editText);
 
             $("#formText").val(editText);
 
-            //$("#formText").setValue()
+            // $("#approvalForm").submit();
 
-            $("#approvalForm").submit();
-        })
+            var updateUrl = "{{contextPath}}/admin/form/update/{{formDto.formNo}}";
+
+            $.ajax({
+                url: updateUrl,
+                method: 'PUT',
+                data: JSON.stringify({
+                    formName:$("#formName").val(),
+                    formText:editText,
+                    isUsed:$("input[name='isUsed']:checked").val(),
+                }),
+                dataType: 'json',
+                contentType : "application/json; charset=UTF-8",
+                success: function (response) {
+                    console.log(response);
+
+                    window.location.href = "{{contextPath}}/admin/form/detail/{{formDto.formNo}}";
+                },
+                error: function (xhr, status, error) {
+                    console.log("xhr", xhr);
+                    console.log("status", status);
+                    console.log("error", error);
+                }
+            })
+        }
+
     })
 
 </script>
