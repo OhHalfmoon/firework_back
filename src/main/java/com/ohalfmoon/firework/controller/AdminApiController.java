@@ -32,13 +32,18 @@ public class AdminApiController {
 //        Long update = memberService.recognize(userNo, dto);
 //        return update;
 //    }
-    @PostMapping("/member/memberUpdate")
-    public String updateState(@RequestBody MemberUpdateStateDTO dto) {
+
+    @PostMapping("/member/memberUpdate/{userNo}/{dto}")
+//    public String updateState(@RequestBody MemberUpdateStateDTO dto) {
+    public String updateState(@PathVariable Long userNo, @RequestBody MemberUpdateStateDTO dto) {
         String result = "error";
+        log.info("디티오는 뭔데 {} :", userNo);
+        log.info("디티오는 뭔데 {} :", dto);
         if(dto != null) {
-            memberService.recognize(dto.getUserNo(), dto);
+            memberService.recognize(userNo, dto);
             result = "success";
         }
+        log.info("실패! : {}", result);
         return result;
     }
 }

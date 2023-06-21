@@ -33,7 +33,7 @@
 
             <!-- Main content -->
             <section class="content">
-                <form method="post">
+                <form id="updateFrm">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
@@ -172,30 +172,43 @@
             event.preventDefault();
             let result = confirm("승인 하시겠습니까?")
             const chkCnt = $("input[name='ckBox']:checked").length;
-            let selectedUsers = [];
+            let dto = [];
             <!--let userId = {{!userNo}};-->
             // console.log(userId)
             if(result) {
                 $("input[name='ckBox']:checked").each(function () {
-                    const userNo = $(this).closest("tr").find("input[name='userNo']").val();
-                    const state = $(this).closest("tr").find("select[name='state']").val();
-                    selectedUsers.push({userNo : userNo, state : state});
+                    let userNo = $(this).closest("tr").find("input[name='userNo']").val();
+                    let state = $(this).closest("tr").find("select[name='state']").val();
+                    dto.push({userNo : userNo, state : state});
+                    console.log("userNo : ", userNo)
+                    console.log("state : ", state)
                 })
-                if(selectedUsers.length > 0) {
-                    $.ajax({
-                        url: "{{contextPath}}/admin/member/memberUpdate",
-                        method : "POST",
-                        data : JSON.stringify(selectedUsers),
-                        contentType : "application/json",
-                        success : function(response) {
-                            alert("성공!");
-                        },
-                        error: function (error) {
-                            alert("실패!")
-                        }
+                if(dto.length > 0) {
+                    console.log("선택된 회원 :", dto)
+                    // $("#updateFrm").attr("action", "/admin/member/memberUpdate/"+selectedUsers);
+                    // $("#updateFrm").submit();
+                    for(let i=0; i<dto.length; i++) {
+                        let userNo = dto[i].userNo;
+                        let state = dto[i].state;
+                        $.ajax({
+                            // url : "/admin/member/memberUpdate/"+selectedUsers,
+                            url: "/admin/member/memberUpdate/" + userNo + "/" + state,
+                            type: "POST",
+                            contentType: "application/json",
+                            // data: JSON.stringify(selectedUsers),
+                            data: JSON.stringify({ "dto": dto }),
+                            dataType: "json",
+                            success: function () {
+                                alert("굿!")
+                            },
+                            error: function () {
+                                console.log("뭔데 그래서", userNo)
+                                alert("하...")
+                            }
 
-                    })
-                    console.log("선택된 회원 :", selectedUsers)
+                        })
+                    }
+                    alert("수정되었습니다.")
                 }
                 else {
                     alert("회원을 선택해주세요")
@@ -218,7 +231,6 @@
             //     alert("선택x")
             //     return false;
             // }
-
         });
     });
 </script>
