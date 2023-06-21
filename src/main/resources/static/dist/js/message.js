@@ -75,34 +75,35 @@ var messageService = (function () {
                 }
             })
     }
-    // function modify(obj, callback, error) {
+
+    // function remove(alarmNo, callback, error) {
     //     $.ajax({
-    //         url : "/api/alarm/" + obj.alarmNo,
-    //         method: 'put',
-    //         data : JSON.stringify(obj),
-    //         dataType : "json",
-    //         contentType : "application/json; charset=utf-8"
+    //         url : "/api/alarm/" + alarmNo,
+    //         method: 'delete',
+    //         dataType : 'json'
     //     })
     //         .done(function(data){
     //             if(callback) {
     //                 callback(data);
     //             }
     //         })
+    //         .fail(function(xhr){
+    //             console.log(xhr);
+    //         })
     // }
 
-    function remove(alarmNo, callback, error) {
-        $.ajax({
-            url : "/api/alarm/" + alarmNo,
-            method: 'delete',
-            dataType : 'json'
-        })
-            .done(function(data){
+    function getAllUser(obj, callback, error) {
+        var url = "/api/message/sender/" + obj.senderNo + "/memberList" + "/" + (obj.pageNum ? "?page=" + obj.pageNum : "")
+        $.getJSON(url)
+            .done(function(data) {
                 if(callback) {
                     callback(data);
                 }
             })
-            .fail(function(xhr){
-                console.log(xhr);
+            .fail(function(xhr) {
+                if(error) {
+                    error(xhr);
+                }
             })
     }
     return {
@@ -110,8 +111,9 @@ var messageService = (function () {
         // add:add,
         getListByReceiver:getListByReceiver,
         getListBySender:getListBySender,
+        getAllUser:getAllUser,
         // get:get,
-        remove:remove,
+        // remove:remove,
         // modify:modify
     }
 })();
