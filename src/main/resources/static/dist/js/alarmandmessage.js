@@ -1,4 +1,31 @@
 $(function () {
+
+    let user = $("#user").val();
+    // let userNo = $("#userNo").val();
+    let checkGoWork = false;
+
+    $("#goToWork").click(function (e) {
+        if(confirm("출근 등록을 하시겠습니까?")) {
+            let godate = new Date().getTime();
+            attendService.goToWork({user:user, godate:godate})
+            checkGoWork = true;
+        }
+    })
+
+    $("#leaveWork").click(function () {
+        if(confirm("퇴근 등록을 하시겠습니까?")) {
+            if(checkGoWork === false) {
+                alert("출근 등록을 먼저 해주세요.");
+                return;
+            }
+            var attendNo = attendService.getAttendNo(userNo, function (result) {
+                // 퇴근 등록 시 퇴근 시간을 기록
+                let leavedate = new Date().getTime();
+                attendService.leaveWork({attendNo:result, leavedate:leavedate})
+            });
+
+        }
+    })
     // user.userNo로 바꿀 예정!!
     moment.locale('ko');
     alarmService.getCount(userNo, function (result) {
@@ -167,7 +194,6 @@ $(function () {
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
-            <form method="post">
             <!-- Modal body -->
             <div class="modal-body">
                 <div class="card-body">
@@ -176,7 +202,7 @@ $(function () {
                             <h5>제목</h5>
                         </div>
                         <div class="col-10">
-                            <input type="text" size=70 maxlength=35>
+                            <input type="text" size=70 maxlength=35 id="messageTitle">
                         </div>
                     </div>
                     <hr/>
@@ -194,19 +220,37 @@ $(function () {
                             <h5>내용</h5>
                         </div>
                         <div class="col-10">
-                            <textarea rows="7" cols="70" style="resize: none" maxlength="300"></textarea>
+                            <textarea rows="7" cols="70" style="resize: none" maxlength="300" id="messageContent"></textarea>
                         </div>
                     </div>
                 </div>
             </div>
-            </form>
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="submit" class="btn btn-success btn-sm">전송</button>
+                <button type="button" class="btn btn-success btn-sm sendMessage" data-dismiss="modal">전송</button>
                 <button type="button" class="btn btn-outline-primary btn-sm" id="toMessageList">목록</button>
             </div>`
 
         $(".messageModal").html(str);
+
+        $(".sendMessage").click(function (){
+            console.log("hi")
+            var noArr = new Array();
+            noArr = $('input[name=userNo]').toArray().map(el => el.value);
+            console.log($('input[name=userNo]').toArray().map(el => el.value))
+            var messageTitle = $("#messageTitle").val();
+            var messageContent = $("#messageContent").val();
+            if(noArr.length == 0 || messageTitle == null || messageContent == null) {
+                alert("모든 항목을 입력해주세요")
+            } else {
+                for(var i in noArr) {
+                    messageService.add({receiver:noArr[i], sender:userNo, messageTitle:messageTitle, messageContent:messageContent}, function (result){
+                        console.log(result);
+                    })
+                }
+                alert("성공적으로 보냈습니다")
+            }
+        })
     })
 
     $("#messageListModal").on("click", "#toMessageList", function () {
@@ -431,8 +475,9 @@ $(function () {
 
     function getSelectedMember(obj) {
         var str = obj.split(',')
-        return "<button type='button' class='btn btn-success'>"+str[1]+"</button>&nbsp;<input type='hidden' value='"+str[0]+"'>";
+        return "<button type='button' class='btn btn-success'>"+str[1]+"</button>&nbsp;<input type='hidden' name='userNo' value='"+str[0]+"'>";
     }
+
 
 
 });
