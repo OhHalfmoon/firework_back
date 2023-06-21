@@ -7,6 +7,7 @@ import com.ohalfmoon.firework.persistence.ApprovalRepository;
 import com.ohalfmoon.firework.persistence.MemberRepository;
 import com.ohalfmoon.firework.persistence.SubLineRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
  * 2023/06/19        우성준           결재 생성 시 알림 추가
  */
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ApprovalService {
     private final ApprovalRepository approvalRepository;
@@ -88,9 +90,20 @@ public class ApprovalService {
                         updateDto.getDocboxNo(),
                         updateDto.getApproContent(),
                         updateDto.getApprovalOrder(),
-                        updateDto.getApprovalState()
+                        updateDto.getApprovalState(),
+                        updateDto.getRegdate()
                 );
-
+                if (approvalEntity.getApprovalOrder() == 1) {
+                    List<ApprovalLineDto> lineDtos = getApprovalUserName(approvalNo);
+                    alarmRepository.save(AlarmEntity.builder()
+                            .approvalNo(ApprovalEntity.builder().approvalNo(approvalNo).build())
+                            .alarmCategory("결재요청")
+                            .alarmTitle("새로운 결재요청-"+memberRepository.findById(approvalRepository.findByApprovalNo(approvalNo).getMemberEntity().getUserNo()).orElse(null).getName())
+                            .alarmReceiver(MemberEntity.builder().userNo(lineDtos.get(0).getUserNo()).build())
+                            .boardNo(null)
+                            .build());
+                    return approvalNo;
+                }
                 return approvalNo;
     }
 
@@ -142,28 +155,12 @@ public class ApprovalService {
     public  Long rejectState(Long approvalNo , ApprovalStateDto stateDto) {
         List<ApprovalLineDto> lineDtos = getApprovalUserName(approvalNo);
         for (int i = 0; i < lineDtos.size(); i++) {
-            if (i == 0) {
+                if (lineDtos.get(i).getOrderLevel() == approvalRepository.findByApprovalNo(approvalNo).getApprovalOrder()) {
                 ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
                 approvalEntity.updateState(
                         stateDto.getApproContent(),
-                        -1,
-                        1
-                );
-                alarmRepository.save(AlarmEntity.builder()
-                        .approvalNo(ApprovalEntity.builder().approvalNo(approvalNo).build())
-                        .alarmCategory("반려")
-                        .alarmTitle("결재반려-"+approvalNo)
-                        .alarmReceiver(memberRepository.findById(approvalRepository.findByApprovalNo(approvalNo).getMemberEntity().getUserNo()).orElse(null))
-                        .boardNo(null)
-                        .build());
-                return approvalNo;
-
-            } else  if (lineDtos.get(i).getOrderLevel() == approvalRepository.findByApprovalNo(approvalNo).getApprovalOrder()) {
-                ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
-                approvalEntity.updateState(
-                        stateDto.getApproContent(),
-                        stateDto.getApprovalOrder(),
-                        stateDto.getApprovalState()
+                        0,
+                        0
                 );
                 alarmRepository.save(AlarmEntity.builder()
                         .approvalNo(ApprovalEntity.builder().approvalNo(approvalNo).build())

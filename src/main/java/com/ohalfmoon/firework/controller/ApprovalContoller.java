@@ -79,9 +79,11 @@ public class ApprovalContoller {
     }
 
     //기안 내용 수정
-    @PutMapping("/state/{approvalNo}")
+    @PutMapping("/update/{approvalNo}")
+    @ResponseBody
     public Long update(@PathVariable Long approvalNo,  @RequestBody ApprovalUpdateDto updateDto) {
-        return approvalService.update(approvalNo, updateDto);
+         return approvalService.update(approvalNo, updateDto);
+
     }
 
 
@@ -128,6 +130,23 @@ public class ApprovalContoller {
         model.addAttribute("docboxList", docboxListResponseDTOS);
         log.info("{}",formNo);
         return "approval/write";
+    }
 
+    @GetMapping("/update/{approvalNo}")
+    public String modify(@PathVariable Long approvalNo, @AuthenticationPrincipal CustomUserDetails user, Model model) {
+        model.addAttribute("user", user);
+        model.getAttribute("user");
+        model.addAttribute("position", positionService.positionList());
+        model.addAttribute("masterList", masterLineService.getList(user.getUserNo()));
+        model.addAttribute("masterName", masterLineService.getMasterName(user.getUserNo()));
+        model.addAttribute("subMemberName", subLineService);
+        ApprovalResponseDto approvalGet = approvalService.get(approvalNo);
+        model.addAttribute("approvalGet", approvalGet);
+
+        List<DeptListResponseDTO> deptListResponseDTOS = deptService.deptList();
+        model.addAttribute("deptList", deptListResponseDTOS);
+        List< DocboxListResponseDTO> docboxListResponseDTOS = docboxService.docboxList();
+        model.addAttribute("docboxList", docboxListResponseDTOS);
+        return "approval/update";
     }
 }
