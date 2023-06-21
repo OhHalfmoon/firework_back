@@ -3,10 +3,8 @@ package com.ohalfmoon.firework.controller;
 import com.ohalfmoon.firework.config.auth.CustomUserDetails;
 import com.ohalfmoon.firework.dto.master.MasterLineResponseDTO;
 import com.ohalfmoon.firework.dto.master.MasterLineSaveDTO;
-import com.ohalfmoon.firework.service.DeptService;
 import com.ohalfmoon.firework.service.MasterLineService;
 import com.ohalfmoon.firework.service.MemberService;
-import com.ohalfmoon.firework.service.SubLineService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -37,11 +35,6 @@ public class MasterLineController {
     @Autowired
     private MemberService memberService;
     
-    @GetMapping("/master")
-    public String masterline() {
-        return "line/approvalLine";
-    }
-
     @GetMapping("/addLine")
     public String addline(@AuthenticationPrincipal CustomUserDetails details, Model model) {
         // 로그인 한 사용자
