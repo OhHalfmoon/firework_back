@@ -36,7 +36,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomAuthFailureHandler customFailureHandler;
 
-    public WebSecurityConfig(CustomUserDetailsService customUserDetailsService, CustomAuthFailureHandler customFailureHandler) {
+    public WebSecurityConfig(CustomUserDetailsService customUserDetailsService
+            , CustomAuthFailureHandler customFailureHandler
+    ) {
         this.customUserDetailsService = customUserDetailsService;
         this.customFailureHandler = customFailureHandler;
     }
@@ -51,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors()
                 .and().csrf().disable()
                 .formLogin().loginPage("/auth/signin") // 커스텀 로그인폼 사용
-                .failureHandler(customFailureHandler) // login 실패 핸들러
+//                .failureHandler(customFailureHandler) // login 실패 핸들러 임시 주석
                 .and().httpBasic()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // session방식 사용
                 // 배포 전까지 주석 시작

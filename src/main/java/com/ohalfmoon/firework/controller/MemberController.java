@@ -1,22 +1,32 @@
 package com.ohalfmoon.firework.controller;
 
+import com.ohalfmoon.firework.config.auth.CheckUsernameValidator;
 import com.ohalfmoon.firework.config.auth.CustomUserDetails;
 import com.ohalfmoon.firework.dto.member.*;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.service.DeptService;
 import com.ohalfmoon.firework.service.MemberService;
 import com.ohalfmoon.firework.service.PositionService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * packageName    : com.ohalfmoon.firework.controller
@@ -33,24 +43,40 @@ import javax.servlet.http.HttpSession;
  * 2023-06-07        ycy       agree 추가
  * 2023-06-08        ycy       register 수정
  * 2023-06-09        ycy       login 수정
+ * 2023-06-20        ycy       id중복체크, 회원가입시 유효성검사 코드 작성
  */
 //@Controller
 @Controller
 @RequestMapping("auth")
 @Slf4j
+@RequiredArgsConstructor
 public class MemberController {
 
+    private final MemberService memberService;
 
-    @Autowired
-    private MemberService memberService;
+    private final DeptService deptService;
 
-    @Autowired
-    private DeptService deptService;
+    private final PositionService positionService;
 
-    @Autowired
-    private PositionService positionService;
+    private final CheckUsernameValidator checkUsernameValidator;
 
     String redirect = "redirect:/";
+
+    /**
+     * id 중복체크 메서드
+     * MemberDTO를 사용할때만 중복체크
+     * @param binder the binder
+     */
+    @InitBinder("MemberDTO")
+    public void validatorBinder(WebDataBinder binder) {
+        binder.addValidators(checkUsernameValidator);
+    }
+
+    @GetMapping("auth/signup/{username}/exists")
+        public ResponseEntity<Boolean> checkUsernameDuplicate (@PathVariable String username) {
+            return ResponseEntity.ok(memberService.checkUsernameDuplication(username));
+    }
+
 
     /**
      * 회원가입 (Get)
@@ -61,8 +87,6 @@ public class MemberController {
     public void register(Model model){
         model.addAttribute("dept", deptService.deptList());
         model.addAttribute("position", positionService.positionList());
-        log.info("{}", deptService.deptList());
-        log.info("{}", positionService.positionList());
     }
 
 
@@ -72,8 +96,30 @@ public class MemberController {
      * @param memberDTO the member dto
      * @return the string
      */
-    @PostMapping("signup")
-    public String register(MemberDTO memberDTO) {
+    @PostMapping("signupProc")
+    public String register(@Valid MemberDTO memberDTO, BindingResult bindingResult, Model model) {
+        if(bindingResult.hasErrors()) {
+            model.addAttribute("member", memberDTO);
+
+            Map<String, String> errorMap = new HashMap<>();
+
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                errorMap.put("valid_"+error.getField(), error.getDefaultMessage());
+                log.info("error message controller : "+error.getDefaultMessage());
+            }
+
+            for(String key : errorMap.keySet()) {
+                model.addAttribute(key, errorMap.get(key));
+                log.info("key : "+key);
+                log.info("errorMap : "+errorMap.toString());
+                log.info("errorMap get(key) : "+errorMap.get(key));
+                log.info("model add : "+model.addAttribute(key, errorMap.get(key)));
+
+            }
+            // 회원가입 실패시 회원가입 페이지로 리턴
+            return "/auth/signup";
+        }
+        // 회원가입 성공시 로그인 페이지로 리턴
         memberService.register(memberDTO);
         return redirect+"auth/signin";
     }
@@ -160,10 +206,33 @@ public class MemberController {
      *
      * @return login page return
      */
+//    @PostMapping("modify")
+//    public String modify(Long userNo, @Valid MemberUpdateDTO dto, BindingResult bindingResult, Model model) {
+//        if(bindingResult.hasErrors()) {
+//            model.addAttribute("member", dto);
+//
+//            Map<String, String> errorMap = new HashMap<>();
+//
+//            for (FieldError error : bindingResult.getFieldErrors()) {
+//                errorMap.put("valid_"+error.getField(), error.getDefaultMessage());
+////                log.info("error message controller : "+error.getDefaultMessage());
+//            }
+//
+//            for(String key : errorMap.keySet()) {
+//                model.addAttribute(key, errorMap.get(key));
+//            }
+//            return "/auth/modify";
+//        }
+//        memberService.update(userNo, dto);
+//
+//        return redirect+"auth/userinfo";
+//    }
+
     @PostMapping("modify")
-    public String modify(Long userNo, MemberUpdateDTO dto) {
+    public String modify(Long userNo, MemberUpdateDTO dto, HttpSession session) {
         memberService.update(userNo, dto);
-        return redirect+"auth/userinfo";
+        session.invalidate();
+        return redirect+"auth/signin";
     }
     @GetMapping("modifyPw")
     public void modifyPw(Model model, @AuthenticationPrincipal CustomUserDetails details) {

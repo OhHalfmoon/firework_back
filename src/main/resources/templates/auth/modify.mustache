@@ -58,20 +58,23 @@
                                             <li class="list-group-item">
                                                 <label class="row">
                                                     <b class="my-auto col-6">이름을 입력해주세요</b>
-                                                    <input type="text" name="name" value="{{name}}" class="form-control col-5" placeholder="변경하실 이름을 입력해주세요">
+                                                    <input type="text" id="name" name="name" value="{{name}}" class="form-control col-5" placeholder="변경하실 이름을 입력해주세요">
                                                 </label>
+                                                <output id="outputName"></output>
                                             </li>
                                             <li class="list-group-item">
                                                 <label class="row">
                                                     <b class="my-auto col-6">email을 입력해주세요</b>
-                                                    <input type="text" name="email" value="{{email}}" class="form-control col-5" placeholder="변경하실 email을 입력해주세요">
+                                                    <input type="text" id="email" name="email" value="{{email}}" class="form-control col-5" placeholder="변경하실 email을 입력해주세요">
                                                 </label>
+                                                <output id="outputEmail"></output>
                                             </li>
                                             <li class="list-group-item">
                                                 <label class="row">
                                                     <b class="my-auto col-6">연락처를 입력해주세요</b>
-                                                    <input type="text" name="phoneNum" value="{{phoneNum}}" class="form-control col-5" placeholder="변경하실 연락처를 입력해주세요">
+                                                    <input type="text" id="phoneNum" name="phoneNum" value="{{phoneNum}}" class="form-control col-5" placeholder="변경하실 연락처를 입력해주세요">
                                                 </label>
+                                                <output id="outputHp"></output>
                                             </li>
                                             <li class="list-group-item">
                                                 <label class="row justify-content-center col-12"> 부서를 선택해주세요
@@ -111,7 +114,7 @@
                                             <a href="userinfo" class="btn btn-outline-dark btn-block"><b>이전으로</b></a>
                                         </div>
                                         <div class="col-4">
-                                            <button type="submit" class="btn btn-success btn-block"><b>수정하기</b></button>
+                                            <button type="submit" id="info-modify" class="btn btn-success btn-block"><b>수정하기</b></button>
                                         </div>
                                     </div>
                                 </form>
@@ -133,6 +136,49 @@
 </div>
 <!-- ./wrapper -->
 {{>layout/library}}
+<script>
+    $(function () {
+        $("#name").blur(function () {
+            let name = document.querySelector("#name");
+            let outputName = document.querySelector("#outputName");
+            if(!name.value) {
+                outputName.innerHTML = `<span id="insertName" style="color:red">이름을 입력해 주세요</span>`;
+                $("#name").focus();
+            }
+            else {
+                outputName.innerHTML = `<span id="insertName" style="color:black">이름이 입력되었습니다.</span>`;
+            }
+        })
+        $("#email").blur(function () {
+            let email = document.querySelector("#email");
+            let outputEmail = document.querySelector("#outputEmail");
+            if(!email.value) {
+                outputEmail.innerHTML = `<span id="insertEmail" style="color:red">email을 입력해 주세요</span>`;
+                $("#email").focus();
+            }
+            else {
+                outputEmail.innerHTML = `<span id="insertEmail" style="color:black">email이 입력되었습니다.</span>`;
+            }
+        })
+        $("#phoneNum").blur(function() {
+            let hp = document.querySelector("#phoneNum");
+            let outputHp = document.querySelector("#outputHp");
+            if(!hp.value) {
+                outputHp.innerHTML = `<span id="insertHp" style="color:red">연락처를 입력해 주세요</span>`;
+                $("#phoneNum").focus();
+            }
+            else {
+                outputHp.innerHTML = `<span id="insertHp" style="color:black">연락처가 입력되었습니다.</span>`;
+            }
+        })
+        $("#info-modify").click(function () {
+            let result = confirm("회원 정보를 수정하시겠습니까?")
+            if(result) {
+                alert("회원정보가 수정되었습니다. 다시 로그인해주세요")
+            }
+        })
 
+    })
+</script>
 </body>
 </html>
