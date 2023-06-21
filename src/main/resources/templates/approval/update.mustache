@@ -205,6 +205,7 @@
     var writer = {{approvalGet.userNo}};
     var test = `{{{approvalGet.approContent}}}`;
     console.log(user);
+    console.log(test);
 
 
     DecoupledDocumentEditor
@@ -233,10 +234,11 @@
             var no = this.value;
             var approlist = this.closest('tr').innerHTML;
             var cut = approlist.split('<td><!-- checkbox -->');
-
+            var cutLabel = cut[0].split('<label');
             $("#apply").click(function () {
                 const element = document.getElementById('applyLine');
-                element.innerHTML = '<tr>' + cut[0] + '</tr>';
+                // element.innerHTML = '<tr>' + cut[0] + '</tr>';
+                element.innerHTML = '<tr>' + cutLabel[0] + '</div></td></tr>';
                 $("#applyVal").val(no);
                 $(".modal").modal("hide");
             });

@@ -192,7 +192,7 @@
                 alert("결재가 완료된 문서입니다.")
             }else if (check.text() == $('#approvalOrder').val()) {
 
-                const accept = test.replace('<td>&nbsp;</td>', '<td>결재완료</td>');
+                const accept = test.replace('<td>&nbsp;</td>', '<td><p style="text-align:center;">결재완료</p></td>');
                 $('.approContent').val(accept);
 
                 var data = {
