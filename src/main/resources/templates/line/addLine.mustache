@@ -65,7 +65,7 @@
                                         <td>{{lineName}}</td>
                                         <td><div>{{userName}}</div></td>
                                         {{#subLineResponseDTOS}}
-                                            <td> [{{deptName}}] [{{positionName}}] {{#name}}{{name}}{{/name}}{{^name}}{{-}}{{/name}}</td>
+                                            <td id="lineTd"> {{#deptName}}[{{deptName}}]{{/deptName}} {{#positionName}}[{{positionName}}]{{/positionName}} {{#name}}{{name}}{{/name}} </td>
                                         {{/subLineResponseDTOS}}
                                         <td><!-- checkbox -->
                                             <div class="icheck-primary ml-2 row justify-content-center">
@@ -182,6 +182,11 @@
 {{>layout/library}}
     <script>
         $(function (){
+            // name 값이 없으면 - 로 표기
+            console.log("tdName :: ", $("#tdName").val());
+            if($("#tdName").val() === ""){
+                $("#lineTd").text("-");
+            }
 
             function moveToAddSection(){
                 let offset = $("#addSection").offset();
@@ -218,9 +223,6 @@
             })
 
         })
-
-
-
     </script>
 </body>
 </html>
