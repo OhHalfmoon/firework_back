@@ -77,12 +77,22 @@
                             <div class="form-group">
                                 <label for="isUsed">사용여부</label>
                                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                    <label class="btn bg-olive">
-                                        <input type="radio" name="isUsed" id="option_b1" value="true"> 사용
-                                    </label>
-                                    <label class="btn bg-warning">
-                                        <input type="radio" name="isUsed" id="option_b2" value="false"> 미사용
-                                    </label>
+                                    {{#formDto.isUsed}}
+                                        <label class="btn bg-olive">
+                                            <input type="radio" name="isUsed" id="option_b1" value="true" checked> 사용
+                                        </label>
+                                        <label class="btn bg-warning">
+                                            <input type="radio" name="isUsed" id="option_b2" value="false"> 미사용
+                                        </label>
+                                    {{/formDto.isUsed}}
+                                    {{^formDto.isUsed}}
+                                        <label class="btn bg-olive">
+                                            <input type="radio" name="isUsed" id="option_b1" value="true"> 사용
+                                        </label>
+                                        <label class="btn bg-warning">
+                                            <input type="radio" name="isUsed" id="option_b2" value="false" checked> 미사용
+                                        </label>
+                                    {{/formDto.isUsed}}
                                 </div>
                             </div>
                             <button class="btn btn-primary" id="btnSubmit" type="button">글 수정</button>
