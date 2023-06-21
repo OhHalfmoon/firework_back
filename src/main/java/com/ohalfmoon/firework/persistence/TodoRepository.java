@@ -18,8 +18,8 @@ import java.util.List;
  * -----------------------------------------------------------
  * 2023/06/19        이지윤           최초 생성
  */
-public interface TodoRepository extends JpaRepository<TodoEntity, Long> {
-
-    // userNo를 통한 리스트 조회
-    List<TodoEntity> FindByTodoEntityByMemberEntityUserNo(Long userNo);
-}
+//public interface TodoRepository extends JpaRepository<TodoEntity, Long> {
+//
+//    // userNo를 통한 리스트 조회
+//    List<TodoEntity> FindByTodoEntityByMemberEntityUserNo(Long userNo);
+//}
