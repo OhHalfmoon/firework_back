@@ -3,6 +3,7 @@ package com.ohalfmoon.firework.persistence;
 
 
 import com.ohalfmoon.firework.model.ApprovalEntity;
+import com.ohalfmoon.firework.model.MasterLineEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -24,6 +25,8 @@ public interface ApprovalRepository extends JpaRepository<ApprovalEntity, Long> 
     List<ApprovalEntity> findAllByMemberEntity(MemberEntity memberEntity);
 
     ApprovalEntity findByApprovalNo(Long approvalNo);
+
+    List<ApprovalEntity> findAllByMasterLineEntity(MasterLineEntity masterLineEntity);
 
 
 }

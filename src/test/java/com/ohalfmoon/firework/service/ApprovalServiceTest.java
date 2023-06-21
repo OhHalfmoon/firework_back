@@ -101,7 +101,7 @@ public class ApprovalServiceTest {
     @Test
     @DisplayName("결재삭제 테스트")
     void deleteTest() {
-        final Long approvalNo = 51L;
+        final Long approvalNo = 52L;
         approvalService.delete(approvalNo);
         System.out.println("삭제완료");
     }
@@ -109,7 +109,7 @@ public class ApprovalServiceTest {
     @Test
     @DisplayName("결재자리스트 테스트")
     void getApprovalMemberTest() {
-        final Long approvalNo = 52L;
+        final Long approvalNo = 56L;
         List<ApprovalLineDto> lineDtos = approvalService.getApprovalUserName(approvalNo);
         log.info("subLineResponseDTOList: {}",lineDtos);
         log.info("subLineResponseDTOList: {}",lineDtos.size());
