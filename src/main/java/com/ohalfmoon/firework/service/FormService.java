@@ -3,12 +3,15 @@ package com.ohalfmoon.firework.service;
 import com.ohalfmoon.firework.dto.FormResponseDto;
 import com.ohalfmoon.firework.dto.FormSaveDto;
 import com.ohalfmoon.firework.dto.FormUpdateDto;
+import com.ohalfmoon.firework.dto.paging.PageRequestDTO;
 import com.ohalfmoon.firework.model.FormEntity;
 import com.ohalfmoon.firework.model.FormEntity_;
+import com.ohalfmoon.firework.model.spec.FormSpec;
 import com.ohalfmoon.firework.persistence.FormRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -92,18 +95,19 @@ public class FormService {
     /**
      * Search form list page.
      *
-     * @param formName    the form name
-     * @param pageRequest the page request
+     * @param dto the dto
      * @return the page
      */
-    public Page<FormEntity> searchFormList(Optional<String> formName, Pageable pageRequest) {
+    public Page<FormEntity> searchFormList(PageRequestDTO dto) {
 
 
         //Page<FormEntity> all = formRepository.findAll(nameLike(formName.orElse("")), pageRequest);
 
         //return formRepository.findByFormNameContaining(formName.orElse(""), pageRequest);
 
-        return formRepository.findAll(nameLike(formName.orElse("")), pageRequest);
+        return formRepository.findAll(
+                FormSpec.formSearch(dto.getType(), dto.getKeyword()), dto.getPageable(Sort.by(Sort.Order.desc("formNo")))
+        );
     }
 
     /**
@@ -117,8 +121,5 @@ public class FormService {
         return formEntityList.stream().map(FormResponseDto::new).collect(Collectors.toList());
     }
 
-    private Specification<FormEntity> nameLike(String name) {
-        return ((root, query, criteriaBuilder) ->
-                criteriaBuilder.like(root.get(FormEntity_.FORM_NAME), "%"+name+"%"));
-    }
+
 }
