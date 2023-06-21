@@ -3,6 +3,7 @@ var attendService = (function () {
     function goToWork(attend, callback, error) {
         console.log("attend : " + attend.userNo + " year : " + attend.godate);
         var url = "/attend/" + attend.userNo;
+        console.log(url);
         $.ajax({
             url : url,
             method: 'post',

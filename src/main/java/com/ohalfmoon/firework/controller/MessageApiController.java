@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
  * -----------------------------------------------------------
  * 2023/06/14        우성준            최초 생성
  * 2023/06/19        우성준            페이징 기능 추가(pagedto 사용)
+ * 2023/06/21        우성준            사원검색 추가
  */
 
 @RequiredArgsConstructor
@@ -50,7 +51,7 @@ public class MessageApiController {
         return messageService.countMessage(receiverNo);
     }
 
-    @PostMapping("/")
+    @PostMapping("/send")
     public Long save(@RequestBody MessageSaveDto messageSaveDto) {
         return messageService.save(messageSaveDto);
     }

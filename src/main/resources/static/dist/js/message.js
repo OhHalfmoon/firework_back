@@ -1,22 +1,22 @@
 var xhr = new XMLHttpRequest();
 var messageService = (function () {
-    //
-    // function add(review, callback, error) {
-    //     console.log("add() :: " + review);
-    //     console.log(review);
-    //     $.ajax({
-    //         url :  cp + "/review/new",
-    //         method: 'post',
-    //         dataType : 'json',
-    //         data : JSON.stringify(review),
-    //         contentType : "application/json; charset=utf-8"
-    //     })
-    //         .done(function(data){
-    //             if(callback) {
-    //                 callback(data);
-    //             }
-    //         })
-    // }
+
+    function add(obj, callback, error) {
+        console.log("add() :: " + obj);
+        console.log(obj);
+        $.ajax({
+            url : "/api/message/send",
+            method: 'post',
+            dataType : 'json',
+            data : JSON.stringify(obj),
+            contentType : "application/json; charset=utf-8"
+        })
+            .done(function(data){
+                if(callback) {
+                    callback(data);
+                }
+            })
+    }
 
     // function get(alarmNo, callback) {
     //     var url = cp + "/api/alarm/" + alarmNo;
@@ -108,7 +108,7 @@ var messageService = (function () {
     }
     return {
         // getCount:getCount,
-        // add:add,
+        add:add,
         getListByReceiver:getListByReceiver,
         getListBySender:getListBySender,
         getAllUser:getAllUser,
