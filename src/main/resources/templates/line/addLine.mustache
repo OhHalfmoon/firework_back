@@ -23,7 +23,7 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="/" >Home</a></li>
                             <li class="breadcrumb-item active">나의 결재선</li>
                         </ol>
                     </div><!-- /.col -->
@@ -91,7 +91,7 @@
 
         <section id="addSection" class="content">
             <div class="container-fluid">
-                <form method="post">
+                <form method="post" id="addFrm">
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
@@ -113,14 +113,24 @@
                                             <td><input type="text" class="form-control" placeholder="예) 내부 기안" name="lineName"></td>
                                             <input type="hidden" name="userNo">
                                             <td>
-                                                {{#userNo}}
-                                                    <div name="{{name}}">{{name}}</div>
-                                                {{/userNo}}
+                                                <div>{{user.name}}</div>
                                             </td>
                                             <td>
                                                 <div class="col-sm-6">
                                                     <div class="form-group">
-                                                        <select class="custom-select" name="userNos[0]">
+                                                        <select class="custom-select" id="masterLine1" name="userNos[0]">
+                                                            {{#memberList}}
+                                                                <option id="test1" value="{{userNo}}">[{{deptName}}] [{{positionName}}] {{name}}</option>
+                                                            {{/memberList}}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <select class="custom-select" id="masterLine2" name="userNos[1]">
+                                                            <option selected>결재자를 선택해주세요</option>
                                                             {{#memberList}}
                                                                 <option value="{{userNo}}">[{{deptName}}] [{{positionName}}] {{name}}</option>
                                                             {{/memberList}}
@@ -131,18 +141,8 @@
                                             <td>
                                                 <div class="col-sm-6">
                                                     <div class="form-group">
-                                                        <select class="custom-select" id="masterLine" name="userNos[1]">
-                                                            {{#memberList}}
-                                                                <option value="{{userNo}}">[{{deptName}}] [{{positionName}}] {{name}}</option>
-                                                            {{/memberList}}
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="col-sm-6">
-                                                    <div class="form-group">
-                                                        <select class="custom-select" name="userNos[2]">
+                                                        <select class="custom-select" id="masterLine3" name="userNos[2]">
+                                                            <option selected>결재자를 선택해주세요</option>
                                                             {{#memberList}}
                                                                 <option value="{{userNo}}">[{{deptName}}] [{{positionName}}] {{name}}</option>
                                                             {{/memberList}}
@@ -152,7 +152,7 @@
                                             </td>
                                             <td>
                                                 <div class="row justify-content-center">
-                                                    <button type="submit" class="btn btn-outline-secondary btn-sm w-75 row" id="addBtn">저장</button>
+                                                    <button type="submit" class="btn btn-outline-secondary btn-sm w-75 row" id="saveBtn">저장</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -179,12 +179,10 @@
 <!-- ./wrapper -->
 {{>layout/library}}
     <script>
+        var user = {{user.userNo}};
         $(function (){
-            // name 값이 없으면 - 로 표기
-            console.log("tdName :: ", $("#tdName").val());
-            if($("#tdName").val() === ""){
-                $("#lineTd").text("-");
-            }
+            //결재선 선택 시 본인(기안자)은 선택할 수 없도록 목록에서 삭제
+            $("#example2 option[value='"+user+"']").remove();
 
             function moveToAddSection(){
                 let offset = $("#addSection").offset();
@@ -207,6 +205,17 @@
                 moveToAddSection($(this).data("id"));
             })
 
+            $("#saveBtn").click(function (e) {
+                if(($("#masterLine2").val() == "결재자를 선택해주세요")){
+                    //빈 값을 넘기기
+                    $("#masterLine2").val("");
+                }
+                if(($("#masterLine3").val() == "결재자를 선택해주세요")){
+                    $("#masterLine3").val("");
+                }
+                $("#addFrm").submit();
+            })
+
             $(".ckBox").click(function (){
                 let lineNo = this.value;
                 console.log(lineNo)
@@ -217,9 +226,7 @@
                     $("#deleteFrm").submit();
                     alert("삭제되었습니다.");
                 })
-
             })
-
         })
     </script>
 </body>
