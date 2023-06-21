@@ -43,6 +43,7 @@ public class ApprovalEntity {
 
     @ManyToOne
     @JoinColumn(name = "lineNo")
+    @Setter
     private MasterLineEntity masterLineEntity;
 
     @ManyToOne
