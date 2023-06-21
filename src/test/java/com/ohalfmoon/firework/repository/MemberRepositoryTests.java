@@ -7,6 +7,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,7 +60,10 @@ public class MemberRepositoryTests {
     }
 
     @Test
-    @DisplayName("회원 정보 수정")
-    public void updateTest() {
+    @DisplayName("자신 빼고 다른 사람들 조회")
+    public void findAllTest() {
+        Pageable pageable = PageRequest.of(1, 5);
+        Page<MemberEntity> memberEntities = memberRepository.findAllByUserNoNotLike(1L, pageable);
+        log.info("{}", memberEntities.getContent());
     }
 }

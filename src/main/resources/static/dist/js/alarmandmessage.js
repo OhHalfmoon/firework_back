@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
     var userNo = 1;
     // user.userNo로 바꿀 예정!!
     moment.locale('ko');
@@ -6,7 +6,7 @@ $(function() {
         $(".alarmcount").html(result);
     })
 
-    alarmService.getList({userNo:userNo}, function (result) {
+    alarmService.getList({userNo: userNo}, function (result) {
         var str = "";
         for (var i in result.content) {
             str += getAlarmLiStr(result.content[i]);
@@ -47,13 +47,13 @@ $(function() {
     $(".btn-more").on("click", function () {
         event.stopPropagation();
         var pageNum = 2;
-        alarmService.getList({userNo:userNo, pageNum:pageNum}, function(result){
-            if(!result.content.length) {
+        alarmService.getList({userNo: userNo, pageNum: pageNum}, function (result) {
+            if (!result.content.length) {
                 $(".btn-more").prop("disabled", true);
                 return;
             }
             var str = "";
-            for(var i in result.content) {
+            for (var i in result.content) {
                 str += getAlarmLiStr(result.content[i]);
             }
             $(".alarms").append(str);
@@ -63,7 +63,7 @@ $(function() {
 
     var divison = false;
 
-    messageService.getListByReceiver({userNo:userNo}, function (result) {
+    messageService.getListByReceiver({userNo: userNo}, function (result) {
         var pageStr = "";
         var str = "";
         for (var i in result.messageList.content) {
@@ -77,23 +77,23 @@ $(function() {
 
     function getPage(obj) {
         let str = "";
-        if(obj.hasPrevBlock) {
-            str += "<li class='page-item'><a class='page-link' href='#' data-pagenum='" + (obj.startPageNum-1) + "'>"+"<i class='fas fa-angle-double-left'></i></a></li>";
+        if (obj.hasPrevBlock) {
+            str += "<li class='page-item'><a class='page-link' href='#' data-pagenum='" + (obj.startPageNum - 1) + "'>" + "<i class='fas fa-angle-double-left'></i></a></li>";
         }
-        if(obj.prev) {
-            str += "<li class='page-item'><a class='page-link' href='#' data-pagenum='" + (obj.page-1) + "'>"+"<i class='fas fa-angle-left'></i></a></li>";
+        if (obj.prev) {
+            str += "<li class='page-item'><a class='page-link' href='#' data-pagenum='" + (obj.page - 1) + "'>" + "<i class='fas fa-angle-left'></i></a></li>";
         }
-        for(let i = obj.startPageNum ; i <= obj.endPageNum ; i++) {
-            if(obj.page == i)
-                str += "<li class='page-item active'><a href='#' class='page-link' data-pagenum='" + i + "'>"+ i +"</a></li>";
+        for (let i = obj.startPageNum; i <= obj.endPageNum; i++) {
+            if (obj.page == i)
+                str += "<li class='page-item active'><a href='#' class='page-link' data-pagenum='" + i + "'>" + i + "</a></li>";
             else
-                str += "<li class='page-item'><a href='#' class='page-link' data-pagenum='" + i + "'>"+ i +"</a></li>";
+                str += "<li class='page-item'><a href='#' class='page-link' data-pagenum='" + i + "'>" + i + "</a></li>";
         }
-        if(obj.next) {
-            str += "<li class='page-item'><a class='page-link' href='#' data-pagenum='" + (obj.page+1) + "'>"+"<i class='fas fa-angle-right'></i></a></li>";
+        if (obj.next) {
+            str += "<li class='page-item'><a class='page-link' href='#' data-pagenum='" + (obj.page + 1) + "'>" + "<i class='fas fa-angle-right'></i></a></li>";
         }
-        if(obj.hasNextBlock) {
-            str += "<li class='page-item'><a class='page-link' href='#' data-pagenum='" + (obj.endPageNum+1) + "'>"+"<i class='fas fa-angle-double-right'></i></a></li>";
+        if (obj.hasNextBlock) {
+            str += "<li class='page-item'><a class='page-link' href='#' data-pagenum='" + (obj.endPageNum + 1) + "'>" + "<i class='fas fa-angle-double-right'></i></a></li>";
         }
         return str;
     }
@@ -115,7 +115,6 @@ $(function() {
     }
 
 
-
     function getSendLiStr(obj) {
         return `<div class="col-1 text-center"><input type="checkbox" data-messageno="${obj.messageNo}"></div>
                     <div class="col-2 text-center">
@@ -132,7 +131,7 @@ $(function() {
     }
 
     function getDivision(obj) {
-        if(!obj)
+        if (!obj)
             return `<div class="col-1">
 
                         </div>
@@ -159,6 +158,7 @@ $(function() {
                             날짜
                         </div>`
     }
+
     $("#messageListModal").on("click", "#messageWrite", function () {
         event.stopPropagation();
         var str = "";
@@ -210,7 +210,7 @@ $(function() {
     })
 
     $("#messageListModal").on("click", "#toMessageList", function () {
-        var str="";
+        var str = "";
         str += `<!-- Modal Header -->
             <div class="modal-header">
                 <h4 class="modal-title">쪽지</h4>
@@ -261,7 +261,7 @@ $(function() {
             </div>`
 
         $(".messageModal").html(str);
-        messageService.getListByReceiver({userNo:userNo}, function (result) {
+        messageService.getListByReceiver({userNo: userNo}, function (result) {
             var pageStr = "";
             var str = "";
             for (var i in result.messageList.content) {
@@ -272,9 +272,9 @@ $(function() {
             $(".messages").html(str);
 
         });
-        $(".messagepagination").on("click", ".page-link",function () {
+        $(".messagepagination").on("click", ".page-link", function () {
             var pageNum = $(this).data("pagenum");
-            if(divison) {
+            if (divison) {
                 messageService.getListByReceiver({userNo: userNo, pageNum: pageNum}, function (result) {
                     var str = "";
                     for (var i in result.messageList.content) {
@@ -283,8 +283,7 @@ $(function() {
                     $(".messagepagination").html(getPage(result.pageResponseDTO));
                     $(".messages").html(str);
                 });
-            }
-            else {
+            } else {
                 messageService.getListBySender({userNo: userNo, pageNum: pageNum}, function (result) {
                     var str = "";
                     for (var i in result.messageList.content) {
@@ -297,23 +296,22 @@ $(function() {
         })
 
         $(".messageCategory").on("click", "a", function () {
-            if($(this).attr('class')=='send') {
+            if ($(this).attr('class') == 'send') {
                 divison = false;
-                messageService.getListBySender({userNo:userNo}, function(result){
+                messageService.getListBySender({userNo: userNo}, function (result) {
                     var str = "";
-                    for(var i in result.messageList.content) {
+                    for (var i in result.messageList.content) {
                         str += getSendLiStr(result.messageList.content[i]);
                     }
                     $(".messagepagination").html(getPage(result.pageResponseDTO));
                     $(".messages").html(str);
                     $(".division").html(getDivision(divison));
                 });
-            }
-            else {
+            } else {
                 divison = true;
-                messageService.getListByReceiver({userNo:userNo}, function(result){
+                messageService.getListByReceiver({userNo: userNo}, function (result) {
                     var str = "";
-                    for(var i in result.messageList.content) {
+                    for (var i in result.messageList.content) {
                         str += getReceiveLiStr(result.messageList.content[i]);
                     }
                     $(".messagepagination").html(getPage(result.pageResponseDTO));
@@ -322,5 +320,109 @@ $(function() {
                 });
             }
         })
+    })
+    $(".messagepagination").on("click", ".page-link", function () {
+        var pageNum = $(this).data("pagenum");
+        if (divison) {
+            messageService.getListByReceiver({userNo: userNo, pageNum: pageNum}, function (result) {
+                var str = "";
+                for (var i in result.messageList.content) {
+                    str += getReceiveLiStr(result.messageList.content[i]);
+                }
+                $(".messagepagination").html(getPage(result.pageResponseDTO));
+                $(".messages").html(str);
+            });
+        } else {
+            messageService.getListBySender({userNo: userNo, pageNum: pageNum}, function (result) {
+                var str = "";
+                for (var i in result.messageList.content) {
+                    str += getSendLiStr(result.messageList.content[i]);
+                }
+                $(".messagepagination").html(getPage(result.pageResponseDTO));
+                $(".messages").html(str);
+            });
+        }
+    })
+
+    $(".messageCategory").on("click", "a", function () {
+        if ($(this).attr('class') == 'send') {
+            divison = false;
+            messageService.getListBySender({userNo: userNo}, function (result) {
+                var str = "";
+                for (var i in result.messageList.content) {
+                    str += getSendLiStr(result.messageList.content[i]);
+                }
+                $(".messagepagination").html(getPage(result.pageResponseDTO));
+                $(".messages").html(str);
+                $(".division").html(getDivision(divison));
+            });
+        } else {
+            divison = true;
+            messageService.getListByReceiver({userNo: userNo}, function (result) {
+                var str = "";
+                for (var i in result.messageList.content) {
+                    str += getReceiveLiStr(result.messageList.content[i]);
+                }
+                $(".messagepagination").html(getPage(result.pageResponseDTO));
+                $(".messages").html(str);
+                $(".division").html(getDivision(divison));
+            });
+        }
+    })
+    messageService.getAllUser({senderNo: userNo}, function (result) {
+        var str = "";
+        for (var i in result.memberList.content) {
+            str += getMemberLiStr(result.memberList.content[i]);
+        }
+        $(".memberList").html(str);
+        $(".memberpagination").html(getPage(result.pageResponseDTO));
+    })
+
+    function getMemberLiStr(obj) {
+        return `<div class="row memberCheck">
+                    <div class="col-2">
+                        <input type="checkbox" class="mchk" id="memberInfo${obj.userNo}" value="${obj.userNo}">
+                    </div>
+                    <div class="col-3 text-center">
+                        <label for="memberInfo${obj.userNo}">
+                            ${obj.name}
+                        </label>
+                    </div>
+                    <div class="col-4 text-center">
+                        <label for="memberInfo${obj.userNo}">
+                            ${obj.deptName}
+                        </label>
+                    </div>
+                    <div class="col-3 text-center">
+                        <label for="memberInfo${obj.userNo}">
+                            ${obj.positionName}
+                        </label>
+                    </div>
+                </div>
+                `
+
+    }
+
+    $(".memberpagination").on("click", ".page-link", function () {
+        var pageNum = $(this).data("pagenum");
+        messageService.getAllUser({senderNo: userNo, pageNum: pageNum}, function (result) {
+            var str = "";
+            for (var i in result.memberList.content) {
+                str += getMemberLiStr(result.memberList.content[i]);
+            }
+            $(".memberpagination").html(getPage(result.pageResponseDTO));
+            $(".memberList").html(str);
+        });
+    })
+
+    var arrUser = new Array();
+
+    $(".selectConfirm").on("change", ".mchk", function (){
+        if($(this).is(":checked")){
+            arrUser.push($(this).val())
+        }
+        else if(!$(this).is(":checked")) {
+            arrUser.push($(this).val())
+        }
     })
 });
