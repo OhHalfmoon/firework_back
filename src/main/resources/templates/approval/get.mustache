@@ -128,7 +128,7 @@
                             </section>
                         </div>
                         <br>
-                        <div class="col-2">
+                        <div class="col-10">
                             <input type="hidden" class="form-control approvalOrder" id="approvalOrder" name="approvalOrder" value="{{approvalGet.approvalOrder}}" >
                             <input type="hidden" class="form-control approvalState" id="approvalState" name="approvalState" value="{{approvalGet.approvalState}}" >
                             <button type="button" class="btn btn-secondary" id="modify" >기안수정</button>
@@ -210,7 +210,8 @@
                     data: JSON.stringify(data)
                 }).done(function () {
                 })
-              alert("결재가 승인되었습니다.")
+            alert("결재가 승인되었습니다.");
+            refreshMemList();
             }
         });
 
@@ -242,6 +243,7 @@
                 }).done(function () {
                 })
                 alert("결재가 반려되었습니다.")
+                refreshMemList();
             }
         });
 
@@ -254,5 +256,10 @@
             }
         });
     })
+
+    function refreshMemList(){
+        location.reload();
+
+    }
 </script>
 </html>

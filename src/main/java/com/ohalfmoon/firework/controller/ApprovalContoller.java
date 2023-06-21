@@ -9,6 +9,7 @@ import com.ohalfmoon.firework.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -61,7 +62,7 @@ public class ApprovalContoller {
         return "redirect:/";
     }
 
-    //상태값 변경 : 임시저장후 기안제출
+    //상태값 변경 : 결재 중간값 변경
     @PutMapping("/{approvalNo}")
     @ResponseBody
     public Long updateStorage(@PathVariable Long approvalNo, @RequestBody ApprovalStateDto stateDto) {
@@ -86,6 +87,7 @@ public class ApprovalContoller {
 
     }
 
+    // 기안 삭제
     @DeleteMapping("/delete/{approvalNo}")
     @ResponseBody
     public String delete(@PathVariable Long approvalNo ) {
