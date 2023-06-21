@@ -59,20 +59,21 @@
                                             <li class="list-group-item">
                                                 <label class="row">
                                                     <b class="m-2">현재 비밀번호를 입력해주세요</b><br>
-                                                    <input type="password" name="name" class="form-control m-1" placeholder="현재 비밀번호를 입력해주세요">
+                                                    <input type="password" id="" name="name" class="form-control m-1" placeholder="현재 비밀번호를 입력해주세요">
                                                 </label>
                                             </li>
                                             <li class="list-group-item">
                                                 <label class="row">
                                                     <b class="m-2">변경하실 비밀번호를 입력해주세요</b>
-                                                    <input type="password" name="password" class="form-control m-1" placeholder="변경하실 비밀번호를 입력해주세요">
+                                                    <input type="password" id="pw" name="password" class="form-control m-1" placeholder="변경하실 비밀번호를 입력해주세요">
                                                 </label>
                                             </li>
                                             <li class="list-group-item">
                                                 <label class="row">
                                                     <b class="m-2">변경하실 비밀번호를 한번 더 입력해주세요</b>
-                                                    <input type="password" class="form-control m-1" placeholder="변경하실 비밀번호를 한번 더 입력해주세요">
+                                                    <input type="password" id="checkPw" class="form-control m-1" placeholder="변경하실 비밀번호를 한번 더 입력해주세요">
                                                 </label>
+                                                <output id="outputPw" class="col-12"></output>
                                             </li>
 
                                         </ul>
@@ -104,6 +105,22 @@
 </div>
 <!-- ./wrapper -->
 {{>layout/library}}
-
+<script>
+    $(function() {
+        let outputPw = document.querySelector("#outputPw");
+        let pass = document.querySelector("#pw");
+        let passChk = document.querySelector("#checkPw");
+        $("#checkPw").blur(function() {
+            if(passChk.value !== pass.value) {
+                outputPw.innerHTML = "비밀번호가 일치하지 않습니다.";
+                outputPw.style.color = "red";
+            }
+            else {
+                outputPw.innerHTML = "비밀번호가 일치합니다.";
+                outputPw.style.color = "black";
+            }
+        })
+    })
+</script>
 </body>
 </html>

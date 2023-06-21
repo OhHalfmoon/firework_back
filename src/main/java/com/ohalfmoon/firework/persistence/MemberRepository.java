@@ -18,6 +18,8 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
 
 //    Optional<MemberEntity> findByUsername2(String username);
 
+    boolean existsByUsername(String username);
+
     List<MemberEntity> findAllByState(int state);
 
     Page<MemberEntity> findAllByUserNoNotLike(Long userNo, Pageable pageable);
