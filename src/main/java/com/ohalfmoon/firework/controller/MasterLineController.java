@@ -34,7 +34,7 @@ public class MasterLineController {
     private MasterLineService masterLineService;
     @Autowired
     private MemberService memberService;
-    
+
     @GetMapping("/addLine")
     public String addline(@AuthenticationPrincipal CustomUserDetails details, Model model) {
         // 로그인 한 사용자
