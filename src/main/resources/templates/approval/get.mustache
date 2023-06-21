@@ -131,8 +131,9 @@
                         <div class="col-2">
                             <input type="hidden" class="form-control approvalOrder" id="approvalOrder" name="approvalOrder" value="{{approvalGet.approvalOrder}}" >
                             <input type="hidden" class="form-control approvalState" id="approvalState" name="approvalState" value="{{approvalGet.approvalState}}" >
-                            <button type="button" class="btn btn-secondary" id="change" >결재승인</button>
-                            <button type="button" class="btn btn-secondary" id="reject" >결재반려</button>
+                            <button type="button" class="btn btn-secondary" id="modify" >기안수정</button>
+                            <button type="button" class="btn btn-primary" id="change" >결재승인</button>
+                            <button type="button" class="btn btn-danger" id="reject" >결재반려</button>
                         </div>
                     </div>
                 </form>
@@ -241,6 +242,15 @@
                 }).done(function () {
                 })
                 alert("결재가 반려되었습니다.")
+            }
+        });
+
+        $("#modify").click(function (){
+            if (writer != user) {
+                alert("권한이 없습니다")
+            } else  {
+                var id = $('#approvalNo').val();
+                location.href='/approval/update/' + id;
             }
         });
     })
