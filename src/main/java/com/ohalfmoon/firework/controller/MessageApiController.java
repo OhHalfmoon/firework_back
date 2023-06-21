@@ -3,6 +3,7 @@ package com.ohalfmoon.firework.controller;
 import com.ohalfmoon.firework.dto.MessagePageDto;
 import com.ohalfmoon.firework.dto.MessageResponseDto;
 import com.ohalfmoon.firework.dto.MessageSaveDto;
+import com.ohalfmoon.firework.dto.member.MemberResponseDTO;
 import com.ohalfmoon.firework.dto.paging.PageResponseDTO;
 import com.ohalfmoon.firework.model.MessageEntity;
 import com.ohalfmoon.firework.service.MessageService;
@@ -86,4 +87,7 @@ public class MessageApiController {
         Page<MessageEntity> entities = messageService.messageListBySender(senderNo, pageable);
         return new MessagePageDto(new PageResponseDTO<>(entities), entities.map(MessageResponseDto::new));
     }
+
+//    @GetMapping("/sender/{senderNo}/memberList")
+//    public List<MemberResponseDTO> findAllUser(@PathVariable Long senderNo)
 }

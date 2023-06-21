@@ -103,6 +103,7 @@ public class ApprovalService {
             if (i == lineDtos.size()-1) {
                 ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
                 approvalEntity.updateState(
+                        stateDto.getApproContent(),
                         i+1,
                         2
                 );
@@ -119,6 +120,7 @@ public class ApprovalService {
                 ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
 
                 approvalEntity.updateState(
+                        stateDto.getApproContent(),
                         stateDto.getApprovalOrder(),
                         stateDto.getApprovalState()
                 );
@@ -130,6 +132,46 @@ public class ApprovalService {
                         .boardNo(null)
                         .build());
                 
+                return approvalNo;
+            }
+        }
+        return approvalNo;
+    }
+    //반려
+    @Transactional
+    public  Long rejectState(Long approvalNo , ApprovalStateDto stateDto) {
+        List<ApprovalLineDto> lineDtos = getApprovalUserName(approvalNo);
+        for (int i = 0; i < lineDtos.size(); i++) {
+            if (i == 0) {
+                ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
+                approvalEntity.updateState(
+                        stateDto.getApproContent(),
+                        -1,
+                        1
+                );
+                alarmRepository.save(AlarmEntity.builder()
+                        .approvalNo(ApprovalEntity.builder().approvalNo(approvalNo).build())
+                        .alarmCategory("반려")
+                        .alarmTitle("결재반려-"+approvalNo)
+                        .alarmReceiver(memberRepository.findById(approvalRepository.findByApprovalNo(approvalNo).getMemberEntity().getUserNo()).orElse(null))
+                        .boardNo(null)
+                        .build());
+                return approvalNo;
+
+            } else  if (lineDtos.get(i).getOrderLevel() == approvalRepository.findByApprovalNo(approvalNo).getApprovalOrder()) {
+                ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
+                approvalEntity.updateState(
+                        stateDto.getApproContent(),
+                        stateDto.getApprovalOrder(),
+                        stateDto.getApprovalState()
+                );
+                alarmRepository.save(AlarmEntity.builder()
+                        .approvalNo(ApprovalEntity.builder().approvalNo(approvalNo).build())
+                        .alarmCategory("반려")
+                        .alarmTitle("결재반려-"+approvalNo)
+                        .alarmReceiver(memberRepository.findById(approvalRepository.findByApprovalNo(approvalNo).getMemberEntity().getUserNo()).orElse(null))
+                        .boardNo(null)
+                        .build());
                 return approvalNo;
             }
         }
