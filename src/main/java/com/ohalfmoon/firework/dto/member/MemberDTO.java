@@ -101,7 +101,7 @@ public class MemberDTO {
                 .name(name)
                 .birthdate(birthdate)
                 .startdate(startdate)
-                .roleName(Role.ROLE_GUEST)
+                .roleName(Role.ROLE_EMPLOYEE)
                 .build();
     }
 

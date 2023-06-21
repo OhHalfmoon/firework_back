@@ -19,12 +19,11 @@ import lombok.ToString;
 @RequiredArgsConstructor
 public enum Role {
 
-    ROLE_SECESSION(0, "ROLE_SECESSION", "탈퇴회원"),
-    ROLE_GUEST(1,"ROLE_GUEST", "손님"),
-    ROLE_EMPLOYEE(2,"ROLE_EMPLOYEE", "사원"),
-    ROLE_TL(3,"ROLE_TL", "팀장"),
-    ROLE_CEO(4,"ROLE_CEO", "사장"),
-    ROLE_ADMIN(5, "ROLE_ADMIN", "관리자");
+    ROLE_EMPLOYEE(0,"ROLE_EMPLOYEE", "사원"),
+    ROLE_TL(1,"ROLE_TL", "팀장"),
+    ROLE_CEO(2,"ROLE_CEO", "사장"),
+    ROLE_ADMIN(3, "ROLE_ADMIN", "관리자"),
+    ROLE_SECESSION(4, "ROLE_SECESSION", "탈퇴회원");
 
     private final int key;
     private final String name;

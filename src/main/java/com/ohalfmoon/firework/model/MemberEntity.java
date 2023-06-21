@@ -54,7 +54,7 @@ public class MemberEntity {
     @JoinColumn(name = "positionNo") // foreign key column name
     private PositionEntity positionEntity; // 직급번호
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "roleName")
     @Enumerated(EnumType.ORDINAL)
     private Role roleName;
 
