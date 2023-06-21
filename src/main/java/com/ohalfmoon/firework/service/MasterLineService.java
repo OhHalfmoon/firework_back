@@ -78,16 +78,12 @@ public class MasterLineService {
                    if(l == null) {
                        l = new ArrayList<>();
                    }
-                   log.info("l : {}", l.size());
                    int size = l.size();
                    for(int i = 0 ; i < 3 - size ; i++) {
                        l.add(SubLineResponseDTO.builder().build());
                    }
-                   log.info("l : {}", l);
-
-                masterLineResponseDTO.
-                        setSubLineResponseDTOS(l);
-                return masterLineResponseDTO;
+                   masterLineResponseDTO.setSubLineResponseDTOS(l);
+                   return masterLineResponseDTO;
             })
             .collect(Collectors.toList());
     }
