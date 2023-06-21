@@ -1,12 +1,11 @@
-$(function() {
-    var userNo = 1;
+$(function () {
     // user.userNo로 바꿀 예정!!
     moment.locale('ko');
     alarmService.getCount(userNo, function (result) {
         $(".alarmcount").html(result);
     })
 
-    alarmService.getList({userNo:userNo}, function (result) {
+    alarmService.getList({userNo: userNo}, function (result) {
         var str = "";
         for (var i in result.content) {
             str += getAlarmLiStr(result.content[i]);
@@ -47,13 +46,13 @@ $(function() {
     $(".btn-more").on("click", function () {
         event.stopPropagation();
         var pageNum = 2;
-        alarmService.getList({userNo:userNo, pageNum:pageNum}, function(result){
-            if(!result.content.length) {
+        alarmService.getList({userNo: userNo, pageNum: pageNum}, function (result) {
+            if (!result.content.length) {
                 $(".btn-more").prop("disabled", true);
                 return;
             }
             var str = "";
-            for(var i in result.content) {
+            for (var i in result.content) {
                 str += getAlarmLiStr(result.content[i]);
             }
             $(".alarms").append(str);
@@ -63,7 +62,7 @@ $(function() {
 
     var divison = false;
 
-    messageService.getListByReceiver({userNo:userNo}, function (result) {
+    messageService.getListByReceiver({userNo: userNo}, function (result) {
         var pageStr = "";
         var str = "";
         for (var i in result.messageList.content) {
@@ -77,23 +76,23 @@ $(function() {
 
     function getPage(obj) {
         let str = "";
-        if(obj.hasPrevBlock) {
-            str += "<li class='page-item'><a class='page-link' href='#' data-pagenum='" + (obj.startPageNum-1) + "'>"+"<i class='fas fa-angle-double-left'></i></a></li>";
+        if (obj.hasPrevBlock) {
+            str += "<li class='page-item'><a class='page-link' href='#' data-pagenum='" + (obj.startPageNum - 1) + "'>" + "<i class='fas fa-angle-double-left'></i></a></li>";
         }
-        if(obj.prev) {
-            str += "<li class='page-item'><a class='page-link' href='#' data-pagenum='" + (obj.page-1) + "'>"+"<i class='fas fa-angle-left'></i></a></li>";
+        if (obj.prev) {
+            str += "<li class='page-item'><a class='page-link' href='#' data-pagenum='" + (obj.page - 1) + "'>" + "<i class='fas fa-angle-left'></i></a></li>";
         }
-        for(let i = obj.startPageNum ; i <= obj.endPageNum ; i++) {
-            if(obj.page == i)
-                str += "<li class='page-item active'><a href='#' class='page-link' data-pagenum='" + i + "'>"+ i +"</a></li>";
+        for (let i = obj.startPageNum; i <= obj.endPageNum; i++) {
+            if (obj.page == i)
+                str += "<li class='page-item active'><a href='#' class='page-link' data-pagenum='" + i + "'>" + i + "</a></li>";
             else
-                str += "<li class='page-item'><a href='#' class='page-link' data-pagenum='" + i + "'>"+ i +"</a></li>";
+                str += "<li class='page-item'><a href='#' class='page-link' data-pagenum='" + i + "'>" + i + "</a></li>";
         }
-        if(obj.next) {
-            str += "<li class='page-item'><a class='page-link' href='#' data-pagenum='" + (obj.page+1) + "'>"+"<i class='fas fa-angle-right'></i></a></li>";
+        if (obj.next) {
+            str += "<li class='page-item'><a class='page-link' href='#' data-pagenum='" + (obj.page + 1) + "'>" + "<i class='fas fa-angle-right'></i></a></li>";
         }
-        if(obj.hasNextBlock) {
-            str += "<li class='page-item'><a class='page-link' href='#' data-pagenum='" + (obj.endPageNum+1) + "'>"+"<i class='fas fa-angle-double-right'></i></a></li>";
+        if (obj.hasNextBlock) {
+            str += "<li class='page-item'><a class='page-link' href='#' data-pagenum='" + (obj.endPageNum + 1) + "'>" + "<i class='fas fa-angle-double-right'></i></a></li>";
         }
         return str;
     }
@@ -115,7 +114,6 @@ $(function() {
     }
 
 
-
     function getSendLiStr(obj) {
         return `<div class="col-1 text-center"><input type="checkbox" data-messageno="${obj.messageNo}"></div>
                     <div class="col-2 text-center">
@@ -132,7 +130,7 @@ $(function() {
     }
 
     function getDivision(obj) {
-        if(!obj)
+        if (!obj)
             return `<div class="col-1">
 
                         </div>
@@ -159,6 +157,7 @@ $(function() {
                             날짜
                         </div>`
     }
+
     $("#messageListModal").on("click", "#messageWrite", function () {
         event.stopPropagation();
         var str = "";
@@ -168,6 +167,7 @@ $(function() {
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
+            <form method="post">
             <!-- Modal body -->
             <div class="modal-body">
                 <div class="card-body">
@@ -182,7 +182,7 @@ $(function() {
                     <hr/>
                     <div class="row">
                         <div class="col-2 text-center">
-                            <button class="btn btn-outline-secondary btn-xs" data-toggle="modal" data-target="#selectReceiverModal">받는 사람</button>
+                            <button class="btn btn-outline-secondary btn-xs" type="button" data-toggle="modal" data-target="#selectReceiverModal">받는 사람</button>
                         </div>
                         <div class="col-10 toReceiver">
 
@@ -199,10 +199,10 @@ $(function() {
                     </div>
                 </div>
             </div>
-
+            </form>
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-success btn-sm">전송</button>
+                <button type="submit" class="btn btn-success btn-sm">전송</button>
                 <button type="button" class="btn btn-outline-primary btn-sm" id="toMessageList">목록</button>
             </div>`
 
@@ -210,7 +210,7 @@ $(function() {
     })
 
     $("#messageListModal").on("click", "#toMessageList", function () {
-        var str="";
+        var str = "";
         str += `<!-- Modal Header -->
             <div class="modal-header">
                 <h4 class="modal-title">쪽지</h4>
@@ -261,7 +261,7 @@ $(function() {
             </div>`
 
         $(".messageModal").html(str);
-        messageService.getListByReceiver({userNo:userNo}, function (result) {
+        messageService.getListByReceiver({userNo: userNo}, function (result) {
             var pageStr = "";
             var str = "";
             for (var i in result.messageList.content) {
@@ -272,9 +272,9 @@ $(function() {
             $(".messages").html(str);
 
         });
-        $(".messagepagination").on("click", ".page-link",function () {
+        $(".messagepagination").on("click", ".page-link", function () {
             var pageNum = $(this).data("pagenum");
-            if(divison) {
+            if (divison) {
                 messageService.getListByReceiver({userNo: userNo, pageNum: pageNum}, function (result) {
                     var str = "";
                     for (var i in result.messageList.content) {
@@ -283,8 +283,7 @@ $(function() {
                     $(".messagepagination").html(getPage(result.pageResponseDTO));
                     $(".messages").html(str);
                 });
-            }
-            else {
+            } else {
                 messageService.getListBySender({userNo: userNo, pageNum: pageNum}, function (result) {
                     var str = "";
                     for (var i in result.messageList.content) {
@@ -297,23 +296,22 @@ $(function() {
         })
 
         $(".messageCategory").on("click", "a", function () {
-            if($(this).attr('class')=='send') {
+            if ($(this).attr('class') == 'send') {
                 divison = false;
-                messageService.getListBySender({userNo:userNo}, function(result){
+                messageService.getListBySender({userNo: userNo}, function (result) {
                     var str = "";
-                    for(var i in result.messageList.content) {
+                    for (var i in result.messageList.content) {
                         str += getSendLiStr(result.messageList.content[i]);
                     }
                     $(".messagepagination").html(getPage(result.pageResponseDTO));
                     $(".messages").html(str);
                     $(".division").html(getDivision(divison));
                 });
-            }
-            else {
+            } else {
                 divison = true;
-                messageService.getListByReceiver({userNo:userNo}, function(result){
+                messageService.getListByReceiver({userNo: userNo}, function (result) {
                     var str = "";
-                    for(var i in result.messageList.content) {
+                    for (var i in result.messageList.content) {
                         str += getReceiveLiStr(result.messageList.content[i]);
                     }
                     $(".messagepagination").html(getPage(result.pageResponseDTO));
@@ -323,4 +321,118 @@ $(function() {
             }
         })
     })
+    $(".messagepagination").on("click", ".page-link", function () {
+        var pageNum = $(this).data("pagenum");
+        if (divison) {
+            messageService.getListByReceiver({userNo: userNo, pageNum: pageNum}, function (result) {
+                var str = "";
+                for (var i in result.messageList.content) {
+                    str += getReceiveLiStr(result.messageList.content[i]);
+                }
+                $(".messagepagination").html(getPage(result.pageResponseDTO));
+                $(".messages").html(str);
+            });
+        } else {
+            messageService.getListBySender({userNo: userNo, pageNum: pageNum}, function (result) {
+                var str = "";
+                for (var i in result.messageList.content) {
+                    str += getSendLiStr(result.messageList.content[i]);
+                }
+                $(".messagepagination").html(getPage(result.pageResponseDTO));
+                $(".messages").html(str);
+            });
+        }
+    })
+
+    $(".messageCategory").on("click", "a", function () {
+        if ($(this).attr('class') == 'send') {
+            divison = false;
+            messageService.getListBySender({userNo: userNo}, function (result) {
+                var str = "";
+                for (var i in result.messageList.content) {
+                    str += getSendLiStr(result.messageList.content[i]);
+                }
+                $(".messagepagination").html(getPage(result.pageResponseDTO));
+                $(".messages").html(str);
+                $(".division").html(getDivision(divison));
+            });
+        } else {
+            divison = true;
+            messageService.getListByReceiver({userNo: userNo}, function (result) {
+                var str = "";
+                for (var i in result.messageList.content) {
+                    str += getReceiveLiStr(result.messageList.content[i]);
+                }
+                $(".messagepagination").html(getPage(result.pageResponseDTO));
+                $(".messages").html(str);
+                $(".division").html(getDivision(divison));
+            });
+        }
+    })
+    messageService.getAllUser({senderNo: userNo}, function (result) {
+        var str = "";
+        for (var i in result) {
+            str += getMemberLiStr(result[i]);
+        }
+        $(".memberList").html(str);
+    })
+
+    function getMemberLiStr(obj) {
+        return `<div class="row">
+                    <div class="col-2">
+                        <input type="checkbox" class="mchk" id="memberInfo${obj.userNo}" value="${obj.userNo},${obj.name}">
+                    </div>
+                    <div class="col-3 text-center">
+                        <label for="memberInfo${obj.userNo}">
+                            ${obj.name}
+                        </label>
+                    </div>
+                    <div class="col-4 text-center">
+                        <label for="memberInfo${obj.userNo}">
+                            ${obj.deptName}
+                        </label>
+                    </div>
+                    <div class="col-3 text-center">
+                        <label for="memberInfo${obj.userNo}">
+                            ${obj.positionName}
+                        </label>
+                    </div>
+                </div>
+                `
+
+    }
+
+    var arrUser = new Array();
+
+    $(".memberList").on("change", ".mchk", function (){
+        if($(this).is(":checked")) {
+            arrUser.push($(this).val())
+            console.log(arrUser);
+
+        }
+        else if(!$(this).is(":checked")) {
+            for (let i = 0; i < arrUser.length; i++) {
+                if (arrUser[i] === $(this).val()) {
+                    arrUser.splice(i, 1);
+                    i--;
+                }
+                console.log(arrUser);
+            }
+        }
+    })
+
+    $(".selectConfirm").click(function () {
+        var str = "";
+        for(let i in arrUser) {
+            str += getSelectedMember(arrUser[i]);
+        }
+        $(".toReceiver").html(str);
+    })
+
+    function getSelectedMember(obj) {
+        var str = obj.split(',')
+        return "<button type='button' class='btn btn-success'>"+str[1]+"</button>&nbsp;<input type='hidden' value='"+str[0]+"'>";
+    }
+
+
 });

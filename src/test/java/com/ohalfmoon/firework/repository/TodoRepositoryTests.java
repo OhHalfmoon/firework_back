@@ -10,6 +10,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 
+/**
+ * packageName    : com.ohalfmoon.firework.repository
+ * fileName       : TodoRepositoryTests
+ * author         : 이지윤
+ * date           : 2023/06/19
+ * description    : Todo 레파지토리 테스트
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023/06/19        이지윤           최초 생성
+ * 2023/06/20        이지윤           리스트 조회 테스트
+ */
+
 @SpringBootTest
 @Slf4j
 public class TodoRepositoryTests {
@@ -39,14 +52,29 @@ public class TodoRepositoryTests {
         log.info("todoEntity: {}", todoEntity);
     }
 
-    // category를 통한 리스트 조회
     @Test
-    public void testTodoEntitiesFindByCategory() {
-        Long todoCategory = 1L;
+    public void testFindByTodoEntityByMemberEntityUserNo(){
+        Long userNo = 2L;
 
-//        todoRepository.getTodoEntitiesByTodoCategory(todoCategory).forEach(todoEntity -> {
-//            log.info("todoEntity: {}", todoEntity);
-//        });
+        todoRepository.findByMemberEntity_UserNo(userNo).forEach(todoEntity -> {
+            log.info("todoEntity: {}", todoEntity);
+        });
+    }
+
+    @Test
+    public void testFindByMemberEntity_DeptEntity_DeptNo() {
+        Long deptNo = 3L;
+
+        todoRepository.findByMemberEntity_DeptEntity_DeptNo(deptNo).forEach(todoEntity -> {
+            log.info("todoEntity: {}", todoEntity);
+        });
+    }
+
+    @Test
+    public void testFindByHoliday() {
+        todoRepository.findByHoliday(true).forEach(todoEntity -> {
+            log.info("todoEntity: {}", todoEntity);
+        });
     }
 
     @Test

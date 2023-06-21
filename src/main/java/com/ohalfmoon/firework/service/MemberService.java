@@ -8,11 +8,20 @@ import com.ohalfmoon.firework.persistence.PositionRepository;
 import com.ohalfmoon.firework.persistence.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -37,20 +46,14 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class MemberService {
-    @Autowired
-    private MemberRepository memberRepository;
 
-    @Autowired
-    private DeptRepository deptRepository;
+    private final MemberRepository memberRepository;
 
-    @Autowired
-    private PositionRepository positionRepository;
+    private final DeptRepository deptRepository;
 
-    @Autowired
-    private RoleRepository roleRepository;
+    private final PositionRepository positionRepository;
 
-    @Autowired
-    private PasswordEncoder encoder;
+    private final PasswordEncoder encoder;
 
     /**
      * 회원가입 기능
@@ -177,6 +180,39 @@ public class MemberService {
         return memberRepository.findAllByState(0)
                 .stream().map(MemberResponseDTO::new).collect(Collectors.toList());
     }
+    /**
+     * 로그인한 유저 빼고 모든 회원 return
+     *
+     * @return member entity list(paging)
+     */
+    public Page<MemberEntity> getAllMemeberByPaging(Long userNo, Pageable pageable) {
+        return memberRepository.findAllByUserNoNotLike(userNo, pageable);
+    }
+
+    /**
+     * 회원가입시 유효성 체크
+     *
+     * @param errors the errors
+     * @return the map
+     */
+    @Transactional(readOnly = true)
+    public Map<String, String> validateHandling(Errors errors) {
+        Map<String, String> validatorResult = new HashMap<>();
+
+        // 유효성 검사에 실패한 필드 목록을 받음
+        for(FieldError error : errors.getFieldErrors()) {
+            String validKeyName = String.format("valid_%s", error.getField());
+            validatorResult.put(validKeyName, error.getDefaultMessage());
+        }
+        return validatorResult;
+    }
+
+    @Transactional(readOnly = true)
+    public boolean checkUsernameDuplication(String username) {
+        boolean usernameDuplicate = memberRepository.existsByUsername(username);
+        return usernameDuplicate;
+    }
+
     /**
      * 로그인한 유저 빼고 모든 회원 return
      *

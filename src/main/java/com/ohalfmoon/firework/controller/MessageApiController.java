@@ -1,11 +1,14 @@
 package com.ohalfmoon.firework.controller;
 
+import com.ohalfmoon.firework.dto.MemberPageDto;
 import com.ohalfmoon.firework.dto.MessagePageDto;
 import com.ohalfmoon.firework.dto.MessageResponseDto;
 import com.ohalfmoon.firework.dto.MessageSaveDto;
 import com.ohalfmoon.firework.dto.member.MemberResponseDTO;
 import com.ohalfmoon.firework.dto.paging.PageResponseDTO;
+import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.MessageEntity;
+import com.ohalfmoon.firework.service.MemberService;
 import com.ohalfmoon.firework.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +42,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class MessageApiController {
     private final MessageService messageService;
+    private final MemberService memberService;
 
     // 받은 쪽지
     @GetMapping("/count/{receiverNo}")
@@ -89,5 +93,18 @@ public class MessageApiController {
     }
 
 //    @GetMapping("/sender/{senderNo}/memberList")
-//    public List<MemberResponseDTO> findAllUser(@PathVariable Long senderNo)
+//    public MemberPageDto findAllUser(@PathVariable Long senderNo,
+//                                     @PageableDefault(
+//                                             size = 5,
+//                                             direction = Sort.Direction.DESC,
+//                                             sort = "userNo") Pageable pageable) {
+//
+//        Page<MemberEntity> entities = memberService.getAllMemeberByPaging(senderNo, pageable);
+//        return new MemberPageDto(new PageResponseDTO<>(entities), entities.map(MemberResponseDTO::new));
+//    }
+
+    @GetMapping("/sender/{senderNo}/memberList")
+    public List<MemberResponseDTO> findAllUser(@PathVariable Long senderNo) {
+        return memberService.getAllMemeber(senderNo);
+    }
 }

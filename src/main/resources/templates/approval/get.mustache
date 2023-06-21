@@ -158,22 +158,23 @@
 <script>
 
     let data;
+    var writer = {{approvalGet.userNo}};
     var editor;
     var user = {{user.userNo}};
     var test = `{{{approvalGet.approContent}}}`;
     var check = $('#{{user.userNo}}');
     console.log($('#approvalOrder').val());
-    console.log(check);
-    console.log(check[0]);
+    // console.log(check);
+    // console.log(check[0]);
 
     DecoupledDocumentEditor
             .create( document.querySelector( '.editor' )
             )
             .then( editor => {
-                window.editor = editor;
-                editor.setData(test);
-                editor.enableReadOnlyMode( 'my-feature-id' );
-                editor.isReadOnly;
+                    window.editor = editor;
+                    editor.setData(test);
+                    editor.enableReadOnlyMode( 'my-feature-id' );
+                    editor.isReadOnly;
 
             } )
             .catch( error => {
@@ -182,6 +183,7 @@
                 console.warn( 'Build id: mhijpyjl1akp-mumjti75eytr' );
                 console.error( error );
             });
+
     $(function () {
         $("#change").click(function (){
             if ((check[0] == undefined) || (parseInt(check.text()) != parseInt($('#approvalOrder').val()))) {
@@ -190,7 +192,7 @@
                 alert("결재가 완료된 문서입니다.")
             }else if (check.text() == $('#approvalOrder').val()) {
 
-                const accept = test.replace('<td>&nbsp;</td>', '<td>결재완료</td>');
+                const accept = test.replace('<td>&nbsp;</td>', '<td><p style="text-align:center;">결재완료</p></td>');
                 $('.approContent').val(accept);
 
                 var data = {
@@ -211,6 +213,7 @@
             }
         });
 
+
         $("#reject").click(function (){
             if ((check[0] == undefined) || (parseInt(check.text()) != parseInt($('#approvalOrder').val()))) {
                 alert("권한이 없습니다")
@@ -218,15 +221,15 @@
             } else if($('#approvalState').val() == 2) {
                 alert("결재가 완료된 문서입니다.")
 
-            }else if (check.text() == $('#approvalOrder').val()) {
+            } else if (check.text() == $('#approvalOrder').val()) {
 
-                const accept = test.replace('<td>결재완료</td>', '<td>&nbsp;</td>');
+                const accept = test.replace(/결재완료/gi, '&nbsp;');
                 $('.approContent').val(accept);
 
                 var data = {
                     approContent : $('.approContent').val(),
-                    approvalOrder : parseInt($('#approvalOrder').val()) - 1,
-                    approvalState : $('#approvalState').val()
+                    approvalOrder : parseInt($('#approvalOrder').val()),
+                    approvalState : parseInt($('#approvalState').val())
                 };
                 var id = $('#approvalNo').val();
                 $.ajax({

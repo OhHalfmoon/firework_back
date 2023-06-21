@@ -84,13 +84,14 @@ public class ApprovalEntity {
     }
 
     //작성중인 문서 내용 수정
-    public void update(String approvalName, Long lineNo, Long docboxNo, String approContent, int approvalOrder, int approvalState) {
+    public void update(String approvalName, Long lineNo, Long docboxNo, String approContent, int approvalOrder, int approvalState, LocalDate regdate) {
         this.approvalName = approvalName;
         this.masterLineEntity = MasterLineEntity.builder().lineNo(lineNo).build();
         this.docboxEntity = DocboxEntity.builder().docboxNo(docboxNo).build();
         this.approContent = approContent;
         this.approvalOrder = approvalOrder;
         this.approvalState = approvalState;
+        this.regdate = regdate;
     }
 
     // 임시 저장했던 기안을 결재진행 상태로 변경

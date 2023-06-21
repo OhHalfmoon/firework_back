@@ -4,6 +4,7 @@ import com.ohalfmoon.firework.model.*;
 import com.ohalfmoon.firework.persistence.ApprovalRepository;
 import com.ohalfmoon.firework.persistence.MasterLineRepository;
 import com.ohalfmoon.firework.persistence.SubLineRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,6 +23,7 @@ import java.util.List;
  * 2023/06/07        오상현            최초 생성
  */
 @SpringBootTest
+@Slf4j
 public class ApprovalRepositoryTests {
     @Autowired
     ApprovalRepository approvalRepository;
@@ -69,5 +71,12 @@ public class ApprovalRepositoryTests {
     @Test
     public void removeTest() {
         approvalRepository.delete(ApprovalEntity.builder().approvalNo(10L).build());
+    }
+
+    @Test
+    public void masterlineTest() {
+        Long lineNo = 1L;
+        List<ApprovalEntity> list = approvalRepository.findAllByMasterLineEntity(MasterLineEntity.builder().lineNo(lineNo).build());
+        log.info("리스트확인{}", list);
     }
 }

@@ -34,8 +34,10 @@
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <!--<script src="{{contextPath}}/dist/js/pages/dashboard.js"></script>-->
 
-<script src="{{contextPath}}/plugins/ckeditor5/build/ckeditor.js"></script>
+<script src="/plugins/fullcalendar/main.js"></script>
 
+<script src="{{contextPath}}/plugins/ckeditor5/build/ckeditor.js"></script>
+<script src="/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 <script>
     // The Calender
     $('#calendar').datetimepicker({
@@ -50,8 +52,10 @@
 
 <!-- 근태 -->
 <script src="/dist/js/attend.js"></script>
-
-<script src="/dist/js/alarmandmessage.js"></script>
+<script>
+    var userNo = {{user.userNo}}
+</script>
+<script src="/dist/js/alarmandmessage.js"/>
 <script>
     $(function () {
         let user = $("#user").val();

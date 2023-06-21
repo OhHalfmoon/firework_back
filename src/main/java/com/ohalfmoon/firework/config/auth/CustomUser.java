@@ -22,12 +22,12 @@ import java.util.Collection;
  * 2023-06-13                ycy             최초 생성
  */
 @Getter
-public class CustomUser extends User {
+public class CustomUser { // extends User {
 
 
-    public CustomUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, authorities);
-    }
+//    public CustomUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+//        super(username, password, authorities);
+//    }
 
 //    public CustomUser(MemberLoginDTO dto) {
 //        super(dto.getUsername(), dto.getPassword());

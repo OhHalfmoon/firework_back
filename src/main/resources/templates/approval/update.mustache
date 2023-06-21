@@ -36,19 +36,19 @@
 
         <section class="content">
             <div class="container-fluid">
-                <form method="post" id="approvalPost">
+                <form id="approvalPost">
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
                             <div class="col">기안제목</div>
-                            <input type="text" class="form-control approvalName" name="approvalName" placeholder="기안명을 입력해주세요">
+                            <input type="text" class="form-control" name="approvalName" id="approvalName" value="{{approvalGet.approvalName}}">
                         </div>
                         <br>
                         <div class="row">
                             <div class="col">기안일자</div>
-                            <input type="date" class="form-control regdate" name="regdate">
+                            <input type="date" class="form-control" name="regdate" id="regdate" value="{{approvalGet.regdate}}">
                         </div>
-<!--                        <br>-->
+                        <br>
 <!--                        <div class="row">-->
 <!--                            <div class="col">공개라인</div>-->
 <!--                            <select class="d-flex custom-select" name="positionNo">-->
@@ -58,7 +58,7 @@
 <!--                                {{!/position}}-->
 <!--                            </select>-->
 <!--                        </div>-->
-                        <br>
+<!--                        <br>-->
                         <div class="row">
                             <div class="col">결재선</div>
                             <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">
@@ -72,7 +72,7 @@
                         <br>
                         <div class="row">
                             <div class="col">문서함</div>
-                            <select class="d-flex custom-select docbox" name="docboxNo">
+                            <select class="d-flex custom-select" name="docboxNo" id="docbox">
                                 <option selected>문서함을 선택해주세요</option>
                                 {{#docboxList}}
                                     <option value="{{docboxNo}}">{{docboxName}}</option>
@@ -89,7 +89,7 @@
                                     <div class="card card-default color-palette-box">
                                         <div class="card-header">
                                             <h3 class="card-title">
-                                                {{formDetail.formName}}
+                                                {{approvalGet.approvalName}}
                                             </h3>
                                         </div>
                                         <div class="card-body">
@@ -114,11 +114,13 @@
                             </section>
                     </div>
                     <div class="col-2">
-                        <input type="hidden" class="form-control approvalOrder" id="approvalOrder" name="approvalOrder"  >
-                        <input type="hidden" class="form-control approvalState" id="approvalState" name="approvalState"  >
-                        <input type="hidden" class="form-control userNo" name="userNo" >
-                        <button class="btn btn-secondary" id="save" type="submit">저장</button>
-                        <button class="btn btn-secondary" id="storage" type="submit">임시저장</button>
+                        <input type="hidden" id="approvalNo" value="{{approvalGet.approvalNo}}">
+                        <input type="hidden" class="form-control approvalOrder" id="approvalOrder" name="approvalOrder" value="{{approvalGet.approvalOrder}}" >
+                        <input type="hidden" class="form-control approvalState" id="approvalState" name="approvalState" value="{{approvalGet.approvalState}}" >
+                        <input type="hidden" class="form-control userNo" name="userNo" value="{{approvalGet.userNo}}" >
+                        <button class="btn btn-primary" id="save" type="button">저장</button>
+                        <button class="btn btn-secondary" id="storage" type="button">임시저장</button>
+                        <button class="btn btn-danger" id="delete" type="button">삭제</button>
                     </div>
                 </div>
 
@@ -201,8 +203,10 @@
     let data;
     var editor;
     var user = {{user.userNo}};
-    var test = `{{{formDetail.formText}}}`;
+    var writer = {{approvalGet.userNo}};
+    var test = `{{{approvalGet.approContent}}}`;
     console.log(user);
+    console.log(test);
 
 
     DecoupledDocumentEditor
@@ -210,8 +214,8 @@
             )
             .then( editor => {
                 window.editor = editor;
-                console.log(test)
-                console.log(editor.ui.view.toolbar.element);
+//                console.log(test)
+//                console.log(editor.ui.view.toolbar.element);
                 document.querySelector( '.document-editor__toolbar' ).appendChild( editor.ui.view.toolbar.element );
                 document.querySelector( '.ck-toolbar' ).classList.add( 'ck-reset_all' );
                 editor.setData(test);
@@ -241,49 +245,79 @@
             });
         })
 
-        $("#save").click(function (){
-
-            event.preventDefault();
-            if ($(".approvalName").val() == "") {
-                alert("기안명을 입력해주세요")
-            } else if ($(".regdate").val() == "") {
-                alert("기안일자를 선택해주세요")
-            } else if ($("#applyVal").val() == "") {
-                alert("결재선을 선택해주세요")
-            } else if ($(".docbox").val() == "문서함을 선택해주세요") {
-                alert("문서함을 선택해주세요")
-            } else {
-                const editText = editor.getData();
-                $("#approvalOrder").val(1);
-                $("#approvalState").val(1);
-                $(".userNo").val(user);
-                $(".approContent").val(editText);
-                alert("작성이 완료되었습니다")
-                $("#approvalPost").submit();
-            }
-        });
-
         $("#storage").click(function (){
-            event.preventDefault();
-            if ($(".approvalName").val() == "") {
-                alert("기안명을 입력해주세요")
-            } else if ($(".regdate").val() == "") {
-                alert("기안일자를 선택해주세요")
-            } else if ($("#applyVal").val() == "") {
-                alert("결재선을 선택해주세요")
-            } else if ($(".docbox").val() == "문서함을 선택해주세요") {
-                alert("문서함을 선택해주세요")
-            } else {
-            const editText = editor.getData();
-            $("#approvalOrder").val(0);
-            $("#approvalState").val(0);
-            $(".userNo").val(user);
-            $(".approContent").val(editText);
-                alert("임시저장이 완료되었습니다")
-            $("#approvalPost").submit();
+
+            if ((writer == user) && ($('#approvalState').val() == 0)) {
+                var editText = editor.getData();
+                $('.approContent').val(editText);
+                if ($("#applyVal").val() == "") {
+                    alert("결재선을 선택해주세요")
+                } else if ($(".docbox").val() == "문서함을 선택해주세요") {
+                    alert("문서함을 선택해주세요")
+                } else {
+                    var data = {
+                        approvalName: $('#approvalName').val(),
+                        lineNo: $('#applyVal').val(),
+                        docboxNo: $('#docbox').val(),
+                        approContent: $('.approContent').val(),
+                        approvalOrder: parseInt($('#approvalOrder').val()),
+                        approvalState: parseInt($('#approvalState').val()),
+                        regdate : $('#regdate').val()
+                    };
+                    var id = $('#approvalNo').val();
+                    $.ajax({
+                        type: 'PUT',
+                        url: '/approval/update/' + id,
+                        datatype: 'json',
+                        contentType: 'application/json; charset=utf-8',
+                        data: JSON.stringify(data)
+                    }).done(function () {
+                    })
+                    alert("문서가 수정되었습니다.")
+                }
+            }
+            else {
+                alert("권한이 없습니다.")
             }
         });
 
+
+
+        $("#save").click(function (){
+//            console.log($('#docbox').val());
+            if ((writer == user) && ($('#approvalState').val() == 0)) {
+                var editText = editor.getData();
+                $('.approContent').val(editText);
+                if ($("#applyVal").val() == "") {
+                    alert("결재선을 선택해주세요")
+                } else if ($(".docbox").val() == "문서함을 선택해주세요") {
+                    alert("문서함을 선택해주세요")
+                } else {
+                    var data = {
+                        approvalName: $('#approvalName').val(),
+                        lineNo: $('#applyVal').val(),
+                        docboxNo: $('#docbox').val(),
+                        approContent: $('.approContent').val(),
+                        approvalOrder: parseInt($('#approvalOrder').val()) + 1,
+                        approvalState: parseInt($('#approvalState').val()) + 1,
+                        regdate : $('#regdate').val()
+                    };
+                    var id = $('#approvalNo').val();
+                    $.ajax({
+                        type: 'PUT',
+                        url: '/approval/update/' + id,
+                        datatype: 'json',
+                        contentType: 'application/json; charset=utf-8',
+                        data: JSON.stringify(data)
+                    }).done(function () {
+                    })
+                    alert("결재가 요청되었습니다.")
+                }
+            }
+            else {
+                alert("권한이 없습니다.")
+            }
+        });
     })
 </script>
 </html>
