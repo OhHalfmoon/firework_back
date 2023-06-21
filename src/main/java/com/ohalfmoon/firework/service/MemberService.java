@@ -183,9 +183,9 @@ public class MemberService {
     /**
      * 로그인한 유저 빼고 모든 회원 return
      *
-     * @return member entity list
+     * @return member entity list(paging)
      */
-    public Page<MemberEntity> getAllMemeber(Long userNo, Pageable pageable) {
+    public Page<MemberEntity> getAllMemeberByPaging(Long userNo, Pageable pageable) {
         return memberRepository.findAllByUserNoNotLike(userNo, pageable);
     }
 
@@ -211,5 +211,14 @@ public class MemberService {
     public boolean checkUsernameDuplication(String username) {
         boolean usernameDuplicate = memberRepository.existsByUsername(username);
         return usernameDuplicate;
+    }
+
+    /**
+     * 로그인한 유저 빼고 모든 회원 return
+     *
+     * @return member entity list
+     */
+    public List<MemberResponseDTO> getAllMemeber(Long userNo) {
+        return memberRepository.findAllByUserNoNotLike(userNo).stream().map(MemberResponseDTO::new).collect(Collectors.toList());
     }
 }

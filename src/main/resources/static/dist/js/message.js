@@ -93,7 +93,7 @@ var messageService = (function () {
     // }
 
     function getAllUser(obj, callback, error) {
-        var url = "/api/message/sender/" + obj.senderNo + "/memberList" + "/" + (obj.pageNum ? "?page=" + obj.pageNum : "")
+        var url = "/api/message/sender/" + obj.senderNo + "/memberList"
         $.getJSON(url)
             .done(function(data) {
                 if(callback) {
