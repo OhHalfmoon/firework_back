@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -66,9 +67,17 @@ public class PageResponseDTO <Entity> {
     // 페이지 번호 리스트(페이지 번호, 현재 페이지인지 여부)
     private List<PageInfo> pageInfoList;
 
+    private String type;
 
+    private String keyword;
+
+
+    @Deprecated
     public PageResponseDTO(Page<Entity> entityPage) {
+        this(entityPage, new PageRequestDTO());
+    }
 
+    public PageResponseDTO(Page<Entity> entityPage, PageRequestDTO requestDTO) {
         totalPage = entityPage.getTotalPages();
 
         Pageable pageable = entityPage.getPageable();
@@ -90,11 +99,12 @@ public class PageResponseDTO <Entity> {
         List<Integer> pageList = IntStream.rangeClosed(startPageNum, endPageNum)
                 .boxed().collect(Collectors.toList());
 
-         pageInfoList = pageList.stream()
+        pageInfoList = pageList.stream()
                 .map(page -> PageInfo.builder()
-                            .pageNum(page)
-                            .isCurrent(page == this.page)
-                            .build()
+                        .pageNum(page)
+                        .isCurrent(page == this.page)
+                        .queryString(fullQueryString(page))
+                        .build()
                 ).collect(Collectors.toList());
 
         prevPageNum = page - 1;
@@ -105,6 +115,54 @@ public class PageResponseDTO <Entity> {
 
         prevBlockNum = hasPrevBlock ? startPageNum - 1 : startPageNum;
         nextBlockNum = hasNextBlock ? endPageNum + 1 : totalPage;
+
+        type = requestDTO.getType();
+        keyword = requestDTO.getKeyword();
+    }
+
+    public String searchKeyword(){
+        return  "&type=" + Optional.ofNullable(type).orElse("")
+                + "&keyword=" + Optional.ofNullable(keyword).orElse("");
+    }
+
+    public String getSize(){
+        return "&size=" + size;
+    }
+
+    public String fullQueryString(int page){
+        return "?page=" + page
+                + getSize()
+                + searchKeyword();
+    }
+
+    public String fullQueryString(){
+        return "?page=" + page
+                + getSize()
+                + searchKeyword();
+    }
+
+    public String prevQueryString(){
+        return "?page=" + prevPageNum
+                + getSize()
+                + searchKeyword();
+    }
+
+    public String nextQueryString(){
+        return "?page=" + nextPageNum
+                + getSize()
+                + searchKeyword();
+    }
+
+    public String prevBlockQueryString(){
+        return "?page=" + prevBlockNum
+                + getSize()
+                + searchKeyword();
+    }
+
+    public String nextBlockQueryString(){
+        return "?page=" + nextBlockNum
+                + getSize()
+                + searchKeyword();
     }
 
 }

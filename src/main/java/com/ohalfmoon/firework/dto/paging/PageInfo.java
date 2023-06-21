@@ -24,4 +24,7 @@ public class PageInfo {
 
     // 이 페이지가 현재 페이지인지 여부
     private boolean isCurrent;
+
+    // 페이지네이션별 쿼리스트링 정보
+    private String queryString;
 }

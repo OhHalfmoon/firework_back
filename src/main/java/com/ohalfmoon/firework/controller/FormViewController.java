@@ -2,6 +2,7 @@ package com.ohalfmoon.firework.controller;
 
 import com.ohalfmoon.firework.dto.FormResponseDto;
 import com.ohalfmoon.firework.dto.FormSaveDto;
+import com.ohalfmoon.firework.dto.paging.PageRequestDTO;
 import com.ohalfmoon.firework.dto.paging.PageResponseDTO;
 import com.ohalfmoon.firework.model.FormEntity;
 import com.ohalfmoon.firework.service.FormService;
@@ -52,24 +53,19 @@ public class FormViewController {
 
     @GetMapping
     public String list(
-            Optional<String> formName,
-            @PageableDefault
-            @SortDefault.SortDefaults({
-                    @SortDefault(sort = "formNo", direction = Sort.Direction.DESC)
-            })
-            Pageable pageRequest,
+            PageRequestDTO pageRequestDTO,
             Model model
     ) {
-        Page<FormEntity> pageDto = formService.searchFormList(formName, pageRequest);
+        Page<FormEntity> pageDto = formService.searchFormList(pageRequestDTO);
 
         List<FormResponseDto> formList = pageDto.getContent().stream().map(FormResponseDto::new).collect(Collectors.toList());
 
-        PageResponseDTO<FormEntity> pageDTO = new PageResponseDTO<>(pageDto);
+        PageResponseDTO<FormEntity> pageResponse = new PageResponseDTO<>(pageDto, pageRequestDTO);
 
-        log.info("pageDTO : {}", pageDTO);
+        log.info("pageResponse : {}", pageResponse);
 
         model.addAttribute("formList", formList);
-        model.addAttribute("pageDto", pageDTO);
+        model.addAttribute("pageDto", pageResponse);
 
         return "admin/form/list";
     }
