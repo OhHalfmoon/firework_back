@@ -6,6 +6,7 @@ import com.ohalfmoon.firework.dto.sub.SubLineResponseDTO;
 import com.ohalfmoon.firework.model.MasterLineEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.SubLineEntity;
+import com.ohalfmoon.firework.persistence.ApprovalRepository;
 import com.ohalfmoon.firework.persistence.MasterLineRepository;
 import com.ohalfmoon.firework.persistence.MemberRepository;
 import com.ohalfmoon.firework.persistence.SubLineRepository;
@@ -44,7 +45,7 @@ public class MasterLineService {
     private SubLineRepository subLineRepository;
 
     @Autowired
-    private SubLineService subLineService;
+    private ApprovalRepository approvalRepository;
 
     @Transactional
     public Long save(MasterLineSaveDTO dto) {
@@ -107,7 +108,9 @@ public class MasterLineService {
                 .findById(lineNo)
                 .orElseThrow(() -> new IllegalArgumentException("결재 선이 존재하지 않습니다"));
         subLineRepository.deleteAllByMasterLineEntity_LineNo(lineNo);
-
+        approvalRepository.findAllByMasterLineEntity(entity).forEach(approvalEntity -> {
+            approvalEntity.setMasterLineEntity(null);
+        });
         masterLineRepository.delete(entity);
     }
 
