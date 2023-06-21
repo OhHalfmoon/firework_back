@@ -36,9 +36,6 @@ public class SubLineService {
     @Autowired
     private SubLineRepository subLineRepository;
 
-    @Autowired
-    private MasterLineRepository masterLineRepository;
-
     @Transactional
     public Long save(SubLineSaveDTO dto) {
         return subLineRepository.save(dto.toEntity()).getSubLineNo();
