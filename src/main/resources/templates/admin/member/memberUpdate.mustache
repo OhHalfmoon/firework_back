@@ -47,29 +47,29 @@
                                     <table id="example2" class="table table-bordered table-hover">
                                         <thead>
                                         <tr>
-                                            <th>선택</th>
+                                            <th><input type="checkbox" id="selectAll" style="zoom: 2.0">  전체 선택</th>
                                             <th>id</th>
                                             <th>사원명</th>
                                             <th>연락처</th>
                                             <th>Email</th>
                                             <th>부서</th>
                                             <th>직급</th>
-                                            <th>권한</th>
+                                            <th>승인</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         {{#stateByZeroUser}}
-                                        <tr>
+                                        <tr id="tableSum">
                                             <input name="userNo" type="hidden" value="{{userNo}}">
                                             <td>
-                                                <input type="checkbox" name="userCheck" class="checkbox" value="" style="zoom: 2.0">
+                                                <input type="checkbox" name="ckBox" class="checkbox" id="ckBox" style="zoom: 2.0">
                                             </td>
                                             <td>{{username}}</td>
                                             <td>{{name}}</td>
                                             <td>{{phoneNum}}</td>
                                             <td>{{email}}</td>
                                             <td>{{deptName}}</td>
-                                            <td>{{positionEntity.positionName}}{{!positionEntity.positionName}}</td>
+                                            <td>{{positionEntity.positionName}}</td>
                                             <td>
                                             <select class="custom-select" name="state">
                                                 <option value="0">가입대기</option>
@@ -93,7 +93,7 @@
                                             {{#prev}}
                                                 <li class="page-item">
                                                     <a class="page-link" href="{{contextPath}}/admin/form?page={{pageDto.prevPageNum}}">
-                                                    &lt;ㅇㄴㅁ
+                                                    &lt;
                                                     </a>
                                                 </li>
                                             {{/prev}}
@@ -148,10 +148,24 @@
 
     {{>layout/library}}
 <script>
-    var checkBoxArr = [];
-    $("input:checkbox[name='userCheck']:checked").each(function() {
-        checkBoxArr.push($("#userNo").val());
-        console.log(checkBoxArr);
+    $(function () {
+        $("#selectAll").click(function () {
+            if($("#selectAll").is(":checked"))  {
+                $("input[name=ckBox]").prop("checked", true);
+                console.log($("input[name='ckBox']:checked").length)
+                // console.log($("#chkBox").length);
+            }else {
+                $("input[name=ckBox]").prop("checked", false);
+            }
+        });
+
+        // $("chkBox").click(function() {
+        //     if($("input[name='userCheck']:checked").length === $("#tableSum").length) {
+        //         $("#selectAll").prop("checked", true);
+        //     }else {
+        //         $("#selectAll").prop("checked", false);
+        //     }
+        // });
     })
 </script>
 </body>

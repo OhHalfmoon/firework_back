@@ -1,7 +1,7 @@
 package com.ohalfmoon.firework.dto.member;
 
 import com.ohalfmoon.firework.model.MemberEntity;
-import lombok.AllArgsConstructor;
+import com.ohalfmoon.firework.model.Role;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;

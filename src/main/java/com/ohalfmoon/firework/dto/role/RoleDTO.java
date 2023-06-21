@@ -36,8 +36,7 @@ public class RoleDTO {
      */
     public RoleEntity toEntity() {
         return RoleEntity.builder()
-//                .authName("GUEST")
-                .roleName(Role.ROLE_GUEST)
+                .roleName(Role.ROLE_EMPLOYEE)
                 .build();
     }
 }

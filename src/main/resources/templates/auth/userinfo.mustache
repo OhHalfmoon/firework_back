@@ -26,7 +26,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="/">Home</a></li>
-                            <li class="breadcrumb-item"><a href="mypage">mypage</a></li>
+                            <li class="breadcrumb-item"><a href="{{contextPath}}/auth/mypage">mypage</a></li>
                             <li class="breadcrumb-item active">userinfo</li>
                         </ol>
                     </div><!-- /.col -->
@@ -71,13 +71,13 @@
                                 {{/user}}
                                 <div class="row col-12 justify-content-center mt-5">
                                     <div class="col-4">
-                                        <a href="mypage" class="btn btn-outline-dark btn-block"><b>이전으로</b></a>
+                                        <a href="{{contextPath}}/auth/mypage" class="btn btn-outline-dark btn-block"><b>이전으로</b></a>
                                     </div>
                                     <div class="col-4">
-                                        <a href="modify" class="btn btn-success btn-block"><b>정보수정</b></a>
+                                        <a href="{{contextPath}}/auth/modify" class="btn btn-success btn-block"><b>정보수정</b></a>
                                     </div>
                                     <div class="col-4">
-                                        <a href="modifyPw" class="btn btn-danger btn-block"><b>PW변경</b></a>
+                                        <a href="{{contextPath}}/auth/modifyPw" class="btn btn-danger btn-block"><b>PW변경</b></a>
                                     </div>
                                 </div>
                             </div>
