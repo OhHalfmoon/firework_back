@@ -49,16 +49,16 @@
                             <input type="date" class="form-control" name="regdate" id="regdate" value="{{approvalGet.regdate}}">
                         </div>
                         <br>
-                        <div class="row">
-                            <div class="col">공개라인</div>
-                            <select class="d-flex custom-select" name="positionNo">
-                                <option selected>공개라인을 선택해주세요</option>
-                                {{#position}}
-                                    <option value="{{positionNo}}">{{positionName}} 이상</option>
-                                {{/position}}
-                            </select>
-                        </div>
-                        <br>
+<!--                        <div class="row">-->
+<!--                            <div class="col">공개라인</div>-->
+<!--                            <select class="d-flex custom-select" name="positionNo">-->
+<!--                                <option selected>공개라인을 선택해주세요</option>-->
+<!--                                {{!#position}}-->
+<!--                                    <option value="{{!positionNo}}">{{!positionName}} 이상</option>-->
+<!--                                {{!/position}}-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                        <br>-->
                         <div class="row">
                             <div class="col">결재선</div>
                             <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">
@@ -172,7 +172,7 @@
                                 <td>{{lineName}}</td>
                                 <td>{{userName}}</td>
                                 {{#subLineResponseDTOS}}
-                                    <td> [{{deptName}}] [{{positionName}}] {{#name}}{{name}}{{/name}}{{^name}}{{-}}{{/name}}</td>
+                                    <td id="lineTd"> {{#deptName}}[{{deptName}}]{{/deptName}} {{#positionName}}[{{positionName}}]{{/positionName}} {{#name}}{{name}}{{/name}} </td>
                                 {{/subLineResponseDTOS}}
                                 <td>
                                     <div class="icheck-primary d-inline ml-2 mx-auto">
@@ -245,33 +245,35 @@
         })
 
         $("#storage").click(function (){
-//            console.log($('#docbox').val());
+
             if ((writer == user) && ($('#approvalState').val() == 0)) {
                 var editText = editor.getData();
                 $('.approContent').val(editText);
-//                console.log(editText);
-//                console.log($('.approContent').val(editText));
-//                console.log($('#approvalOrder').val());
-//                console.log( $('#regdate').val());
-                var data = {
-                    approvalName: $('#approvalName').val(),
-                    lineNo: $('#applyVal').val(),
-                    docboxNo: $('#docbox').val(),
-                    approContent: $('.approContent').val(),
-                    approvalOrder: parseInt($('#approvalOrder').val()),
-                    approvalState: parseInt($('#approvalState').val()),
-                    regdate : $('#regdate').val()
-                };
-                var id = $('#approvalNo').val();
-                $.ajax({
-                    type: 'PUT',
-                    url: '/approval/update/' + id,
-                    datatype: 'json',
-                    contentType: 'application/json; charset=utf-8',
-                    data: JSON.stringify(data)
-                }).done(function () {
-                })
-                alert("문서가 수정되었습니다.")
+                if ($("#applyVal").val() == "") {
+                    alert("결재선을 선택해주세요")
+                } else if ($(".docbox").val() == "문서함을 선택해주세요") {
+                    alert("문서함을 선택해주세요")
+                } else {
+                    var data = {
+                        approvalName: $('#approvalName').val(),
+                        lineNo: $('#applyVal').val(),
+                        docboxNo: $('#docbox').val(),
+                        approContent: $('.approContent').val(),
+                        approvalOrder: parseInt($('#approvalOrder').val()),
+                        approvalState: parseInt($('#approvalState').val()),
+                        regdate : $('#regdate').val()
+                    };
+                    var id = $('#approvalNo').val();
+                    $.ajax({
+                        type: 'PUT',
+                        url: '/approval/update/' + id,
+                        datatype: 'json',
+                        contentType: 'application/json; charset=utf-8',
+                        data: JSON.stringify(data)
+                    }).done(function () {
+                    })
+                    alert("문서가 수정되었습니다.")
+                }
             }
             else {
                 alert("권한이 없습니다.")
@@ -283,31 +285,33 @@
         $("#save").click(function (){
 //            console.log($('#docbox').val());
             if ((writer == user) && ($('#approvalState').val() == 0)) {
-                console.log( $('#regdate').val());
                 var editText = editor.getData();
                 $('.approContent').val(editText);
-//                console.log(editText);
-//                console.log($('.approContent').val(editText));
-//                console.log($('#approvalOrder').val());
-                var data = {
-                    approvalName: $('#approvalName').val(),
-                    lineNo: $('#applyVal').val(),
-                    docboxNo: $('#docbox').val(),
-                    approContent: $('.approContent').val(),
-                    approvalOrder: parseInt($('#approvalOrder').val()) + 1,
-                    approvalState: parseInt($('#approvalState').val()) + 1,
-                    regdate : $('#regdate').val()
-                };
-                var id = $('#approvalNo').val();
-                $.ajax({
-                    type: 'PUT',
-                    url: '/approval/update/' + id,
-                    datatype: 'json',
-                    contentType: 'application/json; charset=utf-8',
-                    data: JSON.stringify(data)
-                }).done(function () {
-                })
-                alert("결재가 요청되었습니다.")
+                if ($("#applyVal").val() == "") {
+                    alert("결재선을 선택해주세요")
+                } else if ($(".docbox").val() == "문서함을 선택해주세요") {
+                    alert("문서함을 선택해주세요")
+                } else {
+                    var data = {
+                        approvalName: $('#approvalName').val(),
+                        lineNo: $('#applyVal').val(),
+                        docboxNo: $('#docbox').val(),
+                        approContent: $('.approContent').val(),
+                        approvalOrder: parseInt($('#approvalOrder').val()) + 1,
+                        approvalState: parseInt($('#approvalState').val()) + 1,
+                        regdate : $('#regdate').val()
+                    };
+                    var id = $('#approvalNo').val();
+                    $.ajax({
+                        type: 'PUT',
+                        url: '/approval/update/' + id,
+                        datatype: 'json',
+                        contentType: 'application/json; charset=utf-8',
+                        data: JSON.stringify(data)
+                    }).done(function () {
+                    })
+                    alert("결재가 요청되었습니다.")
+                }
             }
             else {
                 alert("권한이 없습니다.")

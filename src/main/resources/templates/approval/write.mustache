@@ -41,23 +41,23 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col">기안제목</div>
-                            <input type="text" class="form-control" name="approvalName" placeholder="기안명을 입력해주세요">
+                            <input type="text" class="form-control approvalName" name="approvalName" placeholder="기안명을 입력해주세요">
                         </div>
                         <br>
                         <div class="row">
                             <div class="col">기안일자</div>
-                            <input type="date" class="form-control" name="regdate">
+                            <input type="date" class="form-control regdate" name="regdate">
                         </div>
-                        <br>
-                        <div class="row">
-                            <div class="col">공개라인</div>
-                            <select class="d-flex custom-select" name="positionNo">
-                                <option selected>공개라인을 선택해주세요</option>
-                                {{#position}}
-                                    <option value="{{positionNo}}">{{positionName}} 이상</option>
-                                {{/position}}
-                            </select>
-                        </div>
+<!--                        <br>-->
+<!--                        <div class="row">-->
+<!--                            <div class="col">공개라인</div>-->
+<!--                            <select class="d-flex custom-select" name="positionNo">-->
+<!--                                <option selected>공개라인을 선택해주세요</option>-->
+<!--                                {{!#position}}-->
+<!--                                    <option value="{{!positionNo}}">{{!positionName}} 이상</option>-->
+<!--                                {{!/position}}-->
+<!--                            </select>-->
+<!--                        </div>-->
                         <br>
                         <div class="row">
                             <div class="col">결재선</div>
@@ -69,20 +69,10 @@
                             <div class="col-12 testBox"></div>
                             <input type="hidden" class="form-control applyBox" id="applyVal" name="lineNo" readonly>
                         </div>
-<!--                        <br>-->
-<!--                        <div class="row">-->
-<!--                            <div class="col">소속팀</div>-->
-<!--                            <select class="d-flex custom-select" name="deptNo">-->
-<!--                                <option selected>부서를 선택해주세요</option>-->
-<!--                                {{#deptList}}-->
-<!--                                    <option value="{{deptNo}}">{{deptName}}</option>-->
-<!--                                {{/deptList}}-->
-<!--                            </select>-->
-<!--                        </div>-->
                         <br>
                         <div class="row">
                             <div class="col">문서함</div>
-                            <select class="d-flex custom-select" name="docboxNo">
+                            <select class="d-flex custom-select docbox" name="docboxNo">
                                 <option selected>문서함을 선택해주세요</option>
                                 {{#docboxList}}
                                     <option value="{{docboxNo}}">{{docboxName}}</option>
@@ -181,7 +171,7 @@
                                 <td>{{lineName}}</td>
                                 <td>{{userName}}</td>
                                 {{#subLineResponseDTOS}}
-                                    <td> [{{deptName}}] [{{positionName}}] {{#name}}{{name}}{{/name}}{{^name}}{{-}}{{/name}}</td>
+                                    <td id="lineTd"> {{#deptName}}[{{deptName}}]{{/deptName}} {{#positionName}}[{{positionName}}]{{/positionName}} {{#name}}{{name}}{{/name}} </td>
                                 {{/subLineResponseDTOS}}
                                 <td>
                                     <div class="icheck-primary d-inline ml-2 mx-auto">
@@ -252,23 +242,46 @@
         })
 
         $("#save").click(function (){
+
             event.preventDefault();
-            const editText = editor.getData();
-            $("#approvalOrder").val(1);
-            $("#approvalState").val(1);
-            $(".userNo").val(user);
-            $(".approContent").val(editText);
-            $("#approvalPost").submit();
+            if ($(".approvalName").val() == "") {
+                alert("기안명을 입력해주세요")
+            } else if ($(".regdate").val() == "") {
+                alert("기안일자를 선택해주세요")
+            } else if ($("#applyVal").val() == "") {
+                alert("결재선을 선택해주세요")
+            } else if ($(".docbox").val() == "문서함을 선택해주세요") {
+                alert("문서함을 선택해주세요")
+            } else {
+                const editText = editor.getData();
+                $("#approvalOrder").val(1);
+                $("#approvalState").val(1);
+                $(".userNo").val(user);
+                $(".approContent").val(editText);
+                alert("작성이 완료되었습니다")
+                $("#approvalPost").submit();
+            }
         });
 
         $("#storage").click(function (){
             event.preventDefault();
+            if ($(".approvalName").val() == "") {
+                alert("기안명을 입력해주세요")
+            } else if ($(".regdate").val() == "") {
+                alert("기안일자를 선택해주세요")
+            } else if ($("#applyVal").val() == "") {
+                alert("결재선을 선택해주세요")
+            } else if ($(".docbox").val() == "문서함을 선택해주세요") {
+                alert("문서함을 선택해주세요")
+            } else {
             const editText = editor.getData();
             $("#approvalOrder").val(0);
             $("#approvalState").val(0);
             $(".userNo").val(user);
             $(".approContent").val(editText);
+                alert("임시저장이 완료되었습니다")
             $("#approvalPost").submit();
+            }
         });
 
     })

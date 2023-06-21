@@ -92,14 +92,16 @@ public class ApprovalServiceTest {
     void getListTest() {
         final Long userNo = 1L;
         List<ApprovalResponseDto> listDto = approvalService.getMyList(userNo);
-        listDto.forEach(System.out::println);
+        log.info("나의 리스트: {}", listDto);
+        log.info("나의 리스트: {}", listDto.size());
+//        listDto.forEach(System.out::println);
 
     }
     
     @Test
     @DisplayName("결재삭제 테스트")
     void deleteTest() {
-        final Long approvalNo = 30L;
+        final Long approvalNo = 51L;
         approvalService.delete(approvalNo);
         System.out.println("삭제완료");
     }
@@ -107,9 +109,10 @@ public class ApprovalServiceTest {
     @Test
     @DisplayName("결재자리스트 테스트")
     void getApprovalMemberTest() {
-        final Long approvalNo = 37L;
+        final Long approvalNo = 52L;
         List<ApprovalLineDto> lineDtos = approvalService.getApprovalUserName(approvalNo);
         log.info("subLineResponseDTOList: {}",lineDtos);
+        log.info("subLineResponseDTOList: {}",lineDtos.size());
     }
 
     //    @Test

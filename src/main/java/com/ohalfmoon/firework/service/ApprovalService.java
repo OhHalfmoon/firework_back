@@ -179,6 +179,10 @@ public class ApprovalService {
     @Transactional
     public void delete(Long approvalNo) {
         ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
+        AlarmEntity alarmEntity = AlarmEntity.builder().approvalNo(ApprovalEntity.builder().approvalNo(approvalNo).build()).build();
+        if (alarmEntity != null) {
+            alarmRepository.deleteById(alarmEntity.getAlarmNo());
+        }
         approvalRepository.delete(approvalEntity);
     }
 

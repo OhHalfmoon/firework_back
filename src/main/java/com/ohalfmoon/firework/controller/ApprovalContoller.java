@@ -61,7 +61,7 @@ public class ApprovalContoller {
         return "redirect:/";
     }
 
-    //상태값 변경 : 임시저장후 기안제출 / 결재완료처리
+    //상태값 변경 : 임시저장후 기안제출
     @PutMapping("/{approvalNo}")
     @ResponseBody
     public Long updateStorage(@PathVariable Long approvalNo, @RequestBody ApprovalStateDto stateDto) {
@@ -87,7 +87,7 @@ public class ApprovalContoller {
     }
 
 
-
+    // 기안 단일 조회
     @GetMapping("/{approvalNo}")
     public String get (@PathVariable Long approvalNo, @AuthenticationPrincipal CustomUserDetails user, Model model) {
         log.info("테스트:{}", approvalNo);
@@ -104,6 +104,7 @@ public class ApprovalContoller {
         return approvalService.getMyList(userNo);
     }
 
+    //기안문서양식 선택화면
     @GetMapping("/formList")
     public String getFormList(@AuthenticationPrincipal CustomUserDetails user, Model model) {
         model.addAttribute("user", user);
@@ -112,6 +113,7 @@ public class ApprovalContoller {
         return "approval/formList";
     }
 
+    //기안 작성 화면
     @GetMapping("/write/{formNo}")
     public String write(@PathVariable Long formNo, @AuthenticationPrincipal CustomUserDetails user, Model model) {
         model.addAttribute("user", user);
@@ -132,6 +134,7 @@ public class ApprovalContoller {
         return "approval/write";
     }
 
+    //기안 수정 화면
     @GetMapping("/update/{approvalNo}")
     public String modify(@PathVariable Long approvalNo, @AuthenticationPrincipal CustomUserDetails user, Model model) {
         model.addAttribute("user", user);
