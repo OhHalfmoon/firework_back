@@ -2,6 +2,7 @@ package com.ohalfmoon.firework.controller;
 
 import com.ohalfmoon.firework.dto.FormResponseDto;
 import com.ohalfmoon.firework.dto.FormSaveDto;
+import com.ohalfmoon.firework.dto.FormUpdateDto;
 import com.ohalfmoon.firework.dto.paging.PageRequestDTO;
 import com.ohalfmoon.firework.dto.paging.PageResponseDTO;
 import com.ohalfmoon.firework.model.FormEntity;
@@ -13,11 +14,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -89,5 +94,32 @@ public class FormViewController {
         model.addAttribute("formDto", formDto);
 
         return "admin/form/form-update";
+    }
+
+    @PutMapping(value = "update/{formNo}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<?> update(@PathVariable Long formNo, @RequestBody FormUpdateDto updateDto){
+        Long update = formService.update(formNo, updateDto);
+
+        FormResponseDto byFormNo = formService.findByFormNo(formNo);
+
+        if(update > 0){
+            return ResponseEntity.ok().body(byFormNo);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/delete/{formNo}")
+    @ResponseBody
+    public ResponseEntity<?> deleteForm(@PathVariable Long formNo) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("formNo", formNo);
+
+        if(formService.delete(formNo)){
+            return ResponseEntity.ok().body(body);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

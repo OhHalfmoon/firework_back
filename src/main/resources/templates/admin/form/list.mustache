@@ -166,17 +166,11 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-<!--                                <label for="formNo-name" class="col-form-label">Recipient:</label>-->
-<!--                                <input type="text" class="form-control" id="formNo-name">-->
-                            </div>
-                            <p><span id="formNo"></span>번 양식을 삭제하시겠습니까?</p>
-                        </form>
+                            <p><span id="formNoText"></span>번 양식을 삭제하시겠습니까?</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                        <button type="button" class="btn btn-danger">삭제</button>
+                        <button type="button" class="btn btn-danger submitBtn">삭제</button>
                     </div>
                 </div>
             </div>
@@ -200,8 +194,37 @@
 
             var modal = $(this)
 
+            var deleteUrl = "{{contextPath}}/admin/form/delete/" + formNo;
+
             modal.find('.modal-title').text('양식 삭제');
-            modal.find("#formNo").text(formNo)
+            modal.find("#formNoText").text(formNo);
+            modal.find("#formNo").val(formNo);
+
+            var form = modal.find('form');
+
+            form.find("#formNo")
+
+            var submitBtn = modal.find('.submitBtn')
+
+            submitBtn.on("click", () =>{
+                // console.log("입력 테스트");
+                $.ajax({
+                    url: deleteUrl,
+                    method: 'DELETE',
+                    success: function(response) {
+                        console.log(response.data);
+
+                        window.location.href = "{{contextPath}}/admin/form";
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("xhr", xhr);
+                        console.log("status", status);
+                        console.log("error", error);
+                    }
+                });
+            });
+
+
         })
 
     })
