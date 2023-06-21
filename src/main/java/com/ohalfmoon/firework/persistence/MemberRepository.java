@@ -23,4 +23,6 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
     List<MemberEntity> findAllByState(int state);
 
     Page<MemberEntity> findAllByUserNoNotLike(Long userNo, Pageable pageable);
+
+    List<MemberEntity> findAllByUserNoNotLike(Long userNo);
 }

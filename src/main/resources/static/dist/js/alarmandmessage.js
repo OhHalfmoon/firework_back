@@ -1,5 +1,4 @@
 $(function () {
-    var userNo = 1;
     // user.userNo로 바꿀 예정!!
     moment.locale('ko');
     alarmService.getCount(userNo, function (result) {
@@ -168,6 +167,7 @@ $(function () {
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
+            <form method="post">
             <!-- Modal body -->
             <div class="modal-body">
                 <div class="card-body">
@@ -182,7 +182,7 @@ $(function () {
                     <hr/>
                     <div class="row">
                         <div class="col-2 text-center">
-                            <button class="btn btn-outline-secondary btn-xs" data-toggle="modal" data-target="#selectReceiverModal">받는 사람</button>
+                            <button class="btn btn-outline-secondary btn-xs" type="button" data-toggle="modal" data-target="#selectReceiverModal">받는 사람</button>
                         </div>
                         <div class="col-10 toReceiver">
 
@@ -199,10 +199,10 @@ $(function () {
                     </div>
                 </div>
             </div>
-
+            </form>
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-success btn-sm">전송</button>
+                <button type="submit" class="btn btn-success btn-sm">전송</button>
                 <button type="button" class="btn btn-outline-primary btn-sm" id="toMessageList">목록</button>
             </div>`
 
@@ -371,17 +371,16 @@ $(function () {
     })
     messageService.getAllUser({senderNo: userNo}, function (result) {
         var str = "";
-        for (var i in result.memberList.content) {
-            str += getMemberLiStr(result.memberList.content[i]);
+        for (var i in result) {
+            str += getMemberLiStr(result[i]);
         }
         $(".memberList").html(str);
-        $(".memberpagination").html(getPage(result.pageResponseDTO));
     })
 
     function getMemberLiStr(obj) {
-        return `<div class="row memberCheck">
+        return `<div class="row">
                     <div class="col-2">
-                        <input type="checkbox" class="mchk" id="memberInfo${obj.userNo}" value="${obj.userNo}">
+                        <input type="checkbox" class="mchk" id="memberInfo${obj.userNo}" value="${obj.userNo},${obj.name}">
                     </div>
                     <div class="col-3 text-center">
                         <label for="memberInfo${obj.userNo}">
@@ -403,26 +402,37 @@ $(function () {
 
     }
 
-    $(".memberpagination").on("click", ".page-link", function () {
-        var pageNum = $(this).data("pagenum");
-        messageService.getAllUser({senderNo: userNo, pageNum: pageNum}, function (result) {
-            var str = "";
-            for (var i in result.memberList.content) {
-                str += getMemberLiStr(result.memberList.content[i]);
-            }
-            $(".memberpagination").html(getPage(result.pageResponseDTO));
-            $(".memberList").html(str);
-        });
-    })
-
     var arrUser = new Array();
 
-    $(".selectConfirm").on("change", ".mchk", function (){
-        if($(this).is(":checked")){
+    $(".memberList").on("change", ".mchk", function (){
+        if($(this).is(":checked")) {
             arrUser.push($(this).val())
+            console.log(arrUser);
+
         }
         else if(!$(this).is(":checked")) {
-            arrUser.push($(this).val())
+            for (let i = 0; i < arrUser.length; i++) {
+                if (arrUser[i] === $(this).val()) {
+                    arrUser.splice(i, 1);
+                    i--;
+                }
+                console.log(arrUser);
+            }
         }
     })
+
+    $(".selectConfirm").click(function () {
+        var str = "";
+        for(let i in arrUser) {
+            str += getSelectedMember(arrUser[i]);
+        }
+        $(".toReceiver").html(str);
+    })
+
+    function getSelectedMember(obj) {
+        var str = obj.split(',')
+        return "<button type='button' class='btn btn-success'>"+str[1]+"</button>&nbsp;<input type='hidden' value='"+str[0]+"'>";
+    }
+
+
 });

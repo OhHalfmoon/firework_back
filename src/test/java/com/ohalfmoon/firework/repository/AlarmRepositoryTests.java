@@ -1,6 +1,7 @@
 package com.ohalfmoon.firework.repository;
 
 import com.ohalfmoon.firework.model.AlarmEntity;
+import com.ohalfmoon.firework.model.ApprovalEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.persistence.AlarmRepository;
 import com.ohalfmoon.firework.persistence.ApprovalRepository;
@@ -128,5 +129,10 @@ public class AlarmRepositoryTests {
         Slice<AlarmEntity> alarmEntities =
                 alarmRepository.findSliceByAlarmReceiver(MemberEntity.builder().userNo(1L).build(), pageable);
         log.info("{}", alarmEntities.getContent());
+    }
+
+    @Test
+    public void findAllByApprovalNo() {
+        log.info("{}",alarmRepository.findAllByApprovalNo(ApprovalEntity.builder().approvalNo(51L).build()));
     }
 }
