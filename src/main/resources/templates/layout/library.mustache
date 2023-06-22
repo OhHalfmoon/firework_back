@@ -192,6 +192,7 @@
                 let godate = new Date().getTime();
                 attendService.goToWork({user:user, godate:godate})
                 checkGoWork = true;
+                alert("출근 등록이 완료되었습니다.");
             }
         })
 
@@ -206,7 +207,7 @@
                     let leavedate = new Date().getTime();
                     attendService.leaveWork({attendNo:result, leavedate:leavedate})
                 });
-
+                alert("퇴근 등록이 완료되었습니다.");
             }
         })
     })
