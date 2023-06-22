@@ -28,5 +28,4 @@ public interface ApprovalRepository extends JpaRepository<ApprovalEntity, Long> 
 
     List<ApprovalEntity> findAllByMasterLineEntity(MasterLineEntity masterLineEntity);
 
-
 }

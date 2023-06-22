@@ -32,4 +32,5 @@ public class DocboxService {
                 .map(DocboxListResponseDTO::new)
                 .collect(Collectors.toList());
     }
+
 }
