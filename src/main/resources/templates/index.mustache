@@ -11,6 +11,13 @@
     <div class="wrapper">
 
         {{>layout/header}}
+        currentUser :
+        {{#currentUser}}
+            {{currentUser}}
+        {{/currentUser}}
+        {{^currentUser}}
+            로그인해주세요
+        {{/currentUser}}
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
