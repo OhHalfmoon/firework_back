@@ -8,32 +8,40 @@ import lombok.NoArgsConstructor;
 
 /**
  * packageName :  com.ohalfmoon.firework.dto.member
- * fileName : MemberUpdateState
+ * fileName : MemberUpdateByAdminRequestDTO
  * author :  ycy
- * date : 2023-06-15
+ * date : 2023-06-22
  * description :
  * ===========================================================
  * DATE                 AUTHOR                NOTE
  * -----------------------------------------------------------
- * 2023-06-15                ycy             최초 생성
+ * 2023-06-22                ycy             최초 생성
  */
-@NoArgsConstructor
 @Data
-public class
-MemberUpdateStateDTO {
+@NoArgsConstructor
+public class MemberUpdateByAdminRequestDTO {
     private Long userNo;
+    private String name;
     private int state;
+    private Role roleName;
+    private Long deptNo;
+    private Long positionNo;
 
     @Builder
-    public MemberUpdateStateDTO(Long userNo, int state) {
+    public MemberUpdateByAdminRequestDTO(Long userNo, String name, int state, Role roleName, Long deptNo, Long positionNo) {
         this.userNo = userNo;
+        this.name = name;
         this.state = state;
+        this.roleName = roleName;
+        this.deptNo = deptNo;
+        this.positionNo = positionNo;
     }
-
     public MemberEntity toEntity() {
         return MemberEntity.builder()
-                .userNo(userNo)
+                .name(name)
                 .state(state)
+                .roleName(roleName)
                 .build();
     }
+
 }

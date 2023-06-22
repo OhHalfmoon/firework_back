@@ -3,14 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Dashboard</title>
+    <title>FireWorks-Admin</title>
 
     {{>layout/head}}
 </head>
 <body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
     <div class="wrapper">
 
-        {{>layout/adminHeader}}
+        {{>layout/header}}
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
@@ -19,12 +19,12 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>회원 승인</h1>
+                            <h1>관리자 - 회원 승인</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="{{contextPath}}/admin">Home</a></li>
-                                <li class="breadcrumb-item active">회원 승인</li>
+                                <li class="breadcrumb-item"><a href="{{contextPath}}/">Home</a></li>
+                                <li class="breadcrumb-item active">관리자-회원 승인</li>
                             </ol>
                         </div>
                     </div>
@@ -140,7 +140,7 @@
             <!-- /.content -->
         </div>
         <!-- /.content-wrapper -->
-        {{>layout/adminFooter}}
+        {{>layout/footer}}
 
 
     </div>
@@ -149,15 +149,16 @@
     {{>layout/library}}
 <script>
     $(function () {
+        // 전체 선택 시작
         $("#selectAll").click(function () {
             if($("#selectAll").is(":checked"))  {
                 $("input[name=ckBox]").prop("checked", true);
                 console.log($("input[name='ckBox']:checked").length)
-                // console.log($("#chkBox").length);
             }else {
                 $("input[name=ckBox]").prop("checked", false);
             }
         });
+        // 전체 선택 끝
 
         $("input[name=ckBox]").click(function() {
             if($("input[name='ckBox']:checked").length === $(".tableSum").length) {
@@ -166,49 +167,52 @@
                 $("#selectAll").prop("checked", false)
             }
         });
-
-        let i = 0;
         $(".btnUpdate").click(function(event) {
             event.preventDefault();
             let result = confirm("승인 하시겠습니까?")
-            const chkCnt = $("input[name='ckBox']:checked").length;
             let dto = [];
-            <!--let userId = {{!userNo}};-->
-            // console.log(userId)
             if(result) {
                 $("input[name='ckBox']:checked").each(function () {
                     let userNo = $(this).closest("tr").find("input[name='userNo']").val();
                     let state = $(this).closest("tr").find("select[name='state']").val();
                     dto.push({userNo : userNo, state : state});
-                    console.log("userNo : ", userNo)
-                    console.log("state : ", state)
+                    // console.log("userNo : ", userNo)
+                    // console.log("state : ", state)
                 })
                 if(dto.length > 0) {
                     console.log("선택된 회원 :", dto)
                     // $("#updateFrm").attr("action", "/admin/member/memberUpdate/"+selectedUsers);
                     // $("#updateFrm").submit();
-                    for(let i=0; i<dto.length; i++) {
-                        let userNo = dto[i].userNo;
-                        let state = dto[i].state;
+                    // for(let i=0; i<dto.length; i++) {
+                    //     let userNo = dto[i].userNo;
+                    //     let state = dto[i].state;
                         $.ajax({
                             // url : "/admin/member/memberUpdate/"+selectedUsers,
-                            url: "/admin/member/memberUpdate/" + userNo + "/" + state,
+                            url: "/admin/member/memberUpdateBulk/",
                             type: "POST",
                             contentType: "application/json",
                             // data: JSON.stringify(selectedUsers),
-                            data: JSON.stringify({ "dto": dto }),
-                            dataType: "json",
-                            success: function () {
-                                alert("굿!")
+                            data: JSON.stringify(dto),
+                            dataType: "text",
+                            success: function (response) {
+                                // console.log(response)
+                                console.log(dto);
+                                console.log(($("input[name='ckBox']:checked").closest("tr").find("select[name='state']").val()));
+                                alert("수정되었습니다.")
+                                // window.location.href = "/admin/member/memberUpdate";
+                                if($("input[name='ckBox']:checked").closest("tr").find("select[name='state']").val() != 0) {
+                                    $("input[name='ckBox']:checked").closest("tr").remove();
+                                }
                             },
-                            error: function () {
-                                console.log("뭔데 그래서", userNo)
-                                alert("하...")
+                            error: function (request, error) {
+                                // console.log(request);
+                                // console.log(error)
+                                // console.log(JSON.stringify(dto))
+                                alert("실패!")
                             }
 
                         })
-                    }
-                    alert("수정되었습니다.")
+                    // }
                 }
                 else {
                     alert("회원을 선택해주세요")
@@ -216,21 +220,6 @@
             }else {
                 alert("승인이 취소되었습니다.")
             }
-
-            //     const arr = new Array(chkCnt);
-            //     console.log(arr)
-            //     for(let i=0; i<chkCnt; i++) {
-            //         // alert(i);
-            //         if($("input[name='ckBox']:checked")) {
-            //             console.log($("input[name='userNo']").val());
-            //             alert(i)
-            //             // console.log($("#userNo").val());
-            //         }
-            //     }
-            // }else {
-            //     alert("선택x")
-            //     return false;
-            // }
         });
     });
 </script>

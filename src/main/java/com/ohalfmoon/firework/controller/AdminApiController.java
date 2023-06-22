@@ -4,6 +4,7 @@ import com.ohalfmoon.firework.dto.member.MemberUpdateStateDTO;
 import com.ohalfmoon.firework.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,23 +28,21 @@ public class AdminApiController {
 
     private final MemberService memberService;
 
-//    @PostMapping("/member/memberUpdate/{userNo}")
-//    public Long updateState(@PathVariable Long userNo, @RequestBody MemberUpdateStateDTO dto) {
-//        Long update = memberService.recognize(userNo, dto);
-//        return update;
-//    }
-
-    @PostMapping("/member/memberUpdate/{userNo}/{dto}")
-//    public String updateState(@RequestBody MemberUpdateStateDTO dto) {
-    public String updateState(@PathVariable Long userNo, @RequestBody MemberUpdateStateDTO dto) {
+    /**
+     * 회원가입 승인
+     *
+     * @param dtos the dtos
+     * @return the response entity
+     */
+    @PostMapping("/member/memberUpdateBulk")
+    public ResponseEntity<?> updateState(@RequestBody List<MemberUpdateStateDTO> dtos) {
         String result = "error";
-        log.info("디티오는 뭔데 {} :", userNo);
-        log.info("디티오는 뭔데 {} :", dto);
-        if(dto != null) {
-            memberService.recognize(userNo, dto);
-            result = "success";
+        for(MemberUpdateStateDTO item : dtos){
+            if(item != null) {
+                memberService.recognize(item.getUserNo(), item);
+                result = "success";
+            }
         }
-        log.info("실패! : {}", result);
-        return result;
+        return ResponseEntity.ok().body(result);
     }
 }

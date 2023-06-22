@@ -140,6 +140,11 @@ public class MemberEntity {
         this.state = state;
     }
 
+    public void updateByAdmin(String username, Role roleName, int state) {
+        this.username = username;
+        this.roleName = roleName;
+        this.state = state;
+    }
 
     /**
      * Member Builder
