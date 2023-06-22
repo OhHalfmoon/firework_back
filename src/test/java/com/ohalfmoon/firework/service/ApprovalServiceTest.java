@@ -95,7 +95,6 @@ public class ApprovalServiceTest {
         log.info("나의 리스트: {}", listDto);
         log.info("나의 리스트: {}", listDto.size());
 //        listDto.forEach(System.out::println);
-
     }
     
     @Test
