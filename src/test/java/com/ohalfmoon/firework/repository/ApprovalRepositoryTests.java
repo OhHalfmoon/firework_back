@@ -79,4 +79,5 @@ public class ApprovalRepositoryTests {
         List<ApprovalEntity> list = approvalRepository.findAllByMasterLineEntity(MasterLineEntity.builder().lineNo(lineNo).build());
         log.info("리스트확인{}", list);
     }
+
 }
