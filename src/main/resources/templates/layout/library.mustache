@@ -49,10 +49,37 @@
 <!-- 알림 -->
 <script src="/dist/js/alarm.js"></script>
 <script src="/dist/js/message.js"></script>
-
-<!-- 근태 -->
+<script src="/dist/js/alarmandmessage.js"></script>
 <script src="/dist/js/attend.js"></script>
 <script>
     var userNo = {{user.userNo}}
+$(function (){
+    let user = $("#user").val();
+    let userNo = $("#userNo").val();
+    let checkGoWork = false;
+
+    $("#goToWork").click(function (e) {
+        if(confirm("출근 등록을 하시겠습니까?")) {
+            let godate = new Date().getTime();
+            attendService.goToWork({user:user, godate:godate})
+            checkGoWork = true;
+        }
+    })
+
+    $("#leaveWork").click(function () {
+        if(confirm("퇴근 등록을 하시겠습니까?")) {
+            if(checkGoWork === false) {
+                alert("출근 등록을 먼저 해주세요.");
+                return;
+            }
+            var attendNo = attendService.getAttendNo(userNo, function (result) {
+                // 퇴근 등록 시 퇴근 시간을 기록
+                let leavedate = new Date().getTime();
+                attendService.leaveWork({attendNo:result, leavedate:leavedate})
+            });
+
+        }
+    })
+})
 </script>
-<script src="/dist/js/alarmandmessage.js"/>
+
