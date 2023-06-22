@@ -18,20 +18,20 @@ var messageService = (function () {
             })
     }
 
-    // function get(alarmNo, callback) {
-    //     var url = cp + "/api/alarm/" + alarmNo;
-    //     console.log(url);
-    //     $.getJSON(url)
-    //         .done(function(data) {
-    //             if(callback) {
-    //                 callback(data);
-    //             }
-    //         })
-    // }
+    function get(messageNo, callback) {
+        var url = "/api/message/" + messageNo;
+        console.log(url);
+        $.getJSON(url)
+            .done(function(data) {
+                if(callback) {
+                    callback(data);
+                }
+            })
+    }
 
     // 알림 수 출력
     function getCount(userNo, callback, error) {
-        var url = "/api/alarm/count/" + userNo;
+        var url = "/api/message/count/" + userNo;
         $.getJSON(url)
             .done(function (data){
                 if(callback) {
@@ -107,12 +107,12 @@ var messageService = (function () {
             })
     }
     return {
-        // getCount:getCount,
+        getCount:getCount,
         add:add,
         getListByReceiver:getListByReceiver,
         getListBySender:getListBySender,
         getAllUser:getAllUser,
-        // get:get,
+        get:get,
         // remove:remove,
         // modify:modify
     }

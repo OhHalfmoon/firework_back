@@ -1,31 +1,4 @@
 $(function () {
-
-    let user = $("#user").val();
-    // let userNo = $("#userNo").val();
-    let checkGoWork = false;
-
-    $("#goToWork").click(function (e) {
-        if(confirm("출근 등록을 하시겠습니까?")) {
-            let godate = new Date().getTime();
-            attendService.goToWork({user:user, godate:godate})
-            checkGoWork = true;
-        }
-    })
-
-    $("#leaveWork").click(function () {
-        if(confirm("퇴근 등록을 하시겠습니까?")) {
-            if(checkGoWork === false) {
-                alert("출근 등록을 먼저 해주세요.");
-                return;
-            }
-            var attendNo = attendService.getAttendNo(userNo, function (result) {
-                // 퇴근 등록 시 퇴근 시간을 기록
-                let leavedate = new Date().getTime();
-                attendService.leaveWork({attendNo:result, leavedate:leavedate})
-            });
-
-        }
-    })
     // user.userNo로 바꿀 예정!!
     moment.locale('ko');
     alarmService.getCount(userNo, function (result) {
@@ -129,13 +102,12 @@ $(function () {
                     <div class="col-2 text-center">
 				        ${obj.senderName}
                     </div>
-                    <div class="col-5 text-center">
+                    <div class="col-5 text-center clickMessage" data-messageno="${obj.messageNo}" data-num="0" style=" cursor : pointer;">
 				        ${obj.messageTitle}
                     </div>
 				    <div class="col-4 text-center">
 				        ${moment(obj.regdate).locale("ko").format('YYYY/MM/D HH:mm')}
                     </div>
-                    </a>
 				    `;
 
     }
@@ -146,13 +118,12 @@ $(function () {
                     <div class="col-2 text-center">
 				        ${obj.receiverName}
                     </div>
-                    <div class="col-5 text-center">
+                    <div class="col-5 text-center clickMessage" data-messageno="${obj.messageNo}" data-num="1" style=" cursor : pointer;">
 				        ${obj.messageTitle}
                     </div>
 				    <div class="col-4 text-center">
 				        ${moment(obj.regdate).locale("ko").format('YYYY/MM/D HH:mm')}
                     </div>
-                    </a>
 				    `;
     }
 
@@ -337,6 +308,7 @@ $(function () {
                     $(".messages").html(str);
                 });
             }
+
         })
 
         $(".messageCategory").on("click", "a", function () {
@@ -478,6 +450,68 @@ $(function () {
         return "<button type='button' class='btn btn-success'>"+str[1]+"</button>&nbsp;<input type='hidden' name='userNo' value='"+str[0]+"'>";
     }
 
+    messageService.getCount(userNo, function (result) {
+        var tmp = '99+';
+        if(result > 100) $(".messagecount").html(tmp);
+        else $(".messagecount").html(result);
+    })
 
+    $('.messages').on('click','.clickMessage', function () {
+        var str = "";
+        var messageNo = $(this).data("messageno");
+        var plag = $(this).data("num");
+        messageService.get(messageNo, function (result){
 
+            if(plag == 0) {result.who = '보낸 사람'; result.name=result.senderName}
+            else {result.who = '받는 사람'; result.name=result.receiverName}
+            console.log(result)
+            str += getMessageOne(result);
+            console.log(str);
+            $(".messageModal").html(str);
+        })
+
+    })
+
+    function getMessageOne(obj) {
+        return`<div class="modal-header">
+                <h4 class="modal-title">쪽지확인</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-2 text-center">
+                            <h5>제목</h5>
+                        </div>
+                        <div class="col-10">
+                            <input type="text" size=70 maxlength=35 id="messageTitle" value="${obj.messageTitle}" readonly>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-2 text-center">
+                            ${obj.who}
+                        </div>
+                        <div class="col-10 realName">
+                            ${obj.name}
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-2 text-center">
+                            <h5>내용</h5>
+                        </div>
+                        <div class="col-10">
+                            <textarea rows="7" cols="70" style="resize: none" maxlength="300" id="messageContent" readonly>${obj.messageContent}</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary btn-sm" id="toMessageList">목록</button>
+            </div>`
+    }
 });
