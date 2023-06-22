@@ -1,8 +1,10 @@
 package com.ohalfmoon.firework.service;
 
+import com.ohalfmoon.firework.dto.member.MemberUpdateByAdminRequestDTO;
 import com.ohalfmoon.firework.dto.member.MemberUpdateDTO;
 import com.ohalfmoon.firework.dto.member.MemberUpdatePwDTO;
 import com.ohalfmoon.firework.dto.member.MemberUpdateStateDTO;
+import com.ohalfmoon.firework.model.Role;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,5 +64,17 @@ public class MemberServiceTest {
         dto.setEmail("bnoc@naver.com");
         dto.toEntity();
         memberService.update(2L, dto);
+    }
+
+    @Test
+    @DisplayName("회원정보(관리자)")
+    public void updateByAdminTest() {
+        MemberUpdateByAdminRequestDTO dto = new MemberUpdateByAdminRequestDTO();
+        dto.setName("관리자가 수정");
+        dto.setState(2); // 회원 탈퇴
+        dto.setRoleName(Role.ROLE_TL);
+        dto.setPositionNo(2L);
+        dto.setPositionNo(10L);
+        memberService.updateByAdmin(18L, dto);
     }
 }

@@ -171,6 +171,27 @@ public class MemberService {
                 .stream().map(MemberResponseDTO::new).collect(Collectors.toList());
     }
 
+    @Transactional
+    public Long updateByAdmin(Long userNo, MemberUpdateByAdminRequestDTO dto) {
+        MemberEntity entity = memberRepository.findById(userNo)
+                .orElseThrow(() -> new IllegalArgumentException("해당 id가 존재하지 않습니다." + userNo));
+
+        DeptEntity byId = deptRepository
+                .findById(dto.getDeptNo())
+                .orElseThrow(() -> new IllegalArgumentException(""));
+        entity.updateDeptNo(byId);
+
+        PositionEntity byId2 = positionRepository
+                .findById(dto.getPositionNo())
+                .orElseThrow(() -> new IllegalArgumentException(""));
+        entity.updatePositionNo(byId2);
+
+        entity.updateByAdmin(dto.getName(), dto.getRoleName(), dto.getState());
+        //(dto.getEmail(), dto.getPhoneNum(), dto.getName(), dto.getBirthdate(), dto.getStartdate());
+
+        return userNo;
+    }
+
     /**
      * state값이 0인 회원 return
      *

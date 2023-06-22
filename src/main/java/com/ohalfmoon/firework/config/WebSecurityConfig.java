@@ -53,17 +53,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors()
                 .and().csrf().disable()
                 .formLogin().loginPage("/auth/signin") // 커스텀 로그인폼 사용
-//                .failureHandler(customFailureHandler) // login 실패 핸들러 임시 주석
+                .failureHandler(customFailureHandler) // login 실패 핸들러 임시 주석
                 .and().httpBasic()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // session방식 사용
-                // 배포 전까지 주석 시작
-//                .and().authorizeRequests() // 인증절차에 대한 설정을 진행
-//                .antMatchers("/auth/signin", "/auth/signup", "/auth/agree").permitAll() // 로그인, 회원가입 페이지는 권한이 없어도 사용 가능
-//                .antMatchers("/").hasAnyRole("EMPLOYEE", "TL", "CEO", "ADMIN") // 그 외 페이지는 인증된 사람만 이용가능
-//                .antMatchers("/admin").hasRole("ADMIN") // 관리자페이지 권한설정
-//                .antMatchers("/dist/**", "/plugins/**").permitAll() // 정적파일 호출
-//                .anyRequest().authenticated()
-                // 배포 전까지 주석 끝
+                // 권한관련 시작 (배포 전까지 주석)
+                .and().authorizeRequests() // 인증절차에 대한 설정을 진행
+                .antMatchers("/auth/signin", "/auth/signup", "/auth/agree").permitAll() // 로그인, 회원가입 페이지는 권한이 없어도 사용 가능
+                .antMatchers("/").hasAnyRole("EMPLOYEE", "TL", "CEO", "ADMIN") // 그 외 페이지는 인증된 사람만 이용가능
+                .antMatchers("/admin").hasRole("ADMIN") // 관리자페이지 권한설정
+                .antMatchers("/dist/**", "/plugins/**").permitAll() // 정적파일 호출
+                .anyRequest().authenticated()
+                // 권한관련 끝 (배포 전까지 주석)
                 .and().logout().logoutSuccessUrl("/auth/signin"); // logout시 이동
     }
     @Override
