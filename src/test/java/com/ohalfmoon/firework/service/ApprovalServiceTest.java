@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,6 +22,7 @@ import java.util.List;
  * -----------------------------------------------------------
  * 2023/06/08        오상현            최초 생성
  * 2023/06/09        오상현            상태변경update 테스트
+ * 2023/06/22        오상현            회원번호와 결재상태값을 통한 기안 리스트 조회
  */
 @SpringBootTest
 @Slf4j
@@ -113,6 +113,16 @@ public class ApprovalServiceTest {
         List<ApprovalLineDto> lineDtos = approvalService.getApprovalUserName(approvalNo);
         log.info("subLineResponseDTOList: {}",lineDtos);
         log.info("subLineResponseDTOList: {}",lineDtos.size());
+    }
+
+    @Test
+    @DisplayName("회원번호와 결재상태값을 통한 기안 리스트 조회")
+    void getApprovalStateListTest() {
+        final Long userNo = 15L;
+        final int approvalState = 0;
+        List<ApprovalResponseDto> listDto = approvalService.getStateList(userNo, approvalState);
+        log.info("List: {}",listDto);
+        log.info("List: {}",listDto.size());
     }
 
     //    @Test

@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
  * 2023/06/09        오상현           update관련 (문서수정, 임시저장->제출, 결재완료)
  * 2023/06/12        오상현           update 리턴 타입 변경 -> Long, getList 기능 추가
  * 2023/06/19        우성준           결재 생성 시 알림 추가
+ * 2023/06/22        오상현           회원번호와 결재상태값을 통한 기안 리스트 조회
  */
 @Service
 @Slf4j
@@ -64,12 +65,22 @@ public class ApprovalService {
         return new ApprovalResponseDto(approvalEntity);
     }
 
+    //회원번호를 통한 기안 리스트 조회
     public List<ApprovalResponseDto> getMyList (final Long userNo) {
         return approvalRepository
                 .findAllByMemberEntity(MemberEntity.builder().userNo(userNo).build())
                 .stream().map(ApprovalResponseDto::new).collect(Collectors.toList());
     }
 
+    //회원번호와 결재상태값을 통한 임시저장 리스트 조회
+    public List<ApprovalResponseDto> getStateList (final Long userNo, int approvalState) {
+
+        return approvalRepository
+                .findAllByMemberEntityAndApprovalState(MemberEntity.builder().userNo(userNo).build(),approvalState)
+                .stream().map(ApprovalResponseDto::new).collect(Collectors.toList());
+    }
+
+    //기안번호를 통한 해당기안의 결재자 리스트 조회
     public List<ApprovalLineDto> getApprovalUserName (final Long approvalNo) {
         ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
         MasterLineEntity masterLineEntity = approvalEntity.getMasterLineEntity();
@@ -187,47 +198,4 @@ public class ApprovalService {
         }
         approvalRepository.delete(approvalEntity);
     }
-
-////    임시저장
-//    @Transactional
-//    public Long storage(ApprovalSaveDto saveDto) {
-//        return approvalRepository.save(saveDto.toStorageApproval()).getApprovalNo();
-//    }
-//
-////    임시저장중인 기안을 제출
-//    @Transactional
-//    public  ApprovalResponseDto updateStorage(long approvalNo, ApprovalStorageDto storageDto) {
-//        ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
-//        approvalEntity.updateStorage(
-//                storageDto.getApprovalState()
-//        );
-//
-//        return approvalEntity.toDto();
-//    }
-
-//    @Transactional
-//    public Long update(long approvalNo, ApprovalUpdateDto updateDto) {
-//        List<ApprovalLineDto> lineDtos = getApprovalUserName(approvalNo);
-//
-//        for (int i = 0; i < lineDtos.size(); i++) {
-//            if (lineDtos.get(i).getOrderLevel() == approvalRepository.findByApprovalNo(approvalNo).getApprovalOrder()) {
-//                ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
-//
-//                approvalEntity.update(
-//                        updateDto.getApprovalName(),
-//                        updateDto.getLineNo(),
-//                        updateDto.getDocboxNo(),
-//                        updateDto.getApproContent(),
-//                        updateDto.getApprovalOrder(),
-//                        updateDto.getApprovalState()
-//                );
-//
-//                return approvalNo;
-//            } else {
-//                return null;
-//            }
-//        }
-//        return null;
-//    }
-
 }

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdminLTE 3 | Dashboard</title>
+
+    {{>layout/head}}
+</head>
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
+<div class="wrapper">
+
+    {{>layout/header}}
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">결재함</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <!-- 작업할 때 이 항목 내용을 수정하세요 -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="col-12">
+                    <div class="card card-secondary card-outline card-tabs">
+                        <div class="card-header p-0 pt-1 border-bottom-0">
+                            <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true">임시저장 문서</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">결재진행 문서</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="custom-tabs-one-messages-tab" data-toggle="pill" href="#custom-tabs-one-messages" role="tab" aria-controls="custom-tabs-one-messages" aria-selected="false">결재완료 문서</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="custom-tabs-one-settings-tab" data-toggle="pill" href="#custom-tabs-one-settings" role="tab" aria-controls="custom-tabs-one-settings" aria-selected="false">결재수신 문서</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content" id="custom-tabs-one-tabContent">
+                                <div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th>기안번호</th>
+                                            <th>제목</th>
+                                            <th>작성자</th>
+                                            <th>문서함</th>
+                                            <th>기안일</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {{#approvalStorage}}
+                                            <tr>
+                                                <td><a href="/approval/{{approvalNo}}">{{approvalNo}}</a></td>
+                                                <td><a href="/approval/{{approvalNo}}">{{approvalName}}</a></td>
+                                                <td><a href="/approval/{{approvalNo}}">{{name}}</a></td>
+                                                <td><a href="/approval/{{approvalNo}}">{{docboxName}}</a></td>
+                                                <td><a href="/approval/{{approvalNo}}">{{regdate}}</a></td>
+                                            </tr>
+                                        {{/approvalStorage}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th>기안번호</th>
+                                            <th>제목</th>
+                                            <th>작성자</th>
+                                            <th>문서함</th>
+                                            <th>기안일</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {{#approvalState}}
+                                            <tr>
+                                                <td><a href="/approval/{{approvalNo}}">{{approvalNo}}</a></td>
+                                                <td><a href="/approval/{{approvalNo}}">{{approvalName}}</a></td>
+                                                <td><a href="/approval/{{approvalNo}}">{{name}}</a></td>
+                                                <td><a href="/approval/{{approvalNo}}">{{docboxName}}</a></td>
+                                                <td><a href="/approval/{{approvalNo}}">{{regdate}}</a></td>
+                                            </tr>
+                                        {{/approvalState}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="tab-pane fade" id="custom-tabs-one-messages" role="tabpanel" aria-labelledby="custom-tabs-one-messages-tab">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th>기안번호</th>
+                                            <th>제목</th>
+                                            <th>작성자</th>
+                                            <th>문서함</th>
+                                            <th>기안일</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {{#approvalFinish}}
+                                            <tr>
+                                                <td><a href="/approval/{{approvalNo}}">{{approvalNo}}</a></td>
+                                                <td><a href="/approval/{{approvalNo}}">{{approvalName}}</a></td>
+                                                <td><a href="/approval/{{approvalNo}}">{{name}}</a></td>
+                                                <td><a href="/approval/{{approvalNo}}">{{docboxName}}</a></td>
+                                                <td><a href="/approval/{{approvalNo}}">{{regdate}}</a></td>
+                                            </tr>
+                                        {{/approvalFinish}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="tab-pane fade" id="custom-tabs-one-settings" role="tabpanel" aria-labelledby="custom-tabs-one-settings-tab">
+                                    Pellentesque vestibulum commodo nibh nec blandit. Maecenas neque magna, iaculis tempus turpis ac, ornare sodales tellus. Mauris eget blandit dolor. Quisque tincidunt venenatis vulputate. Morbi euismod molestie tristique. Vestibulum consectetur dolor a vestibulum pharetra. Donec interdum placerat urna nec pharetra. Etiam eget dapibus orci, eget aliquet urna. Nunc at consequat diam. Nunc et felis ut nisl commodo dignissim. In hac habitasse platea dictumst. Praesent imperdiet accumsan ex sit amet facilisis.
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    {{>layout/footer}}
+
+
+</div>
+<!-- ./wrapper -->
+
+{{>layout/library}}
+
+</body>
+</html>

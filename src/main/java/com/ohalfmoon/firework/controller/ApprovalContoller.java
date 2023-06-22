@@ -108,11 +108,23 @@ public class ApprovalContoller {
         model.addAttribute("approUserList", approvalLineDto);
         return "approval/get";
     }
-
+    //기안 리스트 조회
     @GetMapping("/list/{userNo}")
-    public List<ApprovalResponseDto> getList(@PathVariable Long userNo) {
-        return approvalService.getMyList(userNo);
+    public String getList(@AuthenticationPrincipal CustomUserDetails user, Model model) {
+        model.addAttribute("user", user);
+        model.addAttribute("approvalStorage", approvalService.getStateList(user.getUserNo(), 0));
+        model.addAttribute("approvalState", approvalService.getStateList(user.getUserNo(), 1));
+        model.addAttribute("approvalFinish", approvalService.getStateList(user.getUserNo(), 2));
+        //approvalService.getMyList(user.getUserNo());
+        return "approval/approvalList";
     }
+
+//    //결재중인 리스트 조회
+//    @GetMapping("/list/state/{userNo}")
+//    public List<ApprovalResponseDto> getStateList(@PathVariable Long userNo) {
+//        return approvalService.getStateList(userNo);
+//    }
+
 
     //기안문서양식 선택화면
     @GetMapping("/formList")
@@ -128,7 +140,7 @@ public class ApprovalContoller {
     public String write(@PathVariable Long formNo, @AuthenticationPrincipal CustomUserDetails user, Model model) {
         model.addAttribute("user", user);
         model.getAttribute("user");
-        log.info("{}","유저정보", user, user.getUserNo());
+        //log.info("{}","유저정보", user, user.getUserNo());
         model.addAttribute("position", positionService.positionList());
         model.addAttribute("masterList", masterLineService.getList(user.getUserNo()));
         model.addAttribute("masterName", masterLineService.getMasterName(user.getUserNo()));
