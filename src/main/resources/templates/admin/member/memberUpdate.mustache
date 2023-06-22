@@ -33,14 +33,14 @@
 
             <!-- Main content -->
             <section class="content">
-                <form method="post">
+                <form id="updateFrm">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
                                     <h3 class="card-title">가입요청된 회원</h3>
-                                    <button class="float-right btn btn-secondary" id="btn-update">변경</button>
+                                    <button class="float-right btn btn-secondary btnUpdate">변경</button>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
@@ -59,12 +59,12 @@
                                         </thead>
                                         <tbody>
                                         {{#stateByZeroUser}}
-                                        <tr id="tableSum">
-                                            <input name="userNo" type="hidden" value="{{userNo}}">
+                                        <tr class="tableSum">
+                                            <input name="userNo" id="userNo" type="hidden" value="{{userNo}}">
                                             <td>
                                                 <input type="checkbox" name="ckBox" class="checkbox" id="ckBox" style="zoom: 2.0">
                                             </td>
-                                            <td>{{username}}</td>
+                                            <td class="userId">{{username}}</td>
                                             <td>{{name}}</td>
                                             <td>{{phoneNum}}</td>
                                             <td>{{email}}</td>
@@ -159,14 +159,80 @@
             }
         });
 
-        // $("chkBox").click(function() {
-        //     if($("input[name='userCheck']:checked").length === $("#tableSum").length) {
-        //         $("#selectAll").prop("checked", true);
-        //     }else {
-        //         $("#selectAll").prop("checked", false);
-        //     }
-        // });
-    })
+        $("input[name=ckBox]").click(function() {
+            if($("input[name='ckBox']:checked").length === $(".tableSum").length) {
+                $("#selectAll").prop("checked", true)
+            }else {
+                $("#selectAll").prop("checked", false)
+            }
+        });
+
+        let i = 0;
+        $(".btnUpdate").click(function(event) {
+            event.preventDefault();
+            let result = confirm("승인 하시겠습니까?")
+            const chkCnt = $("input[name='ckBox']:checked").length;
+            let dto = [];
+            <!--let userId = {{!userNo}};-->
+            // console.log(userId)
+            if(result) {
+                $("input[name='ckBox']:checked").each(function () {
+                    let userNo = $(this).closest("tr").find("input[name='userNo']").val();
+                    let state = $(this).closest("tr").find("select[name='state']").val();
+                    dto.push({userNo : userNo, state : state});
+                    console.log("userNo : ", userNo)
+                    console.log("state : ", state)
+                })
+                if(dto.length > 0) {
+                    console.log("선택된 회원 :", dto)
+                    // $("#updateFrm").attr("action", "/admin/member/memberUpdate/"+selectedUsers);
+                    // $("#updateFrm").submit();
+                    for(let i=0; i<dto.length; i++) {
+                        let userNo = dto[i].userNo;
+                        let state = dto[i].state;
+                        $.ajax({
+                            // url : "/admin/member/memberUpdate/"+selectedUsers,
+                            url: "/admin/member/memberUpdate/" + userNo + "/" + state,
+                            type: "POST",
+                            contentType: "application/json",
+                            // data: JSON.stringify(selectedUsers),
+                            data: JSON.stringify({ "dto": dto }),
+                            dataType: "json",
+                            success: function () {
+                                alert("굿!")
+                            },
+                            error: function () {
+                                console.log("뭔데 그래서", userNo)
+                                alert("하...")
+                            }
+
+                        })
+                    }
+                    alert("수정되었습니다.")
+                }
+                else {
+                    alert("회원을 선택해주세요")
+                }
+            }else {
+                alert("승인이 취소되었습니다.")
+            }
+
+            //     const arr = new Array(chkCnt);
+            //     console.log(arr)
+            //     for(let i=0; i<chkCnt; i++) {
+            //         // alert(i);
+            //         if($("input[name='ckBox']:checked")) {
+            //             console.log($("input[name='userNo']").val());
+            //             alert(i)
+            //             // console.log($("#userNo").val());
+            //         }
+            //     }
+            // }else {
+            //     alert("선택x")
+            //     return false;
+            // }
+        });
+    });
 </script>
 </body>
 </html>
