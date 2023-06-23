@@ -256,29 +256,31 @@
                 } else if ($(".docbox").val() == "문서함을 선택해주세요") {
                     alert("문서함을 선택해주세요")
                 } else {
-                    var data = {
-                        approvalName: $('#approvalName').val(),
-                        lineNo: $('#applyVal').val(),
-                        docboxNo: $('#docbox').val(),
-                        approContent: $('.approContent').val(),
-                        approvalOrder: parseInt($('#approvalOrder').val()),
-                        approvalState: parseInt($('#approvalState').val()),
-                        regdate : $('#regdate').val()
-                    };
-                    var id = $('#approvalNo').val();
-                    $.ajax({
-                        type: 'PUT',
-                        url: '/approval/update/' + id,
-                        datatype: 'json',
-                        contentType: 'application/json; charset=utf-8',
-                        data: JSON.stringify(data)
-                    }).done(function () {
-                    })
-                    alert("문서가 수정되었습니다.")
-                    location.href='/approval/' + id;
+                    if(confirm("작성중인 문서를 저장하시겠습니까?")) {
+                        var data = {
+                            approvalName: $('#approvalName').val(),
+                            lineNo: $('#applyVal').val(),
+                            docboxNo: $('#docbox').val(),
+                            approContent: $('.approContent').val(),
+                            approvalOrder: parseInt($('#approvalOrder').val()),
+                            approvalState: parseInt($('#approvalState').val()),
+                            regdate : $('#regdate').val()
+                        };
+                        var id = $('#approvalNo').val();
+                        $.ajax({
+                            type: 'PUT',
+                            url: '/approval/update/' + id,
+                            datatype: 'json',
+                            contentType: 'application/json; charset=utf-8',
+                            data: JSON.stringify(data)
+                        }).done(function () {
+
+                            alert("문서가 수정되었습니다.")
+                            location.href='/approval/' + id;
+                        })
+                    }
                 }
-            }
-            else {
+            } else {
                 alert("권한이 없습니다.")
             }
         });
