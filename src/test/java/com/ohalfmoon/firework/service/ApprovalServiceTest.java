@@ -23,6 +23,7 @@ import java.util.List;
  * 2023/06/08        오상현            최초 생성
  * 2023/06/09        오상현            상태변경update 테스트
  * 2023/06/22        오상현            회원번호와 결재상태값을 통한 기안 리스트 조회
+ * 2023/06/23        오상현            문서함 번호에 따른 리스트 조회
  */
 @SpringBootTest
 @Slf4j
@@ -126,8 +127,19 @@ public class ApprovalServiceTest {
     }
 
     @Test
+    @DisplayName("회원번호를 통해 내가 받은 기안 리스트 조회")
     public void testGetSublineUser() {
         approvalService.getSublineUser(2L).forEach(s->log.info("{}",s.getApprovalNo()));
+    }
+
+    @Test
+    @DisplayName("문서함번호를 통해 내가 받은 기안 리스트 조회")
+    public void testGetDoxboxNo() {
+        final Long docboxNo = 4L;
+        final int approvalState = 2;
+        List<ApprovalResponseDto> listDto = approvalService.getApprovalListbyDocbox(docboxNo, approvalState);
+        log.info("List: {}",listDto);
+        log.info("List: {}",listDto.size());
     }
 
 //    @Test

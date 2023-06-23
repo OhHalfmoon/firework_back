@@ -40,16 +40,16 @@
                         <div class="card-header p-0 pt-1 border-bottom-0">
                             <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true">임시저장 문서</a>
+                                    <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true">테스트 문서함</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">결재진행 문서</a>
+                                    <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">개발1팀 문서함</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="custom-tabs-one-messages-tab" data-toggle="pill" href="#custom-tabs-one-messages" role="tab" aria-controls="custom-tabs-one-messages" aria-selected="false">결재완료 문서</a>
+                                    <a class="nav-link" id="custom-tabs-one-messages-tab" data-toggle="pill" href="#custom-tabs-one-messages" role="tab" aria-controls="custom-tabs-one-messages" aria-selected="false">총무팀 문서함</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="custom-tabs-one-settings-tab" data-toggle="pill" href="#custom-tabs-one-settings" role="tab" aria-controls="custom-tabs-one-settings" aria-selected="false">결재수신 문서</a>
+                                    <a class="nav-link" id="custom-tabs-one-settings-tab" data-toggle="pill" href="#custom-tabs-one-settings" role="tab" aria-controls="custom-tabs-one-settings" aria-selected="false">인사팀 문서함</a>
                                 </li>
                             </ul>
                         </div>
@@ -62,22 +62,23 @@
                                             <th>기안번호</th>
                                             <th>제목</th>
                                             <th>작성자</th>
-                                            <th>문서함</th>
                                             <th>기안일</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {{#approvalStorage}}
+                                        {{#test}}
                                             <tr>
                                                 <td><a href="/approval/{{approvalNo}}">{{approvalNo}}</a></td>
                                                 <td><a href="/approval/{{approvalNo}}">{{approvalName}}</a></td>
                                                 <td><a href="/approval/{{approvalNo}}">{{name}}</a></td>
-                                                <td><a href="/approval/{{approvalNo}}">{{docboxName}}</a></td>
                                                 <td><a href="/approval/{{approvalNo}}">{{regdate}}</a></td>
                                             </tr>
-                                        {{/approvalStorage}}
+                                        {{/test}}
                                         </tbody>
                                     </table>
+                                    {{^test}}
+                                        <div>작성된 문서가 없습니다.</div>
+                                    {{/test}}
                                 </div>
                                 <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
                                     <table class="table table-bordered">
@@ -86,22 +87,23 @@
                                             <th>기안번호</th>
                                             <th>제목</th>
                                             <th>작성자</th>
-                                            <th>문서함</th>
                                             <th>기안일</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {{#approvalState}}
+                                        {{#develop1}}
                                             <tr>
                                                 <td><a href="/approval/{{approvalNo}}">{{approvalNo}}</a></td>
                                                 <td><a href="/approval/{{approvalNo}}">{{approvalName}}</a></td>
                                                 <td><a href="/approval/{{approvalNo}}">{{name}}</a></td>
-                                                <td><a href="/approval/{{approvalNo}}">{{docboxName}}</a></td>
                                                 <td><a href="/approval/{{approvalNo}}">{{regdate}}</a></td>
                                             </tr>
-                                        {{/approvalState}}
+                                        {{/develop1}}
                                         </tbody>
                                     </table>
+                                    {{^develop1}}
+                                        <div>작성된 문서가 없습니다.</div>
+                                    {{/develop1}}
                                 </div>
                                 <div class="tab-pane fade" id="custom-tabs-one-messages" role="tabpanel" aria-labelledby="custom-tabs-one-messages-tab">
                                     <table class="table table-bordered">
@@ -110,22 +112,23 @@
                                             <th>기안번호</th>
                                             <th>제목</th>
                                             <th>작성자</th>
-                                            <th>문서함</th>
                                             <th>기안일</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {{#approvalFinish}}
+                                        {{#affairs}}
                                             <tr>
                                                 <td><a href="/approval/{{approvalNo}}">{{approvalNo}}</a></td>
                                                 <td><a href="/approval/{{approvalNo}}">{{approvalName}}</a></td>
                                                 <td><a href="/approval/{{approvalNo}}">{{name}}</a></td>
-                                                <td><a href="/approval/{{approvalNo}}">{{docboxName}}</a></td>
                                                 <td><a href="/approval/{{approvalNo}}">{{regdate}}</a></td>
                                             </tr>
-                                        {{/approvalFinish}}
+                                        {{/affairs}}
                                         </tbody>
                                     </table>
+                                    {{^affairs}}
+                                        <div>작성된 문서가 없습니다.</div>
+                                    {{/affairs}}
                                 </div>
                                 <div class="tab-pane fade" id="custom-tabs-one-settings" role="tabpanel" aria-labelledby="custom-tabs-one-settings-tab">
                                     <table class="table table-bordered">
@@ -134,24 +137,23 @@
                                             <th>기안번호</th>
                                             <th>제목</th>
                                             <th>작성자</th>
-                                            <th>문서함</th>
                                             <th>기안일</th>
-                                            <th>결재여부</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {{#approvalRequested}}
+                                        {{#hr}}
                                             <tr>
                                                 <td><a href="/approval/{{approvalNo}}">{{approvalNo}}</a></td>
                                                 <td><a href="/approval/{{approvalNo}}">{{approvalName}}</a></td>
                                                 <td><a href="/approval/{{approvalNo}}">{{name}}</a></td>
-                                                <td><a href="/approval/{{approvalNo}}">{{docboxName}}</a></td>
                                                 <td><a href="/approval/{{approvalNo}}">{{regdate}}</a></td>
-                                                <td><a href="/approval/{{approvalNo}}">진행중</a></td>
                                             </tr>
-                                        {{/approvalRequested}}
+                                        {{/hr}}
                                         </tbody>
                                     </table>
+                                    {{^hr}}
+                                            <div>작성된 문서가 없습니다.</div>
+                                    {{/hr}}
                                 </div>
                             </div>
                         </div>

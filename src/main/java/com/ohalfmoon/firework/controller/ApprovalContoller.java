@@ -28,6 +28,8 @@ import java.util.List;
  * -----------------------------------------------------------
  * 2023/06/09        오상현            최초 생성
  * 2023/06/12        오상현            update수정, getList 기능 추가
+ * 2023/06/22        오상현            회원번호를 통해 회원의 결재서류 조회 추가
+ * 2023/06/23        오상현            문서번호를 통해 문서함별 결재서류 조회 추가
  */
 @RequiredArgsConstructor
 //@RestController
@@ -116,18 +118,20 @@ public class ApprovalContoller {
         model.addAttribute("approvalState", approvalService.getStateList(user.getUserNo(), 1));
         model.addAttribute("approvalFinish", approvalService.getStateList(user.getUserNo(), 2));
         model.addAttribute("approvalRequested", approvalService.getSublineUser(user.getUserNo()));
-//        model.addAttribute("sublineList", subLineService.getListBySubMember(user.getUserNo()));
-
-
         //approvalService.getMyList(user.getUserNo());
         return "approval/approvalList";
     }
 
-//    //결재중인 리스트 조회
-//    @GetMapping("/list/state/{userNo}")
-//    public List<ApprovalResponseDto> getStateList(@PathVariable Long userNo) {
-//        return approvalService.getStateList(userNo);
-//    }
+    //문서함별 리스트 조회
+    @GetMapping("/docboxList")
+    public String getListByDocbox(@AuthenticationPrincipal CustomUserDetails user, Model model) {
+        model.addAttribute("user", user);
+        model.addAttribute("test", approvalService.getApprovalListbyDocbox(1L,2));
+        model.addAttribute("develop1", approvalService.getApprovalListbyDocbox(3L,2));
+        model.addAttribute("affairs", approvalService.getApprovalListbyDocbox(4L,2));
+        model.addAttribute("hr", approvalService.getApprovalListbyDocbox(5L,2));
+        return "docbox/doclist";
+    }
 
 
     //기안문서양식 선택화면

@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
  * 2023/06/12        오상현           update 리턴 타입 변경 -> Long, getList 기능 추가
  * 2023/06/19        우성준           결재 생성 시 알림 추가
  * 2023/06/22        오상현           회원번호와 결재상태값을 통한 기안 리스트 조회
+ * 2023/06/23        오상현           문서함 번호를 통한 기안 리스트 조회
  */
 @Service
 @Slf4j
@@ -80,11 +81,18 @@ public class ApprovalService {
                 .stream().map(ApprovalResponseDto::new).collect(Collectors.toList());
     }
 
-    //회원번호와 결재상태값을 통한 임시저장 리스트 조회
+    //회원번호와 결재상태값을 통한 기안 리스트 조회
     public List<ApprovalResponseDto> getStateList (final Long userNo, int approvalState) {
 
         return approvalRepository
                 .findAllByMemberEntityAndApprovalState(MemberEntity.builder().userNo(userNo).build(),approvalState)
+                .stream().map(ApprovalResponseDto::new).collect(Collectors.toList());
+    }
+
+    //문서번호와 결재상태값을 통한 기안 리스트 조회
+    public List<ApprovalResponseDto> getApprovalListbyDocbox (final Long docboxNo, int approvalState) {
+        return approvalRepository
+                .findAllByDocboxEntityAndAndApprovalState(DocboxEntity.builder().docboxNo(docboxNo).build(), approvalState)
                 .stream().map(ApprovalResponseDto::new).collect(Collectors.toList());
     }
 
@@ -100,6 +108,8 @@ public class ApprovalService {
 
     }
 
+
+
 //    public List<ApprovalResponseDto>getSublineUser (final Long userNo, int approvalState) {
 //        List<SubLineEntity> sub = subLineRepository.findAllByMemberEntity(MemberEntity.builder().userNo(userNo).build());
 //
@@ -112,6 +122,7 @@ public class ApprovalService {
 //
 //    }
 
+    //회원번호를 통해 수신받은 (결재요청을 받은) 결재 리스트 조회
     public List<ApprovalResponseDto>getSublineUser (final Long userNo) {
         return jdbcTemplate.query(
         "select approvalNo,approvalName, docboxName,userNo, name, approvalOrder, approvalState, ta.regdate " +

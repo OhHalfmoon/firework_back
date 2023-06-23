@@ -78,6 +78,9 @@
                                         {{/approvalStorage}}
                                         </tbody>
                                     </table>
+                                    {{^approvalStorage}}
+                                        <div>임시저장된 기안이 없습니다.</div>
+                                    {{/approvalStorage}}
                                 </div>
                                 <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
                                     <table class="table table-bordered">
@@ -102,6 +105,9 @@
                                         {{/approvalState}}
                                         </tbody>
                                     </table>
+                                    {{^approvalState}}
+                                        <div>결재중인 기안이 없습니다.</div>
+                                    {{/approvalState}}
                                 </div>
                                 <div class="tab-pane fade" id="custom-tabs-one-messages" role="tabpanel" aria-labelledby="custom-tabs-one-messages-tab">
                                     <table class="table table-bordered">
@@ -126,6 +132,9 @@
                                         {{/approvalFinish}}
                                         </tbody>
                                     </table>
+                                    {{^approvalFinish}}
+                                        <div>결재완료한 기안이 없습니다.</div>
+                                    {{/approvalFinish}}
                                 </div>
                                 <div class="tab-pane fade" id="custom-tabs-one-settings" role="tabpanel" aria-labelledby="custom-tabs-one-settings-tab">
                                     <table class="table table-bordered">
@@ -152,6 +161,9 @@
                                         {{/approvalRequested}}
                                         </tbody>
                                     </table>
+                                    {{^approvalRequested}}
+                                        <div>요청받은 결재가 없습니다.</div>
+                                    {{/approvalRequested}}
                                 </div>
                             </div>
                         </div>

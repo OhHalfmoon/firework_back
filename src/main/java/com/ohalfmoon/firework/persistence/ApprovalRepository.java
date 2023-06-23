@@ -3,6 +3,7 @@ package com.ohalfmoon.firework.persistence;
 
 
 import com.ohalfmoon.firework.model.ApprovalEntity;
+import com.ohalfmoon.firework.model.DocboxEntity;
 import com.ohalfmoon.firework.model.MasterLineEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,6 +21,7 @@ import java.util.List;
  * 2023/06/07        오상현            최초 생성
  * 2023/06/12        오상현            결재자 정보 찾아오는 메서드 생성
  * 2023/06/22        오상현            결재상태에 따른 리스트 출력 메서드 생성
+ * 2023/06/23        오상현            문서함에 따른 리스트 출력 메서드 생성
  */
 public interface ApprovalRepository extends JpaRepository<ApprovalEntity, Long> {
 
@@ -42,6 +44,8 @@ public interface ApprovalRepository extends JpaRepository<ApprovalEntity, Long> 
 
     // 결재자 정보를 받아옴
     List<ApprovalEntity> findAllByMasterLineEntityAndApprovalState(MasterLineEntity masterLineEntity, int ApprovalState);
+
+    List<ApprovalEntity> findAllByDocboxEntityAndAndApprovalState(DocboxEntity docboxEntity, int ApprovalState);
 
 
 }

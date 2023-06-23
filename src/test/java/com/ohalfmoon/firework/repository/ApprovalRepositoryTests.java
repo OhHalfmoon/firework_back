@@ -21,6 +21,9 @@ import java.util.List;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2023/06/07        오상현            최초 생성
+ * 2023/06/09        오상현            상태변경update 테스트
+ * 2023/06/22        오상현            회원번호와 결재상태값을 통한 기안 리스트 조회
+ * 2023/06/23        오상현            문서함 번호에 따른 리스트 조회
  */
 @SpringBootTest
 @Slf4j
@@ -86,5 +89,13 @@ public class ApprovalRepositoryTests {
         List<ApprovalEntity> list = approvalRepository.findAllByMemberEntityAndApprovalState(MemberEntity.builder().userNo(15L).build(), approvalState);
         log.info("리스트확인{}", list, list.size());
     }
+
+    @Test
+    public void docboxApprovalListTest() {
+        int approvalState = 2;
+        List<ApprovalEntity> list = approvalRepository.findAllByDocboxEntityAndAndApprovalState(DocboxEntity.builder().docboxNo(4L).build(), approvalState);
+        log.info("리스트확인{}", list);
+    }
+
 }
 
