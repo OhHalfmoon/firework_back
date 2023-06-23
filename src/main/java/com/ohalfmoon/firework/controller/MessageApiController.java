@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
  * 2023/06/14        우성준            최초 생성
  * 2023/06/19        우성준            페이징 기능 추가(pagedto 사용)
  * 2023/06/21        우성준            사원검색 추가
+ * 2023/06/23        우성준            삭제 기능 수정(리스트로 받음)
  */
 
 @RequiredArgsConstructor
@@ -61,10 +62,16 @@ public class MessageApiController {
         return messageService.update(messageNo, map.get("messageCheck"));
     }
 
-    @DeleteMapping("/{messageNo}")
-    public Long delete(@PathVariable Long messageNo) {
-        messageService.delete(messageNo);
-        return messageNo;
+//    @DeleteMapping("/{messageNo}")
+//    public Long delete(@PathVariable Long messageNo) {
+//        messageService.delete(messageNo);
+//        return messageNo;
+//    }
+
+    @DeleteMapping
+    public Long delete(@RequestBody List<Long> arrMessage) {
+        messageService.deleteAll(arrMessage);
+        return null;
     }
 
     @GetMapping("/{messageNo}")

@@ -77,4 +77,9 @@ public class MessageService {
     public Page<MessageEntity> messageListBySender(Long sender, Pageable pageable) {
         return messageRepository.findAllBySender(MemberEntity.builder().userNo(sender).build(),pageable);
     }
+
+    @Transactional
+    public void deleteAll(List<Long> arrMessage) {
+        messageRepository.deleteAll(arrMessage.stream().map(m->MessageEntity.builder().messageNo(m).build()).collect(Collectors.toList()));
+    }
 }

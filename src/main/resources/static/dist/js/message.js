@@ -20,7 +20,6 @@ var messageService = (function () {
 
     function get(messageNo, callback) {
         var url = "/api/message/" + messageNo;
-        console.log(url);
         $.getJSON(url)
             .done(function(data) {
                 if(callback) {
@@ -76,21 +75,21 @@ var messageService = (function () {
             })
     }
 
-    // function remove(alarmNo, callback, error) {
-    //     $.ajax({
-    //         url : "/api/alarm/" + alarmNo,
-    //         method: 'delete',
-    //         dataType : 'json'
-    //     })
-    //         .done(function(data){
-    //             if(callback) {
-    //                 callback(data);
-    //             }
-    //         })
-    //         .fail(function(xhr){
-    //             console.log(xhr);
-    //         })
-    // }
+    function remove(arrMessage, callback, error) {
+        console.log(arrMessage);
+        $.ajax({
+            url : "/api/message",
+            method: 'delete',
+            data : JSON.stringify(arrMessage),
+            dataType : 'json',
+            contentType : "application/json; charset=utf-8"
+        })
+            .done(function(data){
+                if(callback) {
+                    callback(data);
+                }
+            })
+    }
 
     function getAllUser(obj, callback, error) {
         var url = "/api/message/sender/" + obj.senderNo + "/memberList"
@@ -106,6 +105,20 @@ var messageService = (function () {
                 }
             })
     }
+    function modify(obj, callback, error) {
+            $.ajax({
+                url : "/api/message/" + obj.messageNo,
+                method: 'put',
+                data : JSON.stringify(obj),
+                dataType : "json",
+                contentType : "application/json; charset=utf-8"
+            })
+                .done(function(data){
+                    if(callback) {
+                        callback(data);
+                    }
+                })
+        }
     return {
         getCount:getCount,
         add:add,
@@ -113,7 +126,7 @@ var messageService = (function () {
         getListBySender:getListBySender,
         getAllUser:getAllUser,
         get:get,
-        // remove:remove,
-        // modify:modify
+        remove:remove,
+        modify:modify
     }
 })();
