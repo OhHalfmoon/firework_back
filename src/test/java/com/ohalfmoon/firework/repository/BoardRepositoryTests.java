@@ -13,6 +13,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * packageName    : com.ohalfmoon.firework.repository
+ * fileName       : BoardRepositoryTests
+ * author         : 이지윤
+ * date           : 2023/06/22
+ * description    : 보드 레파지토리 테스트
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023/06/22        이지윤           최초 생성
+ */
+
 @SpringBootTest
 @Slf4j
 public class BoardRepositoryTests {
@@ -48,7 +60,7 @@ public class BoardRepositoryTests {
     @Transactional
     public void testUpdate() {
         BoardEntity boardEntity = boardRepository.findById(2L).orElseThrow(()-> new RuntimeException("없음"));
-        boardEntity.update("update title", "update content");
+        boardEntity.update(3L, "update title", "update content");
         log.info("{}", boardEntity);
     }
 
