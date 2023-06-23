@@ -6,6 +6,15 @@
     <title>AdminLTE 3 | Dashboard</title>
 
     {{>layout/head}}
+    <style>
+        .tagHere {
+            color: black;
+        }
+        .tagHere:hover {
+            color: #8c68ce;
+        }
+
+    </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
 <div class="wrapper">
@@ -50,7 +59,7 @@
                             <tbody>
                                 {{#listDto}}
                                     <tr>
-                                        <td><a href="write/{{formNo}}">{{formName}}</a></td>
+                                        <td ><a class="tagHere" href="write/{{formNo}}">{{formName}}</a></td>
                                         <td>{{regdate}}</td>
                                     </tr>
                                 {{/listDto}}
@@ -58,6 +67,51 @@
                         </table>
                     </div>
                     <!-- /.card-body -->
+                    <div class="card-footer clearfix">
+                        <ul class="pagination pagination-m m-0" style="justify-content: center">
+                            {{#pageDto}}
+                                {{#hasPrevBlock}}
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{contextPath}}/admin/form{{prevBlockQueryString}}">
+                                            &laquo;
+                                        </a>
+                                    </li>
+                                {{/hasPrevBlock}}
+                                {{#prev}}
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{contextPath}}/admin/form{{prevQueryString}}">
+                                            &lt;
+                                        </a>
+                                    </li>
+                                {{/prev}}
+                                {{#pageInfoList}}
+                                    {{#isCurrent}}
+                                        <li class="page-item active">
+                                            <a class="page-link" href="/admin/form{{queryString}}">{{pageNum}}</a>
+                                        </li>
+                                    {{/isCurrent}}
+                                    {{^isCurrent}}
+                                        <li class="page-item">
+                                            <a class="page-link" href="/admin/form{{queryString}}">{{pageNum}}</a>
+                                        </li>
+                                    {{/isCurrent}}
+                                {{/pageInfoList}}
+                                {{#next}}
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{contextPath}}/admin/form{{nextQueryString}}">&gt;
+                                        </a>
+                                    </li>
+                                {{/next}}
+                                {{#hasNextBlock}}
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{&contextPath}}/admin/form{{nextBlockQueryString}}">&raquo;
+                                        </a>
+                                    </li>
+                                {{/hasNextBlock}}
+                            {{/pageDto}}
+                            <!--                            <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>-->
+                        </ul>
+                    </div>
                 </div>
             </div>
         </section>

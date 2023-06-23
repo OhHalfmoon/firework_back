@@ -5,10 +5,14 @@ import com.ohalfmoon.firework.dto.FormResponseDto;
 import com.ohalfmoon.firework.dto.approval.*;
 import com.ohalfmoon.firework.dto.dept.DeptListResponseDTO;
 import com.ohalfmoon.firework.dto.docbox.DocboxListResponseDTO;
+import com.ohalfmoon.firework.dto.paging.PageRequestDTO;
+import com.ohalfmoon.firework.dto.paging.PageResponseDTO;
+import com.ohalfmoon.firework.model.FormEntity;
 import com.ohalfmoon.firework.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -16,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * packageName    : com.ohalfmoon.firework.controller
@@ -136,10 +141,14 @@ public class ApprovalContoller {
 
     //기안문서양식 선택화면
     @GetMapping("/formList")
-    public String getFormList(@AuthenticationPrincipal CustomUserDetails user, Model model) {
-        model.addAttribute("user", user);
-        List<FormResponseDto> listDto = formService.getFormList();
-        model.addAttribute("listDto", listDto);
+    public String getFormList(PageRequestDTO pageRequestDTO, Model model) {
+        Page<FormEntity> pageDto = formService.searchFormList(pageRequestDTO);
+        List<FormResponseDto> formList = pageDto.getContent().stream().map(FormResponseDto::new).collect(Collectors.toList());
+        PageResponseDTO<FormEntity> pageResponse = new PageResponseDTO<>(pageDto, pageRequestDTO);
+//        model.addAttribute("user", user);
+//        List<FormResponseDto> listDto = formService.getFormList();
+        model.addAttribute("listDto", formList);
+        model.addAttribute("pageDto", pageResponse);
         return "approval/formList";
     }
 
