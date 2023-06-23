@@ -49,7 +49,8 @@ public class AttachEntity extends BaseTimeEntity {
     String ext;
 
     @Builder
-    public AttachEntity(String uuid, String originName, String path, String ext) {
+    public AttachEntity(Long attachNo, String uuid, String originName, String path, String ext) {
+        this.attachNo = attachNo;
         this.uuid = uuid;
         this.originName = originName;
         this.path = path;
