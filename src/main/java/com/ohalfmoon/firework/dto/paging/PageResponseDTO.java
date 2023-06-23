@@ -99,14 +99,6 @@ public class PageResponseDTO <Entity> {
         List<Integer> pageList = IntStream.rangeClosed(startPageNum, endPageNum)
                 .boxed().collect(Collectors.toList());
 
-        pageInfoList = pageList.stream()
-                .map(page -> PageInfo.builder()
-                        .pageNum(page)
-                        .isCurrent(page == this.page)
-                        .queryString(fullQueryString(page))
-                        .build()
-                ).collect(Collectors.toList());
-
         prevPageNum = page - 1;
         nextPageNum = page + 1;
 
@@ -118,6 +110,14 @@ public class PageResponseDTO <Entity> {
 
         type = requestDTO.getType();
         keyword = requestDTO.getKeyword();
+
+        pageInfoList = pageList.stream()
+                .map(page -> PageInfo.builder()
+                        .pageNum(page)
+                        .isCurrent(page == this.page)
+                        .queryString(fullQueryString(page))
+                        .build()
+                ).collect(Collectors.toList());
     }
 
     public String searchKeyword(){
