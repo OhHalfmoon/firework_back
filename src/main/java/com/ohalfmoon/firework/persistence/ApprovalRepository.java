@@ -22,7 +22,7 @@ import java.util.List;
  * 2023/06/22        오상현            결재상태에 따른 리스트 출력 메서드 생성
  */
 public interface ApprovalRepository extends JpaRepository<ApprovalEntity, Long> {
-    
+
     // 기안 이름으로 검색
     ApprovalEntity findByApprovalName(String approvalName);
 

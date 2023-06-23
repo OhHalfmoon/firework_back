@@ -87,3 +87,4 @@ public class ApprovalRepositoryTests {
         log.info("리스트확인{}", list, list.size());
     }
 }
+
