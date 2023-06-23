@@ -34,7 +34,7 @@ public class AdminApiController {
      * @param dtos the dtos
      * @return the response entity
      */
-    @PostMapping("/member/memberUpdateBulk")
+    @PostMapping("/memberUpdateBulk")
     public ResponseEntity<?> updateState(@RequestBody List<MemberUpdateStateDTO> dtos) {
         String result = "error";
         for(MemberUpdateStateDTO item : dtos){

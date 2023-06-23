@@ -78,8 +78,9 @@ public class MemberEntity {
 
     private LocalDate enddate; // 퇴사일
 
-    @Column(nullable = false)
-    private int state; // 가입승인여부
+    @Column(nullable = false, name = "state")
+    @Enumerated(EnumType.ORDINAL)
+    private State state; // 가입승인여부
 
     private LocalDate regdate; // 등록일자
 
@@ -135,15 +136,17 @@ public class MemberEntity {
      *
      * @param state the state
      */
-    public void updateState(Long userNo, int state) {
+    public void updateState(Long userNo, State state) {
         this.userNo = userNo;
         this.state = state;
     }
 
-    public void updateByAdmin(String username, Role roleName, int state) {
+    public void updateByAdmin(String username, Role roleName, State state, boolean manager) {
         this.username = username;
         this.roleName = roleName;
         this.state = state;
+        this.manager = manager;
+
     }
 
     /**

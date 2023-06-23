@@ -60,7 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().authorizeRequests() // 인증절차에 대한 설정을 진행
                 .antMatchers("/auth/signin", "/auth/signup", "/auth/agree").permitAll() // 로그인, 회원가입 페이지는 권한이 없어도 사용 가능
                 .antMatchers("/").hasAnyRole("EMPLOYEE", "TL", "CEO", "ADMIN") // 그 외 페이지는 인증된 사람만 이용가능
-                .antMatchers("/admin").hasRole("ADMIN") // 관리자페이지 권한설정
+                .antMatchers("/admin/**").hasRole("ADMIN") // 관리자페이지 권한설정
                 .antMatchers("/dist/**", "/plugins/**").permitAll() // 정적파일 호출
                 .anyRequest().authenticated()
                 // 권한관련 끝 (배포 전까지 주석)

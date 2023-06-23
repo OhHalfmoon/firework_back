@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FireWorks-Admin</title>
+
+    {{>layout/head}}
+</head>
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
+    <div class="wrapper">
+
+        {{>layout/header}}
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>관리자 - {{member.name}}님의 회원정보</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="{{contextPath}}/">Home</a></li>
+                                <li class="breadcrumb-item active">관리자-회원 관리</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div><!-- /.container-fluid -->
+            </section>
+                            {{#member}}
+            <!-- Main content -->
+            <section class="content mt-5">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+
+                    <!-- Profile Image -->
+                    <div class="card card-success card-outline">
+                        <div class="card-body box-profile row">
+
+                                <ul class="list-group list-group-unbordered mb-3 col-lg-6 col-md-12">
+                                    <li class="list-group-item">
+                                        <b class="float-left">연락처 :</b>
+                                        <b>{{phoneNum}}</b>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <b class="float-left">email :</b><b>{{email}}</b>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <b class="float-left">생일 :</b><b>{{birthdate}}</b>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <b class="float-left">입사일 :</b><b>{{startdate}}</b>
+                                    </li>
+                                </ul>
+
+                                <ul class="list-group list-group-unbordered mb-3 col-lg-6 col-md-12">
+                                    <li class="list-group-item">
+                                        <b class="float-left">연락처 :</b><b>{{phoneNum}}</b>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <b class="float-left">email :</b><b>{{email}}</b>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <b class="float-left">생일 :</b><b>{{birthdate}}</b>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <b class="float-left">입사일 :</b><b>{{startdate}}</b>
+                                    </li>
+
+                                </ul>
+                            <div class="row col-12 justify-content-center mt-5">
+                                <div class="col-4">
+                                    <a href="{{contextPath}}/auth/mypage" class="btn btn-outline-dark btn-block"><b>이전으로</b></a>
+                                </div>
+                                <div class="col-4">
+                                    <a href="{{contextPath}}/auth/modify" class="btn btn-success btn-block"><b>정보수정</b></a>
+                                </div>
+                                <div class="col-4">
+                                    <a href="{{contextPath}}/auth/modifyPw" class="btn btn-danger btn-block"><b>PW변경</b></a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+{{/member}}
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+        {{>layout/footer}}
+
+
+    </div>
+    <!-- ./wrapper -->
+
+    {{>layout/library}}
+</body>
+</html>

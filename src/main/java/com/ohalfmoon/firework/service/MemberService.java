@@ -97,6 +97,18 @@ public class MemberService {
     }
 
     /**
+     * 회원 단일조회 (userNo)
+     *
+     * @param userNo the user no
+     * @return the long
+     */
+    public MemberResponseDTO get(Long userNo) {
+        return memberRepository.findById(userNo)
+                .map(MemberResponseDTO::new).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 ID 입니다."+userNo));
+    }
+
+
+    /**
      * (관리자)회원 state 변경
      *
      * @param userNo the user no
@@ -166,11 +178,25 @@ public class MemberService {
         return memberRepository.findByUsername(username);
     }
 
+
+
+    /**
+     * 멤버 List 조회
+     *
+     * @return the member list
+     */
     public List<MemberResponseDTO> getMemberList() {
         return memberRepository.findAll()
                 .stream().map(MemberResponseDTO::new).collect(Collectors.toList());
     }
 
+    /**
+     * 회원정보 수정(관리자)
+     *
+     * @param userNo the user no
+     * @param dto    the dto
+     * @return the long
+     */
     @Transactional
     public Long updateByAdmin(Long userNo, MemberUpdateByAdminRequestDTO dto) {
         MemberEntity entity = memberRepository.findById(userNo)
@@ -186,7 +212,7 @@ public class MemberService {
                 .orElseThrow(() -> new IllegalArgumentException(""));
         entity.updatePositionNo(byId2);
 
-        entity.updateByAdmin(dto.getName(), dto.getRoleName(), dto.getState());
+        entity.updateByAdmin(dto.getName(), dto.getRoleName(), dto.getState(), dto.isManager());
         //(dto.getEmail(), dto.getPhoneNum(), dto.getName(), dto.getBirthdate(), dto.getStartdate());
 
         return userNo;
@@ -198,7 +224,27 @@ public class MemberService {
      * @return the state by zero
      */
     public List<MemberResponseDTO> getStateByZero() {
-        return memberRepository.findAllByState(0)
+        return memberRepository.findAllByState(State.WATING)
+                .stream().map(MemberResponseDTO::new).collect(Collectors.toList());
+    }
+
+    /**
+     *state값이 1인 회원 return
+     *
+     * @return the state by one
+     */
+    public List<MemberResponseDTO> getStateByOne() {
+        return memberRepository.findAllByState(State.APPROVAL)
+                .stream().map(MemberResponseDTO::new).collect(Collectors.toList());
+    }
+
+    /**
+     * state값이 2인 회원 return
+     *
+     * @return the state by two
+     */
+    public List<MemberResponseDTO> getStateByTwo() {
+        return memberRepository.findAllByState(State.SECESSION)
                 .stream().map(MemberResponseDTO::new).collect(Collectors.toList());
     }
     /**

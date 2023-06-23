@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FireWorks-Admin</title>
+
+    {{>layout/head}}
+</head>
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
+    <div class="wrapper">
+
+        {{>layout/header}}
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>관리자 - 회원 관리</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="{{contextPath}}/">Home</a></li>
+                                <li class="breadcrumb-item active">관리자-회원 관리</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div><!-- /.container-fluid -->
+            </section>
+
+            <!-- Main content -->
+            <div class="col-12 col-sm-12 container">
+                <div class="card card-primary card-outline card-outline-tabs">
+                    <div class="card-header p-0 border-bottom-0">
+                        <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="custom-tabs-four-home-tab" data-toggle="pill" href="#custom-tabs-four-home" role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">미승인 유저</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#custom-tabs-four-profile" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">승인 유저</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-four-messages-tab" data-toggle="pill" href="#custom-tabs-four-messages" role="tab" aria-controls="custom-tabs-four-messages" aria-selected="false">탈퇴한 유저</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content" id="custom-tabs-four-tabContent">
+                            <div class="tab-pane fade show active" id="custom-tabs-four-home" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
+                                <section class="content">
+
+                                <!-- 미승인유저 시작 -->
+                                    <form id="updateFrm">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h3 class="card-title">승인요청된 회원 목록</h3>
+                                                            <button class="float-right btn btn-secondary btnUpdate">변경</button>
+                                                        </div>
+                                                        <!-- /.card-header -->
+                                                        <div class="card-body">
+                                                            <table id="example2" class="table table-bordered table-hover">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th><input type="checkbox" id="selectAll" style="zoom: 2.0">  전체 선택</th>
+                                                                    <th>id</th>
+                                                                    <th>사원명</th>
+                                                                    <th>연락처</th>
+                                                                    <th>Email</th>
+                                                                    <th>부서</th>
+                                                                    <th>직급</th>
+                                                                    <th>승인</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                {{#stateByZeroUser}}
+                                                                    <tr class="tableSum">
+                                                                        <input name="userNo" id="userNo" type="hidden" value="{{userNo}}">
+                                                                        <td>
+                                                                            <input type="checkbox" name="ckBox" class="checkbox" id="ckBox" style="zoom: 2.0">
+                                                                        </td>
+                                                                        <td class="userId">{{username}}</td>
+                                                                        <td>{{name}}</td>
+                                                                        <td>{{phoneNum}}</td>
+                                                                        <td>{{email}}</td>
+                                                                        <td>{{deptName}}</td>
+                                                                        <td>{{positionName}}</td>
+                                                                        <td>
+                                                                            <select class="custom-select" name="state">
+                                                                                <option value="0">가입대기</option>
+                                                                                <option value="1">가입승인</option>
+                                                                            </select>
+                                                                        </td>
+                                                                {{/stateByZeroUser}}
+                                                            </table>
+                                                        </div>
+                                                        <div class="card-footer clearfix">
+                                                            <ul class="pagination pagination-sm m-0 float-right">
+                                                                {{#pageDto}}
+                                                                    {{#hasPrevBlock}}
+                                                                        <li class="page-item">
+                                                                            <a class="page-link" href="{{contextPath}}/admin/form?page={{pageDto.prevBlockNum}}">
+                                                                            &laquo;
+                                                                            </a>
+                                                                        </li>
+                                                                    {{/hasPrevBlock}}
+                                                                    {{#prev}}
+                                                                        <li class="page-item">
+                                                                            <a class="page-link" href="{{contextPath}}/admin/form?page={{pageDto.prevPageNum}}">
+                                                                            &lt;
+                                                                            </a>
+                                                                        </li>
+                                                                    {{/prev}}
+                                                                    {{#pageInfoList}}
+                                                                        {{#isCurrent}}
+                                                                            <li class="page-item active">
+                                                                                <a class="page-link" href="{{contextPath}}/admin/form?page={{pageNum}}">{{pageNum}}</a>
+                                                                            </li>
+                                                                        {{/isCurrent}}
+                                                                        {{^isCurrent}}
+                                                                            <li class="page-item">
+                                                                                <a class="page-link" href="{{contextPath}}/admin/form?page={{pageNum}}">{{pageNum}}</a>
+                                                                            </li>
+                                                                        {{/isCurrent}}
+                                                                    {{/pageInfoList}}
+                                                                    {{#next}}
+                                                                        <li class="page-item">
+                                                                            <a class="page-link" href="{{contextPath}}/admin/form?page={{pageDto.nextPageNum}}">&gt;</a>
+                                                                        </li>
+                                                                    {{/next}}
+                                                                    {{#hasNextBlock}}
+                                                                        <li class="page-item">
+                                                                            <a class="page-link" href="{{&contextPath}}/admin/form?page={{pageDto.nextBlockNum}}">&raquo;
+                                                                            </a>
+                                                                        </li>
+                                                                    {{/hasNextBlock}}
+                                                                {{/pageDto}}
+                                                                <!--                            <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>-->
+                                                            </ul>
+                                                        </div>
+                                                        <!-- /.card-body -->
+                                                    </div>
+                                                    <!-- /.card -->
+
+                                                    <!-- /.card -->
+                                                </div>
+                                                <!-- /.col -->
+                                            </div>
+                                            <!-- /.row -->
+                                        </div>
+                                        <!-- /.container-fluid -->
+                                    </form>
+                                <!-- 미승인유저 시작 -->
+
+                                </section>
+                            </div>
+                            <div class="tab-pane fade" id="custom-tabs-four-profile" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
+
+                            <!-- 승인유저 시작 -->
+                                <section class="content">
+                                    <form id="updateFrm">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h3 class="card-title">승인된 유저 목록</h3>
+                                                        </div>
+                                                        <!-- /.card-header -->
+                                                        <div class="card-body">
+                                                            <table id="example2" class="table table-bordered table-hover">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th>ID</th>
+                                                                    <th>이름</th>
+                                                                    <th>부서</th>
+                                                                    <th>직급</th>
+                                                                    <th>연락처</th>
+                                                                    <th>email</th>
+                                                                    <th>권한</th>
+                                                                    <th>상태</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                {{#stateByOneUser}}
+                                                                    <tr class="tableSum" onclick="location.href='/admin/member/{{userNo}}'" style="cursor: pointer">
+                                                                        <input name="userNo" id="userNo" type="hidden" value="{{userNo}}">
+                                                                        <td class="userId">{{username}}</td>
+                                                                        <td>{{name}}</td>
+                                                                        <td>{{deptName}}</td>
+                                                                        <td>{{positionName}}</td>
+                                                                        <td>{{phoneNum}}</td>
+                                                                        <td>{{email}}</td>
+                                                                        <td>{{roleTitle}}</td>
+                                                                        <td>{{state}}</td>
+                                                                    </tr>
+                                                                {{/stateByOneUser}}
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="card-footer clearfix">
+                                                            <ul class="pagination pagination-sm m-0 float-right">
+                                                                {{#pageDto}}
+                                                                    {{#hasPrevBlock}}
+                                                                        <li class="page-item">
+                                                                            <a class="page-link" href="{{contextPath}}/admin/form?page={{pageDto.prevBlockNum}}">
+                                                                            &laquo;
+                                                                            </a>
+                                                                        </li>
+                                                                    {{/hasPrevBlock}}
+                                                                    {{#prev}}
+                                                                        <li class="page-item">
+                                                                            <a class="page-link" href="{{contextPath}}/admin/form?page={{pageDto.prevPageNum}}">
+                                                                            &lt;
+                                                                            </a>
+                                                                        </li>
+                                                                    {{/prev}}
+                                                                    {{#pageInfoList}}
+                                                                        {{#isCurrent}}
+                                                                            <li class="page-item active">
+                                                                                <a class="page-link" href="{{contextPath}}/admin/form?page={{pageNum}}">{{pageNum}}</a>
+                                                                            </li>
+                                                                        {{/isCurrent}}
+                                                                        {{^isCurrent}}
+                                                                            <li class="page-item">
+                                                                                <a class="page-link" href="{{contextPath}}/admin/form?page={{pageNum}}">{{pageNum}}</a>
+                                                                            </li>
+                                                                        {{/isCurrent}}
+                                                                    {{/pageInfoList}}
+                                                                    {{#next}}
+                                                                        <li class="page-item">
+                                                                            <a class="page-link" href="{{contextPath}}/admin/form?page={{pageDto.nextPageNum}}">&gt;</a>
+                                                                        </li>
+                                                                    {{/next}}
+                                                                    {{#hasNextBlock}}
+                                                                        <li class="page-item">
+                                                                            <a class="page-link" href="{{&contextPath}}/admin/form?page={{pageDto.nextBlockNum}}">&raquo;
+                                                                            </a>
+                                                                        </li>
+                                                                    {{/hasNextBlock}}
+                                                                {{/pageDto}}
+                                                                <!--                            <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>-->
+                                                            </ul>
+                                                        </div>
+                                                        <!-- /.card-body -->
+                                                    </div>
+                                                    <!-- /.card -->
+
+                                                    <!-- /.card -->
+                                                </div>
+                                                <!-- /.col -->
+                                            </div>
+                                            <!-- /.row -->
+                                        </div>
+                                        <!-- /.container-fluid -->
+                                    </form>
+                                </section>
+                            <!-- 승인유저 끝 -->
+
+                            </div>
+                            <div class="tab-pane fade" id="custom-tabs-four-messages" role="tabpanel" aria-labelledby="custom-tabs-four-messages-tab">
+
+                            <!-- 탈퇴한유저 시작 -->
+                                <section class="content">
+                                    <form id="updateFrm">
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h3 class="card-title">탈퇴한 회원 목록</h3>
+                                                        </div>
+                                                        <!-- /.card-header -->
+                                                        <div class="card-body">
+                                                            <table id="example2" class="table table-bordered table-hover">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th>ID</th>
+                                                                    <th>이름</th>
+                                                                    <th>부서</th>
+                                                                    <th>직급</th>
+                                                                    <th>연락처</th>
+                                                                    <th>email</th>
+                                                                    <th>권한</th>
+                                                                    <th>상태</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                {{#stateByTwoUser}}
+                                                                    <tr class="tableSum" onclick="location.href='/admin/member/{{userNo}}'" style="cursor: pointer">
+                                                                        <input name="userNo" id="userNo" type="hidden" value="{{userNo}}">
+                                                                        <td class="userId">{{username}}</td>
+                                                                        <td>{{name}}</td>
+                                                                        <td>{{deptName}}</td>
+                                                                        <td>{{positionName}}</td>
+                                                                        <td>{{phoneNum}}</td>
+                                                                        <td>{{email}}</td>
+                                                                        <td>{{roleTitle}}</td>
+                                                                        <td>{{state}}</td>
+                                                                    </tr>
+                                                                {{/stateByTwoUser}}
+                                                            </table>
+                                                        </div>
+                                                        <div class="card-footer clearfix">
+                                                            <ul class="pagination pagination-sm m-0 float-right">
+                                                                {{#pageDto}}
+                                                                    {{#hasPrevBlock}}
+                                                                        <li class="page-item">
+                                                                            <a class="page-link" href="{{contextPath}}/admin/form?page={{pageDto.prevBlockNum}}">
+                                                                            &laquo;
+                                                                            </a>
+                                                                        </li>
+                                                                    {{/hasPrevBlock}}
+                                                                    {{#prev}}
+                                                                        <li class="page-item">
+                                                                            <a class="page-link" href="{{contextPath}}/admin/form?page={{pageDto.prevPageNum}}">
+                                                                            &lt;
+                                                                            </a>
+                                                                        </li>
+                                                                    {{/prev}}
+                                                                    {{#pageInfoList}}
+                                                                        {{#isCurrent}}
+                                                                            <li class="page-item active">
+                                                                                <a class="page-link" href="{{contextPath}}/admin/form?page={{pageNum}}">{{pageNum}}</a>
+                                                                            </li>
+                                                                        {{/isCurrent}}
+                                                                        {{^isCurrent}}
+                                                                            <li class="page-item">
+                                                                                <a class="page-link" href="{{contextPath}}/admin/form?page={{pageNum}}">{{pageNum}}</a>
+                                                                            </li>
+                                                                        {{/isCurrent}}
+                                                                    {{/pageInfoList}}
+                                                                    {{#next}}
+                                                                        <li class="page-item">
+                                                                            <a class="page-link" href="{{contextPath}}/admin/form?page={{pageDto.nextPageNum}}">&gt;</a>
+                                                                        </li>
+                                                                    {{/next}}
+                                                                    {{#hasNextBlock}}
+                                                                        <li class="page-item">
+                                                                            <a class="page-link" href="{{&contextPath}}/admin/form?page={{pageDto.nextBlockNum}}">&raquo;
+                                                                            </a>
+                                                                        </li>
+                                                                    {{/hasNextBlock}}
+                                                                {{/pageDto}}
+                                                                <!--                            <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>-->
+                                                            </ul>
+                                                        </div>
+                                                        <!-- /.card-body -->
+                                                    </div>
+                                                    <!-- /.card -->
+
+                                                    <!-- /.card -->
+                                                </div>
+                                                <!-- /.col -->
+                                            </div>
+                                            <!-- /.row -->
+                                        </div>
+                                        <!-- /.container-fluid -->
+                                    </form>
+                                </section>
+                            <!-- 탈퇴한유저 끝 -->
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+        {{>layout/footer}}
+
+
+    </div>
+    <!-- ./wrapper -->
+
+    {{>layout/library}}
+    <script>
+        $(function () {
+            // 전체 선택 시작
+            $("#selectAll").click(function () {
+                if($("#selectAll").is(":checked"))  {
+                    $("input[name=ckBox]").prop("checked", true);
+                    console.log($("input[name='ckBox']:checked").length)
+                }else {
+                    $("input[name=ckBox]").prop("checked", false);
+                }
+            });
+            // 전체 선택 끝
+
+            $("input[name=ckBox]").click(function() {
+                if($("input[name='ckBox']:checked").length === $(".tableSum").length) {
+                    $("#selectAll").prop("checked", true)
+                }else {
+                    $("#selectAll").prop("checked", false)
+                }
+            });
+            $(".btnUpdate").click(function(event) {
+                event.preventDefault();
+                let result = confirm("승인 하시겠습니까?")
+                let dto = [];
+                if(result) {
+                    $("input[name='ckBox']:checked").each(function () {
+                        let userNo = $(this).closest("tr").find("input[name='userNo']").val();
+                        let state = $(this).closest("tr").find("select[name='state']").val();
+                        dto.push({userNo : userNo, state : state});
+                        // console.log("userNo : ", userNo)
+                        // console.log("state : ", state)
+                    })
+                    if(dto.length > 0) {
+                        console.log("선택된 회원 :", dto)
+                        // $("#updateFrm").attr("action", "/admin/member/memberUpdate/"+selectedUsers);
+                        // $("#updateFrm").submit();
+                        // for(let i=0; i<dto.length; i++) {
+                        //     let userNo = dto[i].userNo;
+                        //     let state = dto[i].state;
+                        $.ajax({
+                            // url : "/admin/member/memberUpdate/"+selectedUsers,
+                            url: "/admin/memberUpdateBulk/",
+                            type: "POST",
+                            contentType: "application/json",
+                            // data: JSON.stringify(selectedUsers),
+                            data: JSON.stringify(dto),
+                            dataType: "text",
+                            success: function (response) {
+                                // console.log(response)
+                                console.log(dto);
+                                console.log(($("input[name='ckBox']:checked").closest("tr").find("select[name='state']").val()));
+                                alert("수정되었습니다.")
+                                // window.location.href = "/admin/member/memberUpdate";
+                                if($("input[name='ckBox']:checked").closest("tr").find("select[name='state']").val() != 0) {
+                                    $("input[name='ckBox']:checked").closest("tr").remove();
+                                }
+                            },
+                            error: function (request, error) {
+                                // console.log(request);
+                                // console.log(error)
+                                // console.log(JSON.stringify(dto))
+                                alert("실패!")
+                            }
+
+                        })
+                        // }
+                    }
+                    else {
+                        alert("회원을 선택해주세요")
+                    }
+                }else {
+                    alert("승인이 취소되었습니다.")
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
