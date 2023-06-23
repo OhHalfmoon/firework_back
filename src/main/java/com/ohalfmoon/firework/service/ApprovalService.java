@@ -8,9 +8,16 @@ import com.ohalfmoon.firework.persistence.MemberRepository;
 import com.ohalfmoon.firework.persistence.SubLineRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,6 +44,7 @@ public class ApprovalService {
     private final SubLineRepository subLineRepository;
     private final AlarmRepository alarmRepository;
     private final MemberRepository memberRepository;
+    private final JdbcTemplate jdbcTemplate;
 
 
     //기안 제출(결재)
@@ -85,8 +93,54 @@ public class ApprovalService {
         ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
         MasterLineEntity masterLineEntity = approvalEntity.getMasterLineEntity();
 
+
+
        return subLineRepository.findAllByMasterLineEntity_LineNo(masterLineEntity.getLineNo())
                 .stream().map(ApprovalLineDto::new).collect(Collectors.toList());
+
+    }
+
+//    public List<ApprovalResponseDto>getSublineUser (final Long userNo, int approvalState) {
+//        List<SubLineEntity> sub = subLineRepository.findAllByMemberEntity(MemberEntity.builder().userNo(userNo).build());
+//
+//        List<ApprovalEntity> result = new ArrayList<>();
+//        sub.forEach(s -> {
+////            result.addAll(approvalRepository.findAllByMasterLineEntity(s.getMasterLineEntity()));
+//            result.addAll(approvalRepository.findAllByMasterLineEntityAndApprovalState(s.getMasterLineEntity(),approvalState));
+//        });
+//        return result.stream().map(ApprovalResponseDto::new).collect(Collectors.toList());
+//
+//    }
+
+    public List<ApprovalResponseDto>getSublineUser (final Long userNo) {
+        return jdbcTemplate.query(
+        "select approvalNo,approvalName, docboxName,userNo, name, approvalOrder, approvalState, ta.regdate " +
+                "from (tbl_sub_line su join tbl_approval ta using(lineNo)) join tbl_member tm using(userNo) join tbl_docbox td using(docboxNo) " +
+                "where su.subMemberNo = ? and ta.approvalState = 1 and su.orderLevel = ta.approvalOrder order by ta.approvalNo desc"
+        , new RowMapper<ApprovalResponseDto>() {
+            @Override
+            @Nullable
+            public ApprovalResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+                Long approvalNo = rs.getLong("approvalNo");
+                String approvalName = rs.getString("approvalName");
+                String docboxName = rs.getString("docboxName");
+                Long userNo = rs.getLong("userNo");
+                String name = rs.getString("name");
+                int approvalOrder = rs.getInt("approvalOrder");
+                int approvalState = rs.getInt("approvalState");
+                LocalDate regdate = rs.getDate("regdate").toLocalDate();
+                return ApprovalResponseDto.builder()
+                        .approvalNo(approvalNo)
+                        .approvalName(approvalName)
+                        .docboxName(docboxName)
+                        .userNo(userNo)
+                        .name(name)
+                        .approvalOrder(approvalOrder)
+                        .approvalState(approvalState)
+                        .regdate(regdate)
+                        .build();
+            }
+        }, userNo);
 
     }
 

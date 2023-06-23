@@ -67,6 +67,11 @@ public class SubLineService {
                 .stream().map(SubLineResponseDTO::new).collect(Collectors.toList());
     }
 
+    public List<SubLineResponseDTO> getListBySubMember(Long userNo) {
+        return subLineRepository.findAllByMemberEntity(MemberEntity.builder().userNo(userNo).build())
+                .stream().map(SubLineResponseDTO::new).collect(Collectors.toList());
+    }
+
     @Transactional
     public void delete(Long subLineNo) {
         SubLineEntity entity = subLineRepository

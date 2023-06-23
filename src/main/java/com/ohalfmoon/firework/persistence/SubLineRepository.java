@@ -1,6 +1,7 @@
 package com.ohalfmoon.firework.persistence;
 
 import com.ohalfmoon.firework.model.MasterLineEntity;
+import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.SubLineEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,6 +20,7 @@ import java.util.List;
  * -----------------------------------------------------------
  * 2023/06/07        이지윤           최초 생성
  * 2023/06/11        이지윤           리스트 조회 수정
+ * 2023/06/22        오상현          memberNo를 통한 전체 subLine 조회
  */
 @Repository
 public interface SubLineRepository extends JpaRepository<SubLineEntity, Long> {
@@ -29,4 +31,7 @@ public interface SubLineRepository extends JpaRepository<SubLineEntity, Long> {
      List<SubLineEntity> findAllByMasterLineEntity_LineNo(Long lineNo);
 
      void deleteAllByMasterLineEntity_LineNo(Long lineNo);
+
+     List<SubLineEntity> findAllByMemberEntity(MemberEntity memberEntity);
+
 }

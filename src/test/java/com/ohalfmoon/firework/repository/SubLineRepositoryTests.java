@@ -1,5 +1,7 @@
 package com.ohalfmoon.firework.repository;
 
+import com.ohalfmoon.firework.model.MasterLineEntity;
+import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.SubLineEntity;
 import com.ohalfmoon.firework.persistence.MasterLineRepository;
 import com.ohalfmoon.firework.persistence.MemberRepository;
@@ -11,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * packageName    : com.ohalfmoon.firework.repository
@@ -100,4 +105,21 @@ public class SubLineRepositoryTests {
                 .build());
         System.out.println("subLineRepository : "+ subLineRepository);
     }
+
+    @Test
+    public void testList() {
+        Long userNo = 4L;
+        List<SubLineEntity> list = subLineRepository.findAllByMemberEntity(MemberEntity.builder().userNo(userNo).build());
+        log.info("{}", list);
+        log.info("{}", list.size());
+
+        List<MasterLineEntity> masterList = new ArrayList<>();
+        for(int i=0; i<list.size(); i++) {
+            masterList.add(list.get(i).getMasterLineEntity());
+        }
+        log.info("마스터 라인 테스트 : {}", masterList);
+        log.info("마스터 라인 테스트 : {}", masterList.size());
+    }
+
+
 }

@@ -115,6 +115,10 @@ public class ApprovalContoller {
         model.addAttribute("approvalStorage", approvalService.getStateList(user.getUserNo(), 0));
         model.addAttribute("approvalState", approvalService.getStateList(user.getUserNo(), 1));
         model.addAttribute("approvalFinish", approvalService.getStateList(user.getUserNo(), 2));
+        model.addAttribute("approvalRequested", approvalService.getSublineUser(user.getUserNo()));
+//        model.addAttribute("sublineList", subLineService.getListBySubMember(user.getUserNo()));
+
+
         //approvalService.getMyList(user.getUserNo());
         return "approval/approvalList";
     }
@@ -145,7 +149,7 @@ public class ApprovalContoller {
         model.addAttribute("masterList", masterLineService.getList(user.getUserNo()));
         model.addAttribute("masterName", masterLineService.getMasterName(user.getUserNo()));
         //model.addAttribute("subLineList", subLineService.getListByLineNo(user.getUserNo()));
-        model.addAttribute("subMemberName", subLineService);
+//        model.addAttribute("subMemberName", subLineService);
         model.addAttribute("formDetail", formService.findByFormNo(formNo));
 
         List<DeptListResponseDTO> deptListResponseDTOS = deptService.deptList();

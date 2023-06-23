@@ -32,11 +32,16 @@ public interface ApprovalRepository extends JpaRepository<ApprovalEntity, Long> 
     // 로그인한 회원번호와 기안 결재상태값을 통한 리스트 출력
     List<ApprovalEntity> findAllByMemberEntityAndApprovalState(MemberEntity memberEntity, int ApprovalState);
 
+
+
     // 기안번호를 통해 단일 기안 조회 (get)
     ApprovalEntity findByApprovalNo(Long approvalNo);
 
     // 결재자 정보를 받아옴
     List<ApprovalEntity> findAllByMasterLineEntity(MasterLineEntity masterLineEntity);
+
+    // 결재자 정보를 받아옴
+    List<ApprovalEntity> findAllByMasterLineEntityAndApprovalState(MasterLineEntity masterLineEntity, int ApprovalState);
 
 
 }

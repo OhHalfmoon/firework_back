@@ -125,6 +125,20 @@ public class ApprovalServiceTest {
         log.info("List: {}",listDto.size());
     }
 
+    @Test
+    public void testGetSublineUser() {
+        approvalService.getSublineUser(2L).forEach(s->log.info("{}",s.getApprovalNo()));
+    }
+
+//    @Test
+//    @DisplayName("회원번호를 통해 내가 받은 기안 리스트 조회")
+//    void getRequireApprovalListTest() {
+//        final Long userNo = 4L;
+//        List<ApprovalResponseDto> list = approvalService.getSublineUser(userNo);
+//        log.info("List: {}",list);
+//        log.info("List: {}",list.size());
+//    }
+
     //    @Test
 //    @DisplayName("결재 임시저장 테스트")
 //    void storage() {
