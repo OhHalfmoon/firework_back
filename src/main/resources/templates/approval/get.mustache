@@ -193,7 +193,7 @@
                 alert("결재가 완료된 문서입니다.")
             }else if (check.text() == $('#approvalOrder').val()) {
 
-                const accept = test.replace('<td>&nbsp;</td>', '<td><p style="text-align:center;">결재완료</p></td>');
+                const accept = test.replace('<td><p style="text-align:center;">서명란</p></td>', '<td><p style="text-align:center;">결재완료</p></td>');
                 $('.approContent').val(accept);
 
                 var data = {
@@ -225,7 +225,7 @@
 
             } else if (check.text() == $('#approvalOrder').val()) {
 
-                const accept = test.replace(/결재완료/gi, '&nbsp;');
+                const accept = test.replace(/결재완료/gi, '서명란');
                 $('.approContent').val(accept);
 
                 var data = {
