@@ -1,11 +1,10 @@
 package com.ohalfmoon.firework.controller;
 
-import com.ohalfmoon.firework.dto.MemberPageDto;
-import com.ohalfmoon.firework.dto.MessagePageDto;
-import com.ohalfmoon.firework.dto.MessageResponseDto;
-import com.ohalfmoon.firework.dto.MessageSaveDto;
+import com.ohalfmoon.firework.dto.*;
 import com.ohalfmoon.firework.dto.member.MemberResponseDTO;
+import com.ohalfmoon.firework.dto.paging.PageRequestDTO;
 import com.ohalfmoon.firework.dto.paging.PageResponseDTO;
+import com.ohalfmoon.firework.model.FormEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.MessageEntity;
 import com.ohalfmoon.firework.service.MemberService;
@@ -16,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -62,16 +62,10 @@ public class MessageApiController {
         return messageService.update(messageNo, map.get("messageCheck"));
     }
 
-//    @DeleteMapping("/{messageNo}")
-//    public Long delete(@PathVariable Long messageNo) {
-//        messageService.delete(messageNo);
-//        return messageNo;
-//    }
-
     @DeleteMapping
     public Long delete(@RequestBody List<Long> arrMessage) {
         messageService.deleteAll(arrMessage);
-        return null;
+        return arrMessage.size() / 1L;
     }
 
     @GetMapping("/{messageNo}")
@@ -80,25 +74,25 @@ public class MessageApiController {
     }
 
 
-    @GetMapping("/receiver/{receiverNo}")
-    public MessagePageDto findAllByReceiver(@PathVariable  Long receiverNo,
-                                       @PageableDefault(
-                                               size = 5,
-                                               direction = Sort.Direction.DESC,
-                                               sort = "messageNo") Pageable pageable) {
-       Page<MessageEntity> entities = messageService.messageListByReceiver(receiverNo, pageable);
-       return new MessagePageDto(new PageResponseDTO<>(entities), entities.map(MessageResponseDto::new));
-    }
-
-    @GetMapping("/sender/{senderNo}")
-    public MessagePageDto findAllBySender(@PathVariable  Long senderNo,
-                                       @PageableDefault(
-                                               size = 5,
-                                               direction = Sort.Direction.DESC,
-                                               sort = "messageNo") Pageable pageable) {
-        Page<MessageEntity> entities = messageService.messageListBySender(senderNo, pageable);
-        return new MessagePageDto(new PageResponseDTO<>(entities), entities.map(MessageResponseDto::new));
-    }
+//    @GetMapping("/receiver/{receiverNo}")
+//    public MessagePageDto findAllByReceiver(@PathVariable  Long receiverNo,
+//                                       @PageableDefault(
+//                                               size = 5,
+//                                               direction = Sort.Direction.DESC,
+//                                               sort = "messageNo") Pageable pageable) {
+//       Page<MessageEntity> entities = messageService.messageListByReceiver(receiverNo, pageable);
+//       return new MessagePageDto(new PageResponseDTO<>(entities), entities.map(MessageResponseDto::new));
+//    }
+//
+//    @GetMapping("/sender/{senderNo}")
+//    public MessagePageDto findAllBySender(@PathVariable  Long senderNo,
+//                                       @PageableDefault(
+//                                               size = 5,
+//                                               direction = Sort.Direction.DESC,
+//                                               sort = "messageNo") Pageable pageable) {
+//        Page<MessageEntity> entities = messageService.messageListBySender(senderNo, pageable);
+//        return new MessagePageDto(new PageResponseDTO<>(entities), entities.map(MessageResponseDto::new));
+//    }
 
 //    @GetMapping("/sender/{senderNo}/memberList")
 //    public MemberPageDto findAllUser(@PathVariable Long senderNo,
@@ -114,5 +108,20 @@ public class MessageApiController {
     @GetMapping("/sender/{senderNo}/memberList")
     public List<MemberResponseDTO> findAllUser(@PathVariable Long senderNo) {
         return memberService.getAllMemeber(senderNo);
+    }
+
+    @GetMapping("list/{userNo}")
+    public MessagePageDto list(
+            MessagePageRequestDto messagePageRequestDto,
+            @PathVariable Long userNo
+
+    ) {
+        Page<MessageEntity> pageDto = messageService.getMessagePages(messagePageRequestDto, messagePageRequestDto.getPageable(Sort.by(Sort.Order.desc("messageNo"))) ,userNo);
+
+        MessagePageDto pageResponse =  new MessagePageDto(new PageResponseDTO<>(pageDto), pageDto.map(MessageResponseDto::new));
+
+        log.info("pageResponse : {}", pageResponse);
+
+        return pageResponse;
     }
 }

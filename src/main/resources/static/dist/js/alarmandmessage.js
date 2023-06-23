@@ -279,6 +279,82 @@ $(function () {
 
         $(".messageModal").html(str);
 
+        var arrMessage = new Array();
+
+        $(".messageCategory").on("click", "a", function () {
+            if ($(this).attr('class') == 'send') {
+                divison = false;
+                messageService.getListBySender({userNo: userNo}, function (result) {
+                    var str = "";
+                    for (var i in result.messageList.content) {
+                        str += getSendLiStr(result.messageList.content[i]);
+                    }
+                    $(".messagepagination").html(getPage(result.pageResponseDTO));
+                    $(".messages").html(str);
+                    $(".division").html(getDivision(divison));
+                });
+            } else {
+                divison = true;
+                messageService.getListByReceiver({userNo: userNo}, function (result) {
+                    var str = "";
+                    for (var i in result.messageList.content) {
+                        str += getReceiveLiStr(result.messageList.content[i]);
+                    }
+                    $(".messagepagination").html(getPage(result.pageResponseDTO));
+                    $(".messages").html(str);
+                    $(".division").html(getDivision(divison));
+                });
+            }
+        })
+
+        $("#messageRemove").click(function (){
+            if(confirm("정말 삭제하시겠습니까?")) {
+                messageService.remove(arrMessage, function (result) {
+                    if (divison) {
+                        messageService.getListByReceiver({userNo: userNo}, function (result) {
+                            var str = "";
+                            for (var i in result.messageList.content) {
+                                str += getReceiveLiStr(result.messageList.content[i]);
+                            }
+                            $(".messagepagination").html(getPage(result.pageResponseDTO));
+                            $(".messages").html(str);
+                            $(".division").html(getDivision(divison));
+                            console.log("여기냐?")
+                        });
+                    } else {
+                        messageService.getListBySender({userNo: userNo}, function (result) {
+                            var str = "";
+                            for (var i in result.messageList.content) {
+                                str += getSendLiStr(result.messageList.content[i]);
+                            }
+                            $(".messagepagination").html(getPage(result.pageResponseDTO));
+                            $(".messages").html(str);
+                            $(".division").html(getDivision(divison));
+                            console.log("저기냐?")
+                        });
+                    }
+                })
+            }
+
+        })
+
+
+        $(".messages").on("change", "#selectedMessage", function () {
+            if ($(this).is(":checked")) {
+                arrMessage.push($(this).data("messageno"));
+                console.log(arrMessage);
+
+            } else if (!$(this).is(":checked")) {
+                for (let i = 0; i < arrMessage.length; i++) {
+                    if (arrMessage[i] === $(this).data("messageno")) {
+                        arrMessage.splice(i, 1);
+                        i--;
+                    }
+                    console.log(arrMessage);
+                }
+            }
+        })
+
         if (divison) {
             messageService.getListByReceiver({userNo: userNo}, function (result) {
                 var str = "";
@@ -290,7 +366,6 @@ $(function () {
                 $(".division").html(getDivision(divison));
             });
         } else {
-            divison = false;
             messageService.getListBySender({userNo: userNo}, function (result) {
                 var str = "";
                 for (var i in result.messageList.content) {
@@ -337,7 +412,6 @@ $(function () {
 
                 });
             } else {
-                divison = false;
                 messageService.getListBySender({userNo: userNo, pageNum: pageNum}, function (result) {
                     var str = "";
                     for (var i in result.messageList.content) {
@@ -351,31 +425,7 @@ $(function () {
 
         })
 
-        $(".messageCategory").on("click", "a", function () {
-            if ($(this).attr('class') == 'send') {
-                divison = false;
-                messageService.getListBySender({userNo: userNo}, function (result) {
-                    var str = "";
-                    for (var i in result.messageList.content) {
-                        str += getSendLiStr(result.messageList.content[i]);
-                    }
-                    $(".messagepagination").html(getPage(result.pageResponseDTO));
-                    $(".messages").html(str);
-                    $(".division").html(getDivision(divison));
-                });
-            } else {
-                divison = true;
-                messageService.getListByReceiver({userNo: userNo}, function (result) {
-                    var str = "";
-                    for (var i in result.messageList.content) {
-                        str += getReceiveLiStr(result.messageList.content[i]);
-                    }
-                    $(".messagepagination").html(getPage(result.pageResponseDTO));
-                    $(".messages").html(str);
-                    $(".division").html(getDivision(divison));
-                });
-            }
-        })
+
     })
     $(".messagepagination").on("click", ".page-link", function () {
         var pageNum = $(this).data("pagenum");
@@ -390,7 +440,6 @@ $(function () {
                 $(".division").html(getDivision(divison));
             });
         } else {
-            divison = false;
             messageService.getListBySender({userNo: userNo, pageNum: pageNum}, function (result) {
                 var str = "";
                 for (var i in result.messageList.content) {
@@ -564,16 +613,29 @@ $(function () {
     $("#messageRemove").click(function (){
         if(confirm("정말 삭제하시겠습니까?")) {
                     messageService.remove(arrMessage, function (result) {
-                        messageService.getListByReceiver({userNo: userNo}, function (result) {
-                            var str = "";
-                            for (var i in result.messageList.content) {
-                                str += getReceiveLiStr(result.messageList.content[i]);
-                            }
-                            console.log(result.messageList.content)
-                            $(".messagepagination").html(getPage(result.pageResponseDTO));
-                            $(".messages").html(str);
-                            console.log(str);
-                        })
+                        if (divison) {
+                            messageService.getListByReceiver({userNo: userNo}, function (result) {
+                                var str = "";
+                                for (var i in result.messageList.content) {
+                                    str += getReceiveLiStr(result.messageList.content[i]);
+                                }
+                                $(".messagepagination").html(getPage(result.pageResponseDTO));
+                                $(".messages").html(str);
+                                $(".division").html(getDivision(divison));
+                                console.log("여기냐?")
+                            });
+                        } else {
+                            messageService.getListBySender({userNo: userNo}, function (result) {
+                                var str = "";
+                                for (var i in result.messageList.content) {
+                                    str += getSendLiStr(result.messageList.content[i]);
+                                }
+                                $(".messagepagination").html(getPage(result.pageResponseDTO));
+                                $(".messages").html(str);
+                                $(".division").html(getDivision(divison));
+                                console.log("저기냐?")
+                            });
+                        }
                     })
             }
 

@@ -1,9 +1,12 @@
 package com.ohalfmoon.firework.service;
 
+import com.ohalfmoon.firework.dto.MessagePageRequestDto;
 import com.ohalfmoon.firework.dto.MessageResponseDto;
 import com.ohalfmoon.firework.dto.MessageSaveDto;
+import com.ohalfmoon.firework.dto.paging.PageRequestDTO;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.MessageEntity;
+import com.ohalfmoon.firework.model.spec.MessageSpec;
 import com.ohalfmoon.firework.persistence.MemberRepository;
 import com.ohalfmoon.firework.persistence.MessageRepository;
 import lombok.RequiredArgsConstructor;
@@ -81,5 +84,34 @@ public class MessageService {
     @Transactional
     public void deleteAll(List<Long> arrMessage) {
         messageRepository.deleteAll(arrMessage.stream().map(m->MessageEntity.builder().messageNo(m).build()).collect(Collectors.toList()));
+    }
+
+    public Page<MessageEntity> getMessagePages(MessagePageRequestDto dto, Pageable pageable, Long userNo){
+        Page<MessageEntity> result;
+        if(dto.getDivision()){
+            if(dto.getType()=="W") {
+                MemberEntity searchMemberEntity = MemberEntity.builder()
+                        .name(dto.getKeyword())
+                        .build();
+
+                result = messageRepository.findAllBySender(searchMemberEntity, pageable);
+            }
+            else {
+                result = messageRepository.findAll(MessageSpec.MessageSearch(dto.getType(), dto.getKeyword(), userNo, dto.getDivision()), pageable);
+            }
+        }
+        else {
+            if(dto.getType()=="W") {
+                MemberEntity searchMemberEntity = MemberEntity.builder()
+                        .name(dto.getKeyword())
+                        .build();
+
+                result = messageRepository.findAllByReceiver(searchMemberEntity, pageable);
+            }
+            else {
+                result = messageRepository.findAll(MessageSpec.MessageSearch(dto.getType(), dto.getKeyword(), userNo, dto.getDivision()), pageable);
+            }
+        }
+        return result;
     }
 }
