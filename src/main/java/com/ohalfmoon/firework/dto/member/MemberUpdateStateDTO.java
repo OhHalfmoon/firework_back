@@ -2,6 +2,7 @@ package com.ohalfmoon.firework.dto.member;
 
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.Role;
+import com.ohalfmoon.firework.model.State;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,10 +23,10 @@ import lombok.NoArgsConstructor;
 public class
 MemberUpdateStateDTO {
     private Long userNo;
-    private int state;
+    private State state;
 
     @Builder
-    public MemberUpdateStateDTO(Long userNo, int state) {
+    public MemberUpdateStateDTO(Long userNo, State state) {
         this.userNo = userNo;
         this.state = state;
     }

@@ -6,6 +6,7 @@ import com.ohalfmoon.firework.dto.member.MemberLoginDTO;
 import com.ohalfmoon.firework.dto.member.MemberResponseDTO;
 import com.ohalfmoon.firework.service.AttendService;
 import com.ohalfmoon.firework.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,16 +32,18 @@ import java.util.Date;
  */
 @Controller("/")
 @Slf4j
+@RequiredArgsConstructor
 public class IndexController {
-    @Autowired
-    MemberService memberService;
+
+    private final MemberService memberService;
 
     @Autowired
     private AttendService attendService;
 
     @GetMapping
     public String index(HttpSession session, @AuthenticationPrincipal CustomUserDetails details, Model model, HttpServletRequest req) {
-        model.addAttribute("user", details);
+//        req.getServletContext().setAttribute("user", details);
+//        model.addAttribute("user", details);
         log.info("security session : {}", model.getAttribute("user"));
         log.info("session :{}", session.getAttribute("member"));
         return "index";

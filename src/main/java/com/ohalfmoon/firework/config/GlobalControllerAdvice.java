@@ -32,7 +32,7 @@ public class GlobalControllerAdvice {
         model.addAttribute("contextPath", contextPath);
     }
 
-    @ModelAttribute("currentUser")
+    @ModelAttribute("user")
     public UserDetails getCurrentsUser(Authentication authentication) {
         if(authentication != null && authentication.getPrincipal() instanceof UserDetails) {
             return (CustomUserDetails) authentication.getPrincipal();

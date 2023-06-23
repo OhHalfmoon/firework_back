@@ -36,7 +36,9 @@ public class CustomUserDetails implements UserDetails {
     private Long userNo;
     private String phoneNum;
     private DeptEntity deptEntity;
+    private String deptName;
     private PositionEntity positionEntity;
+    private String positionName;
     private boolean manager;
     private LocalDate birthdate;
     private LocalDate Startdate;
@@ -56,6 +58,8 @@ public class CustomUserDetails implements UserDetails {
         this.birthdate = user.getBirthdate();
         this.Startdate = user.getStartdate();
         this.roleName = user.getRoleName();
+        this.positionName = user.getPositionEntity().getPositionName();
+        this.deptName = user.getDeptEntity().getDeptName();
     }
 
     @Override

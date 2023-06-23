@@ -1,9 +1,6 @@
 package com.ohalfmoon.firework.dto.member;
 
-import com.ohalfmoon.firework.model.DeptEntity;
-import com.ohalfmoon.firework.model.MemberEntity;
-import com.ohalfmoon.firework.model.PositionEntity;
-import com.ohalfmoon.firework.model.RoleEntity;
+import com.ohalfmoon.firework.model.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -37,8 +34,8 @@ public class MemberResponseDTO {
     private String deptName;
     private Long positionNo;
     private String positionName;
-    private PositionEntity positionEntity;
-    private int state;
+    private String state;
+    private String roleTitle;
 
     public MemberResponseDTO(MemberEntity entity) {
         userNo = entity.getUserNo();
@@ -53,8 +50,7 @@ public class MemberResponseDTO {
         deptName = entity.getDeptEntity().getDeptName();
         positionNo = entity.getPositionEntity().getPositionNo();
         positionName = entity.getPositionEntity().getPositionName();
-//        deptEntity = entity.getDeptEntity();
-        positionEntity = entity.getPositionEntity();
-        state = entity.getState();
+        state = entity.getState().getTitle();
+        roleTitle = entity.getRoleName().getTitle();
     }
 }

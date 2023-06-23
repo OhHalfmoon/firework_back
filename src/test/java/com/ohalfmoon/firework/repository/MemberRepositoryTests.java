@@ -1,6 +1,7 @@
 package com.ohalfmoon.firework.repository;
 
 import com.ohalfmoon.firework.model.MemberEntity;
+import com.ohalfmoon.firework.model.State;
 import com.ohalfmoon.firework.persistence.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -55,7 +56,7 @@ public class MemberRepositoryTests {
     @Test
     @DisplayName("state가 0인 회원 조회")
     public void zeroStateMemberTest() {
-        List<MemberEntity> entity = memberRepository.findAllByState(0);
+        List<MemberEntity> entity = memberRepository.findAllByState(State.WATING);
         log.info("state = 0 : {}", entity);
     }
 

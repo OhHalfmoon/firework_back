@@ -5,6 +5,9 @@ import com.ohalfmoon.firework.dto.member.MemberUpdateDTO;
 import com.ohalfmoon.firework.dto.member.MemberUpdatePwDTO;
 import com.ohalfmoon.firework.dto.member.MemberUpdateStateDTO;
 import com.ohalfmoon.firework.model.Role;
+import com.ohalfmoon.firework.model.State;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,7 @@ import java.util.Date;
  * 2023-06-14                ycy             최초 생성
  */
 @SpringBootTest
+@Slf4j
 public class MemberServiceTest {
 
     @Autowired
@@ -48,7 +52,7 @@ public class MemberServiceTest {
     @DisplayName("회원 상태값 변경 테스트")
     public void updateState() {
         MemberUpdateStateDTO dto = new MemberUpdateStateDTO();
-        dto.setState(1);
+        dto.setState(State.WATING);
         dto.toEntity();
         memberService.recognize(2L, dto);
     }
@@ -71,10 +75,24 @@ public class MemberServiceTest {
     public void updateByAdminTest() {
         MemberUpdateByAdminRequestDTO dto = new MemberUpdateByAdminRequestDTO();
         dto.setName("관리자가 수정");
-        dto.setState(2); // 회원 탈퇴
+        dto.setState(State.SECESSION); // 회원 탈퇴
         dto.setRoleName(Role.ROLE_TL);
-        dto.setPositionNo(2L);
+        dto.setDeptNo(2L);
         dto.setPositionNo(10L);
         memberService.updateByAdmin(18L, dto);
+    }
+
+    @Test
+    @DisplayName("회원 List 조회")
+    public void memberList() {
+        memberService.getMemberList();
+        log.info("Member List : {}", memberService.getMemberList());
+    }
+
+    @Test
+    @DisplayName("회원 단일조회")
+    public void getMember() {
+        memberService.get(2L);
+        log.info("memberGet : {}", memberService.get(2L));
     }
 }
