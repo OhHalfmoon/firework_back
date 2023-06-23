@@ -31,9 +31,11 @@ public class PageRequestDTO {
         this.size = 10;
     }
 
-    public PageRequestDTO(int page, int size){
+    public PageRequestDTO(int page, int size, String type, String keyword){
         this.page = page;
         this.size = size;
+        this.type = type;
+        this.keyword = keyword;
     }
 
     public Pageable getPageable(Sort sort) {
