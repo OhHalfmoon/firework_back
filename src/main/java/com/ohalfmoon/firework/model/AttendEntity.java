@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -29,6 +30,9 @@ public class AttendEntity {
     private Date godate;
 
     private Date leavedate;
+
+    @Column(nullable = false)
+    private LocalDate regdate;
 
     public void update(Date leavedate) {
         this.leavedate = leavedate;

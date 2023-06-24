@@ -23,4 +23,7 @@ import java.util.List;
 public interface AttendRepository extends JpaRepository<AttendEntity, Long> {
     AttendEntity findTopByMemberEntity_UserNoOrderByAttendNoDesc(Long userNo);
 
+//    List<AttendEntity> findAllByMemberEntity_UserNo(Long userNo);
+    List<AttendEntity> findTop30ByMemberEntity_UserNoOrderByAttendNoDesc(Long userNo);
+
 }

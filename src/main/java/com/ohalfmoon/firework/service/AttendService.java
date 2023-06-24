@@ -1,5 +1,6 @@
 package com.ohalfmoon.firework.service;
 
+import com.ohalfmoon.firework.dto.attend.AttendResponseDTO;
 import com.ohalfmoon.firework.dto.attend.AttendSaveDTO;
 import com.ohalfmoon.firework.dto.attend.AttendUpdateDTO;
 import com.ohalfmoon.firework.dto.sub.SubLineSaveDTO;
@@ -9,6 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * packageName    : com.ohalfmoon.firework.service
@@ -48,6 +52,12 @@ public class AttendService {
     public Long getAttendNo(Long userNo) {
         AttendEntity entity = attendRepository.findTopByMemberEntity_UserNoOrderByAttendNoDesc(userNo);
         return entity.getAttendNo();
+    }
+
+    public List<AttendResponseDTO> getAttend(Long userNo) {
+//        return attendRepository.findTop30ByMemberEntity_UserNoOrderByAttendNoDesc(userNo)
+//                .stream().map(AttendResponseDTO::new).findAny().orElseThrow(() -> new IllegalArgumentException("존재하지 않는 ID 입니다." + userNo));
+        return attendRepository.findTop30ByMemberEntity_UserNoOrderByAttendNoDesc(userNo).stream().map(AttendResponseDTO::new).collect(Collectors.toList());
     }
 
 }

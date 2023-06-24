@@ -141,8 +141,8 @@ public class MemberEntity {
         this.state = state;
     }
 
-    public void updateByAdmin(String username, Role roleName, State state, boolean manager) {
-        this.username = username;
+    public void updateByAdmin(Role roleName, State state, boolean manager) {
+//        this.userNo = userNo;
         this.roleName = roleName;
         this.state = state;
         this.manager = manager;

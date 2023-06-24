@@ -1,20 +1,20 @@
 package com.ohalfmoon.firework.controller;
 
 import com.ohalfmoon.firework.dto.member.MemberResponseDTO;
-import com.ohalfmoon.firework.dto.member.MemberUpdateStateDTO;
+import com.ohalfmoon.firework.dto.member.MemberUpdateByAdminRequestDTO;
 import com.ohalfmoon.firework.model.Role;
+import com.ohalfmoon.firework.model.State;
+import com.ohalfmoon.firework.service.AttendService;
+import com.ohalfmoon.firework.service.DeptService;
 import com.ohalfmoon.firework.service.MemberService;
+import com.ohalfmoon.firework.service.PositionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * packageName :  com.ohalfmoon.firework.controller
@@ -35,6 +35,12 @@ public class AdminController {
 
     private final MemberService memberService;
 
+    private final AttendService attendService;
+
+    private final PositionService positionService;
+
+    private final DeptService deptService;
+
     @GetMapping
     public String admin() {
         return "/admin/index";
@@ -50,7 +56,25 @@ public class AdminController {
     @GetMapping("/member/{userNo}")
     public String getMember(Model model, MemberResponseDTO dto) {
         model.addAttribute("member", memberService.get(dto.getUserNo()));
+        model.addAttribute("attend", attendService.getAttend(dto.getUserNo()));
+        model.addAttribute("dept", deptService.deptList());
+        model.addAttribute("position", positionService.positionList());
+        model.addAttribute("role", Role.values());
+        model.addAttribute("state", State.values());
         return "/admin/member/getMember";
+    }
+
+    /**
+     * 회원정보 수정(관리자)
+     *
+     * @param userNo the user no
+     * @param dto    the dto
+     * @return the string
+     */
+    @PostMapping("/member/{userNo}")
+    public String updateByAdmin(Long userNo, MemberUpdateByAdminRequestDTO dto) {
+        memberService.updateByAdmin(userNo, dto);
+        return "redirect:/admin/member/"+userNo;
     }
 
     /**

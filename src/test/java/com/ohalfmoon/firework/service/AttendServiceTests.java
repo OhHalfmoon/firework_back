@@ -46,6 +46,17 @@ public class AttendServiceTests {
                 .build();
         attendService.save(attendSaveDTO);
     }
+    @Test
+    @DisplayName("출근 반복 입력 테스트")
+    public void testSave2() {
+        AttendSaveDTO attendSaveDTO = AttendSaveDTO.builder()
+                .userNo(19L)
+                .godate(new Date())
+                .build();
+        for(int i=0; i<30; i++) {
+            attendService.save(attendSaveDTO);
+        }
+    }
 
     @Test
     @DisplayName("퇴근 등록(수정) 테스트")
@@ -64,5 +75,13 @@ public class AttendServiceTests {
                 .build();
         attendService.getAttendNo(attendResponseDTO.getAttendNo());
         log.info("attendNo: " + attendResponseDTO.getAttendNo());
+    }
+
+    @Test
+    @DisplayName("userNo로 조회 테스트")
+    public void attendGetTest() {
+        AttendResponseDTO dto = new AttendResponseDTO();
+        dto.setUserNo(19L);
+        log.info("회원 : {}", attendService.getAttend(19L));
     }
 }
