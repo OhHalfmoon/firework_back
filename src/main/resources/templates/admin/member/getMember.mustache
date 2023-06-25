@@ -211,8 +211,9 @@
                                 <div class="input-group mb-3">
                                     <label> 변경하실 권한을 선택해주세요
                                         <select class="d-flex custom-select" name="roleName">
+                                            <option selected value="{{roleName}}">{{roleTitle}}</option>
                                             {{#role}}
-                                                <option value="{{key}}">{{title}}</option>
+                                                <option value="{{roleName}}">{{title}}</option>
                                             {{/role}}
                                         </select>
                                     </label>
@@ -220,8 +221,8 @@
                                 <div class="input-group mb-3">
                                     <label> 회원을 탈퇴시키시겠습니까?
                                         <select class="d-flex custom-select" name="state">
-                                            <option selected value="1">아니요</option>
-                                            <option value="2">네</option>
+                                            <option selected value="{{state}}">아니요</option>
+                                            <option value="SECESSION">네</option>
                                         </select>
                                     </label>
                                 </div>
@@ -258,6 +259,7 @@
         $("#attendance").css("display","none");
         $("#attendChk").click(function () {
             $("#attendance").css("display", "block");
+            $("#attendChk").remove();
         })
         $("#updateBtn").click(function(e) {
             e.preventDefault()

@@ -41,6 +41,7 @@ import java.util.Collections;
 public class CustomUserDetailsService implements UserDetailsService {
 
     private MemberRepository memberRepository;
+
     @Autowired
     public CustomUserDetailsService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
@@ -51,7 +52,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 //    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 //        MemberEntity entity = memberRepository.findByUsername(username);
 ////                .orElseThrow(() -> new UsernameNotFoundException("사용자가 존재하지 않습니다."));
-//        log.info("state : {}", entity.getState());
 //        if(entity.getState() == 1) { // 가입 승인된 유저만 로그인 가능
 //            return new CustomUserDetails(entity);
 //        }

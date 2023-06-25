@@ -53,9 +53,11 @@
                                     <!-- button with a dropdown -->
                                     <div class="btn-group">
                                         <div class="m-1">
-                                            <a class="btn btn-info" href="#">
-                                                근태확인
-                                            </a>
+                                            {{#user}}
+                                                <a class="btn btn-info" href="/auth/getAttend/{{userNo}}">
+                                                    근태확인
+                                                </a>
+                                            {{/user}}
                                         </div>
                                     </div>
                                 </div>

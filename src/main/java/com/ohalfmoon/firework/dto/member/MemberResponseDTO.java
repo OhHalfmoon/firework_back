@@ -35,6 +35,7 @@ public class MemberResponseDTO {
     private Long positionNo;
     private String positionName;
     private State state;
+    private String stateTitle;
     private String roleTitle;
     private Role roleName;
     private LocalDate enddate;
@@ -56,5 +57,6 @@ public class MemberResponseDTO {
         roleTitle = entity.getRoleName().getTitle();
         enddate = entity.getEnddate();
         roleName = entity.getRoleName();
+        stateTitle = entity.getState().getTitle();
     }
 }
