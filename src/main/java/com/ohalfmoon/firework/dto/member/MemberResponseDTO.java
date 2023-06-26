@@ -34,8 +34,11 @@ public class MemberResponseDTO {
     private String deptName;
     private Long positionNo;
     private String positionName;
-    private String state;
+    private State state;
+    private String stateTitle;
     private String roleTitle;
+    private Role roleName;
+    private LocalDate enddate;
 
     public MemberResponseDTO(MemberEntity entity) {
         userNo = entity.getUserNo();
@@ -50,7 +53,10 @@ public class MemberResponseDTO {
         deptName = entity.getDeptEntity().getDeptName();
         positionNo = entity.getPositionEntity().getPositionNo();
         positionName = entity.getPositionEntity().getPositionName();
-        state = entity.getState().getTitle();
+        state = entity.getState();
         roleTitle = entity.getRoleName().getTitle();
+        enddate = entity.getEnddate();
+        roleName = entity.getRoleName();
+        stateTitle = entity.getState().getTitle();
     }
 }

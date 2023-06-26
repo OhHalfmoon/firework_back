@@ -212,8 +212,7 @@ public class MemberService {
                 .orElseThrow(() -> new IllegalArgumentException(""));
         entity.updatePositionNo(byId2);
 
-        entity.updateByAdmin(dto.getName(), dto.getRoleName(), dto.getState(), dto.isManager());
-        //(dto.getEmail(), dto.getPhoneNum(), dto.getName(), dto.getBirthdate(), dto.getStartdate());
+        entity.updateByAdmin(dto.getRoleName(), dto.getState(), dto.isManager());
 
         return userNo;
     }

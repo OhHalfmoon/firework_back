@@ -79,7 +79,7 @@ public class MemberServiceTest {
         dto.setRoleName(Role.ROLE_TL);
         dto.setDeptNo(2L);
         dto.setPositionNo(10L);
-        memberService.updateByAdmin(18L, dto);
+        memberService.updateByAdmin(15L, dto);
     }
 
     @Test

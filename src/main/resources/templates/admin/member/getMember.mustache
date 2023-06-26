@@ -19,12 +19,13 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>관리자 - {{member.name}}님의 회원정보</h1>
+                            <h1>관리자 - 회원정보 확인</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="{{contextPath}}/">Home</a></li>
-                                <li class="breadcrumb-item active">관리자-회원 관리</li>
+                                <li class="breadcrumb-item"><a href="{{contextPath}}/admin/member">member</a></li>
+                                <li class="breadcrumb-item active">관리자-회원정보 확인</li>
                             </ol>
                         </div>
                     </div>
@@ -35,58 +36,88 @@
             <section class="content mt-5">
         <div class="container-fluid">
             <div class="row justify-content-center">
-                <div class="col-md-8">
+                <div class="col-md-6 row justify-content-center">
 
                     <!-- Profile Image -->
-                    <div class="card card-success card-outline">
+                    <div class="card card-success card-outline col-md-8">
                         <div class="card-body box-profile row">
-
-                                <ul class="list-group list-group-unbordered mb-3 col-lg-6 col-md-12">
-                                    <li class="list-group-item">
-                                        <b class="float-left">연락처 :</b>
-                                        <b>{{phoneNum}}</b>
+                                <h3 class="text-center col-md-12 mb-3"><b>{{name}}</b>님의 회원정보</h3>
+                                <ul class="list-group list-group-unbordered mb-3 col-lg-12 col-md-12" style="min-height: 230px">
+                                    <li class="list-group-item my-auto">
+                                        <b class="text-left">부서 / 직급 / 이름 : </b>
+                                        <b>{{deptName}} / {{positionName}} / {{name}}</b>
+                                        <button class="btn btn-outline-warning small float-right" data-toggle="modal" data-target="#basicModal"> 수정</button>
+                                    </li>
+                                    <li class="list-group-item my-auto">
+                                        <b class="text-left">권한 :</b>
+                                        <b>{{roleTitle}}</b>
+                                        <button class="btn btn-outline-warning small float-right" data-toggle="modal" data-target="#authorityModal"> 수정</button>
                                     </li>
                                     <li class="list-group-item">
-                                        <b class="float-left">email :</b><b>{{email}}</b>
+                                        <b class="float-left">입사일 :</b><b>{{startdate}}</b>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <b class="float-left">퇴사일 :</b><b>{{#enddate}}{{/enddate}}</b>
                                     </li>
                                     <li class="list-group-item">
                                         <b class="float-left">생일 :</b><b>{{birthdate}}</b>
                                     </li>
                                     <li class="list-group-item">
-                                        <b class="float-left">입사일 :</b><b>{{startdate}}</b>
-                                    </li>
-                                </ul>
-
-                                <ul class="list-group list-group-unbordered mb-3 col-lg-6 col-md-12">
-                                    <li class="list-group-item">
-                                        <b class="float-left">연락처 :</b><b>{{phoneNum}}</b>
-                                    </li>
-                                    <li class="list-group-item">
                                         <b class="float-left">email :</b><b>{{email}}</b>
                                     </li>
-                                    <li class="list-group-item">
-                                        <b class="float-left">생일 :</b><b>{{birthdate}}</b>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <b class="float-left">입사일 :</b><b>{{startdate}}</b>
-                                    </li>
-
                                 </ul>
-                            <div class="row col-12 justify-content-center mt-5">
-                                <div class="col-4">
-                                    <a href="{{contextPath}}/auth/mypage" class="btn btn-outline-dark btn-block"><b>이전으로</b></a>
-                                </div>
-                                <div class="col-4">
-                                    <a href="{{contextPath}}/auth/modify" class="btn btn-success btn-block"><b>정보수정</b></a>
-                                </div>
-                                <div class="col-4">
-                                    <a href="{{contextPath}}/auth/modifyPw" class="btn btn-danger btn-block"><b>PW변경</b></a>
-                                </div>
-                            </div>
                         </div>
                         <!-- /.card-body -->
                     </div>
                     <!-- /.card -->
+
+
+
+                    <div class="col-md-8" id="attendance" style="max-width: 100%">
+                            <form id="updateFrm">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h3 class="card-title">{{member.name}}님의 근태 (최근 30일)</h3>
+                                                </div>
+                                                <!-- /.card-header -->
+                                                <div class="card-body">
+                                                    <table id="example2" class="table table-bordered table-hover">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>날짜</th>
+                                                            <th>출근시간</th>
+                                                            <th>퇴근시간</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {{#attend}}
+                                                                <tr class="tableSum" >
+                                                                    <th>{{regdate}}</th>
+                                                                    <th>{{godate}}</th>
+                                                                    <th>{{#leavedate}}{{leavedate}}{{/leavedate}}</th>
+                                                                </tr>
+                                                            {{/attend}}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <!-- /.card -->
+
+                                            <!-- /.card -->
+                                        </div>
+                                        <!-- /.col -->
+                                    </div>
+                                    <!-- /.row -->
+                                </div>
+                                <!-- /.container-fluid -->
+                            </form>
+                    </div>
+                    <div class="col-12 mb-5">
+                        <button class="btn btn-outline-secondary float-right" id="attendChk">근태확인</button><br>
+                    </div>
                 </div>
                 <!-- /.col -->
                 <!-- /.col -->
@@ -105,5 +136,148 @@
     <!-- ./wrapper -->
 
     {{>layout/library}}
+
+    <div class="container">
+        <!-- The Modal -->
+        <div class="modal fade" id="basicModal">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">부서, 직급 수정</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <form method="post" id="frm">
+                            {{#member}}
+                            <div class="input-group mb-3">
+                                <label> 변경하실 부서를 선택해주세요
+                                    <select class="d-flex custom-select" name="deptNo">
+                                        <option selected value="{{deptNo}}">{{deptName}}</option>
+                                        {{#dept}}
+                                        <option value="{{deptNo}}">{{deptName}}</option>
+                                        {{/dept}}
+                                    </select>
+                                </label>
+                            </div>
+                            <div class="input-group mb-3">
+                                <label> 변경하실 직급을 선택해주세요
+                                    <select class="d-flex custom-select" name="positionNo">
+                                        <option selected value="{{positionNo}}">{{positionName}}</option>
+                                        {{#position}}
+                                        <option value="{{positionNo}}">{{positionName}}</option>
+                                        {{/position}}
+                                    </select>
+                                </label>
+                            </div>
+                            <input type="hidden" name="userNo" value="{{userNo}}">
+                            <input type="hidden" name="state" value="{{state}}">
+                            <input type="hidden" name="roleName" value="{{roleName}}">
+                            <input type="hidden" name="manager" value="{{manager}}">
+                            {{/member}}
+                        </form>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" id="updateBtn">변경</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- The Modal -->
+        <div class="modal fade" id="authorityModal">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">부서, 직급 수정</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <form method="post" id="frm2">
+                            {{#member}}
+                                <div class="input-group mb-3">
+                                    <label> 변경하실 권한을 선택해주세요
+                                        <select class="d-flex custom-select" name="roleName">
+                                            <option selected value="{{roleName}}">{{roleTitle}}</option>
+                                            {{#role}}
+                                                <option value="{{roleName}}">{{title}}</option>
+                                            {{/role}}
+                                        </select>
+                                    </label>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <label> 회원을 탈퇴시키시겠습니까?
+                                        <select class="d-flex custom-select" name="state">
+                                            <option selected value="{{state}}">아니요</option>
+                                            <option value="SECESSION">네</option>
+                                        </select>
+                                    </label>
+                                </div>
+                                <div class="input-group mb-3">
+                                <label> 관리자 권한을 주시겠습니까?
+                                    <select class="d-flex custom-select" name="manager">
+                                            <option value="0">No</option>
+                                            <option value="1">Yes</option>
+                                    </select>
+                                </label>
+                            </div>
+                                <input type="hidden" name="userNo" value="{{userNo}}">
+                                <input type="hidden" name="deptNo" value="{{deptNo}}">
+                                <input type="hidden" name="positionNo" value="{{positionNo}}">
+                            {{/member}}
+                        </form>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" id="update">변경</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+<script>
+    $(function() {
+        $("#attendance").css("display","none");
+        $("#attendChk").click(function () {
+            $("#attendance").css("display", "block");
+            $("#attendChk").remove();
+        })
+        $("#updateBtn").click(function(e) {
+            e.preventDefault()
+            let result = confirm("수정 하시겠습니까?")
+            if(result) {
+                alert("수정되었습니다.")
+                $("#frm").submit();
+            }
+        })
+        $("#update").click(function(e) {
+            e.preventDefault()
+            let result = confirm("수정 하시겠습니까?")
+            if(result) {
+                alert("수정되었습니다.")
+                $("#frm2").submit();
+            }
+        })
+    })
+</script>
 </body>
 </html>

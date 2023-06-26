@@ -56,6 +56,16 @@
                         </p>
                     </a>
                 </li>
+                {{^manager}}
+                <li class="nav-item">
+                    <a href="{{contextPath}}/admin/member" class="nav-link">
+                        <i class="nav-icon fas fa-address-card"></i>
+                        <p>
+                            사원관리
+                        </p>
+                    </a>
+                </li>
+                {{/manager}}
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

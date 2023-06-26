@@ -4,6 +4,7 @@ import com.ohalfmoon.firework.config.auth.CheckUsernameValidator;
 import com.ohalfmoon.firework.config.auth.CustomUserDetails;
 import com.ohalfmoon.firework.dto.member.*;
 import com.ohalfmoon.firework.model.MemberEntity;
+import com.ohalfmoon.firework.service.AttendService;
 import com.ohalfmoon.firework.service.DeptService;
 import com.ohalfmoon.firework.service.MemberService;
 import com.ohalfmoon.firework.service.PositionService;
@@ -59,6 +60,8 @@ public class MemberController {
     private final PositionService positionService;
 
     private final CheckUsernameValidator checkUsernameValidator;
+
+    private final AttendService attendService;
 
     String redirect = "redirect:/";
 
@@ -246,5 +249,11 @@ public class MemberController {
         memberService.updatePw(userNo, dto);
         session.invalidate();
         return redirect+"auth/signin";
+    }
+
+    @GetMapping("getAttend/{userNo}")
+    public String getAttend(Model model, MemberResponseDTO dto) {
+        model.addAttribute("attend", attendService.getAttend(dto.getUserNo()));
+        return "/auth/getAttend";
     }
 }
