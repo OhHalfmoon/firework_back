@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 /**
  * packageName :  com.ohalfmoon.firework.dto.form
  * fileName : DeptDTO
@@ -17,6 +15,7 @@ import java.util.Date;
  * DATE                 AUTHOR                NOTE
  * -----------------------------------------------------------
  * 2023-06-07                ycy             최초 생성
+ * 2023-06-23             방한솔             생성자
  */
 @NoArgsConstructor
 @Data
@@ -31,5 +30,11 @@ public class DeptListResponseDTO {
     public DeptListResponseDTO(DeptEntity entity) {
         deptNo = entity.getDeptNo();
         deptName = entity.getDeptName();
+    }
+
+    @Builder
+    public DeptListResponseDTO(Long deptNo, String deptName) {
+        this.deptNo = deptNo;
+        this.deptName = deptName;
     }
 }
