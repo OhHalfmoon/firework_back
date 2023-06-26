@@ -141,6 +141,10 @@ public class MemberEntity {
         this.state = state;
     }
 
+    public void updateAttachEntity(Long attachNo) {
+        this.attachEntity = AttachEntity.builder().attachNo(attachNo).build();
+    }
+
     public void updateByAdmin(Role roleName, State state, boolean manager) {
 //        this.userNo = userNo;
         this.roleName = roleName;

@@ -2,6 +2,7 @@ package com.ohalfmoon.firework.controller;
 
 import com.ohalfmoon.firework.config.auth.CheckUsernameValidator;
 import com.ohalfmoon.firework.config.auth.CustomUserDetails;
+import com.ohalfmoon.firework.dto.fileUpload.AttachSaveDto;
 import com.ohalfmoon.firework.dto.member.*;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.service.AttendService;
@@ -10,6 +11,7 @@ import com.ohalfmoon.firework.service.MemberService;
 import com.ohalfmoon.firework.service.PositionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,11 +25,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * packageName    : com.ohalfmoon.firework.controller
@@ -249,6 +254,26 @@ public class MemberController {
         memberService.updatePw(userNo, dto);
         session.invalidate();
         return redirect+"auth/signin";
+    }
+
+    @PostMapping("mypage")
+    public String modifySign(@RequestParam("file") MultipartFile file, @AuthenticationPrincipal CustomUserDetails user) throws IOException {
+        String uuid = UUID.randomUUID().toString();
+        String ext = FilenameUtils.getExtension(file.getOriginalFilename());
+
+        AttachSaveDto saveDto = AttachSaveDto.builder()
+                .originName(file.getOriginalFilename())
+                .uuid(uuid)
+                .ext(ext)
+                .build();
+
+
+
+        log.info("dto : {}", saveDto);
+        log.info("file : {}", file);
+        log.info("userNo : {}", saveDto);
+        memberService.updateSign(saveDto, file, user.getUserNo());
+        return redirect+"auth/mypage";
     }
 
     @GetMapping("getAttend/{userNo}")

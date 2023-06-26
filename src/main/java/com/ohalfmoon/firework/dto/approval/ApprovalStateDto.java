@@ -9,7 +9,7 @@ import lombok.Setter;
  * packageName    : com.ohalfmoon.firework.dto
  * fileName       : ApprovalStateDto
  * author         : 오상현
- * date           : 2023/06/09
+em * date           : 2023/06/09
  * description    : 결재 최종승인 수정 DTO
  * ===========================================================
  * DATE              AUTHOR             NOTE
