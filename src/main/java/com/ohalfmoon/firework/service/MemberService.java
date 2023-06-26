@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -326,5 +327,11 @@ public class MemberService {
      */
     public List<MemberResponseDTO> getAllMemeber(Long userNo) {
         return memberRepository.findAllByUserNoNotLike(userNo).stream().map(MemberResponseDTO::new).collect(Collectors.toList());
+    }
+
+    public List<MemberResponseDTO> getMemberListByDeptNo(Long deptNo) {
+        return memberRepository.findByDeptEntity_DeptNo(deptNo)
+                .stream().map(MemberResponseDTO::new)
+                .collect(Collectors.toList());
     }
 }
