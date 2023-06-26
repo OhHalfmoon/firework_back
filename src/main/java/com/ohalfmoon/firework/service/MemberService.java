@@ -1,13 +1,12 @@
 package com.ohalfmoon.firework.service;
 
+import com.ohalfmoon.firework.dto.fileUpload.AttachSaveDto;
 import com.ohalfmoon.firework.dto.member.*;
 import com.ohalfmoon.firework.model.*;
-import com.ohalfmoon.firework.persistence.DeptRepository;
-import com.ohalfmoon.firework.persistence.MemberRepository;
-import com.ohalfmoon.firework.persistence.PositionRepository;
-import com.ohalfmoon.firework.persistence.RoleRepository;
+import com.ohalfmoon.firework.persistence.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,7 +17,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +55,26 @@ public class MemberService {
 
     private final PositionRepository positionRepository;
 
+    private final AttachRepository attachRepository;
+
+    private final String projectPath = new File("").getAbsolutePath();
+
     private final PasswordEncoder encoder;
+    private final AttachService attachService;
+    @Value("${upload.path}")
+    private String uploadDir;
+
+    private String filePath(String uuid, String ext){
+        // 프로젝트 루트 경로 확인용
+
+        // 실제 업로드 폴더 경로
+        File uploadFolder = new File(projectPath + uploadDir);
+        if(!uploadFolder.exists()){
+            boolean mkdirs = uploadFolder.mkdirs();
+        }
+
+        return File.separator + uploadDir + File.separator + uuid + "." + ext;
+    }
 
     /**
      * 회원가입 기능
@@ -94,6 +115,25 @@ public class MemberService {
         dto.setPassword(encoder.encode(dto.getPassword()));
         entity.updatePw(dto.getPassword());
         return userNo;
+    }
+    @Transactional
+    public Long updateSign(AttachSaveDto adto, MultipartFile uploadFile, Long userNo) throws IOException {
+        String filePath =  filePath(adto.getUuid(), adto.getExt());
+        adto.setPath(filePath);
+        uploadFile.transferTo(new File(projectPath + filePath));
+        AttachEntity sign = adto.toEntity();
+        attachRepository.save(sign);
+
+        Long signNo = sign.getAttachNo();
+
+        MemberEntity memberEntity = memberRepository.findById(userNo)
+                .orElseThrow(() -> new IllegalArgumentException("해당 id가 존재하지 않습니다." + userNo));
+
+        memberEntity.updateAttachEntity(
+                signNo
+        );
+        return userNo;
+
     }
 
     /**

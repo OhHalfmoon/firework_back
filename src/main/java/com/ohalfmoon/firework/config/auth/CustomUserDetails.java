@@ -42,7 +42,9 @@ public class CustomUserDetails implements UserDetails {
     private boolean manager;
     private LocalDate birthdate;
     private LocalDate Startdate;
+    private Long attachNo;
     private Role roleName;
+
 
 
     public CustomUserDetails(MemberEntity user) {
@@ -60,6 +62,7 @@ public class CustomUserDetails implements UserDetails {
         this.roleName = user.getRoleName();
         this.positionName = user.getPositionEntity().getPositionName();
         this.deptName = user.getDeptEntity().getDeptName();
+        this.attachNo = user.getAttachEntity() != null ? user.getAttachEntity().getAttachNo() : null;
     }
 
     @Override

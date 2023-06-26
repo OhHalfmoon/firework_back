@@ -1,21 +1,25 @@
 package com.ohalfmoon.firework.service;
 
-import com.ohalfmoon.firework.dto.member.MemberUpdateByAdminRequestDTO;
-import com.ohalfmoon.firework.dto.member.MemberUpdateDTO;
-import com.ohalfmoon.firework.dto.member.MemberUpdatePwDTO;
-import com.ohalfmoon.firework.dto.member.MemberUpdateStateDTO;
+import com.ohalfmoon.firework.dto.fileUpload.AttachSaveDto;
+import com.ohalfmoon.firework.dto.member.*;
+import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.Role;
 import com.ohalfmoon.firework.model.State;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * packageName :  com.ohalfmoon.firework.service
@@ -34,6 +38,9 @@ public class MemberServiceTest {
 
     @Autowired
     MemberService memberService;
+
+    @Autowired
+    AttachService attachService;
 
     @Autowired
     PasswordEncoder encoder;
@@ -94,5 +101,32 @@ public class MemberServiceTest {
     public void getMember() {
         memberService.get(2L);
         log.info("memberGet : {}", memberService.get(2L));
+    }
+
+
+    @Test
+    public void saveFileTest() throws IOException {
+        MockMultipartFile file = new MockMultipartFile("signtest", "image-removebg-preview.png", "image/png", "Hello, World!".getBytes());
+
+        AttachSaveDto dto = AttachSaveDto.builder()
+                .uuid(UUID.randomUUID().toString())
+                .ext(FilenameUtils.getExtension(file.getOriginalFilename()))
+                .originName(file.getOriginalFilename())
+                .build();
+
+//        Long attachNo = attachService.fileSave(dto, file);
+//        log.info("파일테스트,{}", attachNo);
+
+        Long userNo = memberService.get(2L).getUserNo();
+//        MemberUpdateAttachDTO updateAttachDTO = MemberUpdateAttachDTO.builder()
+//                .attachNo(atta)
+//                .build();
+
+        Long testUser = memberService.updateSign(dto, file, userNo);
+
+        log.info("유저테스트,{}", testUser);
+
+
+
     }
 }

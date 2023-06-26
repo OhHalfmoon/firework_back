@@ -144,7 +144,7 @@
 {{>layout/library}}
 <!-- The Modal -->
 <div class="modal" id="myModal">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
 
             <!-- Modal Header -->
@@ -297,35 +297,37 @@
                 } else if ($(".docbox").val() == "문서함을 선택해주세요") {
                     alert("문서함을 선택해주세요")
                 } else {
-                    var data = {
-                        approvalName: $('#approvalName').val(),
-                        lineNo: $('#applyVal').val(),
-                        docboxNo: $('#docbox').val(),
-                        approContent: $('.approContent').val(),
-                        approvalOrder: parseInt($('#approvalOrder').val()) + 1,
-                        approvalState: parseInt($('#approvalState').val()) + 1,
-                        regdate : $('#regdate').val()
-                    };
-                    var id = $('#approvalNo').val();
-                    $.ajax({
-                        type: 'PUT',
-                        url: '/approval/update/' + id,
-                        datatype: 'json',
-                        contentType: 'application/json; charset=utf-8',
-                        data: JSON.stringify(data)
-                    }).done(function () {
-                    })
-                    alert("결재가 요청되었습니다.")
-                    location.href='/approval/' + id;
+                    if(confirm("문서를 제출하시겠습니까?")) {
+                        var data = {
+                            approvalName: $('#approvalName').val(),
+                            lineNo: $('#applyVal').val(),
+                            docboxNo: $('#docbox').val(),
+                            approContent: $('.approContent').val(),
+                            approvalOrder: parseInt($('#approvalOrder').val()) + 1,
+                            approvalState: parseInt($('#approvalState').val()) + 1,
+                            regdate: $('#regdate').val()
+                        };
+                        var id = $('#approvalNo').val();
+                        $.ajax({
+                            type: 'PUT',
+                            url: '/approval/update/' + id,
+                            datatype: 'json',
+                            contentType: 'application/json; charset=utf-8',
+                            data: JSON.stringify(data)
+                        }).done(function () {
+                            alert("결재가 요청되었습니다.")
+                            location.href='/approval/' + id;
+                        })
+                    }
                 }
-            }
-            else {
+            } else {
                 alert("권한이 없습니다.")
             }
         });
 
         $("#delete").click(function (){
             if ((writer == user) && ($('#approvalState').val() != 2)) {
+                if(confirm("문서를 삭제하시겠습니까?")) {
                     var id = $('#approvalNo').val();
                     $.ajax({
                         type: 'DELETE',
@@ -335,8 +337,9 @@
                         data: JSON.stringify(data)
                     }).done(function () {
                         alert("결재가 삭제되었습니다.")
-                        location.href='/';
+                        location.href = '/';
                     })
+                }
             }
             else {
                 alert("권한이 없습니다.")

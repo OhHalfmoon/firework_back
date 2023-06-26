@@ -148,7 +148,7 @@
 {{>layout/library}}
 <!-- The Modal -->
 <div class="modal" id="myModal">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
 
             <!-- Modal Header -->
@@ -259,13 +259,15 @@
             } else if ($(".docbox").val() == "문서함을 선택해주세요") {
                 alert("문서함을 선택해주세요")
             } else {
-                const editText = editor.getData();
-                $("#approvalOrder").val(1);
-                $("#approvalState").val(1);
-                $(".userNo").val(user);
-                $(".approContent").val(editText);
-                alert("작성이 완료되었습니다")
-                $("#approvalPost").submit();
+                if(confirm("문서를 제출하시겠습니까?")) {
+                    const editText = editor.getData();
+                    $("#approvalOrder").val(1);
+                    $("#approvalState").val(1);
+                    $(".userNo").val(user);
+                    $(".approContent").val(editText);
+                    alert("작성이 완료되었습니다")
+                    $("#approvalPost").submit();
+                }
             }
         });
 
@@ -280,13 +282,15 @@
             } else if ($(".docbox").val() == "문서함을 선택해주세요") {
                 alert("문서함을 선택해주세요")
             } else {
-            const editText = editor.getData();
-            $("#approvalOrder").val(0);
-            $("#approvalState").val(0);
-            $(".userNo").val(user);
-            $(".approContent").val(editText);
-                alert("임시저장이 완료되었습니다")
-            $("#approvalPost").submit();
+                if (confirm("작성중인 문서를 임시저장 하시겠습니까?")) {
+                    const editText = editor.getData();
+                    $("#approvalOrder").val(0);
+                    $("#approvalState").val(0);
+                    $(".userNo").val(user);
+                    $(".approContent").val(editText);
+                    alert("임시저장이 완료되었습니다")
+                    $("#approvalPost").submit();
+                }
             }
         });
 

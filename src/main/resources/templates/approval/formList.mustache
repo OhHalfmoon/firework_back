@@ -46,7 +46,29 @@
             <div class="container-fluid">
                 <div class="card">
                     <div class="card-header">
+                        <div class="form-group row" >
+                            <form method="get">
+                                <div class="d-flex" >
+                                    <div class="form-group d-flex ">
+                                        <label for="type" class="align-self-center my-0 w-100">검색타입</label>
+                                        <select class="custom-select form-control-border" name="type" id="type">
+                                            <option value="T">문서양식명</option>
+                                            <option value="C">문서양식내용</option>
+                                            <option value="TC">양식명+양식내용</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group mx-2 d-flex flex-row">
+                                        <label for="search" class="align-self-center my-0">검색어</label>
+                                        <div class="d-flex flex-row">
+                                            <input class="form-control col-md-6 mx-2" type="text" id="keyword" name="keyword">
+                                            <button class="btn btn-primary h-100">검색</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
+
                     <!-- /.card-header -->
                     <div class="card-body">
                         <table class="table table-bordered">
@@ -72,14 +94,14 @@
                             {{#pageDto}}
                                 {{#hasPrevBlock}}
                                     <li class="page-item">
-                                        <a class="page-link" href="{{contextPath}}/admin/form{{prevBlockQueryString}}">
+                                        <a class="page-link" href="{{contextPath}}/approval/formList{{prevBlockQueryString}}">
                                             &laquo;
                                         </a>
                                     </li>
                                 {{/hasPrevBlock}}
                                 {{#prev}}
                                     <li class="page-item">
-                                        <a class="page-link" href="{{contextPath}}/admin/form{{prevQueryString}}">
+                                        <a class="page-link" href="{{contextPath}}/approval/formList{{prevQueryString}}">
                                             &lt;
                                         </a>
                                     </li>
@@ -87,24 +109,24 @@
                                 {{#pageInfoList}}
                                     {{#isCurrent}}
                                         <li class="page-item active">
-                                            <a class="page-link" href="/admin/form{{queryString}}">{{pageNum}}</a>
+                                            <a class="page-link" href="/approval/formList{{queryString}}">{{pageNum}}</a>
                                         </li>
                                     {{/isCurrent}}
                                     {{^isCurrent}}
                                         <li class="page-item">
-                                            <a class="page-link" href="/admin/form{{queryString}}">{{pageNum}}</a>
+                                            <a class="page-link" href="/approval/formList{{queryString}}">{{pageNum}}</a>
                                         </li>
                                     {{/isCurrent}}
                                 {{/pageInfoList}}
                                 {{#next}}
                                     <li class="page-item">
-                                        <a class="page-link" href="{{contextPath}}/admin/form{{nextQueryString}}">&gt;
+                                        <a class="page-link" href="{{contextPath}}/approval/formList{{nextQueryString}}">&gt;
                                         </a>
                                     </li>
                                 {{/next}}
                                 {{#hasNextBlock}}
                                     <li class="page-item">
-                                        <a class="page-link" href="{{&contextPath}}/admin/form{{nextBlockQueryString}}">&raquo;
+                                        <a class="page-link" href="{{&contextPath}}/approval/formList{{nextBlockQueryString}}">&raquo;
                                         </a>
                                     </li>
                                 {{/hasNextBlock}}
