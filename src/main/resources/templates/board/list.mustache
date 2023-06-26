@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AdminLTE 3 | Dashboard</title>
+
+    {{>layout/head}}
+</head>
+<body class="hold-transition sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
+    {{>layout/header}}
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Main content -->
+        <section class="content m-1 row" style="min-height: 400px">
+
+            <!-- Default box -->
+            <div class="card my-auto col-md-12">
+                <div class="card-header">
+                    <h1 class="card-title float-left" style="text-align: center">공지 사항 게시판</h1>
+                    <a href="/board/save" class="btn btn-secondary float-right">글 작성</a>
+                </div>
+                <div class="card-body row justify-content-center p-2">
+                    <div class="col-sm-1" style="text-align: center">
+                        No.
+                    </div>
+                    <div class="col-sm-6" style="text-align: center">
+                        제목
+                    </div>
+                    <div class="col-sm-3" style="text-align: center">
+                        작성자
+                    </div>
+                    <div class="col-sm-2 text-center" >
+                        등록 일자
+                    </div>
+                </div>
+                <div class="row justify-content-center p-1">
+                {{#boardList}}
+                        <div class="col-sm-1 p-2" style="text-align: center">
+                            {{boardNo}}
+                        </div>
+                        <div class="col-sm-6 p-2" style="text-align: center">
+                            <a href="view/{{boardNo}}" style="color: black">{{title}}</a>
+                        </div>
+                        <div class="col-sm-3 p-2" style="text-align: center">
+                            {{user.name}}
+                        </div>
+                        <div class="col-sm-2 project_progress p-2" style="text-align: center">
+                            <small>
+                                {{regDate}}
+                            </small>
+                        </div>
+                {{/boardList}}
+                </div>
+            </div>
+            <!-- /.card -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    {{>layout/footer}}
+
+</div>
+<!-- ./wrapper -->
+{{>layout/library}}
+</body>
+</html>
