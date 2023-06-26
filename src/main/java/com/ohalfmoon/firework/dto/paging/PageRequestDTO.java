@@ -1,5 +1,6 @@
 package com.ohalfmoon.firework.dto.paging;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +30,13 @@ public class PageRequestDTO {
     public PageRequestDTO() {
         this.page = 1;
         this.size = 10;
+    }
+
+    public PageRequestDTO(Integer page, Integer size, String type, String keyword){
+        this.page = page != null ? page : 1;
+        this.size = size != null ? size : 10;
+        this.type = type;
+        this.keyword = keyword;
     }
 
     public Pageable getPageable(Sort sort) {
