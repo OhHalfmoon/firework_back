@@ -1,11 +1,10 @@
 package com.ohalfmoon.firework.controller;
 
-import com.ohalfmoon.firework.dto.MemberPageDto;
-import com.ohalfmoon.firework.dto.MessagePageDto;
-import com.ohalfmoon.firework.dto.MessageResponseDto;
-import com.ohalfmoon.firework.dto.MessageSaveDto;
+import com.ohalfmoon.firework.dto.*;
 import com.ohalfmoon.firework.dto.member.MemberResponseDTO;
+import com.ohalfmoon.firework.dto.paging.PageRequestDTO;
 import com.ohalfmoon.firework.dto.paging.PageResponseDTO;
+import com.ohalfmoon.firework.model.FormEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.MessageEntity;
 import com.ohalfmoon.firework.service.MemberService;
@@ -16,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,6 +35,8 @@ import java.util.stream.Collectors;
  * 2023/06/14        우성준            최초 생성
  * 2023/06/19        우성준            페이징 기능 추가(pagedto 사용)
  * 2023/06/21        우성준            사원검색 추가
+ * 2023/06/23        우성준            삭제 기능 수정(리스트로 받음)
+ * 2023/06/23        우성준            검색 기능 보류
  */
 
 @RequiredArgsConstructor
@@ -61,10 +63,10 @@ public class MessageApiController {
         return messageService.update(messageNo, map.get("messageCheck"));
     }
 
-    @DeleteMapping("/{messageNo}")
-    public Long delete(@PathVariable Long messageNo) {
-        messageService.delete(messageNo);
-        return messageNo;
+    @DeleteMapping
+    public Long delete(@RequestBody List<Long> arrMessage) {
+        messageService.deleteAll(arrMessage);
+        return arrMessage.size() / 1L;
     }
 
     @GetMapping("/{messageNo}")
@@ -93,19 +95,36 @@ public class MessageApiController {
         return new MessagePageDto(new PageResponseDTO<>(entities), entities.map(MessageResponseDto::new));
     }
 
-//    @GetMapping("/sender/{senderNo}/memberList")
-//    public MemberPageDto findAllUser(@PathVariable Long senderNo,
-//                                     @PageableDefault(
-//                                             size = 5,
-//                                             direction = Sort.Direction.DESC,
-//                                             sort = "userNo") Pageable pageable) {
-//
-//        Page<MemberEntity> entities = memberService.getAllMemeberByPaging(senderNo, pageable);
-//        return new MemberPageDto(new PageResponseDTO<>(entities), entities.map(MemberResponseDTO::new));
-//    }
+    @GetMapping("/sender/{senderNo}/memberList")
+    public MemberPageDto findAllUser(@PathVariable Long senderNo,
+                                     @PageableDefault(
+                                             size = 5,
+                                             direction = Sort.Direction.DESC,
+                                             sort = "userNo") Pageable pageable) {
+
+        Page<MemberEntity> entities = memberService.getAllMemeberByPaging(senderNo, pageable);
+        return new MemberPageDto(new PageResponseDTO<>(entities), entities.map(MemberResponseDTO::new));
+    }
 
     @GetMapping("/sender/{senderNo}/memberList")
     public List<MemberResponseDTO> findAllUser(@PathVariable Long senderNo) {
         return memberService.getAllMemeber(senderNo);
     }
+
+//    @GetMapping("list/{userNo}")
+//    public MessagePageDto list(
+//            MessagePageRequestDto messagePageRequestDto,
+//            @PathVariable Long userNo
+//
+//    ) {
+//        log.info("message dto : {}", messagePageRequestDto);
+//
+//        Page<MessageEntity> pageDto = messageService.getMessagePages(messagePageRequestDto, messagePageRequestDto.getPageable(Sort.by(Sort.Order.desc("messageNo"))) ,userNo);
+//
+//        MessagePageDto pageResponse =  new MessagePageDto(new PageResponseDTO<>(pageDto, messagePageRequestDto), pageDto.map(MessageResponseDto::new));
+//
+//        log.info("pageResponse : {}", pageResponse);
+//
+//        return pageResponse;
+//    }
 }

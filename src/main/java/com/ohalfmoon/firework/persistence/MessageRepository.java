@@ -5,6 +5,7 @@ import com.ohalfmoon.firework.model.MessageEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ import java.util.List;
  * 2023/06/13        우성준           최초 생성
  * 2023/06/19        우성준           페이징 기능 추가
  */
-public interface MessageRepository extends JpaRepository<MessageEntity, Long> {
+public interface MessageRepository extends JpaRepository<MessageEntity, Long>, JpaSpecificationExecutor<MessageEntity> {
     Page<MessageEntity> findAllByReceiver(MemberEntity receiver, Pageable pageable);
 
     Page<MessageEntity> findAllBySender(MemberEntity sender, Pageable pageable);

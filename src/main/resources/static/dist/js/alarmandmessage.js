@@ -60,7 +60,7 @@ $(function () {
         pageNum++;
     })
 
-    var divison = false;
+    var divison = true;
 
     messageService.getListByReceiver({userNo: userNo}, function (result) {
         var pageStr = "";
@@ -98,7 +98,7 @@ $(function () {
     }
 
     function getReceiveLiStr(obj) {
-        return `<div class="col-1 text-center"><input type="checkbox" data-messageno="${obj.messageNo}"></div>
+        return `<div class="col-1 text-center"><input type="checkbox" id="selectedMessage" data-messageno="${obj.messageNo}"></div>
                     <div class="col-2 text-center">
 				        ${obj.senderName}
                     </div>
@@ -114,34 +114,28 @@ $(function () {
 
 
     function getSendLiStr(obj) {
-        return `<div class="col-1 text-center"><input type="checkbox" data-messageno="${obj.messageNo}"></div>
+        var str = '';
+        if (obj.messageCheck) {
+            str += '<i class="fas fa-check"></i>'
+        }
+        return `<div class="col-1 text-center"><input type="checkbox" id="selectedMessage" data-messageno="${obj.messageNo}"></div>
                     <div class="col-2 text-center">
 				        ${obj.receiverName}
                     </div>
-                    <div class="col-5 text-center clickMessage" data-messageno="${obj.messageNo}" data-num="1" style=" cursor : pointer;">
+                    <div class="col-4 text-center clickMessage" data-messageno="${obj.messageNo}" data-num="1" style=" cursor : pointer;">
 				        ${obj.messageTitle}
                     </div>
-				    <div class="col-4 text-center">
+				    <div class="col-3 text-center">
 				        ${moment(obj.regdate).locale("ko").format('YYYY/MM/D HH:mm')}
                     </div>
+                    <div class="col-2 text-center">
+                            ${str}
+                     </div>
 				    `;
     }
 
     function getDivision(obj) {
-        if (!obj)
-            return `<div class="col-1">
-
-                        </div>
-                        <div class="col-2 text-center">
-                            받는 사람
-                        </div>
-                        <div class="col-5 text-center">
-                            제목
-                        </div>
-                        <div class="col-4 text-center">
-                            날짜
-                        </div>`
-        else
+        if (obj)
             return `<div class="col-1">
 
                         </div>
@@ -153,6 +147,21 @@ $(function () {
                         </div>
                         <div class="col-4 text-center">
                             날짜
+                        </div>`
+        else return `<div class="col-1">
+
+                        </div>
+                        <div class="col-2 text-center">
+                            받는 사람
+                        </div>
+                        <div class="col-4 text-center">
+                            제목
+                        </div>
+                        <div class="col-3 text-center">
+                            날짜
+                        </div>
+                        <div class="col-2 text-center">
+                            수신 확인
                         </div>`
     }
 
@@ -198,25 +207,29 @@ $(function () {
             </div>
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-success btn-sm sendMessage" data-dismiss="modal">전송</button>
+                <button type="button" class="btn btn-success btn-sm sendMessage" id="toMessageList">전송</button>
                 <button type="button" class="btn btn-outline-primary btn-sm" id="toMessageList">목록</button>
             </div>`
 
         $(".messageModal").html(str);
 
-        $(".sendMessage").click(function (){
-            console.log("hi")
+        $(".sendMessage").click(function () {
             var noArr = new Array();
             noArr = $('input[name=userNo]').toArray().map(el => el.value);
             console.log($('input[name=userNo]').toArray().map(el => el.value))
             var messageTitle = $("#messageTitle").val();
             var messageContent = $("#messageContent").val();
-            if(noArr.length == 0 || messageTitle == null || messageContent == null) {
+            if (noArr.length == 0 || messageTitle == null || messageContent == null) {
                 alert("모든 항목을 입력해주세요")
             } else {
-                for(var i in noArr) {
-                    messageService.add({receiver:noArr[i], sender:userNo, messageTitle:messageTitle, messageContent:messageContent}, function (result){
-                        console.log(result);
+                for (var i in noArr) {
+                    messageService.add({
+                        receiver: noArr[i],
+                        sender: userNo,
+                        messageTitle: messageTitle,
+                        messageContent: messageContent
+                    }, function (result) {
+                        // console.log(result);
                     })
                 }
                 alert("성공적으로 보냈습니다")
@@ -245,18 +258,7 @@ $(function () {
                     </div>
                     <hr/>
                     <div class="division row">
-                        <div class="col-1">
-
-                        </div>
-                        <div class="col-2 text-center">
-                            보낸 사람
-                        </div>
-                        <div class="col-5 text-center">
-                            제목
-                        </div>
-                        <div class="col-4 text-center">
-                            날짜
-                        </div>
+                        
                     </div>
                     <hr/>
                     <div class="messages row">
@@ -271,45 +273,13 @@ $(function () {
 
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger btn-sm">삭제</button>
+                <button type="button" class="btn btn-danger btn-sm" id="messageRemove">삭제</button>
                 <button type="button" class="btn btn-outline-primary btn-sm" data-dismiss="modal">닫기</button>
             </div>`
 
         $(".messageModal").html(str);
-        messageService.getListByReceiver({userNo: userNo}, function (result) {
-            var pageStr = "";
-            var str = "";
-            for (var i in result.messageList.content) {
-                str += getReceiveLiStr(result.messageList.content[i]);
-            }
 
-            $(".messagepagination").html(getPage(result.pageResponseDTO));
-            $(".messages").html(str);
-
-        });
-        $(".messagepagination").on("click", ".page-link", function () {
-            var pageNum = $(this).data("pagenum");
-            if (divison) {
-                messageService.getListByReceiver({userNo: userNo, pageNum: pageNum}, function (result) {
-                    var str = "";
-                    for (var i in result.messageList.content) {
-                        str += getReceiveLiStr(result.messageList.content[i]);
-                    }
-                    $(".messagepagination").html(getPage(result.pageResponseDTO));
-                    $(".messages").html(str);
-                });
-            } else {
-                messageService.getListBySender({userNo: userNo, pageNum: pageNum}, function (result) {
-                    var str = "";
-                    for (var i in result.messageList.content) {
-                        str += getSendLiStr(result.messageList.content[i]);
-                    }
-                    $(".messagepagination").html(getPage(result.pageResponseDTO));
-                    $(".messages").html(str);
-                });
-            }
-
-        })
+        var arrMessage = new Array();
 
         $(".messageCategory").on("click", "a", function () {
             if ($(this).attr('class') == 'send') {
@@ -336,6 +306,126 @@ $(function () {
                 });
             }
         })
+
+        $("#messageRemove").click(function (){
+            if(confirm("정말 삭제하시겠습니까?")) {
+                messageService.remove(arrMessage, function (result) {
+                    if (divison) {
+                        messageService.getListByReceiver({userNo: userNo}, function (result) {
+                            var str = "";
+                            for (var i in result.messageList.content) {
+                                str += getReceiveLiStr(result.messageList.content[i]);
+                            }
+                            $(".messagepagination").html(getPage(result.pageResponseDTO));
+                            $(".messages").html(str);
+                            $(".division").html(getDivision(divison));
+                            console.log("여기냐?")
+                        });
+                    } else {
+                        messageService.getListBySender({userNo: userNo}, function (result) {
+                            var str = "";
+                            for (var i in result.messageList.content) {
+                                str += getSendLiStr(result.messageList.content[i]);
+                            }
+                            $(".messagepagination").html(getPage(result.pageResponseDTO));
+                            $(".messages").html(str);
+                            $(".division").html(getDivision(divison));
+                            console.log("저기냐?")
+                        });
+                    }
+                })
+            }
+
+        })
+
+
+        $(".messages").on("change", "#selectedMessage", function () {
+            if ($(this).is(":checked")) {
+                arrMessage.push($(this).data("messageno"));
+                console.log(arrMessage);
+
+            } else if (!$(this).is(":checked")) {
+                for (let i = 0; i < arrMessage.length; i++) {
+                    if (arrMessage[i] === $(this).data("messageno")) {
+                        arrMessage.splice(i, 1);
+                        i--;
+                    }
+                    console.log(arrMessage);
+                }
+            }
+        })
+
+        if (divison) {
+            messageService.getListByReceiver({userNo: userNo}, function (result) {
+                var str = "";
+                for (var i in result.messageList.content) {
+                    str += getReceiveLiStr(result.messageList.content[i]);
+                }
+                $(".messagepagination").html(getPage(result.pageResponseDTO));
+                $(".messages").html(str);
+                $(".division").html(getDivision(divison));
+            });
+        } else {
+            messageService.getListBySender({userNo: userNo}, function (result) {
+                var str = "";
+                for (var i in result.messageList.content) {
+                    str += getSendLiStr(result.messageList.content[i]);
+                }
+                $(".messagepagination").html(getPage(result.pageResponseDTO));
+                $(".messages").html(str);
+                $(".division").html(getDivision(divison));
+            });
+        }
+
+        $('.messages').on('click', '.clickMessage', function () {
+            var str = "";
+            var messageNo = $(this).data("messageno");
+            var plag = $(this).data("num");
+            if (plag == 0) {
+                messageService.modify({messageNo: messageNo, messageCheck: true}, function (result) {
+                });
+            }
+            messageService.get(messageNo, function (result) {
+
+                if (plag == 0) {
+                    result.who = '보낸 사람';
+                    result.name = result.senderName
+                } else {
+                    result.who = '받는 사람';
+                    result.name = result.receiverName
+                }
+                str += getMessageOne(result);
+                $(".messageModal").html(str);
+            })
+        })
+
+        $(".messagepagination").on("click", ".page-link", function () {
+            var pageNum = $(this).data("pagenum");
+            if (divison) {
+                messageService.getListByReceiver({userNo: userNo, pageNum: pageNum}, function (result) {
+                    var str = "";
+                    for (var i in result.messageList.content) {
+                        str += getReceiveLiStr(result.messageList.content[i]);
+                    }
+                    $(".messagepagination").html(getPage(result.pageResponseDTO));
+                    $(".messages").html(str);
+
+                });
+            } else {
+                messageService.getListBySender({userNo: userNo, pageNum: pageNum}, function (result) {
+                    var str = "";
+                    for (var i in result.messageList.content) {
+                        str += getSendLiStr(result.messageList.content[i]);
+                    }
+                    $(".messagepagination").html(getPage(result.pageResponseDTO));
+                    $(".messages").html(str);
+                    $(".division").html(getDivision(divison));
+                });
+            }
+
+        })
+
+
     })
     $(".messagepagination").on("click", ".page-link", function () {
         var pageNum = $(this).data("pagenum");
@@ -347,6 +437,7 @@ $(function () {
                 }
                 $(".messagepagination").html(getPage(result.pageResponseDTO));
                 $(".messages").html(str);
+                $(".division").html(getDivision(divison));
             });
         } else {
             messageService.getListBySender({userNo: userNo, pageNum: pageNum}, function (result) {
@@ -356,6 +447,7 @@ $(function () {
                 }
                 $(".messagepagination").html(getPage(result.pageResponseDTO));
                 $(".messages").html(str);
+                $(".division").html(getDivision(divison));
             });
         }
     })
@@ -420,26 +512,23 @@ $(function () {
 
     var arrUser = new Array();
 
-    $(".memberList").on("change", ".mchk", function (){
-        if($(this).is(":checked")) {
+    $(".memberList").on("change", ".mchk", function () {
+        if ($(this).is(":checked")) {
             arrUser.push($(this).val())
-            console.log(arrUser);
 
-        }
-        else if(!$(this).is(":checked")) {
+        } else if (!$(this).is(":checked")) {
             for (let i = 0; i < arrUser.length; i++) {
                 if (arrUser[i] === $(this).val()) {
                     arrUser.splice(i, 1);
                     i--;
                 }
-                console.log(arrUser);
             }
         }
     })
 
     $(".selectConfirm").click(function () {
         var str = "";
-        for(let i in arrUser) {
+        for (let i in arrUser) {
             str += getSelectedMember(arrUser[i]);
         }
         $(".toReceiver").html(str);
@@ -447,33 +536,37 @@ $(function () {
 
     function getSelectedMember(obj) {
         var str = obj.split(',')
-        return "<button type='button' class='btn btn-success'>"+str[1]+"</button>&nbsp;<input type='hidden' name='userNo' value='"+str[0]+"'>";
+        return "<button type='button' class='btn btn-success'>" + str[1] + "</button>&nbsp;<input type='hidden' name='userNo' value='" + str[0] + "'>";
     }
 
     messageService.getCount(userNo, function (result) {
         var tmp = '99+';
-        if(result > 100) $(".messagecount").html(tmp);
+        if (result > 100) $(".messagecount").html(tmp);
         else $(".messagecount").html(result);
     })
 
-    $('.messages').on('click','.clickMessage', function () {
+    $('.messages').on('click', '.clickMessage', function () {
         var str = "";
         var messageNo = $(this).data("messageno");
         var plag = $(this).data("num");
-        messageService.get(messageNo, function (result){
+        messageService.modify({messageNo: messageNo, messageCheck: true}, function (result) {
+        });
+        messageService.get(messageNo, function (result) {
 
-            if(plag == 0) {result.who = '보낸 사람'; result.name=result.senderName}
-            else {result.who = '받는 사람'; result.name=result.receiverName}
-            console.log(result)
+            if (plag == 0) {
+                result.who = '보낸 사람';
+                result.name = result.senderName
+            } else {
+                result.who = '받는 사람';
+                result.name = result.receiverName
+            }
             str += getMessageOne(result);
-            console.log(str);
             $(".messageModal").html(str);
         })
-
     })
 
     function getMessageOne(obj) {
-        return`<div class="modal-header">
+        return `<div class="modal-header">
                 <h4 class="modal-title">쪽지확인</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
@@ -514,4 +607,55 @@ $(function () {
                 <button type="button" class="btn btn-outline-primary btn-sm" id="toMessageList">목록</button>
             </div>`
     }
+
+    var arrMessage = new Array();
+
+    $("#messageRemove").click(function (){
+        if(confirm("정말 삭제하시겠습니까?")) {
+                    messageService.remove(arrMessage, function (result) {
+                        if (divison) {
+                            messageService.getListByReceiver({userNo: userNo}, function (result) {
+                                var str = "";
+                                for (var i in result.messageList.content) {
+                                    str += getReceiveLiStr(result.messageList.content[i]);
+                                }
+                                $(".messagepagination").html(getPage(result.pageResponseDTO));
+                                $(".messages").html(str);
+                                $(".division").html(getDivision(divison));
+                                console.log("여기냐?")
+                            });
+                        } else {
+                            messageService.getListBySender({userNo: userNo}, function (result) {
+                                var str = "";
+                                for (var i in result.messageList.content) {
+                                    str += getSendLiStr(result.messageList.content[i]);
+                                }
+                                $(".messagepagination").html(getPage(result.pageResponseDTO));
+                                $(".messages").html(str);
+                                $(".division").html(getDivision(divison));
+                                console.log("저기냐?")
+                            });
+                        }
+                    })
+            }
+
+    })
+
+
+    $(".messages").on("change", "#selectedMessage", function () {
+        if ($(this).is(":checked")) {
+            arrMessage.push($(this).data("messageno"));
+            console.log(arrMessage);
+
+        } else if (!$(this).is(":checked")) {
+            for (let i = 0; i < arrMessage.length; i++) {
+                if (arrMessage[i] === $(this).data("messageno")) {
+                    arrMessage.splice(i, 1);
+                    i--;
+                }
+                console.log(arrMessage);
+            }
+        }
+    })
+
 });
