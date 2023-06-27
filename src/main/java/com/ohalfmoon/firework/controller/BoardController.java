@@ -9,6 +9,7 @@ import com.ohalfmoon.firework.dto.fileUpload.AttachSaveDto;
 import com.ohalfmoon.firework.dto.paging.PageRequestDTO;
 import com.ohalfmoon.firework.dto.paging.PageResponseDTO;
 import com.ohalfmoon.firework.model.BoardEntity;
+import com.ohalfmoon.firework.service.AttachService;
 import com.ohalfmoon.firework.service.BoardService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
@@ -48,25 +49,34 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
+    @Autowired
+    private AttachService attachService;
+
     @GetMapping("/save")
     public void register() {}
 
     @PostMapping("/save")
-    public String save(BoardSaveDTO board, @RequestParam("file") MultipartFile file) throws IOException {
-        log.info("board={}", board);
+    public String save(BoardSaveDTO boardDTO, @RequestParam("file") MultipartFile file) throws IOException {
+        log.info("board={}", boardDTO);
 
         String uuid = UUID.randomUUID().toString();
         String ext = FilenameUtils.getExtension(file.getOriginalFilename());
+        AttachSaveDto attachSaveDto;
 
-        AttachSaveDto saveAttachDto = AttachSaveDto.builder()
-                        .originName(file.getOriginalFilename())
-                        .uuid(uuid)
-                        .ext(ext)
-                        .build();
-        log.info("saveAttachDto={}", saveAttachDto);
+        if(!file.isEmpty()){
+            attachSaveDto = AttachSaveDto.builder()
+                            .originName(file.getOriginalFilename())
+                            .uuid(uuid)
+                            .ext(ext)
+                            .build();
+        } else {
+            attachSaveDto = null;
+        }
+
+        log.info("saveAttachDto={}", attachSaveDto);
         log.info("files={}", file);
         log.info("files.getOriginalFilename()={}", file.getOriginalFilename());
-        boardService.save(board, saveAttachDto, file);
+        boardService.save(boardDTO, attachSaveDto, file);
         return "redirect:/board/list";
     }
 
@@ -99,6 +109,8 @@ public class BoardController {
     public String get(Model model, @PathVariable Long boardNo) {
         log.info("view boardNo={}", boardNo);
         model.addAttribute("board", boardService.get(boardNo));
+        model.addAttribute("fileList", attachService.getFileListByBoardNo(boardNo));
+        log.info("fileList : {}", attachService.getFileListByBoardNo(boardNo));
         return "/board/view";
     }
 
@@ -110,10 +122,24 @@ public class BoardController {
     }
 
     @PostMapping("/modify/{boardNo}")
-    public String modify(@PathVariable Long boardNo, BoardUpdateDTO board) {
-        log.info("board={}", board);
+    public String modify(@PathVariable Long boardNo, BoardUpdateDTO boardUpdateDTO, @RequestParam("file") MultipartFile file) throws IOException {
+        String uuid = UUID.randomUUID().toString();
+        String ext = FilenameUtils.getExtension(file.getOriginalFilename());
+        AttachSaveDto attachSaveDto;
+
+        if(!file.isEmpty()){
+            attachService.deleteAll(boardNo);
+            attachSaveDto = AttachSaveDto.builder()
+                    .originName(file.getOriginalFilename())
+                    .uuid(uuid)
+                    .ext(ext)
+                    .build();
+        } else {
+            attachSaveDto = null;
+        }
+        log.info("board={}", boardUpdateDTO);
         log.info("modify boardNo={}", boardNo);
-        boardService.update(boardNo, board);
+        boardService.update(boardNo, boardUpdateDTO, attachSaveDto, file);
         return "redirect:/board/list";
     }
 

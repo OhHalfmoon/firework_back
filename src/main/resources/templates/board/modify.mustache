@@ -55,11 +55,10 @@
                                     <textarea class="form-control" style="height: 300px; resize: none" name="boardContent">{{content}}</textarea>
                                     </div>
                                     <div class="form-group">
-                                        <div class="btn btn-default btn-file">
-                                            <i class="fas fa-paperclip"></i> Attachment
-                                            <input type="file" name="attachment">
+                                        <div class="row">
+                                            <div class="col">첨부파일</div>
+                                            <input type="file" class="form-control" id="boardAttach" name="file">
                                         </div>
-                                        <p class="help-block">Max. 32MB</p>
                                     </div>
                                 </div>
                             {{/board}}

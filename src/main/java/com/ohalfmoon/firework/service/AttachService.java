@@ -3,6 +3,7 @@ package com.ohalfmoon.firework.service;
 import com.ohalfmoon.firework.dto.fileUpload.AttachResponseDto;
 import com.ohalfmoon.firework.dto.fileUpload.AttachSaveDto;
 import com.ohalfmoon.firework.model.AttachEntity;
+import com.ohalfmoon.firework.model.BoardEntity;
 import com.ohalfmoon.firework.model.spec.AttachSpec;
 import com.ohalfmoon.firework.persistence.AttachRepository;
 import lombok.RequiredArgsConstructor;
@@ -179,4 +180,12 @@ public class AttachService {
         return attachRepository.deleteAttachEntitiesByApprovalEntity_ApprovalNo(approvalNo);
     }
 
+    @Transactional(readOnly = true)
+    public List<AttachResponseDto> getFileListByBoardNo(Long boardNo){
+//        List<AttachEntity> fileDtos = attachRepository.findAttachEntitiesByApprovalEntity_ApprovalNo(boardNo);
+//        List<AttachEntity> fileDtos = attachRepository.findAll(AttachSpec.approvalNo(boardNo));
+        List<AttachEntity> fileDtos = attachRepository.findAllByBoardEntity(BoardEntity.builder().boardNo(boardNo).build());
+
+        return fileDtos.stream().map(item -> entityToDto(item, false)).collect(Collectors.toList());
+    }
 }

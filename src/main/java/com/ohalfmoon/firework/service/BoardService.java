@@ -52,22 +52,6 @@ public class BoardService {
     @Value("upload")
     private String uploadDir;
 
-    @Transactional
-    public Long save(BoardSaveDTO boardSaveDTO, AttachSaveDto attachSaveDto, MultipartFile uploadFile) throws IOException {
-        Long boardNo = boardRepository.save(boardSaveDTO.toEntity()).getBoardNo();
-
-        String filePath = filePath(attachSaveDto.getUuid(), attachSaveDto.getExt());
-        attachSaveDto.setPath(filePath);
-        attachSaveDto.setBoardNo(boardNo);
-        uploadFile.transferTo(new File(projectPath + filePath));
-        AttachEntity attachEntity = attachSaveDto.toEntity();
-        Long attachNo = attachEntity.getAttachNo();
-
-        attachRepository.save(attachEntity);
-
-        return boardNo;
-    }
-
     private String filePath(String uuid, String ext) {
         File uploadFolder = new File(projectPath + uploadDir);
         if(!uploadFolder.exists()) {
@@ -75,6 +59,26 @@ public class BoardService {
         }
         return File.separator + uploadDir + File.separator + uuid + "." + ext;
     }
+
+    @Transactional
+    public Long save(BoardSaveDTO boardSaveDTO, AttachSaveDto attachSaveDto, MultipartFile uploadFile) throws IOException {
+
+        Long boardNo = boardRepository.save(boardSaveDTO.toEntity()).getBoardNo();
+
+        if(attachSaveDto != null) {
+            String filePath = filePath(attachSaveDto.getUuid(), attachSaveDto.getExt());
+            attachSaveDto.setPath(filePath);
+
+//            attachSaveDto.setBoardNo(boardNo);
+            uploadFile.transferTo(new File(projectPath + filePath));
+            AttachEntity attachEntity = attachSaveDto.toEntity();
+
+            attachRepository.save(attachEntity);
+        }
+        return boardNo;
+    }
+
+
     public void addAttachEntity(Long boardNo) {
 
     }
@@ -97,9 +101,25 @@ public class BoardService {
     }
 
     @Transactional
-    public Long update(Long boardNo, BoardUpdateDTO boardUpdateDTO) {
+    public Long update(Long boardNo, BoardUpdateDTO boardUpdateDTO, AttachSaveDto attachSaveDto, MultipartFile uploadFile) throws IOException {
         BoardEntity boardEntity = boardRepository.findById(boardNo).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. boardNo=" + boardNo));
-        boardEntity.update(boardNo, boardUpdateDTO.getBoardTitle(), boardUpdateDTO.getBoardContent());
+        boardEntity.update(
+                boardNo
+                , boardUpdateDTO.getBoardTitle()
+                , boardUpdateDTO.getBoardContent());
+
+        if(attachSaveDto != null) {
+            if(attachRepository.findAllByBoardEntity(boardEntity).size() > 0) {
+                attachRepository.deleteBoardEntitiesByBoardEntity_BoardNo(boardNo);
+            }
+            String filePath = filePath(attachSaveDto.getUuid(), attachSaveDto.getExt());
+            attachSaveDto.setPath(filePath);
+            uploadFile.transferTo(new File(projectPath + filePath));
+            AttachEntity attachEntity = attachSaveDto.toEntity();
+
+            attachEntity.updateBoardEntity(boardEntity);
+            attachRepository.save(attachEntity);
+        }
         return boardNo;
     }
 

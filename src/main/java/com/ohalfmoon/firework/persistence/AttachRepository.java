@@ -2,6 +2,7 @@ package com.ohalfmoon.firework.persistence;
 
 import com.ohalfmoon.firework.model.ApprovalEntity;
 import com.ohalfmoon.firework.model.AttachEntity;
+import com.ohalfmoon.firework.model.BoardEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -22,5 +23,9 @@ public interface AttachRepository extends JpaRepository<AttachEntity, Long>, Jpa
     Long deleteAttachEntitiesByApprovalEntity_ApprovalNo(Long approvalNo);
 
     List<AttachEntity> findAllByApprovalEntity(ApprovalEntity approvalEntity);
+
+    List<AttachEntity> findAllByBoardEntity(BoardEntity boardEntity);
+
+    Long deleteBoardEntitiesByBoardEntity_BoardNo(Long boardNo);
 
 }
