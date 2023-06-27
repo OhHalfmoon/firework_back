@@ -18,12 +18,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Compose</h1>
+                        <h1>공지 사항</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="/">Home</a></li>
-                            <li class="breadcrumb-item active">Compose</li>
+                            <li class="breadcrumb-item active">공지사항 추가</li>
                         </ol>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                     <div class="col-md-9">
                         <div class="card card-primary card-outline">
                             <div class="card-header">
-                                <h1 class="card-title">글 작성</h1>
+                                <h1 class="card-title">공지사항 추가</h1>
                             </div>
                             <!-- /.card-header -->
                             <form method="post" enctype="multipart/form-data">
@@ -52,21 +52,16 @@
                                     </div>
                                     <input type="hidden" value="{{user.userNo}}" name="userNo">
                                     <div class="form-group">
-<!--                                        <div class="btn btn-default btn-file">-->
-<!--                                            <i class="fas fa-paperclip"></i> Attachment-->
-<!--                                            <input type="file" name="file">-->
-<!--                                        </div>-->
                                         <div class="card-body">
                                             <input type="file" class="form-control" name="file">
                                         </div>
-                                        <p class="help-block">Max. 32MB</p>
                                     </div>
                                 </div>
                                 <!-- /.card-body -->
                                 <div class="card-footer">
                                     <div class="float-right">
-                                        <a href="/board/list" type="button" class="btn btn-primary"><i class="far fa-envelope"></i> 이전으로</a>
-                                        <button type="submit" class="btn btn-default"><i class="fas fa-pencil-alt"></i>저장</button>
+                                        <a href="/board/list" type="button" class="btn btn-secondary"> 목록 </a>
+                                        <button id="saveBtn" type="submit" class="btn btn-primary"> 저장 </button>
                                     </div>
                                 </div>
                             </form>
@@ -88,5 +83,12 @@
 <!-- ./wrapper -->
 
 {{>layout/library}}
+<script>
+    $(function () {
+        $("#saveBtn").click(function () {
+            alert("저장되었습니다.")
+        })
+    })
+</script>
 </body>
 </html>
