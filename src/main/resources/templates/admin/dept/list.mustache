@@ -55,36 +55,35 @@
                             <div class="card-header">
 
                                 <ul class="nav nav-pills p-2">
-                                    <li class="nav-item"><a class="nav-link active" href="#addDeptTab" data-toggle="tab">부서 추가</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="#updateDeptTab" data-toggle="tab">부서 수정</a></li>
+                                    <li class="nav-item"><a class="nav-link active" href="#addDeptBox" id="addDeptTab" data-toggle="tab">부서 추가</a></li>
+                                    <li class="nav-item"><a class="nav-link disabled" href="#updateDeptBox" id="updateDeptTab" data-toggle="tab">부서 수정</a></li>
                                 </ul>
 
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <div class="tab-content">
-                                    <div class="tab-pane active" id="addDeptTab">
+                                    <div class="tab-pane active" id="addDeptBox">
                                         <!-- 추가영역 -->
-                                        <div class="form-group row">
-                                            <label for="addDeptNo" class="col-sm-2 col-form-label">부서번호</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="addDeptNo" placeholder="부서번호">
-                                            </div>
-                                        </div>
                                         <div class="form-group row">
                                             <label for="addDeptName" class="col-sm-2 col-form-label">부서명</label>
                                             <div class="col-sm-10">
                                                 <input type="text" class="form-control" id="addDeptName" placeholder="부서명">
                                             </div>
                                         </div>
+
+                                        <div class="d-flex justify-content-between">
+                                            <button class="btn btn-primary" id="deptAddSubmit">입력</button>
+                                        </div>
                                     </div>
 
-                                    <div class="tab-pane" id="updateDeptTab">
+                                    <div class="tab-pane" id="updateDeptBox">
                                         <!-- 수정영역 -->
+
                                         <div class="form-group row">
                                             <label for="updateDeptNo" class="col-sm-2 col-form-label">부서번호</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" id="updateDeptNo" placeholder="부서번호">
+                                                <input type="text" class="form-control" id="updateDeptNo" placeholder="부서번호" disabled>
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -93,15 +92,22 @@
                                                 <input type="text" class="form-control" id="updateDeptName" placeholder="부서명">
                                             </div>
                                         </div>
+
+                                        <div class="d-flex justify-content-between">
+                                            <button class="btn btn-warning" id="deptUpdSubmit">수정</button>
+                                            <button class="btn btn-danger" id="deptDelSubmit">삭제</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <div class="col-sm-10 text-danger">
+                                            부서에 소속된 사원이 없을 경우에만 삭제가 가능합니다!
+                                        </div>
                                     </div>
 
                                 </div>
 
 
-                            </div>
-                            <!-- /.card-body -->
-                            <div class="card-footer clearfix">
-                                <button class="btn btn-primary">입력</button>
                             </div>
                         </div>
 
@@ -137,11 +143,11 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div>
+                                    <button class="btn btn-primary" id="deptSubmit">입력</button>
+                                </div>
                             </div>
                             <!-- /.card-body -->
-                            <div class="card-footer clearfix">
-                                <button class="btn btn-primary deptSubmit">입력</button>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -166,7 +172,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                    <button type="button" class="btn btn-danger submitBtn">삭제</button>
+                    <button type="button" class="btn btn-danger " id="submitBtn">삭제</button>
                 </div>
             </div>
         </div>
@@ -183,101 +189,231 @@
 <script>
 
     $(()=>{
-        const tree = $('#tree');
 
         var selectedNode = null;
 
-        tree.jstree({
-            core: {
-                data: {
-                    url: function (node) {
-                        return node.id === '#' ? '/admin/dept/get-dept'
-                                :'/admin/dept/get-member';
-                    },
-                    data: function (node) {
-                        if(node.id === '#') {
-                            return { 'id': node.id };
-                        } else {
-                            return {
-                                'deptNo' : node.data.deptNo
+        function setSelectedNode(nodeId){
+            selectedNode = nodeId
+        }
+
+        function initTree(){
+            const tree = $('#tree');
+
+            tree.jstree({
+                core: {
+                    data: {
+                        url: function (node) {
+                            return node.id === '#' ? '/admin/dept/get-dept'
+                                    :'/admin/dept/get-member';
+                        },
+                        data: function (node) {
+                            if(node.id === '#') {
+                                return { 'id': node.id };
+                            } else {
+                                return {
+                                    'deptNo' : node.data.deptNo
+                                }
                             }
                         }
                     }
+                },
+                multiple: false
+            }).on('select_node.jstree', function (e, data) {
+                // 이미 다른 항목이 선택되어 있는 경우에만 체크
+                if (selectedNode !== null && selectedNode !== data.node.id) {
+                    tree.jstree('deselect_node', selectedNode); // 이전 선택 취소
                 }
-            },
-            multiple: false
-        }).on('select_node.jstree', function (e, data) {
-            // 이미 다른 항목이 선택되어 있는 경우에만 체크
-            if (selectedNode !== null && selectedNode !== data.node.id) {
-                tree.jstree('deselect_node', selectedNode); // 이전 선택 취소
-            }
-            selectedNode = data.node.id; // 선택된 항목 저장
-        });
+                // selectedNode = data.node.id; // 선택된 항목 저장
+                setSelectedNode(data.node.id);
+                console.log('selectNode Check', selectedNode)
+            });
 
-        tree.on("changed.jstree", function (e, data) {
-            selectedNode = data.node.id;
-            // console.log('data.node.id', data.node.id);
-            // console.log('data.node', data.node);
-            // console.log('data.node.data', data.node.data);
-            // console.log('selected', data.selected);
+            tree.on("changed.jstree", function (e, data) {
+                setSelectedNode(data.node.id);
+                // selectedNode = data.node.id;
+                // console.log('data.node.id', data.node.id);
+                // console.log('data.node', data.node);
+                // console.log('data.node.data', data.node.data);
+                // console.log('selected', data.selected);
 
-            var rootNode = tree.jstree(true).get_node('#');
-            var firstChildNodeId = rootNode.children;
-            var firstChildNodeList = [];
+                var rootNode = tree.jstree(true).get_node('#');
+                var firstChildNodeId = rootNode.children;
+                var firstChildNodeList = [];
 
-            // 첫 번째 자식 노드의 ID 배열 순회
-            for (let i = 0; i < firstChildNodeId.length; i++) {
-                var childNodeId = firstChildNodeId[i];
-                var childNode = tree.jstree(true).get_node(childNodeId);
-                firstChildNodeList.push(childNode);
-            }
+                // 첫 번째 자식 노드의 ID 배열 순회
+                for (let i = 0; i < firstChildNodeId.length; i++) {
+                    var childNodeId = firstChildNodeId[i];
+                    var childNode = tree.jstree(true).get_node(childNodeId);
+                    firstChildNodeList.push(childNode);
+                }
 
-            console.log('firstChildNodeId', firstChildNodeId);
-            console.log('firstNodeChildLen', firstChildNodeList);
+                console.log('firstChildNodeId', firstChildNodeId);
+                console.log('firstNodeChildLen', firstChildNodeList);
 
-            var nodeData = data.node.data
-            console.log('nodeData', nodeData);
+                var nodeData = data.node.data
+                console.log('nodeData', nodeData);
 
-            var deptList = firstChildNodeList.map(item => {item.text})
+                var deptList = firstChildNodeList.map(item => {item.text})
 
-            if(nodeData.userNo !== undefined){
-                $("#memberNo").text(nodeData.userNo);
-                $("#memberName").text(nodeData.name);
-                $("#positionName").text(nodeData.positionName);
+                if(nodeData.userNo !== undefined) {
+                    $("#memberNo").text(nodeData.userNo);
+                    $("#memberName").text(nodeData.name);
+                    $("#positionName").text(nodeData.positionName);
 
-                $("#dept").empty().append('<option>변경할 부서를 선택해주세요</option>');
-                firstChildNodeList.forEach(item =>{
-                            console.log('item', item);
-                            if(nodeData.deptNo !== item.data.deptNo){
-                                $("#dept").append(`<option value="${item.data.deptNo}">${item.data.deptName}</option>'`)
-                            }
-                 });
-
-
-            } else if(nodeData.deptNo !== undefined) {
-                $('#updateDeptTab').addClass('active');
-                $('#addDeptTab').removeClass('active');
-            }
-        });
-
-        $(".deptSubmit").on("click", function (data) {
-
-/*
-            $.ajax({
-                url: "{{!contextPath}}", // 클라이언트가 HTTP 요청을 보낼 서버의 URL 주소
-                data: {},  // HTTP 요청과 함께 서버로 보낼 데이터
-                method: "GET",   // HTTP 요청 메소드(GET, POST 등)
-                dataType: "json", // 서버에서 보내줄 데이터의 타입
-                success: function (data) {
-                    // tree.jstree(true).settings.core.data = data;
-                    // tree.jstree(true).refresh();
+                    $("#dept").empty().append('<option>변경할 부서를 선택해주세요</option>');
+                    firstChildNodeList.forEach(item => {
+                        console.log('item', item);
+                        if (nodeData.deptNo !== item.data.deptNo) {
+                            $("#dept").append(`<option value="${item.data.deptNo}">${item.data.deptName}</option>'`)
+                        }
+                    });
 
                 }
-            })
-        */
+                else if(nodeData.deptNo !== undefined) {
+                    // 탭 내용 변경
+                    $('#updateDeptTab').addClass('active');
+                    $('#updateDeptTab a').tab('show');
+                    $('#addDeptTab').removeClass('active');
+
+                    $('#addDeptBox').removeClass('active');
+                    $('#updateDeptBox').addClass('active');
+
+                    // 부서정보 입력
+                    $("#updateDeptNo").val(nodeData.deptNo);
+                    $("#updateDeptName").val(nodeData.deptName);
+                }
+            });
+
+            return tree;
+        }
+
+        var tree = initTree();
+
+        function redrawTree(){
+            tree.jstree("destroy");
+            tree = initTree();
+        }
+
+        $("#deptSubmit").on("click", function () {
+            var nodeData = tree.jstree(true).get_node(selectedNode);
+
+            if(selectedNode != null && nodeData.parent !== '#'){
+                console.log("nodeData", nodeData);
+
+                var selectDept = $("#dept option:selected").val();
+
+                console.log("test", isNaN(Number(selectDept)));
+
+                if(isNaN(Number(selectDept))){
+                    console.log("변경할 부서를 선택해주세요");
+                    return;
+                }
+
+                var deptUpdateData = {
+                    userNo: nodeData.data.userNo,
+                    deptNo: selectDept,
+                }
+                console.log(deptUpdateData)
+
+                $.ajax({
+                    url: "{{contextPath}}/admin/dept/updateMemDept", // 클라이언트가 HTTP 요청을 보낼 서버의 URL 주소
+                    data: JSON.stringify(deptUpdateData),  // HTTP 요청과 함께 서버로 보낼 데이터
+                    method: "PUT",   // HTTP 요청 메소드(GET, POST 등)
+                    dataType: "json", // 서버에서 보내줄 데이터의 타입
+                    contentType: 'application/json',
+                    success: function (responseData) {
+
+                        console.log("ajax success", responseData);
+
+                        redrawTree();
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(xhr, status, error);
+                    }
+                })
+
+            } else {
+                console.log("회원을 선택해주세요!")
+            }
         })
 
+        $("#deptAddSubmit").on("click", function () {
+            console.log()
 
+            var deptName = $("#addDeptName").val()
+
+            if(deptName !== undefined && deptName !== ""){
+                var deptSaveData = {
+                    deptName:deptName
+                }
+
+                $.ajax({
+                    url: "{{contextPath}}/admin/dept/new", // 클라이언트가 HTTP 요청을 보낼 서버의 URL 주소
+                    data: JSON.stringify(deptSaveData),  // HTTP 요청과 함께 서버로 보낼 데이터
+                    method: "POST",   // HTTP 요청 메소드(GET, POST 등)
+                    dataType: "json", // 서버에서 보내줄 데이터의 타입
+                    contentType: 'application/json',
+                    success: function (responseData) {
+
+                        console.log("ajax success", responseData);
+
+                        redrawTree();
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(xhr, status, error);
+                    }, complete : function () {
+                        $("#addDeptName").val("")
+                    }
+                })
+            }
+
+        });
+
+        $("#deptUpdSubmit").on("click", function () {
+
+            var deptNo = $("#updateDeptNo").val()
+            var deptName = $("#updateDeptName").val()
+
+            if(
+                deptNo !== undefined && deptNo !== ""
+                && deptName !== undefined && deptName !== ""
+            ){
+                var deptSaveData = {
+                    deptNo: deptNo,
+                    deptName: deptName
+                }
+
+                $.ajax({
+                    url: "{{contextPath}}/admin/dept/updateDept", // 클라이언트가 HTTP 요청을 보낼 서버의 URL 주소
+                    data: JSON.stringify(deptSaveData),  // HTTP 요청과 함께 서버로 보낼 데이터
+                    method: "PUT",   // HTTP 요청 메소드(GET, POST 등)
+                    dataType: "json", // 서버에서 보내줄 데이터의 타입
+                    contentType: 'application/json',
+                    success: function (responseData) {
+
+                        console.log("ajax success", responseData);
+
+                        redrawTree();
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(xhr, status, error);
+                    }, complete : function () {
+                        $("#updateDeptNo").val("")
+                        $("#updateDeptName").val("")
+
+                        $('#addDeptTab').addClass('active');
+                        $('#addDeptTab a').tab('show');
+                        $('#updateDeptTab').removeClass('active');
+
+                        $('#addDeptBox').addClass('active');
+                        $('#updateDeptBox').removeClass('active');
+                    }
+                })
+            }
+
+            // function
+
+        });
     })
 </script>
 

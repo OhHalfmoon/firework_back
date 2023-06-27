@@ -4,7 +4,10 @@ import com.ohalfmoon.firework.dto.JsTreeNodeDto;
 import com.ohalfmoon.firework.dto.JsTreeState;
 import com.ohalfmoon.firework.dto.dept.DeptCountResponseDTO;
 import com.ohalfmoon.firework.dto.dept.DeptListResponseDTO;
+import com.ohalfmoon.firework.dto.dept.DeptSaveDto;
+import com.ohalfmoon.firework.dto.dept.DeptUpdateDto;
 import com.ohalfmoon.firework.dto.member.MemberResponseDTO;
+import com.ohalfmoon.firework.dto.member.MemberUpdateDeptDto;
 import com.ohalfmoon.firework.service.DeptService;
 import com.ohalfmoon.firework.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +17,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -46,7 +51,6 @@ public class DeptController {
     @GetMapping("get-dept")
     @ResponseBody
     public ResponseEntity<?> getDept()  {
-        // List<JsTreeNodeDto<DeptListResponseDTO>> list = new ArrayList<>();
 
         List<JsTreeNodeDto<DeptListResponseDTO>> list = deptService.deptWithCount().stream()
                 .map(dept -> JsTreeNodeDto.<DeptListResponseDTO>builder()
@@ -61,50 +65,6 @@ public class DeptController {
                         .build())
                 .collect(Collectors.toList());
 
-/*
-        JsTreeNodeDto<DeptListResponseDTO> dept1 = JsTreeNodeDto.<DeptListResponseDTO>builder()
-                .id("dept1")
-                .text("영업팀")
-                .parent("#")
-                .children(true)
-                .state(JsTreeState.builder()
-                        .opened(false)
-                        .build())
-                .data(DeptListResponseDTO.builder()
-                        .deptNo(1L)
-                        .deptName("영업팀")
-                        .build())
-                //.state()
-                //.icon()
-                .build();
-
-        JsTreeNodeDto<DeptListResponseDTO> dept2 = JsTreeNodeDto.<DeptListResponseDTO>builder()
-                .id("dept2")
-                .text("총무팀")
-                .parent("#")
-                .children(true)
-                .data(DeptListResponseDTO.builder()
-                        .deptNo(2L)
-                        .deptName("총무팀")
-                        .build())
-                .build();
-
-        JsTreeNodeDto<DeptListResponseDTO> dept3 = JsTreeNodeDto.<DeptListResponseDTO>builder()
-                .id("dept3")
-                .text("개발팀")
-                .parent("#")
-                .children(false)
-                .data(DeptListResponseDTO.builder()
-                        .deptNo(3L)
-                        .deptName("개발팀")
-                        .build())
-                .build();
-
-        list.add(dept1);
-        list.add(dept2);
-        list.add(dept3);
-*/
-
         return ResponseEntity.ok(list);
     }
 
@@ -112,23 +72,6 @@ public class DeptController {
     @ResponseBody
     public ResponseEntity<?> getMember(@RequestParam("deptNo") Long deptNo){
         log.info("deptNo : {}", deptNo);
-
-
-    /*
-        {
-            id: "user3",
-            parent: "dept1",
-            text: "테스트유저3",
-            data: {
-                memberNo: 3,
-                memberName: "테스트유저3"
-            }
-         }
-        */
-
-        // MemberResponseDTO dto = memberService.getMemberList().get(0);
-
-        // List<JsTreeNodeDto<String>> list = new ArrayList<>();
 
         List<JsTreeNodeDto<MemberResponseDTO>> list = memberService.getMemberListByDeptNo(deptNo)
                 .stream().map(member -> JsTreeNodeDto.<MemberResponseDTO>builder()
@@ -144,33 +87,66 @@ public class DeptController {
                         .build())
                 .collect(Collectors.toList());
 
-        /*
-        JsTreeNodeDto<String> member1 = JsTreeNodeDto.<String>builder()
-                .id("1")
-                .text("회원1")
-                //.state()
-                .icon("fas fa-user")
-                .build();
-
-        JsTreeNodeDto<String> member2 = JsTreeNodeDto.<String>builder()
-                .id("2")
-                .text("회원2")
-                //.state()
-                .icon("fas fa-user")
-                .build();
-
-        JsTreeNodeDto<String> member3 = JsTreeNodeDto.<String>builder()
-                .id("3")
-                .text("회원3")
-                //.state()
-                .icon("fas fa-user")
-                .build();
-
-        list.add(member1);
-        list.add(member2);
-        list.add(member3);
-        */
-
         return ResponseEntity.ok().body(list);
     }
+
+    @PutMapping("/updateMemDept")
+    @ResponseBody
+    public ResponseEntity<?> updateMemberDept(@RequestBody MemberUpdateDeptDto dto) {
+        log.info("dto : {}", dto);
+
+        boolean updateResult = memberService.updateDept(dto);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("result", updateResult);
+
+        if(updateResult){
+            return ResponseEntity.ok().body(result);
+        } else {
+            return ResponseEntity.badRequest().body(result);
+        }
+    }
+
+    @PostMapping("/new")
+    @ResponseBody
+    public ResponseEntity<?> insertDept(@RequestBody DeptSaveDto dto){
+        boolean saveResult = deptService.insertDept(dto);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("result", saveResult);
+
+        if(saveResult){
+            return ResponseEntity.ok().body(result);
+        } else {
+            return ResponseEntity.badRequest().body(result);
+        }
+
+    }
+
+    @PutMapping("/updateDept")
+    @ResponseBody
+    public ResponseEntity<?> updateDept(@RequestBody DeptUpdateDto dto) {
+        boolean updateResult = deptService.updateDept(dto);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("result", updateResult);
+
+        if(updateResult){
+            return ResponseEntity.ok().body(result);
+        } else {
+            return ResponseEntity.badRequest().body(result);
+        }
+    }
+
+//    @DeleteMapping("/delete")
+//    public ResponseEntity<?> deleteDept(@RequestBody Long deptNo){
+//
+//
+//        if(deleteResult){
+//            return ResponseEntity.ok().body(result);
+//        } else {
+//            return ResponseEntity.badRequest().body(result);
+//        }
+//    }
+
 }

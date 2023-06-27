@@ -1,13 +1,17 @@
 package com.ohalfmoon.firework.model;
 
+import com.ohalfmoon.firework.dto.dept.DeptUpdateDto;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.repository.EntityGraph;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 
 /**
  * packageName    : com.ohalfmoon.firework.model
@@ -27,17 +31,22 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "tbl_dept")
 @DynamicInsert
-@ToString
+@ToString(exclude = "memberList")
 @Builder
-public class DeptEntity {
+public class DeptEntity extends BaseTimeEntity {
     @Id // primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
     private Long deptNo; // 부서번호
     private String deptName; // 부서명
-    private Date regdate; // 등록일
-    private Date updatedate; // 수정일
+//    private Date regdate; // 등록일
+//    private Date updatedate; // 수정일
 
     @OneToMany
     @JoinColumn(name = "deptNo")
     List<MemberEntity> memberList = new ArrayList<>();
+
+    public void update(DeptUpdateDto dto){
+        deptNo = dto.getDeptNo();
+        deptName = dto.getDeptName();
+    }
 }

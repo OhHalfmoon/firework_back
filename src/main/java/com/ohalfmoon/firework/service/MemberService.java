@@ -8,6 +8,7 @@ import com.ohalfmoon.firework.dto.paging.PageRequestDTO;
 import com.ohalfmoon.firework.model.*;
 import com.ohalfmoon.firework.persistence.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +23,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.PersistenceUnitUtil;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -50,6 +52,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -344,5 +347,27 @@ public class MemberService {
         return memberRepository.findByDeptEntity_DeptNo(deptNo)
                 .stream().map(MemberResponseDTO::new)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public boolean updateDept(MemberUpdateDeptDto dto){
+        try {
+            MemberEntity entity = memberRepository.findById(dto.getUserNo())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 id가 존재하지 않습니다." + dto.getUserNo()));
+
+            log.info("member entity : {}, dept : {}", entity, entity.getDeptEntity());
+
+            DeptEntity dept = deptRepository
+                    .findById(dto.getDeptNo())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 id가 존재하지 않습니다." + dto.getDeptNo()));
+
+            log.info("dept entity : {}", dept);
+
+            entity.updateDeptNo(dept);
+
+            return true;
+        } catch (Exception e){
+            return false;
+        }
     }
 }
