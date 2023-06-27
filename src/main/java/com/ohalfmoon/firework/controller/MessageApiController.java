@@ -2,9 +2,7 @@ package com.ohalfmoon.firework.controller;
 
 import com.ohalfmoon.firework.dto.*;
 import com.ohalfmoon.firework.dto.member.MemberResponseDTO;
-import com.ohalfmoon.firework.dto.paging.PageRequestDTO;
 import com.ohalfmoon.firework.dto.paging.PageResponseDTO;
-import com.ohalfmoon.firework.model.FormEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.MessageEntity;
 import com.ohalfmoon.firework.service.MemberService;
@@ -15,13 +13,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * packageName    : com.ohalfmoon.firework.controller
@@ -95,16 +90,19 @@ public class MessageApiController {
         return new MessagePageDto(new PageResponseDTO<>(entities), entities.map(MessageResponseDto::new));
     }
 
-    @GetMapping("/sender/{senderNo}/memberList")
-    public MemberPageDto findAllUser(@PathVariable Long senderNo,
-                                     @PageableDefault(
-                                             size = 5,
-                                             direction = Sort.Direction.DESC,
-                                             sort = "userNo") Pageable pageable) {
-
-        Page<MemberEntity> entities = memberService.getAllMemeberByPaging(senderNo, pageable);
-        return new MemberPageDto(new PageResponseDTO<>(entities), entities.map(MemberResponseDTO::new));
-    }
+//    @GetMapping("/sender/{senderNo}/memberList")
+//    public MemberPageDto findAllUser(@PathVariable Long senderNo,
+//                                     @PageableDefault(
+//                                             size = 5,
+//                                             direction = Sort.Direction.DESC,
+//                                             sort = "userNo") Pageable pageable) {
+//
+//        Page<MemberEntity> entities = memberService.getAllMemberByPaging(senderNo, pageable);
+//
+//        MemberPageDto memberPageDto = new MemberPageDto(new PageResponseDTO<>(entities), entities.map(MemberResponseDTO::new));
+//
+//        return memberPageDto;
+//    }
 
     @GetMapping("/sender/{senderNo}/memberList")
     public List<MemberResponseDTO> findAllUser(@PathVariable Long senderNo) {

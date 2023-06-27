@@ -2,8 +2,6 @@ var xhr = new XMLHttpRequest();
 var messageService = (function () {
 
     function add(obj, callback, error) {
-        console.log("add() :: " + obj);
-        console.log(obj);
         $.ajax({
             url : "/api/message/send",
             method: 'post',
@@ -76,7 +74,6 @@ var messageService = (function () {
     }
 
     function remove(arrMessage, callback, error) {
-        console.log(arrMessage);
         $.ajax({
             url : "/api/message",
             method: 'delete',

@@ -8,6 +8,8 @@ import com.ohalfmoon.firework.persistence.MemberRepository;
 import com.ohalfmoon.firework.persistence.SubLineRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.Nullable;
@@ -87,6 +89,10 @@ public class ApprovalService {
         return approvalRepository
                 .findAllByMemberEntityAndApprovalState(MemberEntity.builder().userNo(userNo).build(),approvalState)
                 .stream().map(ApprovalResponseDto::new).collect(Collectors.toList());
+    }
+
+    public Page<ApprovalEntity> getStateListByPaging (final Long userNo, int approvalState, Pageable pageable) {
+        return approvalRepository.findAllByMemberEntityAndApprovalState(MemberEntity.builder().userNo(userNo).build(),approvalState, pageable);
     }
 
     //문서번호와 결재상태값을 통한 기안 리스트 조회
