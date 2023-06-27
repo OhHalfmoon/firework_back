@@ -40,7 +40,7 @@
                                 <h1 class="card-title">공지 사항 게시판</h1>
                             </div>
                             <!-- /.card-header -->
-                            <form method="post">
+                            <form method="post" enctype="multipart/form-data">
                             {{#board}}
                                 <div class="card-body">
                                     <input type="hidden" name="boardNo" value="{{boardNo}}">

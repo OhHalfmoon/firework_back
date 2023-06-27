@@ -5,11 +5,15 @@ import com.ohalfmoon.firework.dto.board.BoardSaveDTO;
 import com.ohalfmoon.firework.dto.board.BoardUpdateDTO;
 import com.ohalfmoon.firework.dto.fileUpload.AttachSaveDto;
 import com.ohalfmoon.firework.dto.paging.PageRequestDTO;
+import com.ohalfmoon.firework.model.AlarmEntity;
 import com.ohalfmoon.firework.model.AttachEntity;
 import com.ohalfmoon.firework.model.BoardEntity;
+import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.spec.BoardSpec;
+import com.ohalfmoon.firework.persistence.AlarmRepository;
 import com.ohalfmoon.firework.persistence.AttachRepository;
 import com.ohalfmoon.firework.persistence.BoardRepository;
+import com.ohalfmoon.firework.persistence.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,6 +51,12 @@ public class BoardService {
     @Autowired
     private AttachRepository attachRepository;
 
+    @Autowired
+    private AlarmRepository alarmRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
     private final String projectPath = new File("").getAbsolutePath();
 
     @Value("upload")
@@ -69,12 +79,24 @@ public class BoardService {
             String filePath = filePath(attachSaveDto.getUuid(), attachSaveDto.getExt());
             attachSaveDto.setPath(filePath);
 
-//            attachSaveDto.setBoardNo(boardNo);
+            attachSaveDto.setBoardNo(boardNo);
             uploadFile.transferTo(new File(projectPath + filePath));
             AttachEntity attachEntity = attachSaveDto.toEntity();
 
             attachRepository.save(attachEntity);
         }
+        List<MemberEntity> memberEntities = memberRepository.findAll();
+
+        for (MemberEntity i : memberEntities) {
+            alarmRepository.save(AlarmEntity.builder()
+                    .alarmReceiver(i)
+                    .alarmTitle("새로운 공지사항-" + boardNo)
+                    .alarmCategory("공지사항")
+                    .boardNo(BoardEntity.builder().boardNo(boardNo).build())
+                    .approvalNo(null)
+                    .build());
+        }
+
         return boardNo;
     }
 
@@ -114,11 +136,23 @@ public class BoardService {
             }
             String filePath = filePath(attachSaveDto.getUuid(), attachSaveDto.getExt());
             attachSaveDto.setPath(filePath);
+            attachSaveDto.setBoardNo(boardNo);
             uploadFile.transferTo(new File(projectPath + filePath));
             AttachEntity attachEntity = attachSaveDto.toEntity();
 
             attachEntity.updateBoardEntity(boardEntity);
             attachRepository.save(attachEntity);
+        }
+        List<MemberEntity> memberEntities = memberRepository.findAll();
+
+        for (MemberEntity i : memberEntities) {
+            alarmRepository.save(AlarmEntity.builder()
+                    .alarmReceiver(i)
+                    .alarmTitle("수정된 공지사항-" + boardNo)
+                    .alarmCategory("공지사항")
+                    .boardNo(BoardEntity.builder().boardNo(boardNo).build())
+                    .approvalNo(null)
+                    .build());
         }
         return boardNo;
     }

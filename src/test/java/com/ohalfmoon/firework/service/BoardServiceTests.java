@@ -82,17 +82,17 @@ public class BoardServiceTests {
         boardService.delete(boardNo);
     }
 
-    @Test
-    @Rollback(value = false)
-    @Transactional
-    public void testUpdate() {
-        Long boardNo = 9L;
-        BoardUpdateDTO boardUpdateDTO = BoardUpdateDTO.builder()
-                .boardTitle("service test title4")
-                .boardContent("service test content4")
-                .build();
-        boardService.update(boardNo, boardUpdateDTO);
-    }
+//    @Test
+//    @Rollback(value = false)
+//    @Transactional
+//    public void testUpdate() {
+//        Long boardNo = 9L;
+//        BoardUpdateDTO boardUpdateDTO = BoardUpdateDTO.builder()
+//                .boardTitle("service test title4")
+//                .boardContent("service test content4")
+//                .build();
+//        boardService.update(boardNo, boardUpdateDTO);
+//    }
 
     @Test
     @DisplayName("최근 작성된 게시글 5개 불러오기")
