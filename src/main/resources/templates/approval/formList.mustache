@@ -149,4 +149,14 @@
 {{>layout/library}}
 
 </body>
+<script>
+    $(function () {
+        var line = `{{{masterList}}}`.length;
+        console.log(line);
+        if (line == 2) {
+            alert("결재선이 없습니다. 등록해주세요")
+            location.href = '/';
+        }
+    })
+</script>
 </html>

@@ -70,7 +70,7 @@ public class AttachServiceTests {
     @Test
     @Transactional
     public void deleteTests(){
-        Long deleteAll = attachService.deleteAll(32L);
+        Long deleteAll = attachService.deleteAll(104L);
 
         Assertions.assertThat(deleteAll).isGreaterThan(0);
     }

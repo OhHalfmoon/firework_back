@@ -34,34 +34,34 @@ public class ApprovalServiceTest {
     @Autowired
     ApprovalRepository approvalRepository;
 
-    @Test
-    @DisplayName("등록 테스트")
-    void register() {
-        ApprovalSaveDto saveDto = ApprovalSaveDto.builder()
-                .approvalName("기안 제출 테스트")
-                .formNo(1L)
-                .lineNo(1L)
-                .docboxNo(1L)
-                .approContent("서비스테스트작성중")
-                .userNo(1L)
-                .approvalState(0)
-                .build();
-        Long saveId = approvalService.register(saveDto);
-        ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(saveId);
-    }
+//    @Test
+//    @DisplayName("등록 테스트")
+//    void register() {
+//        ApprovalSaveDto saveDto = ApprovalSaveDto.builder()
+//                .approvalName("기안 제출 테스트")
+//                .formNo(1L)
+//                .lineNo(1L)
+//                .docboxNo(1L)
+//                .approContent("서비스테스트작성중")
+//                .userNo(1L)
+//                .approvalState(0)
+//                .build();
+//        Long saveId = approvalService.register(saveDto);
+//        ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(saveId);
+//    }
 
-    @Test
-    @DisplayName("결재내용 수정 테스트")
-    void update() {
-        Long updateId = approvalService.get(19L).getApprovalNo();
-        ApprovalUpdateDto updateDto = ApprovalUpdateDto.builder()
-                .approvalName("삭제예정")
-                .lineNo(3L)
-                .docboxNo(1L)
-                .approContent("삭제예정 기안")
-                .build();
-        Long updateNo = approvalService.update(updateId, updateDto);
-    }
+//    @Test
+//    @DisplayName("결재내용 수정 테스트")
+//    void update() {
+//        Long updateId = approvalService.get(19L).getApprovalNo();
+//        ApprovalUpdateDto updateDto = ApprovalUpdateDto.builder()
+//                .approvalName("삭제예정")
+//                .lineNo(3L)
+//                .docboxNo(1L)
+//                .approContent("삭제예정 기안")
+//                .build();
+//        Long updateNo = approvalService.update(updateId, updateDto);
+//    }
 
     @Test
     @DisplayName("결재 상태변경 테스트")

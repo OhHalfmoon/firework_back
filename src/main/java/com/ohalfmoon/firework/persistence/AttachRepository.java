@@ -1,5 +1,6 @@
 package com.ohalfmoon.firework.persistence;
 
+import com.ohalfmoon.firework.model.ApprovalEntity;
 import com.ohalfmoon.firework.model.AttachEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -19,5 +20,7 @@ import java.util.List;
  */
 public interface AttachRepository extends JpaRepository<AttachEntity, Long>, JpaSpecificationExecutor<AttachEntity> {
     Long deleteAttachEntitiesByApprovalEntity_ApprovalNo(Long approvalNo);
+
+    List<AttachEntity> findAllByApprovalEntity(ApprovalEntity approvalEntity);
 
 }

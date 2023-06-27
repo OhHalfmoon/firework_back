@@ -173,6 +173,7 @@ public class AttachService {
      * @param approvalNo the approval no
      * @return the long
      */
+    @Transactional
     public Long deleteAll(Long approvalNo){
 
         return attachRepository.deleteAttachEntitiesByApprovalEntity_ApprovalNo(approvalNo);

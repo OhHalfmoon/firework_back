@@ -85,7 +85,6 @@
                                     </tbody>
                                 </table>
                                 <div class="col-12 testBox"></div>
-<!--                                <input type="hidden" class="form-control applyBox" id="applyVal" name="lineNo" readonly>-->
                             <br>
                             </div>
 
@@ -126,6 +125,34 @@
                                     </div>
                                 </div>
                             </section>
+                            <br>
+                            <div class="row">
+                                <div class="col">첨부파일</div>
+                                <br>
+                                <table id="example2" class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th style="width : 12%">파일번호</th>
+                                        <th>파일이름</th>
+                                        <th style="width : 10%">확장자</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {{#fileList}}
+                                        <tr>
+                                            <td id={{attachNo}}><a href="/upload/download/?fileNo={{attachNo}}">{{attachNo}}</a></td>
+                                            <td id="originName"><a href="/upload/download/?fileNo={{attachNo}}">{{originName}}</a></td>
+                                            <td id="ext"><a href="/upload/download/?fileNo={{attachNo}}">{{ext}}</a></td>
+                                        </tr>
+                                    {{/fileList}}
+                                    </tbody>
+                                </table>
+                                {{^fileList}}
+                                    <div>첨부된 파일이 없습니다.</div>
+                                {{/fileList}}
+                                <div class="col-12 attachBox"></div>
+                                <br>
+                            </div>
                         </div>
                         <br>
                         <div class="col-10">
@@ -157,16 +184,14 @@
 
 </body>
 <script>
-
     let data;
     var writer = {{approvalGet.userNo}};
     var editor;
     var user = {{user.userNo}};
     var test = `{{{approvalGet.approContent}}}`;
     var check = $('#{{user.userNo}}');
-    console.log($('#approvalOrder').val());
-    console.log("로그인 유저 전자서명 번호",{{user.attachNo}})
-    console.log("로그인 유저번호",{{user.userNo}})
+    <!--console.log($('#approvalOrder').val());-->
+    <!--console.log("로그인 유저번호",{{!user.userNo}})-->
     // console.log(check);
     // console.log(check[0]);
 
@@ -188,80 +213,89 @@
             });
 
     $(function () {
-        $("#change").click(function (){
-            if ((check[0] == undefined) || (parseInt(check.text()) != parseInt($('#approvalOrder').val()))) {
-                alert("권한이 없습니다")
-            } else if($('#approvalState').val() == 2) {
-                alert("결재가 완료된 문서입니다.")
-            }else if (check.text() == $('#approvalOrder').val()) {
-                if (confirm("결재를 승인하시겠습니까?")) {
-//                    const accept = test.replace('<td><p style="text-align:center;">서명란</p></td>', '<td><p style="text-align:center;">결재완료</p></td>');
-                    const accept = test.replace('<td><p style="text-align:center;">서명란</p></td>', '<td><img src="{{contextPath}}/upload/imageView?fileNo={{user.attachNo}}" style="width: 50px"></img></td>');
-                    $('.approContent').val(accept);
+        var attach = {{user.isAttach}};
+        if(!attach) {
+            alert("전자서명이 필요합니다. 등록해주세요")
+            location.href='/';
+        } else {
+            $("#change").click(function (){
+                if ((check[0] == undefined) || (parseInt(check.text()) != parseInt($('#approvalOrder').val()))) {
+                    alert("권한이 없습니다")
+                } else if($('#approvalState').val() == 2) {
+                    alert("결재가 완료된 문서입니다.")
+                }else if (check.text() == $('#approvalOrder').val()) {
+                    if (confirm("결재를 승인하시겠습니까?")) {
+                        {{#user.attachNo}}
+                            var attachNo = {{user.attachNo}};
+                        {{/user.attachNo}}
+    //                    const accept = test.replace('<td><p style="text-align:center;">서명란</p></td>', '<td><p style="text-align:center;">결재완료</p></td>');
+                        const accept = test.replace('<td><p style="text-align:center;">서명란</p></td>', '<td><img src="{{contextPath}}/upload/imageView?fileNo='+ attachNo +'" style="width: 50px" /></td>');
+                        $('.approContent').val(accept);
 
-                    var data = {
-                        approContent: $('.approContent').val(),
-                        approvalOrder: parseInt($('#approvalOrder').val()) + 1,
-                        approvalState: $('#approvalState').val()
-                    };
-                    var id = $('#approvalNo').val();
-                    $.ajax({
-                        type: 'PUT',
-                        url: '/approval/' + id,
-                        datatype: 'json',
-                        contentType: 'application/json; charset=utf-8',
-                        data: JSON.stringify(data)
-                    }).done(function () {
-                    })
-                    alert("결재가 승인되었습니다.");
-                    refreshMemList();
+                        var data = {
+                            approContent: $('.approContent').val(),
+                            approvalOrder: parseInt($('#approvalOrder').val()) + 1,
+                            approvalState: $('#approvalState').val()
+                        };
+                        var id = $('#approvalNo').val();
+                        $.ajax({
+                            type: 'PUT',
+                            url: '/approval/' + id,
+                            datatype: 'json',
+                            contentType: 'application/json; charset=utf-8',
+                            data: JSON.stringify(data)
+                        }).done(function () {
+                        })
+                        alert("결재가 승인되었습니다.");
+                        refreshMemList();
+                    }
                 }
-            }
-        });
+            });
 
 
-        $("#reject").click(function (){
-            if ((check[0] == undefined) || (parseInt(check.text()) != parseInt($('#approvalOrder').val()))) {
-                alert("권한이 없습니다")
+            $("#reject").click(function (){
+                if ((check[0] == undefined) || (parseInt(check.text()) != parseInt($('#approvalOrder').val()))) {
+                    alert("권한이 없습니다")
 
-            } else if($('#approvalState').val() == 2) {
-                alert("결재가 완료된 문서입니다.")
+                } else if($('#approvalState').val() == 2) {
+                    alert("결재가 완료된 문서입니다.")
 
-            } else if (check.text() == $('#approvalOrder').val()) {
-                if (confirm("결재를 반려하시겠습니까?")) {
-                    // const accept = test.replace(/결재완료/gi, '서명란');
-                    const accept = test.replaceAll('<img></img>', '<p style="text-align:center;">서명란</p>');
+                } else if (check.text() == $('#approvalOrder').val()) {
+                    if (confirm("결재를 반려하시겠습니까?")) {
+                        // // const accept = test.replace(/결재완료/gi, '서명란');
+                        const accept = test.replace(/<img(.*?)\/>/gi, '<p style="text-align:center;">서명란</p>');
 
-                    $('.approContent').val(accept);
+                        $('.approContent').val(accept);
 
-                    var data = {
-                        approContent: $('.approContent').val(),
-                        approvalOrder: parseInt($('#approvalOrder').val()),
-                        approvalState: parseInt($('#approvalState').val())
-                    };
-                    var id = $('#approvalNo').val();
-                    $.ajax({
-                        type: 'PUT',
-                        url: '/approval/reject/' + id,
-                        datatype: 'json',
-                        contentType: 'application/json; charset=utf-8',
-                        data: JSON.stringify(data)
-                    }).done(function () {
-                    })
-                    alert("결재가 반려되었습니다.")
-                    refreshMemList();
+                        var data = {
+                            approContent: $('.approContent').val(),
+                            approvalOrder: parseInt($('#approvalOrder').val()),
+                            approvalState: parseInt($('#approvalState').val())
+                        };
+                        var id = $('#approvalNo').val();
+                        $.ajax({
+                            type: 'PUT',
+                            url: '/approval/reject/' + id,
+                            datatype: 'json',
+                            contentType: 'application/json; charset=utf-8',
+                            data: JSON.stringify(data)
+                        }).done(function () {
+                        })
+                        alert("결재가 반려되었습니다.")
+                        refreshMemList();
+                    }
                 }
-            }
-        });
+            });
 
-        $("#modify").click(function (){
-            if (writer != user) {
-                alert("권한이 없습니다")
-            } else  {
-                var id = $('#approvalNo').val();
-                location.href='/approval/update/' + id;
-            }
-        });
+            $("#modify").click(function (){
+                if (writer != user) {
+                    alert("권한이 없습니다")
+                } else  {
+                    var id = $('#approvalNo').val();
+                    location.href='/approval/update/' + id;
+                }
+            });
+        }
     })
 
     function refreshMemList(){

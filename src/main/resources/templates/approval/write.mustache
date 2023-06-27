@@ -42,7 +42,7 @@
 
         <section class="content">
             <div class="container-fluid">
-                <form method="post" id="approvalPost">
+                <form method="post" id="approvalPost" enctype="multipart/form-data">
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
@@ -118,6 +118,10 @@
                                     </div>
                                 </div>
                             </section>
+                        <div class="row">
+                            <div class="col">첨부파일</div>
+                            <input type="file" class="form-control" id="attach1" name="file">
+                        </div>
                     </div>
                     <div class="col-2">
                         <input type="hidden" class="form-control approvalOrder" id="approvalOrder" name="approvalOrder"  >
@@ -208,7 +212,7 @@
     var editor;
     var user = {{user.userNo}};
     var test = `{{{formDetail.formText}}}`;
-    console.log(user);
+
 
 
     DecoupledDocumentEditor
@@ -216,8 +220,6 @@
             )
             .then( editor => {
                 window.editor = editor;
-                console.log(test)
-                console.log(editor.ui.view.toolbar.element);
                 document.querySelector( '.document-editor__toolbar' ).appendChild( editor.ui.view.toolbar.element );
                 document.querySelector( '.ck-toolbar' ).classList.add( 'ck-reset_all' );
                 editor.setData(test);
