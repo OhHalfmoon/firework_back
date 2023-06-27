@@ -125,12 +125,15 @@ public class AttachService {
         return fileDtos.stream().map(item -> entityToDto(item, false)).collect(Collectors.toList());
     }
 
+    /**
+     * Get file list list.
+     *
+     * @param boardNo
+     * @return the list
+     */
     @Transactional(readOnly = true)
     public List<AttachResponseDto> getFileListByBoardNo(Long boardNo){
-//        List<AttachEntity> fileDtos = attachRepository.findAttachEntitiesByApprovalEntity_ApprovalNo(boardNo);
-//        List<AttachEntity> fileDtos = attachRepository.findAll(AttachSpec.approvalNo(boardNo));
         List<AttachEntity> fileDtos = attachRepository.findAllByBoardEntity(BoardEntity.builder().boardNo(boardNo).build());
-
         return fileDtos.stream().map(item -> entityToDto(item, false)).collect(Collectors.toList());
     }
 
