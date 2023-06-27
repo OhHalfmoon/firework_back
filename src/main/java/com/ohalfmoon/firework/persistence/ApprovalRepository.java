@@ -6,6 +6,8 @@ import com.ohalfmoon.firework.model.ApprovalEntity;
 import com.ohalfmoon.firework.model.DocboxEntity;
 import com.ohalfmoon.firework.model.MasterLineEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -34,7 +36,7 @@ public interface ApprovalRepository extends JpaRepository<ApprovalEntity, Long> 
     // 로그인한 회원번호와 기안 결재상태값을 통한 리스트 출력
     List<ApprovalEntity> findAllByMemberEntityAndApprovalState(MemberEntity memberEntity, int ApprovalState);
 
-
+    Page<ApprovalEntity> findAllByMemberEntityAndApprovalState(MemberEntity memberEntity, int ApprovalState, Pageable pageable);
 
     // 기안번호를 통해 단일 기안 조회 (get)
     ApprovalEntity findByApprovalNo(Long approvalNo);

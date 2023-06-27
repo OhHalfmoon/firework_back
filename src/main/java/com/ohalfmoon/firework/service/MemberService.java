@@ -5,14 +5,10 @@ import com.ohalfmoon.firework.dto.member.*;
 import com.ohalfmoon.firework.model.*;
 import com.ohalfmoon.firework.persistence.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
@@ -291,7 +287,7 @@ public class MemberService {
      *
      * @return member entity list(paging)
      */
-    public Page<MemberEntity> getAllMemeberByPaging(Long userNo, Pageable pageable) {
+    public Page<MemberEntity> getAllMemberByPaging(Long userNo, Pageable pageable) {
         return memberRepository.findAllByUserNoNotLike(userNo, pageable);
     }
 

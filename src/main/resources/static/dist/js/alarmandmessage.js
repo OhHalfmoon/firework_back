@@ -77,22 +77,22 @@ $(function () {
     function getPage(obj) {
         let str = "";
         if (obj.hasPrevBlock) {
-            str += "<li class='page-item'><a class='page-link' href='#' data-pagenum='" + (obj.startPageNum - 1) + "'>" + "<i class='fas fa-angle-double-left'></i></a></li>";
+            str += "<li class='page-item'><a class='page-link message-page-link' href='#' data-pagenum='" + (obj.startPageNum - 1) + "'>" + "<i class='fas fa-angle-double-left'></i></a></li>";
         }
         if (obj.prev) {
-            str += "<li class='page-item'><a class='page-link' href='#' data-pagenum='" + (obj.page - 1) + "'>" + "<i class='fas fa-angle-left'></i></a></li>";
+            str += "<li class='page-item'><a class='page-link message-page-link' href='#' data-pagenum='" + (obj.page - 1) + "'>" + "<i class='fas fa-angle-left'></i></a></li>";
         }
         for (let i = obj.startPageNum; i <= obj.endPageNum; i++) {
             if (obj.page == i)
-                str += "<li class='page-item active'><a href='#' class='page-link' data-pagenum='" + i + "'>" + i + "</a></li>";
+                str += "<li class='page-item active'><a href='#' class='page-link message-page-link' data-pagenum='" + i + "'>" + i + "</a></li>";
             else
-                str += "<li class='page-item'><a href='#' class='page-link' data-pagenum='" + i + "'>" + i + "</a></li>";
+                str += "<li class='page-item'><a href='#' class='page-link message-page-link' data-pagenum='" + i + "'>" + i + "</a></li>";
         }
         if (obj.next) {
-            str += "<li class='page-item'><a class='page-link' href='#' data-pagenum='" + (obj.page + 1) + "'>" + "<i class='fas fa-angle-right'></i></a></li>";
+            str += "<li class='page-item'><a class='page-link message-page-link' href='#' data-pagenum='" + (obj.page + 1) + "'>" + "<i class='fas fa-angle-right'></i></a></li>";
         }
         if (obj.hasNextBlock) {
-            str += "<li class='page-item'><a class='page-link' href='#' data-pagenum='" + (obj.endPageNum + 1) + "'>" + "<i class='fas fa-angle-double-right'></i></a></li>";
+            str += "<li class='page-item'><a class='page-link message-page-link' href='#' data-pagenum='" + (obj.endPageNum + 1) + "'>" + "<i class='fas fa-angle-double-right'></i></a></li>";
         }
         return str;
     }
@@ -216,7 +216,7 @@ $(function () {
         $(".sendMessage").click(function () {
             var noArr = new Array();
             noArr = $('input[name=userNo]').toArray().map(el => el.value);
-            console.log($('input[name=userNo]').toArray().map(el => el.value))
+
             var messageTitle = $("#messageTitle").val();
             var messageContent = $("#messageContent").val();
             if (noArr.length == 0 || messageTitle == null || messageContent == null) {
@@ -319,7 +319,7 @@ $(function () {
                             $(".messagepagination").html(getPage(result.pageResponseDTO));
                             $(".messages").html(str);
                             $(".division").html(getDivision(divison));
-                            console.log("여기냐?")
+
                         });
                     } else {
                         messageService.getListBySender({userNo: userNo}, function (result) {
@@ -330,7 +330,7 @@ $(function () {
                             $(".messagepagination").html(getPage(result.pageResponseDTO));
                             $(".messages").html(str);
                             $(".division").html(getDivision(divison));
-                            console.log("저기냐?")
+
                         });
                     }
                 })
@@ -342,7 +342,7 @@ $(function () {
         $(".messages").on("change", "#selectedMessage", function () {
             if ($(this).is(":checked")) {
                 arrMessage.push($(this).data("messageno"));
-                console.log(arrMessage);
+
 
             } else if (!$(this).is(":checked")) {
                 for (let i = 0; i < arrMessage.length; i++) {
@@ -350,7 +350,7 @@ $(function () {
                         arrMessage.splice(i, 1);
                         i--;
                     }
-                    console.log(arrMessage);
+
                 }
             }
         })
@@ -399,7 +399,7 @@ $(function () {
             })
         })
 
-        $(".messagepagination").on("click", ".page-link", function () {
+        $(".messagepagination").on("click", ".message-page-link", function () {
             var pageNum = $(this).data("pagenum");
             if (divison) {
                 messageService.getListByReceiver({userNo: userNo, pageNum: pageNum}, function (result) {
@@ -427,7 +427,7 @@ $(function () {
 
 
     })
-    $(".messagepagination").on("click", ".page-link", function () {
+    $(".messagepagination").on("click", ".message-page-link", function () {
         var pageNum = $(this).data("pagenum");
         if (divison) {
             messageService.getListByReceiver({userNo: userNo, pageNum: pageNum}, function (result) {
@@ -478,11 +478,13 @@ $(function () {
         }
     })
     messageService.getAllUser({senderNo: userNo}, function (result) {
+
         var str = "";
         for (var i in result) {
             str += getMemberLiStr(result[i]);
         }
         $(".memberList").html(str);
+
     })
 
     function getMemberLiStr(obj) {
@@ -622,7 +624,7 @@ $(function () {
                                 $(".messagepagination").html(getPage(result.pageResponseDTO));
                                 $(".messages").html(str);
                                 $(".division").html(getDivision(divison));
-                                console.log("여기냐?")
+
                             });
                         } else {
                             messageService.getListBySender({userNo: userNo}, function (result) {
@@ -633,7 +635,7 @@ $(function () {
                                 $(".messagepagination").html(getPage(result.pageResponseDTO));
                                 $(".messages").html(str);
                                 $(".division").html(getDivision(divison));
-                                console.log("저기냐?")
+
                             });
                         }
                     })
@@ -645,7 +647,7 @@ $(function () {
     $(".messages").on("change", "#selectedMessage", function () {
         if ($(this).is(":checked")) {
             arrMessage.push($(this).data("messageno"));
-            console.log(arrMessage);
+
 
         } else if (!$(this).is(":checked")) {
             for (let i = 0; i < arrMessage.length; i++) {
@@ -653,7 +655,7 @@ $(function () {
                     arrMessage.splice(i, 1);
                     i--;
                 }
-                console.log(arrMessage);
+
             }
         }
     })
