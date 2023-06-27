@@ -3,14 +3,20 @@ package com.ohalfmoon.firework.service;
 import com.ohalfmoon.firework.dto.board.BoardResponseDTO;
 import com.ohalfmoon.firework.dto.board.BoardSaveDTO;
 import com.ohalfmoon.firework.dto.board.BoardUpdateDTO;
+import com.ohalfmoon.firework.dto.fileUpload.AttachSaveDto;
 import com.ohalfmoon.firework.model.BoardEntity;
 import com.ohalfmoon.firework.persistence.BoardRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
+import java.util.UUID;
 
 /**
  * packageName    : com.ohalfmoon.firework.service
@@ -23,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
  * -----------------------------------------------------------
  * 2023/06/22        이지윤           최초 생성
  * 2023/06/23        이지윤           업데이트 테스트 수정
+ * 2023/06/26        이지윤           파일 추가 테스트
  */
 
 @SpringBootTest
@@ -34,15 +41,25 @@ public class BoardServiceTests {
     @Test
     @Rollback(value = false)
     @Transactional
-    public void testSave() {
+    public void testSave() throws IOException {
         Long userNo = 1L;
+        MockMultipartFile file = new MockMultipartFile("uploadFile", "test.txt", "text/plain", "hello file".getBytes());
         BoardSaveDTO boardSaveDTO = BoardSaveDTO.builder()
-                .boardTitle("service test title3")
-                .boardContent("service test content3")
+                .boardTitle("서비스 테스트 제목 4")
+                .boardContent("서비스 테스트 내용 4")
                 .userNo(userNo)
                 .build();
-         Long boardNo = boardService.save(boardSaveDTO);
-         log.info("{}", boardNo);
+        AttachSaveDto attachSaveDto = AttachSaveDto.builder()
+                .uuid(UUID.randomUUID().toString())
+                .ext(FilenameUtils.getExtension(file.getOriginalFilename()))
+                .originName(file.getOriginalFilename())
+                .build();
+
+         Long boardNo = boardService.save(boardSaveDTO, attachSaveDto, file);
+         log.info("boardSaveDTO : {}", boardSaveDTO);
+         log.info("attachSaveDto : {}", attachSaveDto);
+         log.info("boardNo : {}", boardNo);
+
     }
 
     @Test
