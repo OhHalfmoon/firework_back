@@ -2,8 +2,14 @@ package com.ohalfmoon.firework.service;
 
 import com.ohalfmoon.firework.dto.dept.DeptCountResponseDTO;
 import com.ohalfmoon.firework.dto.dept.DeptListResponseDTO;
+import com.ohalfmoon.firework.dto.dept.DeptSaveDto;
+import com.ohalfmoon.firework.dto.dept.DeptUpdateDto;
 import com.ohalfmoon.firework.model.DeptEntity;
+import com.ohalfmoon.firework.model.DocboxEntity;
 import com.ohalfmoon.firework.persistence.DeptRepository;
+import com.ohalfmoon.firework.persistence.DocboxRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,10 +31,14 @@ import java.util.stream.Collectors;
  * 2023-06-09                ycy            deptList 추가
  */
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class DeptService {
 
-    @Autowired
-    private DeptRepository deptRepository;
+
+    private final DeptRepository deptRepository;
+
+    private final DocboxRepository docboxRepository;
 
     /**
      * Dept list 조회
@@ -52,5 +62,33 @@ public class DeptService {
         )).collect(Collectors.toList());
     }
 
+    @Transactional
+    public boolean insertDept(DeptSaveDto dto){
+            DeptEntity dept = DeptEntity.builder()
+                    .deptName(dto.getDeptName())
+                    .build();
+
+            deptRepository.save(dept);
+
+            log.info("dto : {}, deptName : {}", dto, dto.getDeptName());
+
+            DocboxEntity box = DocboxEntity.builder()
+                    .docboxName(dto.getDeptName() + " 문서함")
+                    .build();
+
+            docboxRepository.save(box);
+
+            return true;
+    }
+
+    @Transactional
+    public boolean updateDept(DeptUpdateDto dto){
+        DeptEntity entity = deptRepository.findById(dto.getDeptNo())
+                .orElseThrow(() -> new IllegalArgumentException("해당 부서가 존재하지 않습니다. deptNo = " + dto.getDeptName()));
+
+        entity.update(dto);
+
+        return true;
+    }
 
 }

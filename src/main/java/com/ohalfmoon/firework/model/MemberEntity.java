@@ -2,6 +2,7 @@ package com.ohalfmoon.firework.model;
 
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -26,8 +27,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Table(name = "tbl_member")
 @DynamicInsert
+@DynamicUpdate
 @Builder
-@ToString
+@ToString(exclude = "deptEntity")
 public class MemberEntity {
 
     @Id // primary key
@@ -48,6 +50,7 @@ public class MemberEntity {
 
     @ManyToOne // foreign key
     @JoinColumn(name = "deptNo") // foreign key column name
+    @Setter
     private DeptEntity deptEntity; // 부서번호
 
     @ManyToOne // foreign key
