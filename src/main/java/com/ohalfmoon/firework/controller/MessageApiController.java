@@ -90,6 +90,11 @@ public class MessageApiController {
         return new MessagePageDto(new PageResponseDTO<>(entities), entities.map(MessageResponseDto::new));
     }
 
+    @GetMapping("/sender/{senderNo}/memberList")
+    public List<MemberResponseDTO> findAllUser(@PathVariable Long senderNo) {
+        return memberService.getAllMemeber(senderNo);
+    }
+
 //    @GetMapping("/sender/{senderNo}/memberList")
 //    public MemberPageDto findAllUser(@PathVariable Long senderNo,
 //                                     @PageableDefault(
@@ -106,11 +111,6 @@ public class MessageApiController {
 
 //        Page<MemberEntity> entities = memberService.getAllMemeberByPaging(senderNo, pageable);
 //        return new MemberPageDto(new PageResponseDTO<>(entities), entities.map(MemberResponseDTO::new));
-//    }
-
-//    @GetMapping("/sender/{senderNo}/memberList")
-//    public List<MemberResponseDTO> findAllUser(@PathVariable Long senderNo) {
-//        return memberService.getAllMemeber(senderNo);
 //    }
 
 //    @GetMapping("list/{userNo}")
