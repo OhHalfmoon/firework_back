@@ -18,7 +18,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Compose</h1>
+                        <h1>게시판</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -29,7 +29,6 @@
                 </div>
             </div><!-- /.container-fluid -->
         </section>
-
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
@@ -37,7 +36,7 @@
                     <div class="col-md-9">
                         <div class="card card-primary card-outline">
                             <div class="card-header">
-                                <h1 class="card-title">공지 사항 게시판</h1>
+                                <h1 class="card-title">공지사항 조회</h1>
                             </div>
                             <!-- /.card-header -->
                             <form method="post" id="frm">
@@ -86,9 +85,9 @@
                                 <div class="card-footer">
                                     <div class="float-right">
                                         <input type="hidden" name="boardNo" value="{{boardNo}}">
-                                        <button type="submit" formaction="/board/remove" class="btn btn-default"><i class="fas fa-pencil-alt"></i>삭제</button>
-                                        <a href="/board/modify/{{boardNo}}" type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i> 수정</a>
-                                        <a href="/board/list" type="button" class="btn btn-primary"><i class="far fa-envelope"></i> 이전으로</a>
+                                        <button id="viewDeleteBtn" type="submit" formaction="/board/remove" class="btn btn-danger"> 삭제 </button>
+                                        <a href="/board/modify/{{boardNo}}" type="button" class="btn btn-primary"><i class="fas fa-pencil-alt"></i> 수정 </a>
+                                        <a href="/board/list" type="button" class="btn btn-secondary"> 목록 </a>
                                     </div>
                                 </div>
                             </form>
@@ -111,8 +110,15 @@
 
 {{>layout/library}}
 <script>
-    var list = `{{{fileList}}}`;
-    console.log(list);
+   $(function () {
+       $("#viewDeleteBtn").click(function () {
+           if(confirm("삭제하시겠습니까?")) {
+                return true;
+              } else {
+                return false;
+           }
+       })
+   })
 
 </script>
 </body>
