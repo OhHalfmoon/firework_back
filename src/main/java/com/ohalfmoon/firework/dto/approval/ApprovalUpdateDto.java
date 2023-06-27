@@ -1,9 +1,9 @@
 package com.ohalfmoon.firework.dto.approval;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ohalfmoon.firework.model.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -20,7 +20,9 @@ import java.time.LocalDate;
  * 2023/06/09        오상현           파라미터 수정 (storage, state값 초기화로 인해 삭제)
  */
 @Getter
+@Setter
 @NoArgsConstructor
+@ToString
 public class ApprovalUpdateDto {
     private String approvalName;
     private Long lineNo;
@@ -28,6 +30,9 @@ public class ApprovalUpdateDto {
     private String approContent;
     private int approvalOrder;
     private int approvalState;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd", timezone = "Asia/Seoul")
     private LocalDate regdate;
 
 

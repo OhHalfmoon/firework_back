@@ -1,21 +1,24 @@
 package com.ohalfmoon.firework.service;
 
 import com.ohalfmoon.firework.dto.approval.*;
+import com.ohalfmoon.firework.dto.fileUpload.AttachSaveDto;
 import com.ohalfmoon.firework.model.*;
-import com.ohalfmoon.firework.persistence.AlarmRepository;
-import com.ohalfmoon.firework.persistence.ApprovalRepository;
-import com.ohalfmoon.firework.persistence.MemberRepository;
-import com.ohalfmoon.firework.persistence.SubLineRepository;
+import com.ohalfmoon.firework.persistence.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.Nullable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -48,20 +51,71 @@ public class ApprovalService {
     private final AlarmRepository alarmRepository;
     private final MemberRepository memberRepository;
     private final JdbcTemplate jdbcTemplate;
+    private final AttachRepository attachRepository;
+
+    private final String projectPath = new File("").getAbsolutePath();
+
+    private final PasswordEncoder encoder;
+    private final AttachService attachService;
+    @Value("${upload.path}")
+    private String uploadDir;
+
+    private String filePath(String uuid, String ext){
+        // 프로젝트 루트 경로 확인용
+
+        // 실제 업로드 폴더 경로
+        File uploadFolder = new File(projectPath + uploadDir);
+        if(!uploadFolder.exists()){
+            boolean mkdirs = uploadFolder.mkdirs();
+        }
+
+        return File.separator + uploadDir + File.separator + uuid + "." + ext;
+    }
 
 
     //기안 제출(결재)
+//    @Transactional
+//    public Long register(ApprovalSaveDto saveDto) {
+//        ApprovalEntity approvalEntity = saveDto.toSaveApproval();
+//
+//        Long no = approvalRepository.save(approvalEntity).getApprovalNo();
+//
+//        alarmRepository.save(AlarmEntity.builder()
+//            .approvalNo(ApprovalEntity.builder().approvalNo(no).build())
+//            .alarmCategory("결제요청")
+//            .alarmTitle("새로운 결제요청-"+memberRepository.findById(saveDto.getUserNo()).orElse(null).getName())
+//            .alarmReceiver(MemberEntity.builder().userNo(getApprovalUserName(no).get(0).getUserNo()).build())
+//            .boardNo(null)
+//            .build());
+//        return no;
+//    }
+    //기안 제출(결재)
     @Transactional
-    public Long register(ApprovalSaveDto saveDto) {
-         Long no = approvalRepository.save(saveDto.toSaveApproval()).getApprovalNo();
-            alarmRepository.save(AlarmEntity.builder()
+    public Long register(AttachSaveDto adto, MultipartFile uploadFile, ApprovalSaveDto saveDto) throws IOException {
+        ApprovalEntity approvalEntity = saveDto.toSaveApproval();
+
+        Long no = approvalRepository.save(approvalEntity).getApprovalNo();
+
+        // 파일 null 처리
+        if (adto != null) {
+            String filePath = filePath(adto.getUuid(), adto.getExt());
+            adto.setPath(filePath);
+
+            uploadFile.transferTo(new File(projectPath + filePath));
+
+            AttachEntity sign = adto.toEntity();
+            // 파일 null 처리
+            sign.updateApprovalEntity(approvalEntity);
+            attachRepository.save(sign);
+        }
+        alarmRepository.save(AlarmEntity.builder()
                 .approvalNo(ApprovalEntity.builder().approvalNo(no).build())
                 .alarmCategory("결제요청")
                 .alarmTitle("새로운 결제요청-"+memberRepository.findById(saveDto.getUserNo()).orElse(null).getName())
                 .alarmReceiver(MemberEntity.builder().userNo(getApprovalUserName(no).get(0).getUserNo()).build())
                 .boardNo(null)
                 .build());
-         return no;
+        return no;
     }
 
     //기안명을 통한 단일조회
@@ -162,31 +216,74 @@ public class ApprovalService {
     }
 
     //결재 서류 수정
-    @Transactional
-    public Long update(long approvalNo, ApprovalUpdateDto updateDto) {
-                ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
+//    @Transactional
+//    public Long update(long approvalNo, ApprovalUpdateDto updateDto) throws IOException {
+//
+//                ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
+//
+//                approvalEntity.update(
+//                        updateDto.getApprovalName(),
+//                        updateDto.getLineNo(),
+//                        updateDto.getDocboxNo(),
+//                        updateDto.getApproContent(),
+//                        updateDto.getApprovalOrder(),
+//                        updateDto.getApprovalState(),
+//                        updateDto.getRegdate()
+//                );
+//                if (approvalEntity.getApprovalOrder() == 1) {
+//                    List<ApprovalLineDto> lineDtos = getApprovalUserName(approvalNo);
+//                    alarmRepository.save(AlarmEntity.builder()
+//                            .approvalNo(ApprovalEntity.builder().approvalNo(approvalNo).build())
+//                            .alarmCategory("결재요청")
+//                            .alarmTitle("새로운 결재요청-"+memberRepository.findById(approvalRepository.findByApprovalNo(approvalNo).getMemberEntity().getUserNo()).orElse(null).getName())
+//                            .alarmReceiver(MemberEntity.builder().userNo(lineDtos.get(0).getUserNo()).build())
+//                            .boardNo(null)
+//                            .build());
+//                    return approvalNo;
+//                }
+//
+//                return approvalNo;
+//    }
 
-                approvalEntity.update(
-                        updateDto.getApprovalName(),
-                        updateDto.getLineNo(),
-                        updateDto.getDocboxNo(),
-                        updateDto.getApproContent(),
-                        updateDto.getApprovalOrder(),
-                        updateDto.getApprovalState(),
-                        updateDto.getRegdate()
-                );
-                if (approvalEntity.getApprovalOrder() == 1) {
-                    List<ApprovalLineDto> lineDtos = getApprovalUserName(approvalNo);
-                    alarmRepository.save(AlarmEntity.builder()
-                            .approvalNo(ApprovalEntity.builder().approvalNo(approvalNo).build())
-                            .alarmCategory("결재요청")
-                            .alarmTitle("새로운 결재요청-"+memberRepository.findById(approvalRepository.findByApprovalNo(approvalNo).getMemberEntity().getUserNo()).orElse(null).getName())
-                            .alarmReceiver(MemberEntity.builder().userNo(lineDtos.get(0).getUserNo()).build())
-                            .boardNo(null)
-                            .build());
-                    return approvalNo;
-                }
-                return approvalNo;
+//    결재 서류 수정
+    @Transactional
+    public Long update(AttachSaveDto adto, MultipartFile uploadFile, long approvalNo, ApprovalUpdateDto updateDto) throws IOException {
+
+        ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
+
+        approvalEntity.update(
+                updateDto.getApprovalName(),
+                updateDto.getApproContent(),
+                updateDto.getApprovalOrder(),
+                updateDto.getApprovalState(),
+                updateDto.getRegdate()
+        );
+
+        if (adto != null) {
+            if (attachRepository.findAllByApprovalEntity(approvalEntity).size() != 0) {
+                attachRepository.deleteAttachEntitiesByApprovalEntity_ApprovalNo(approvalNo);
+            }
+            String filePath = filePath(adto.getUuid(), adto.getExt());
+            adto.setPath(filePath);
+            uploadFile.transferTo(new File(projectPath + filePath));
+            AttachEntity sign = adto.toEntity();
+            // 파일 null 처리
+            sign.updateApprovalEntity(approvalEntity);
+            attachRepository.save(sign);
+        }
+        if (approvalEntity.getApprovalOrder() == 1) {
+            List<ApprovalLineDto> lineDtos = getApprovalUserName(approvalNo);
+            alarmRepository.save(AlarmEntity.builder()
+                    .approvalNo(ApprovalEntity.builder().approvalNo(approvalNo).build())
+                    .alarmCategory("결재요청")
+                    .alarmTitle("새로운 결재요청-"+memberRepository.findById(approvalRepository.findByApprovalNo(approvalNo).getMemberEntity().getUserNo()).orElse(null).getName())
+                    .alarmReceiver(MemberEntity.builder().userNo(lineDtos.get(0).getUserNo()).build())
+                    .boardNo(null)
+                    .build());
+            return approvalNo;
+        }
+
+        return approvalNo;
     }
 
     //기안 상태값을 변경
@@ -266,6 +363,9 @@ public class ApprovalService {
             for (AlarmEntity entity : alarmEntities ) {
                 alarmRepository.deleteById(entity.getAlarmNo());
             }
+        }
+        if (attachRepository.findAllByApprovalEntity(approvalEntity).size() != 0) {
+            attachRepository.deleteAttachEntitiesByApprovalEntity_ApprovalNo(approvalNo);
         }
         approvalRepository.delete(approvalEntity);
     }

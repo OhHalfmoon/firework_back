@@ -19,7 +19,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">기안 작성</h1>
+                        <h1 class="m-0">기안 수정</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -36,7 +36,7 @@
 
         <section class="content">
             <div class="container-fluid">
-                <form id="approvalPost">
+                <form method="post" id="approvalPost" enctype="multipart/form-data">
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
@@ -59,26 +59,26 @@
 <!--                            </select>-->
 <!--                        </div>-->
 <!--                        <br>-->
-                        <div class="row">
-                            <div class="col">결재선</div>
-                            <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">
-                                결재선 선택
-                            </button>
-                            <br>
-                            <div class="col-12" id="applyLine" style="border: 1px solid; border-color: #ced4da; padding: 5px; margin-top: 3px; border-radius: 5px">결재선이 선택되지 않았습니다</div>
-                            <div class="col-12 testBox"></div>
-                            <input type="hidden" class="form-control applyBox" id="applyVal" name="lineNo" readonly>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col">문서함</div>
-                            <select class="d-flex custom-select" name="docboxNo" id="docbox">
-                                <option selected>문서함을 선택해주세요</option>
-                                {{#docboxList}}
-                                    <option value="{{docboxNo}}">{{docboxName}}</option>
-                                {{/docboxList}}
-                            </select>
-                        </div>
+<!--                        <div class="row">-->
+<!--                            <div class="col">결재선</div>-->
+<!--                            <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">-->
+<!--                                결재선 선택-->
+<!--                            </button>-->
+<!--                            <br>-->
+<!--                            <div class="col-12" id="applyLine" style="border: 1px solid; border-color: #ced4da; padding: 5px; margin-top: 3px; border-radius: 5px">결재선이 선택되지 않았습니다</div>-->
+<!--                            <div class="col-12 testBox"></div>-->
+<!--                            <input type="hidden" class="form-control applyBox" id="applyVal" name="lineNo" readonly>-->
+<!--                        </div>-->
+<!--                        <br>-->
+<!--                        <div class="row">-->
+<!--                            <div class="col">문서함</div>-->
+<!--                            <select class="d-flex custom-select" name="docboxNo" id="docbox">-->
+<!--                                <option selected>문서함을 선택해주세요</option>-->
+<!--                                {{!#docboxList}}-->
+<!--                                    <option value="{{!docboxNo}}">{{!docboxName}}</option>-->
+<!--                                {{!/docboxList}}-->
+<!--                            </select>-->
+<!--                        </div>-->
                         <br>
                         <div class="row">
                             <div class="col">작성</div>
@@ -112,14 +112,18 @@
                                     </div>
                                 </div>
                             </section>
+                            <div class="row">
+                                <div class="col">첨부파일</div>
+                                <input type="file" class="form-control" id="attach1" name="file">
+                            </div>
                     </div>
                     <div class="col-2">
                         <input type="hidden" id="approvalNo" value="{{approvalGet.approvalNo}}">
                         <input type="hidden" class="form-control approvalOrder" id="approvalOrder" name="approvalOrder" value="{{approvalGet.approvalOrder}}" >
                         <input type="hidden" class="form-control approvalState" id="approvalState" name="approvalState" value="{{approvalGet.approvalState}}" >
                         <input type="hidden" class="form-control userNo" name="userNo" value="{{approvalGet.userNo}}" >
-                        <button class="btn btn-primary" id="save" type="button">저장</button>
-                        <button class="btn btn-secondary" id="storage" type="button">임시저장</button>
+                        <button class="btn btn-primary" id="save" type="submit">저장</button>
+                        <button class="btn btn-secondary" id="storage" type="submit">임시저장</button>
                         <button class="btn btn-danger" id="delete" type="button">삭제</button>
                     </div>
                 </div>
@@ -143,69 +147,68 @@
 
 {{>layout/library}}
 <!-- The Modal -->
-<div class="modal" id="myModal">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
+<!--<div class="modal" id="myModal">-->
+<!--    <div class="modal-dialog modal-xl">-->
+<!--        <div class="modal-content">-->
 
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h4 class="modal-title">결재선 목록</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
+<!--            &lt;!&ndash; Modal Header &ndash;&gt;-->
+<!--            <div class="modal-header">-->
+<!--                <h4 class="modal-title">결재선 목록</h4>-->
+<!--                <button type="button" class="close" data-dismiss="modal">&times;</button>-->
+<!--            </div>-->
 
-            <!-- Modal body -->
-            <div class="modal-body">
-                <div class="card-body">
-                    <table id="example2" class="table table-bordered table-hover">
-                        <thead>
-                        <tr>
-                            <th>결재선 명</th>
-                            <th style="width : 12%">기안자</th>
-                            <th>결재자 1</th>
-                            <th>결재자 2</th>
-                            <th>결재자 3</th>
-                            <th style="width : 10%">선택</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            {{#masterList}}
-                                <tr class="myLine data-lineNo={{lineNo}}">
-                                <td>{{lineName}}</td>
-                                <td>{{userName}}</td>
-                                {{#subLineResponseDTOS}}
-                                    <td id="lineTd"> {{#deptName}}[{{deptName}}]{{/deptName}} {{#positionName}}[{{positionName}}]{{/positionName}} {{#name}}{{name}}{{/name}} </td>
-                                {{/subLineResponseDTOS}}
-                                <td>
-                                    <div class="icheck-primary d-inline ml-2 mx-auto">
-                                        <input class="mx-auto ckBox" type="radio" name="pickRadio" id="todoCheck{{lineNo}}" value="{{lineNo}}">
-                                        <label for="todoCheck{{lineNo}}"></label>
-                                    </div>
-                                </td>
-                                </tr>
-                            {{/masterList}}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+<!--            &lt;!&ndash; Modal body &ndash;&gt;-->
+<!--            <div class="modal-body">-->
+<!--                <div class="card-body">-->
+<!--                    <table id="example2" class="table table-bordered table-hover">-->
+<!--                        <thead>-->
+<!--                        <tr>-->
+<!--                            <th>결재선 명</th>-->
+<!--                            <th style="width : 12%">기안자</th>-->
+<!--                            <th>결재자 1</th>-->
+<!--                            <th>결재자 2</th>-->
+<!--                            <th>결재자 3</th>-->
+<!--                            <th style="width : 10%">선택</th>-->
+<!--                        </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody>-->
+<!--                            {!{#masterList}}-->
+<!--                                <tr class="myLine data-lineNo={!{lineNo}}">-->
+<!--                                <td>{!{lineName}}</td>-->
+<!--                                <td>{!{userName}}</td>-->
+<!--                                {!{#subLineResponseDTOS}}-->
+<!--                                    <td id="lineTd"> {!{#deptName}}[{!{deptName}}]{!{/deptName}} {!{#positionName}}[{!{positionName}}]{!{/positionName}} {!{#name}}{!{name}}{!{/name}} </td>-->
+<!--                                {!{/subLineResponseDTOS}}-->
+<!--                                <td>-->
+<!--                                    <div class="icheck-primary d-inline ml-2 mx-auto">-->
+<!--                                        <input class="mx-auto ckBox" type="radio" name="pickRadio" id="todoCheck{!{lineNo}}" value="{!{lineNo}}">-->
+<!--                                        <label for="todoCheck{!{lineNo}}"></label>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                                </tr>-->
+<!--                            {!{/masterList}}-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+<!--                </div>-->
+<!--            </div>-->
 
-            <!-- Modal footer -->
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-primary btn-sm" id="apply" >적용</button>
-                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">닫기</button>
-            </div>
+<!--            &lt;!&ndash; Modal footer &ndash;&gt;-->
+<!--            <div class="modal-footer">-->
+<!--                <button type="submit" class="btn btn-primary btn-sm" id="apply" >적용</button>-->
+<!--                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">닫기</button>-->
+<!--            </div>-->
 
-        </div>
-    </div>
-</div>
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
 </body>
 <script>
-    let data;
+    var data;
     var editor;
     var user = {{user.userNo}};
     var writer = {{approvalGet.userNo}};
     var test = `{{{approvalGet.approContent}}}`;
-    console.log(user);
     console.log(test);
 
 
@@ -231,55 +234,55 @@
 
     $(function () {
 
-        $(".ckBox").click(function (){
-
-            var no = this.value;
-            var approlist = this.closest('tr').innerHTML;
-            var cut = approlist.split('<td><!-- checkbox -->');
-            var cutLabel = cut[0].split('<label');
-            $("#apply").click(function () {
-                const element = document.getElementById('applyLine');
-                // element.innerHTML = '<tr>' + cut[0] + '</tr>';
-                element.innerHTML = '<tr>' + cutLabel[0] + '</div></td></tr>';
-                $("#applyVal").val(no);
-                $(".modal").modal("hide");
-            });
-        })
+        // $(".ckBox").click(function (){
+        //
+        //     var no = this.value;
+        //     var approlist = this.closest('tr').innerHTML;
+        //     var cut = approlist.split('<td><!-- checkbox -->');
+        //     var cutLabel = cut[0].split('<label');
+        //     $("#apply").click(function () {
+        //         const element = document.getElementById('applyLine');
+        //         // element.innerHTML = '<tr>' + cut[0] + '</tr>';
+        //         element.innerHTML = '<tr>' + cutLabel[0] + '</div></td></tr>';
+        //         $("#applyVal").val(no);
+        //         $(".modal").modal("hide");
+        //     });
+        // })
 
         $("#storage").click(function (){
-
+            event.preventDefault();
             if ((writer == user) && ($('#approvalState').val() == 0)) {
-                var editText = editor.getData();
-                $('.approContent').val(editText);
-                if ($("#applyVal").val() == "") {
-                    alert("결재선을 선택해주세요")
-                } else if ($(".docbox").val() == "문서함을 선택해주세요") {
-                    alert("문서함을 선택해주세요")
-                } else {
                     if(confirm("작성중인 문서를 저장하시겠습니까?")) {
-                        var data = {
-                            approvalName: $('#approvalName').val(),
-                            lineNo: $('#applyVal').val(),
-                            docboxNo: $('#docbox').val(),
-                            approContent: $('.approContent').val(),
-                            approvalOrder: parseInt($('#approvalOrder').val()),
-                            approvalState: parseInt($('#approvalState').val()),
-                            regdate : $('#regdate').val()
-                        };
-                        var id = $('#approvalNo').val();
-                        $.ajax({
-                            type: 'PUT',
-                            url: '/approval/update/' + id,
-                            datatype: 'json',
-                            contentType: 'application/json; charset=utf-8',
-                            data: JSON.stringify(data)
-                        }).done(function () {
-
-                            alert("문서가 수정되었습니다.")
-                            location.href='/approval/' + id;
-                        })
+                        var editText = editor.getData();
+                        $("#approvalOrder").val(0);
+                        $("#approvalState").val(0);
+                        $(".userNo").val(user);
+                        $(".approContent").val(editText);
+                        alert("작성이 완료되었습니다")
+                        $("#approvalPost").submit();
+                        // var data = {
+                        //     approvalName: $('#approvalName').val(),
+                        //     lineNo: $('#applyVal').val(),
+                        //     docboxNo: $('#docbox').val(),
+                        //     approContent: $('.approContent').val(),
+                        //     approvalOrder: parseInt($('#approvalOrder').val()),
+                        //     approvalState: parseInt($('#approvalState').val()),
+                        //     regdate : $('#regdate').val()
+                        // };
+                        // var id = $('#approvalNo').val();
+                        // $.ajax({
+                        //     type: 'PUT',
+                        //     url: '/approval/update/' + id,
+                        //     datatype: 'json',
+                        //     contentType: 'application/json; charset=utf-8',
+                        //     data: JSON.stringify(data)
+                        // }).done(function () {
+                        //
+                        //     alert("문서가 수정되었습니다.")
+                        //     location.href='/approval/' + id;
+                        // })
                     }
-                }
+
             } else {
                 alert("권한이 없습니다.")
             }
@@ -288,38 +291,37 @@
 
 
         $("#save").click(function (){
-//            console.log($('#docbox').val());
             if ((writer == user) && ($('#approvalState').val() == 0)) {
-                var editText = editor.getData();
-                $('.approContent').val(editText);
-                if ($("#applyVal").val() == "") {
-                    alert("결재선을 선택해주세요")
-                } else if ($(".docbox").val() == "문서함을 선택해주세요") {
-                    alert("문서함을 선택해주세요")
-                } else {
                     if(confirm("문서를 제출하시겠습니까?")) {
-                        var data = {
-                            approvalName: $('#approvalName').val(),
-                            lineNo: $('#applyVal').val(),
-                            docboxNo: $('#docbox').val(),
-                            approContent: $('.approContent').val(),
-                            approvalOrder: parseInt($('#approvalOrder').val()) + 1,
-                            approvalState: parseInt($('#approvalState').val()) + 1,
-                            regdate: $('#regdate').val()
-                        };
-                        var id = $('#approvalNo').val();
-                        $.ajax({
-                            type: 'PUT',
-                            url: '/approval/update/' + id,
-                            datatype: 'json',
-                            contentType: 'application/json; charset=utf-8',
-                            data: JSON.stringify(data)
-                        }).done(function () {
-                            alert("결재가 요청되었습니다.")
-                            location.href='/approval/' + id;
-                        })
+                        var editText = editor.getData();
+                        $("#approvalOrder").val(1);
+                        $("#approvalState").val(1);
+                        $(".userNo").val(user);
+                        $(".approContent").val(editText);
+                        alert("결제가 요청되었습니다")
+                        $("#approvalPost").submit();
+                        // var data = {
+                        //     approvalName: $('#approvalName').val(),
+                        //     lineNo: $('#applyVal').val(),
+                        //     docboxNo: $('#docbox').val(),
+                        //     approContent: $('.approContent').val(),
+                        //     approvalOrder: parseInt($('#approvalOrder').val()) + 1,
+                        //     approvalState: parseInt($('#approvalState').val()) + 1,
+                        //     regdate: $('#regdate').val()
+                        // };
+                        // var id = $('#approvalNo').val();
+                        // $.ajax({
+                        //     type: 'PUT',
+                        //     url: '/approval/update/' + id,
+                        //     datatype: 'json',
+                        //     contentType: 'application/json; charset=utf-8',
+                        //     data: JSON.stringify(data)
+                        // }).done(function () {
+                        //     alert("결재가 요청되었습니다.")
+                        //     location.href='/approval/' + id;
+                        // })
                     }
-                }
+
             } else {
                 alert("권한이 없습니다.")
             }

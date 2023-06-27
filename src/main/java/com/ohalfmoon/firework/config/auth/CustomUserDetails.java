@@ -44,6 +44,7 @@ public class CustomUserDetails implements UserDetails {
     private LocalDate Startdate;
     private Long attachNo;
     private Role roleName;
+    private boolean isAttach;
 
 
 
@@ -63,6 +64,7 @@ public class CustomUserDetails implements UserDetails {
         this.deptName = user.getDeptEntity().getDeptName();
         this.attachNo = user.getAttachEntity() != null ? user.getAttachEntity().getAttachNo() : null;
         this.manager = user.getManager() ? true : null;
+        this.isAttach = user.getAttachEntity() != null;
     }
 
     @Override

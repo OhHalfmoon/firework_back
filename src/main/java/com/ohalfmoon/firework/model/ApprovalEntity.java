@@ -85,10 +85,10 @@ public class ApprovalEntity {
     }
 
     //작성중인 문서 내용 수정
-    public void update(String approvalName, Long lineNo, Long docboxNo, String approContent, int approvalOrder, int approvalState, LocalDate regdate) {
+    public void update(String approvalName, String approContent, int approvalOrder, int approvalState, LocalDate regdate) {
         this.approvalName = approvalName;
-        this.masterLineEntity = MasterLineEntity.builder().lineNo(lineNo).build();
-        this.docboxEntity = DocboxEntity.builder().docboxNo(docboxNo).build();
+//        this.masterLineEntity = MasterLineEntity.builder().lineNo(lineNo).build();
+//        this.docboxEntity = DocboxEntity.builder().docboxNo(docboxNo).build();
         this.approContent = approContent;
         this.approvalOrder = approvalOrder;
         this.approvalState = approvalState;
