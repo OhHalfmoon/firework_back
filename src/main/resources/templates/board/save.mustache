@@ -61,7 +61,13 @@
                                 <div class="card-footer">
                                     <div class="float-right">
                                         <a href="/board/list" type="button" class="btn btn-secondary"> 목록 </a>
-                                        <button id="saveBtn" type="submit" class="btn btn-primary"> 저장 </button>
+                                        {{#user}}
+                                            {{#isTeamLeader}}
+                                                <button id="saveBtn" type="submit" class="btn btn-primary"> 저장 </button>
+                                            {{/isTeamLeader}}
+                                            {{^isteamLeader}}
+                                            {{/isteamLeader}}
+                                        {{/user}}
                                     </div>
                                 </div>
                             </form>

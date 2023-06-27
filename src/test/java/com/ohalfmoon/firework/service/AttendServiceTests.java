@@ -2,6 +2,7 @@ package com.ohalfmoon.firework.service;
 
 import com.ohalfmoon.firework.dto.attend.AttendResponseDTO;
 import com.ohalfmoon.firework.dto.attend.AttendSaveDTO;
+import com.ohalfmoon.firework.dto.attend.AttendUpdateByAdminDTO;
 import com.ohalfmoon.firework.dto.attend.AttendUpdateDTO;
 import com.ohalfmoon.firework.dto.sub.SubLineSaveDTO;
 import com.ohalfmoon.firework.model.AttendEntity;
@@ -83,5 +84,16 @@ public class AttendServiceTests {
         AttendResponseDTO dto = new AttendResponseDTO();
         dto.setUserNo(19L);
         log.info("회원 : {}", attendService.getAttend(19L));
+    }
+
+    @Test
+    @DisplayName("관리자 - 퇴근시간 수정")
+    public void testUpdateByAdmin() {
+        AttendUpdateByAdminDTO dto = new AttendUpdateByAdminDTO();
+        dto.setAttendNo(58L);
+//        dto.setLeavedate(new Date("1993-07-21 18:00:00"));
+        dto.setLeavedate(new Date());
+        log.info("dto 확인 : {}", dto.toString());
+        attendService.updateByAdmin(58L, dto);
     }
 }

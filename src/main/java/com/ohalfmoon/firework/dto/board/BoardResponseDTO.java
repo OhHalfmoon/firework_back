@@ -32,6 +32,7 @@ public class BoardResponseDTO {
     private String title;
     private String content;
     private Long userNo;
+    private String name;
     private Date regDate;
     private List<String> originName;
 
@@ -40,6 +41,7 @@ public class BoardResponseDTO {
         title = boardEntity.getBoardTitle();
         content = boardEntity.getBoardContent();
         regDate = boardEntity.getRegdate();
+        name = boardEntity.getMemberEntity().getName();
         originName = boardEntity.getAttachEntities()
                 .stream().map(attachEntity -> attachEntity.getOriginName())
                 .collect(Collectors.toList());
