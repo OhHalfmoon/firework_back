@@ -1,13 +1,19 @@
 package com.ohalfmoon.firework.service;
 
+import com.ohalfmoon.firework.config.auth.CustomUserDetails;
+import com.ohalfmoon.firework.config.auth.CustomUserDetailsService;
 import com.ohalfmoon.firework.dto.fileUpload.AttachSaveDto;
 import com.ohalfmoon.firework.dto.member.*;
+import com.ohalfmoon.firework.dto.paging.PageRequestDTO;
 import com.ohalfmoon.firework.model.*;
 import com.ohalfmoon.firework.persistence.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -259,9 +265,12 @@ public class MemberService {
      *
      * @return the state by zero
      */
-    public List<MemberResponseDTO> getStateByZero() {
-        return memberRepository.findAllByState(State.WATING)
-                .stream().map(MemberResponseDTO::new).collect(Collectors.toList());
+//    public List<MemberResponseDTO> getStateByZero() {
+//        return memberRepository.findAllByState(State.WATING)
+//                .stream().map(MemberResponseDTO::new).collect(Collectors.toList());
+//    }
+    public Page<MemberEntity> getStateByZero(Pageable pageable) {
+        return memberRepository.findAllByState(State.WATING, pageable);
     }
 
     /**
@@ -269,9 +278,12 @@ public class MemberService {
      *
      * @return the state by one
      */
-    public List<MemberResponseDTO> getStateByOne() {
-        return memberRepository.findAllByState(State.APPROVAL)
-                .stream().map(MemberResponseDTO::new).collect(Collectors.toList());
+//    public List<MemberResponseDTO> getStateByOne() {
+//        return memberRepository.findAllByState(State.APPROVAL)
+//                .stream().map(MemberResponseDTO::new).collect(Collectors.toList());
+//    }
+    public Page<MemberEntity> getStateByOne(Pageable pageable) {
+        return memberRepository.findAllByState(State.APPROVAL, pageable);
     }
 
     /**
@@ -279,16 +291,19 @@ public class MemberService {
      *
      * @return the state by two
      */
-    public List<MemberResponseDTO> getStateByTwo() {
-        return memberRepository.findAllByState(State.SECESSION)
-                .stream().map(MemberResponseDTO::new).collect(Collectors.toList());
+//    public List<MemberResponseDTO> getStateByTwo() {
+//        return memberRepository.findAllByState(State.SECESSION)
+//                .stream().map(MemberResponseDTO::new).collect(Collectors.toList());
+
+    public Page<MemberEntity> getStateByTwo(Pageable pageable) {
+        return memberRepository.findAllByState(State.SECESSION, pageable);
     }
     /**
      * 로그인한 유저 빼고 모든 회원 return
      *
      * @return member entity list(paging)
      */
-    public Page<MemberEntity> getAllMemberByPaging(Long userNo, Pageable pageable) {
+    public Page<MemberEntity> getAllMemeberByPaging(Long userNo, Pageable pageable) {
         return memberRepository.findAllByUserNoNotLike(userNo, pageable);
     }
 

@@ -8,6 +8,7 @@ import com.ohalfmoon.firework.model.BoardEntity;
 import com.ohalfmoon.firework.persistence.BoardRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -91,5 +92,12 @@ public class BoardServiceTests {
                 .boardContent("service test content4")
                 .build();
         boardService.update(boardNo, boardUpdateDTO);
+    }
+
+    @Test
+    @DisplayName("최근 작성된 게시글 5개 불러오기")
+    public void testListTop() {
+        boardService.getListTop();
+        log.info("boardList : {}", boardService.getListTop());
     }
 }

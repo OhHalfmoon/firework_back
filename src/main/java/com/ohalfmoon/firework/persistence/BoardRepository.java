@@ -7,6 +7,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import java.util.List;
+
 /**
  * packageName    : com.ohalfmoon.firework.persistence
  * fileName       : BoardRepository
@@ -22,4 +24,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 public interface BoardRepository extends JpaRepository<BoardEntity, Long>, JpaSpecificationExecutor<BoardEntity> {
     Page<BoardEntity> findAll(Pageable pageable);
+
+    List<BoardEntity> findTop5ByOrderByBoardNoDesc();
+
 }

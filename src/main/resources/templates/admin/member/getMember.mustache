@@ -90,6 +90,7 @@
                                                             <th>날짜</th>
                                                             <th>출근시간</th>
                                                             <th>퇴근시간</th>
+                                                            <th>비고</th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
@@ -98,6 +99,10 @@
                                                                     <th>{{regdate}}</th>
                                                                     <th>{{godate}}</th>
                                                                     <th>{{#leavedate}}{{leavedate}}{{/leavedate}}</th>
+                                                                    <th class="d-flex">
+                                                                        <button class="btn btn-outline-warning small">수정</button>
+                                                                        <button class="btn btn-outline-danger small">삭제</button>
+                                                                    </th>
                                                                 </tr>
                                                             {{/attend}}
                                                         </tbody>

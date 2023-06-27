@@ -86,6 +86,12 @@ public class BoardService {
                 .collect(Collectors.toList());
     }
 
+    public List<BoardResponseDTO> getListTop() {
+        return boardRepository.findTop5ByOrderByBoardNoDesc().stream()
+                .map(BoardResponseDTO::new)
+                .collect(Collectors.toList());
+    }
+
     public BoardResponseDTO get(Long boardNo) {
         return new BoardResponseDTO(boardRepository.findById(boardNo).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. boardNo=" + boardNo)));
     }

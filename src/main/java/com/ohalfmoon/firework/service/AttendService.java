@@ -2,6 +2,7 @@ package com.ohalfmoon.firework.service;
 
 import com.ohalfmoon.firework.dto.attend.AttendResponseDTO;
 import com.ohalfmoon.firework.dto.attend.AttendSaveDTO;
+import com.ohalfmoon.firework.dto.attend.AttendUpdateByAdminDTO;
 import com.ohalfmoon.firework.dto.attend.AttendUpdateDTO;
 import com.ohalfmoon.firework.dto.sub.SubLineSaveDTO;
 import com.ohalfmoon.firework.model.AttendEntity;
@@ -59,5 +60,15 @@ public class AttendService {
 //                .stream().map(AttendResponseDTO::new).findAny().orElseThrow(() -> new IllegalArgumentException("존재하지 않는 ID 입니다." + userNo));
         return attendRepository.findTop30ByMemberEntity_UserNoOrderByAttendNoDesc(userNo).stream().map(AttendResponseDTO::new).collect(Collectors.toList());
     }
+    public void deleteByAdmin(Long attendNo) {
+        AttendEntity entity = attendRepository.findById(attendNo)
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 출퇴근 기록이 없습니다."));
+        attendRepository.delete(entity);
+    }
 
+    public void updateByAdmin(Long attendNo, AttendUpdateByAdminDTO dto) {
+        AttendEntity entity = attendRepository.findById(attendNo)
+                .orElseThrow(() -> new IllegalArgumentException("해당하는 출퇴근 기록이 없습니다."));
+        entity.updateByAdmin(dto.getLeavedate());
+    }
 }

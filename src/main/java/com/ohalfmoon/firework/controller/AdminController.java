@@ -1,7 +1,11 @@
 package com.ohalfmoon.firework.controller;
 
+import com.ohalfmoon.firework.dto.MemberPageDto;
 import com.ohalfmoon.firework.dto.member.MemberResponseDTO;
 import com.ohalfmoon.firework.dto.member.MemberUpdateByAdminRequestDTO;
+import com.ohalfmoon.firework.dto.paging.PageRequestDTO;
+import com.ohalfmoon.firework.dto.paging.PageResponseDTO;
+import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.Role;
 import com.ohalfmoon.firework.model.State;
 import com.ohalfmoon.firework.service.AttendService;
@@ -10,6 +14,9 @@ import com.ohalfmoon.firework.service.MemberService;
 import com.ohalfmoon.firework.service.PositionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,11 +47,6 @@ public class AdminController {
     private final PositionService positionService;
 
     private final DeptService deptService;
-
-    @GetMapping
-    public String admin() {
-        return "/admin/index";
-    }
 
     /**
      * 회원 상세페이지 조회
@@ -84,10 +86,20 @@ public class AdminController {
      * @return the string
      */
     @GetMapping("/member")
-    public String member(Model model) {
-        model.addAttribute("stateByZeroUser", memberService.getStateByZero());
-        model.addAttribute("stateByOneUser", memberService.getStateByOne());
-        model.addAttribute("stateByTwoUser", memberService.getStateByTwo());
+    public String member(Model model, PageRequestDTO dto, @PageableDefault(size = 10)Pageable pageable) {
+        Page<MemberEntity> entities = memberService.getStateByZero(pageable);
+        Page<MemberEntity> entities2 = memberService.getStateByOne(pageable);
+        Page<MemberEntity> entities3 = memberService.getStateByTwo(pageable);
+        MemberPageDto memberPageDto = new MemberPageDto(new PageResponseDTO<>(entities), entities.map(MemberResponseDTO::new));
+        MemberPageDto memberPageDto2 = new MemberPageDto(new PageResponseDTO<>(entities2), entities2.map(MemberResponseDTO::new));
+        MemberPageDto memberPageDto3 = new MemberPageDto(new PageResponseDTO<>(entities3), entities3.map(MemberResponseDTO::new));
+        model.addAttribute("stateByZeroUser", memberPageDto);
+        model.addAttribute("stateByOneUser", memberPageDto2);
+        model.addAttribute("stateByTwoUser", memberPageDto3);
+//        model.addAttribute("stateByZeroUser", memberService.getStateByZero());
+//        model.addAttribute("stateByOneUser", memberService.getStateByOne());
+//        model.addAttribute("stateByTwoUser", memberService.getStateByTwo());
+
         return "/admin/member/member";
     }
 }

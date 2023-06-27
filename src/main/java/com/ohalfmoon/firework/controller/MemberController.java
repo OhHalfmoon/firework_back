@@ -2,23 +2,22 @@ package com.ohalfmoon.firework.controller;
 
 import com.ohalfmoon.firework.config.auth.CheckUsernameValidator;
 import com.ohalfmoon.firework.config.auth.CustomUserDetails;
+import com.ohalfmoon.firework.config.auth.CustomUserDetailsService;
 import com.ohalfmoon.firework.dto.fileUpload.AttachSaveDto;
 import com.ohalfmoon.firework.dto.member.*;
 import com.ohalfmoon.firework.model.MemberEntity;
-import com.ohalfmoon.firework.service.AttendService;
-import com.ohalfmoon.firework.service.DeptService;
-import com.ohalfmoon.firework.service.MemberService;
-import com.ohalfmoon.firework.service.PositionService;
+import com.ohalfmoon.firework.persistence.MemberRepository;
+import com.ohalfmoon.firework.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -57,6 +56,7 @@ import java.util.UUID;
 @Slf4j
 @RequiredArgsConstructor
 public class MemberController {
+    private final MemberRepository memberRepository;
 
     private final MemberService memberService;
 
@@ -67,6 +67,10 @@ public class MemberController {
     private final CheckUsernameValidator checkUsernameValidator;
 
     private final AttendService attendService;
+
+    private final BoardService boardService;
+
+    private final CustomUserDetailsService customUserDetailsService;
 
     String redirect = "redirect:/";
 
@@ -181,6 +185,7 @@ public class MemberController {
     @GetMapping("mypage")
     public void mypage(@AuthenticationPrincipal CustomUserDetails details, Model model) {
         model.addAttribute("user", details);
+        model.addAttribute("boardList", boardService.getListTop());
     }
 
     /**
@@ -239,8 +244,16 @@ public class MemberController {
     @PostMapping("modify")
     public String modify(Long userNo, MemberUpdateDTO dto, HttpSession session) {
         memberService.update(userNo, dto);
-        session.invalidate();
-        return redirect+"auth/signin";
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); // session값 가져옴
+        CustomUserDetails details = (CustomUserDetails) customUserDetailsService.loadUserByUsername(authentication.getName()); // 현재 사용자의 정보를 CustomUserDetails에 담음?
+        UsernamePasswordAuthenticationToken passwordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+            details, authentication.getCredentials(), details.getAuthorities()); // session값 설정
+        SecurityContextHolder.getContext().setAuthentication(passwordAuthenticationToken); // 인증 토큰 설정
+        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, // 세션 저장
+                SecurityContextHolder.getContext());
+
+        return redirect+"auth/userinfo";
     }
     @GetMapping("modifyPw")
     public void modifyPw(Model model, @AuthenticationPrincipal CustomUserDetails details) {
