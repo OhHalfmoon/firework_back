@@ -24,8 +24,6 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="/">Home</a></li>
-                            <li class="breadcrumb-item active">mypage</li>
-                            <li><a class="btn btn-secondary btn-sm ml-3" href="{{contextPath}}/auth/userinfo">회원정보 확인</a></li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -51,15 +49,6 @@
                                 <!-- tools card -->
                                 <div class="card-tools">
                                     <!-- button with a dropdown -->
-                                    <div class="btn-group">
-                                        <div class="m-1">
-                                            {{#user}}
-                                                <a class="btn btn-info" href="/auth/getAttend/{{userNo}}">
-                                                    근태확인
-                                                </a>
-                                            {{/user}}
-                                        </div>
-                                    </div>
                                 </div>
                                 <!-- /. tools -->
                             </div>
@@ -78,16 +67,14 @@
                         <!-- TO DO List -->
                         <div class="card">
                             <div class="card-footer">
-                                <span>게시판</span>
+                                <span>공지사항 (최근5글)</span>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <ul class="todo-list" data-widget="todo-list">
-                                    <li>게시글1</li>
-                                    <li>게시글1</li>
-                                    <li>게시글1</li>
-                                    <li>게시글1</li>
-                                    <li>게시글1</li>
+                                    {{#boardList}}
+                                        <li><a style="text-decoration: none; color: black" href="{{contextPath}}/board/view/{{boardNo}}">{{title}}</a></li>
+                                    {{/boardList}}
                                 </ul>
                             </div>
                             <!-- /.card-body -->

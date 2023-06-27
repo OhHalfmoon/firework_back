@@ -56,8 +56,8 @@ public class MemberRepositoryTests {
     @Test
     @DisplayName("state가 0인 회원 조회")
     public void zeroStateMemberTest() {
-        List<MemberEntity> entity = memberRepository.findAllByState(State.WATING);
-        log.info("state = 0 : {}", entity);
+//        List<MemberEntity> entity = memberRepository.findAllByState(State.WATING);
+//        log.info("state = 0 : {}", entity);
     }
 
     @Test

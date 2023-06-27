@@ -106,10 +106,11 @@ public class MessageApiController {
         return new MemberPageDto(new PageResponseDTO<>(entities), entities.map(MemberResponseDTO::new));
     }
 
-    @GetMapping("/sender/{senderNo}/memberList")
-    public List<MemberResponseDTO> findAllUser(@PathVariable Long senderNo) {
-        return memberService.getAllMemeber(senderNo);
-    }
+//    @GetMapping("/sender/{senderNo}/memberList")
+//    public List<MemberResponseDTO> findAllUser(@PathVariable Lon
+//    g senderNo) {
+//        return memberService.getAllMemeber(senderNo);
+//    }
 
 //    @GetMapping("list/{userNo}")
 //    public MessagePageDto list(

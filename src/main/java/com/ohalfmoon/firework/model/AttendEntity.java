@@ -38,4 +38,6 @@ public class AttendEntity {
         this.leavedate = leavedate;
     }
 
+    public void updateByAdmin(Date leavedate) { this.leavedate = leavedate; }
+
 }

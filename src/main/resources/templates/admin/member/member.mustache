@@ -37,13 +37,13 @@
                     <div class="card-header p-0 border-bottom-0">
                         <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="custom-tabs-four-home-tab" data-toggle="pill" href="#custom-tabs-four-home" role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">미승인 유저</a>
+                                <a class="nav-link memberMenu active" id="custom-tabs-four-home-tab" data-toggle="pill" href="#custom-tabs-four-home" role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">미승인 유저</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#custom-tabs-four-profile" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">승인 유저</a>
+                                <a class="nav-link memberMenu" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#custom-tabs-four-profile" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">승인 유저</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="custom-tabs-four-messages-tab" data-toggle="pill" href="#custom-tabs-four-messages" role="tab" aria-controls="custom-tabs-four-messages" aria-selected="false">탈퇴한 유저</a>
+                                <a class="nav-link memberMenu" id="custom-tabs-four-messages-tab" data-toggle="pill" href="#custom-tabs-four-messages" role="tab" aria-controls="custom-tabs-four-messages" aria-selected="false">탈퇴한 유저</a>
                             </li>
                         </ul>
                     </div>
@@ -78,7 +78,7 @@
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                {{#stateByZeroUser}}
+                                                                {{#stateByZeroUser.memberList}}
                                                                     <tr class="tableSum">
                                                                         <input name="userNo" id="userNo" type="hidden" value="{{userNo}}">
                                                                         <td>
@@ -96,53 +96,56 @@
                                                                                 <option value="1">가입승인</option>
                                                                             </select>
                                                                         </td>
-                                                                {{/stateByZeroUser}}
+                                                                {{/stateByZeroUser.memberList}}
                                                             </table>
                                                         </div>
                                                         <div class="card-footer clearfix">
-                                                            <ul class="pagination pagination-sm m-0 float-right">
-                                                                {{#pageDto}}
-                                                                    {{#hasPrevBlock}}
-                                                                        <li class="page-item">
-                                                                            <a class="page-link" href="{{contextPath}}/admin/form?page={{pageDto.prevBlockNum}}">
-                                                                            &laquo;
-                                                                            </a>
-                                                                        </li>
-                                                                    {{/hasPrevBlock}}
-                                                                    {{#prev}}
-                                                                        <li class="page-item">
-                                                                            <a class="page-link" href="{{contextPath}}/admin/form?page={{pageDto.prevPageNum}}">
-                                                                            &lt;
-                                                                            </a>
-                                                                        </li>
-                                                                    {{/prev}}
-                                                                    {{#pageInfoList}}
-                                                                        {{#isCurrent}}
-                                                                            <li class="page-item active">
-                                                                                <a class="page-link" href="{{contextPath}}/admin/form?page={{pageNum}}">{{pageNum}}</a>
-                                                                            </li>
-                                                                        {{/isCurrent}}
-                                                                        {{^isCurrent}}
+                                                            <div class="row justify-content-center">
+                                                                <ul class="pagination pagination-sm m-0 float-right">
+                                                                    {{#stateByZeroUser.pageResponseDTO}}
+                                                                        {{#hasPrevBlock}}
                                                                             <li class="page-item">
-                                                                                <a class="page-link" href="{{contextPath}}/admin/form?page={{pageNum}}">{{pageNum}}</a>
+                                                                                <a class="page-link" href="{{contextPath}}/admin/member{{prevBlockQueryString}}">
+                                                                                    &laquo;
+                                                                                </a>
                                                                             </li>
-                                                                        {{/isCurrent}}
-                                                                    {{/pageInfoList}}
-                                                                    {{#next}}
-                                                                        <li class="page-item">
-                                                                            <a class="page-link" href="{{contextPath}}/admin/form?page={{pageDto.nextPageNum}}">&gt;</a>
-                                                                        </li>
-                                                                    {{/next}}
-                                                                    {{#hasNextBlock}}
-                                                                        <li class="page-item">
-                                                                            <a class="page-link" href="{{&contextPath}}/admin/form?page={{pageDto.nextBlockNum}}">&raquo;
-                                                                            </a>
-                                                                        </li>
-                                                                    {{/hasNextBlock}}
-                                                                {{/pageDto}}
-                                                                <!--                            <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>-->
-                                                            </ul>
+                                                                        {{/hasPrevBlock}}
+                                                                        {{#prev}}
+                                                                            <li class="page-item">
+                                                                                <a class="page-link" href="{{contextPath}}/admin/member{{prevQueryString}}">
+                                                                                    &lt;
+                                                                                </a>
+                                                                            </li>
+                                                                        {{/prev}}
+                                                                        {{#pageInfoList}}
+                                                                            {{#isCurrent}}
+                                                                                <li class="page-item active">
+                                                                                    <a class="page-link" href="/admin/member{{queryString}}">{{pageNum}}</a>
+                                                                                </li>
+                                                                            {{/isCurrent}}
+                                                                            {{^isCurrent}}
+                                                                                <li class="page-item">
+                                                                                    <a class="page-link" href="/admin/member{{queryString}}">{{pageNum}}</a>
+                                                                                </li>
+                                                                            {{/isCurrent}}
+                                                                        {{/pageInfoList}}
+                                                                        {{#next}}
+                                                                            <li class="page-item">
+                                                                                <a class="page-link" href="{{contextPath}}/admin/member{{nextQueryString}}">&gt;
+                                                                                </a>
+                                                                            </li>
+                                                                        {{/next}}
+                                                                        {{#hasNextBlock}}
+                                                                            <li class="page-item">
+                                                                                <a class="page-link" href="{{&contextPath}}/admin/member{{nextBlockQueryString}}">&raquo;
+                                                                                </a>
+                                                                            </li>
+                                                                        {{/hasNextBlock}}
+                                                                    {{/stateByZeroUser.pageResponseDTO}}
+                                                                </ul>
+                                                            </div>
                                                         </div>
+
                                                         <!-- /.card-body -->
                                                     </div>
                                                     <!-- /.card -->
@@ -189,7 +192,7 @@
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                {{#stateByOneUser}}
+                                                                {{#stateByOneUser.memberList}}
                                                                     <tr class="tableSum" onclick="location.href='/admin/member/{{userNo}}'" style="cursor: pointer">
                                                                         <input name="userNo" id="userNo" type="hidden" value="{{userNo}}">
                                                                         <td class="userId">{{username}}</td>
@@ -201,54 +204,57 @@
                                                                         <td>{{roleTitle}}</td>
                                                                         <td>{{stateTitle}}</td>
                                                                     </tr>
-                                                                {{/stateByOneUser}}
+                                                                {{/stateByOneUser.memberList}}
                                                                 </tbody>
                                                             </table>
                                                         </div>
                                                         <div class="card-footer clearfix">
-                                                            <ul class="pagination pagination-sm m-0 float-right">
-                                                                {{#pageDto}}
-                                                                    {{#hasPrevBlock}}
-                                                                        <li class="page-item">
-                                                                            <a class="page-link" href="{{contextPath}}/admin/form?page={{pageDto.prevBlockNum}}">
-                                                                            &laquo;
-                                                                            </a>
-                                                                        </li>
-                                                                    {{/hasPrevBlock}}
-                                                                    {{#prev}}
-                                                                        <li class="page-item">
-                                                                            <a class="page-link" href="{{contextPath}}/admin/form?page={{pageDto.prevPageNum}}">
-                                                                            &lt;
-                                                                            </a>
-                                                                        </li>
-                                                                    {{/prev}}
-                                                                    {{#pageInfoList}}
-                                                                        {{#isCurrent}}
-                                                                            <li class="page-item active">
-                                                                                <a class="page-link" href="{{contextPath}}/admin/form?page={{pageNum}}">{{pageNum}}</a>
-                                                                            </li>
-                                                                        {{/isCurrent}}
-                                                                        {{^isCurrent}}
+                                                            <div class="row justify-content-center">
+                                                                <ul class="pagination pagination-sm m-0 float-right">
+                                                                    {{#stateByOneUser.pageResponseDTO}}
+                                                                        {{#hasPrevBlock}}
                                                                             <li class="page-item">
-                                                                                <a class="page-link" href="{{contextPath}}/admin/form?page={{pageNum}}">{{pageNum}}</a>
+                                                                                <a class="page-link" href="{{contextPath}}/admin/member{{prevBlockQueryString}}">
+                                                                                    &laquo;
+                                                                                </a>
                                                                             </li>
-                                                                        {{/isCurrent}}
-                                                                    {{/pageInfoList}}
-                                                                    {{#next}}
-                                                                        <li class="page-item">
-                                                                            <a class="page-link" href="{{contextPath}}/admin/form?page={{pageDto.nextPageNum}}">&gt;</a>
-                                                                        </li>
-                                                                    {{/next}}
-                                                                    {{#hasNextBlock}}
-                                                                        <li class="page-item">
-                                                                            <a class="page-link" href="{{&contextPath}}/admin/form?page={{pageDto.nextBlockNum}}">&raquo;
-                                                                            </a>
-                                                                        </li>
-                                                                    {{/hasNextBlock}}
-                                                                {{/pageDto}}
-                                                                <!--                            <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>-->
-                                                            </ul>
+                                                                        {{/hasPrevBlock}}
+                                                                        {{#prev}}
+                                                                            <li class="page-item">
+                                                                                <a class="page-link" href="{{contextPath}}/admin/member{{prevQueryString}}">
+                                                                                    &lt;
+                                                                                </a>
+                                                                            </li>
+                                                                        {{/prev}}
+                                                                        {{#pageInfoList}}
+                                                                            {{#isCurrent}}
+                                                                                <li class="page-item active">
+                                                                                    <a class="page-link" href="/admin/member{{queryString}}">{{pageNum}}</a>
+                                                                                </li>
+                                                                            {{/isCurrent}}
+                                                                            {{^isCurrent}}
+                                                                                <li class="page-item">
+                                                                                    <a class="page-link" href="/admin/member{{queryString}}">{{pageNum}}</a>
+                                                                                </li>
+                                                                            {{/isCurrent}}
+                                                                        {{/pageInfoList}}
+                                                                        {{#next}}
+                                                                            <li class="page-item">
+                                                                                <a class="page-link" href="{{contextPath}}/admin/member{{nextQueryString}}">&gt;
+                                                                                </a>
+                                                                            </li>
+                                                                        {{/next}}
+                                                                        {{#hasNextBlock}}
+                                                                            <li class="page-item">
+                                                                                <a class="page-link" href="{{&contextPath}}/admin/member{{nextBlockQueryString}}">&raquo;
+                                                                                </a>
+                                                                            </li>
+                                                                        {{/hasNextBlock}}
+                                                                    {{/stateByOneUser.pageResponseDTO}}
+                                                                </ul>
+                                                            </div>
                                                         </div>
+
                                                         <!-- /.card-body -->
                                                     </div>
                                                     <!-- /.card -->
@@ -269,7 +275,7 @@
 
                             <!-- 탈퇴한유저 시작 -->
                                 <section class="content">
-                                    <form id="updateFrm">
+                                    <form>
                                         <div class="container-fluid">
                                             <div class="row">
                                                 <div class="col-12">
@@ -293,7 +299,7 @@
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                {{#stateByTwoUser}}
+                                                                {{#stateByTwoUser.memberList}}
                                                                     <tr class="tableSum" onclick="location.href='/admin/member/{{userNo}}'" style="cursor: pointer">
                                                                         <input name="userNo" id="userNo" type="hidden" value="{{userNo}}">
                                                                         <td class="userId">{{username}}</td>
@@ -305,52 +311,54 @@
                                                                         <td>{{roleTitle}}</td>
                                                                         <td>{{stateTitle}}</td>
                                                                     </tr>
-                                                                {{/stateByTwoUser}}
+                                                                {{/stateByTwoUser.memberList}}
                                                             </table>
                                                         </div>
                                                         <div class="card-footer clearfix">
-                                                            <ul class="pagination pagination-sm m-0 float-right">
-                                                                {{#pageDto}}
-                                                                    {{#hasPrevBlock}}
-                                                                        <li class="page-item">
-                                                                            <a class="page-link" href="{{contextPath}}/admin/form?page={{pageDto.prevBlockNum}}">
-                                                                            &laquo;
-                                                                            </a>
-                                                                        </li>
-                                                                    {{/hasPrevBlock}}
-                                                                    {{#prev}}
-                                                                        <li class="page-item">
-                                                                            <a class="page-link" href="{{contextPath}}/admin/form?page={{pageDto.prevPageNum}}">
-                                                                            &lt;
-                                                                            </a>
-                                                                        </li>
-                                                                    {{/prev}}
-                                                                    {{#pageInfoList}}
-                                                                        {{#isCurrent}}
-                                                                            <li class="page-item active">
-                                                                                <a class="page-link" href="{{contextPath}}/admin/form?page={{pageNum}}">{{pageNum}}</a>
-                                                                            </li>
-                                                                        {{/isCurrent}}
-                                                                        {{^isCurrent}}
+                                                            <div class="row justify-content-center">
+                                                                <ul class="pagination pagination-sm m-0 float-right">
+                                                                    {{#stateByTwoUser.pageResponseDTO}}
+                                                                        {{#hasPrevBlock}}
                                                                             <li class="page-item">
-                                                                                <a class="page-link" href="{{contextPath}}/admin/form?page={{pageNum}}">{{pageNum}}</a>
+                                                                                <a class="page-link" href="{{contextPath}}/admin/member{{prevBlockQueryString}}">
+                                                                                    &laquo;
+                                                                                </a>
                                                                             </li>
-                                                                        {{/isCurrent}}
-                                                                    {{/pageInfoList}}
-                                                                    {{#next}}
-                                                                        <li class="page-item">
-                                                                            <a class="page-link" href="{{contextPath}}/admin/form?page={{pageDto.nextPageNum}}">&gt;</a>
-                                                                        </li>
-                                                                    {{/next}}
-                                                                    {{#hasNextBlock}}
-                                                                        <li class="page-item">
-                                                                            <a class="page-link" href="{{&contextPath}}/admin/form?page={{pageDto.nextBlockNum}}">&raquo;
-                                                                            </a>
-                                                                        </li>
-                                                                    {{/hasNextBlock}}
-                                                                {{/pageDto}}
-                                                                <!--                            <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>-->
-                                                            </ul>
+                                                                        {{/hasPrevBlock}}
+                                                                        {{#prev}}
+                                                                            <li class="page-item">
+                                                                                <a class="page-link" href="{{contextPath}}/admin/member{{prevQueryString}}">
+                                                                                    &lt;
+                                                                                </a>
+                                                                            </li>
+                                                                        {{/prev}}
+                                                                        {{#pageInfoList}}
+                                                                            {{#isCurrent}}
+                                                                                <li class="page-item active">
+                                                                                    <a class="page-link" href="/admin/member{{queryString}}">{{pageNum}}</a>
+                                                                                </li>
+                                                                            {{/isCurrent}}
+                                                                            {{^isCurrent}}
+                                                                                <li class="page-item">
+                                                                                    <a class="page-link" href="/admin/member{{queryString}}">{{pageNum}}</a>
+                                                                                </li>
+                                                                            {{/isCurrent}}
+                                                                        {{/pageInfoList}}
+                                                                        {{#next}}
+                                                                            <li class="page-item">
+                                                                                <a class="page-link" href="{{contextPath}}/admin/member{{nextQueryString}}">&gt;
+                                                                                </a>
+                                                                            </li>
+                                                                        {{/next}}
+                                                                        {{#hasNextBlock}}
+                                                                            <li class="page-item">
+                                                                                <a class="page-link" href="{{&contextPath}}/admin/member{{nextBlockQueryString}}">&raquo;
+                                                                                </a>
+                                                                            </li>
+                                                                        {{/hasNextBlock}}
+                                                                    {{/stateByTwoUser.pageResponseDTO}}
+                                                                </ul>
+                                                            </div>
                                                         </div>
                                                         <!-- /.card-body -->
                                                     </div>
@@ -417,38 +425,25 @@
                     })
                     if(dto.length > 0) {
                         console.log("선택된 회원 :", dto)
-                        // $("#updateFrm").attr("action", "/admin/member/memberUpdate/"+selectedUsers);
-                        // $("#updateFrm").submit();
-                        // for(let i=0; i<dto.length; i++) {
-                        //     let userNo = dto[i].userNo;
-                        //     let state = dto[i].state;
                         $.ajax({
-                            // url : "/admin/member/memberUpdate/"+selectedUsers,
                             url: "/admin/memberUpdateBulk/",
                             type: "POST",
                             contentType: "application/json",
-                            // data: JSON.stringify(selectedUsers),
                             data: JSON.stringify(dto),
                             dataType: "text",
                             success: function (response) {
-                                // console.log(response)
                                 console.log(dto);
                                 console.log(($("input[name='ckBox']:checked").closest("tr").find("select[name='state']").val()));
                                 alert("수정되었습니다.")
-                                // window.location.href = "/admin/member/memberUpdate";
                                 if($("input[name='ckBox']:checked").closest("tr").find("select[name='state']").val() != 0) {
                                     $("input[name='ckBox']:checked").closest("tr").remove();
                                 }
                             },
                             error: function (request, error) {
-                                // console.log(request);
-                                // console.log(error)
-                                // console.log(JSON.stringify(dto))
                                 alert("실패!")
                             }
 
                         })
-                        // }
                     }
                     else {
                         alert("회원을 선택해주세요")
@@ -457,6 +452,8 @@
                     alert("승인이 취소되었습니다.")
                 }
             });
+
+
         });
     </script>
 

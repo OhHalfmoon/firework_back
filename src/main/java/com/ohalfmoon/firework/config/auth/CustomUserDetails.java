@@ -39,7 +39,7 @@ public class CustomUserDetails implements UserDetails {
     private String deptName;
     private Long positionNo;
     private String positionName;
-    private boolean manager;
+    private Boolean manager;
     private LocalDate birthdate;
     private LocalDate Startdate;
     private Long attachNo;
@@ -54,7 +54,6 @@ public class CustomUserDetails implements UserDetails {
         this.email = user.getEmail();
         this.userNo = user.getUserNo();
         this.phoneNum = user.getPhoneNum();
-        this.manager = user.isManager();
         this.birthdate = user.getBirthdate();
         this.Startdate = user.getStartdate();
         this.roleName = user.getRoleName();
@@ -63,16 +62,11 @@ public class CustomUserDetails implements UserDetails {
         this.deptNo = user.getDeptEntity().getDeptNo();
         this.deptName = user.getDeptEntity().getDeptName();
         this.attachNo = user.getAttachEntity() != null ? user.getAttachEntity().getAttachNo() : null;
+        this.manager = user.getManager() ? true : null;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-//        List<String> list = new ArrayList<>();
-//        list.add()
-//        RoleEntity roles = new RoleEntity();
-//        return Arrays.asList(new SimpleGrantedAuthority(roles.getRoleName().getKey()));
-//        return Arrays.asList(new SimpleGrantedAuthority(new RoleEntity().getRoleName().toString()));
-//        return Arrays.asList(new SimpleGrantedAuthority(list.toString()));
         return Collections.singletonList(new SimpleGrantedAuthority(roleName.getName()));
     }
 

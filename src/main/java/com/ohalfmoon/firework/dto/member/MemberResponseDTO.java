@@ -27,7 +27,7 @@ public class MemberResponseDTO {
     private String password;
     private String phoneNum;
     private String name;
-    private boolean manager;
+    private Boolean manager;
     private LocalDate birthdate;
     private LocalDate startdate;
     private Long deptNo;
@@ -46,7 +46,7 @@ public class MemberResponseDTO {
         email = entity.getEmail();
         phoneNum = entity.getPhoneNum();
         name = entity.getName();
-        manager = entity.isManager();
+        manager = entity.getManager();
         birthdate = entity.getBirthdate();
         startdate = entity.getStartdate();
         deptNo = entity.getDeptEntity().getDeptNo();

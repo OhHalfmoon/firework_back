@@ -3,6 +3,7 @@ package com.ohalfmoon.firework.dto.member;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.Role;
+import com.ohalfmoon.firework.model.State;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -102,6 +103,7 @@ public class MemberDTO {
                 .birthdate(birthdate)
                 .startdate(startdate)
                 .roleName(Role.ROLE_EMPLOYEE)
+                .state(State.WATING)
                 .build();
     }
 

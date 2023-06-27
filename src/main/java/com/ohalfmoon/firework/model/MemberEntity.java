@@ -62,7 +62,7 @@ public class MemberEntity {
     private String name; // 이름
 
     @Column(nullable = false)
-    private boolean manager; // 관리자 여부
+    private Boolean manager; // 관리자 여부
 
     @Column(nullable = true)
     private LocalDate birthdate; // 생일

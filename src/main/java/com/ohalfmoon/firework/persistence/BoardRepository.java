@@ -3,6 +3,8 @@ package com.ohalfmoon.firework.persistence;
 import com.ohalfmoon.firework.model.BoardEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 /**
  * packageName    : com.ohalfmoon.firework.persistence
  * fileName       : BoardRepository
@@ -16,4 +18,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 
 public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
+
+    List<BoardEntity> findTop5ByOrderByBoardNoDesc();
+
 }

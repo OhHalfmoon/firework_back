@@ -125,8 +125,24 @@ public class MemberServiceTest {
         Long testUser = memberService.updateSign(dto, file, userNo);
 
         log.info("유저테스트,{}", testUser);
+    }
 
-
-
+    @Test
+    @DisplayName("회원 더미데이터 생성")
+    public void createMember() {
+        MemberDTO dto = new MemberDTO();
+        for(int i=0; i<30; i++) {
+            dto.setUsername("test3"+i);
+            dto.setPassword(encoder.encode("1234"));
+            dto.setName("더미회원");
+            dto.setEmail("test@gmail.com");
+            dto.setDeptNo(1L);
+            dto.setPhoneNum("01012341234");
+            dto.setBirthdate(LocalDate.now());
+            dto.setStartdate(LocalDate.now());
+            dto.setPositionNo(1L);
+            dto.setState(State.SECESSION.getKey());
+            memberService.register(dto);
+        }
     }
 }
