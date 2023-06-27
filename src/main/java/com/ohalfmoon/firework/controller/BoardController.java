@@ -40,6 +40,7 @@ import java.util.stream.Collectors;
  * 2023/06/22        이지윤            최초 생성
  * 2023/06/23        이지윤            단일 조회, 수정, 삭제, 저장 추가
  * 2023/06/26        이지윤            페이징, 검색, 첨부파일 추가
+ * 2023/06/27        이지윤            첨부파일 CRUD
  */
 
 @Controller
@@ -80,15 +81,6 @@ public class BoardController {
         return "redirect:/board/list";
     }
 
-//    @GetMapping("/list")
-//    public String getList(Model model, @PageableDefault(size = 10, direction = Sort.Direction.DESC, sort = "boardNo") Pageable pageable) {
-//        Page<BoardEntity> entities = boardService.getBoardList(pageable);
-//        BoardPageDTO boardPageDTO = new BoardPageDTO(new PageResponseDTO<>(entities), entities.map(BoardResponseDTO::new));
-//        model.addAttribute("boardList", boardPageDTO);
-//        log.info("boardPageDTO={}", boardPageDTO.getBoardList().getContent());
-//        return "/board/list";
-//    }
-
     @GetMapping("/list")
     public String getList(Model model, PageRequestDTO pageRequestDTO) {
         Page<BoardEntity> pageDto = boardService.searchBoardList(pageRequestDTO);
@@ -110,6 +102,7 @@ public class BoardController {
         log.info("view boardNo={}", boardNo);
         model.addAttribute("board", boardService.get(boardNo));
         model.addAttribute("fileList", attachService.getFileListByBoardNo(boardNo));
+
         log.info("fileList : {}", attachService.getFileListByBoardNo(boardNo));
         return "/board/view";
     }
@@ -118,6 +111,7 @@ public class BoardController {
     public String modify(Model model, @PathVariable Long boardNo) {
         log.info("modify");
         model.addAttribute("board", boardService.get(boardNo));
+        model.addAttribute("fileList", attachService.getFileListByBoardNo(boardNo));
         return "board/modify";
     }
 

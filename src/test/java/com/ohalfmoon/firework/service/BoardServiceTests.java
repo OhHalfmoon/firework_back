@@ -70,8 +70,8 @@ public class BoardServiceTests {
 
     @Test
     public void testGet() {
-        Long boardNo = 2L;
-        log.info("{}", boardService.get(boardNo));
+        Long boardNo = 276L;
+//        log.info("{}", boardService.get(boardNo));
     }
 
     @Test
@@ -82,17 +82,29 @@ public class BoardServiceTests {
         boardService.delete(boardNo);
     }
 
-//    @Test
-//    @Rollback(value = false)
-//    @Transactional
-//    public void testUpdate() {
-//        Long boardNo = 9L;
-//        BoardUpdateDTO boardUpdateDTO = BoardUpdateDTO.builder()
-//                .boardTitle("service test title4")
-//                .boardContent("service test content4")
+    @Test
+    @Rollback(value = false)
+    @Transactional
+    public void testUpdate() {
+        Long boardNo = 9L;
+        MockMultipartFile file = new MockMultipartFile("uploadFile", "test.txt", "text/plain", "hello file".getBytes());
+//        BoardSaveDTO boardSaveDTO = BoardSaveDTO.builder()
+//                .boardTitle("서비스 테스트 제목 4")
+//                .boardContent("서비스 테스트 내용 4")
+//                .userNo(userNo)
 //                .build();
-//        boardService.update(boardNo, boardUpdateDTO);
-//    }
+//        AttachSaveDto attachSaveDto = AttachSaveDto.builder()
+//                .uuid(UUID.randomUUID().toString())
+//                .ext(FilenameUtils.getExtension(file.getOriginalFilename()))
+//                .originName(file.getOriginalFilename())
+//                .build();
+        BoardUpdateDTO boardUpdateDTO = BoardUpdateDTO.builder()
+                .boardTitle("service test title4")
+                .boardContent("service test content4")
+                .build();
+
+//        boardService.update();
+    }
 
     @Test
     @DisplayName("최근 작성된 게시글 5개 불러오기")
