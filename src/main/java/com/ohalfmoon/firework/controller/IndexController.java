@@ -1,6 +1,7 @@
 package com.ohalfmoon.firework.controller;
 
 import com.ohalfmoon.firework.config.auth.CustomUserDetails;
+import com.ohalfmoon.firework.dto.approval.ApprovalLineDto;
 import com.ohalfmoon.firework.dto.approval.ApprovalPageDto;
 import com.ohalfmoon.firework.dto.approval.ApprovalResponseDto;
 import com.ohalfmoon.firework.dto.attend.AttendResponseDTO;
@@ -46,7 +47,8 @@ import java.util.UUID;
  * -----------------------------------------------------------
  * 2023/06/01        banghansol       최초 생성
  */
-@Controller("/")
+@RequestMapping("/")
+@Controller
 @Slf4j
 @RequiredArgsConstructor
 public class IndexController {
@@ -58,7 +60,11 @@ public class IndexController {
     @GetMapping
     public String index(HttpSession session, @AuthenticationPrincipal CustomUserDetails details, Model model) {
         model.addAttribute("approvalState", approvalService.getStateList(details.getUserNo(), 1));
-        model.addAttribute("boardList", boardService.getListTop());
+//        model.addAttribute("boardList", boardService.getListTop());
+//        List<ApprovalLineDto> approvalLineDto = approvalService.getApprovalUserName(approvalNo);
+//        model.addAttribute("approUserList", approvalLineDto);
+//        List<MemberResponseDTO> memberResponseDTOS = memberService.getMemberList()
+//        model.addAttribute("memberSign", memberService.get(details.getUserNo()));
         log.info("security session : {}", model.getAttribute("user"));
         log.info("session :{}", session.getAttribute("member"));
         return "index";
@@ -76,9 +82,10 @@ public class IndexController {
                 .build();
         log.info("dto : {}", saveDto);
         log.info("file : {}", file);
-        log.info("userNo : {}", saveDto);
+        log.info("user : {}", user.getAttachNo());
         memberService.updateSign(saveDto, file, user.getUserNo());
-        return "redirect:/auth/mypage";
+        log.info("newSign : {}", user.getAttachNo());
+        return "redirect:/";
     }
 
 
