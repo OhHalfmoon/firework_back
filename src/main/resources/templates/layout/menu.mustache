@@ -40,7 +40,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{contextPath}}/board/list" class="nav-link">
                         <i class="nav-icon fas fa-clipboard"></i>
                         <p>
                             게시판
@@ -48,24 +48,37 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a href="{{contextPath}}/auth/mypage" class="nav-link">
-                        <i class="nav-icon fas fa-address-card"></i>
-                        <p>
-                            마이페이지
-                        </p>
-                    </a>
-                </li>
-                {{^manager}}
-                <li class="nav-item">
-                    <a href="{{contextPath}}/admin/member" class="nav-link">
-                        <i class="nav-icon fas fa-address-card"></i>
-                        <p>
-                            사원관리
-                        </p>
-                    </a>
-                </li>
-                {{/manager}}
+                <!-- 관리자메뉴 시작 -->
+                {{#user}}
+                    {{#manager}}
+                    <li class="nav-item">
+                        <a href="{{contextPath}}/admin/member" class="nav-link">
+                            <i class="nav-icon fas fa-address-card"></i>
+                            <p>
+                                사원관리
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{contextPath}}/admin/dept" class="nav-link">
+                            <i class="nav-icon fas fa-sitemap"></i>
+                            <p>
+                                부서관리
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{contextPath}}/admin/dept" class="nav-link">
+                            <i class="nav-icon fas fa-file-word"></i>
+                            <p>
+                                양식관리
+                            </p>
+                        </a>
+                    </li>
+                    {{/manager}}
+                {{/user}}
+                <!-- 관리자메뉴 끝ㅇ -->
+
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

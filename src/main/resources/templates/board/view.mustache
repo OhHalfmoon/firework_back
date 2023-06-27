@@ -85,8 +85,14 @@
                                 <div class="card-footer">
                                     <div class="float-right">
                                         <input type="hidden" name="boardNo" value="{{boardNo}}">
-                                        <button id="viewDeleteBtn" type="submit" formaction="/board/remove" class="btn btn-danger"> 삭제 </button>
-                                        <a href="/board/modify/{{boardNo}}" type="button" class="btn btn-primary"><i class="fas fa-pencil-alt"></i> 수정 </a>
+                                        {{#user}}
+                                            {{#isTeamLeader}}
+                                                <button id="viewDeleteBtn" type="submit" formaction="/board/remove" class="btn btn-danger"> 삭제 </button>
+                                                <a href="/board/modify/{{boardNo}}" type="button" class="btn btn-primary"><i class="fas fa-pencil-alt"></i> 수정 </a>
+                                            {{/isTeamLeader}}
+                                            {{^isteamLeader}}
+                                            {{/isteamLeader}}
+                                        {{/user}}
                                         <a href="/board/list" type="button" class="btn btn-secondary"> 목록 </a>
                                     </div>
                                 </div>

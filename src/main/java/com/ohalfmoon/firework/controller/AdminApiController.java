@@ -1,12 +1,15 @@
 package com.ohalfmoon.firework.controller;
 
+import com.ohalfmoon.firework.dto.attend.AttendUpdateByAdminDTO;
 import com.ohalfmoon.firework.dto.member.MemberUpdateStateDTO;
+import com.ohalfmoon.firework.service.AttendService;
 import com.ohalfmoon.firework.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.ws.Response;
 import java.util.List;
 
 /**
@@ -28,6 +31,8 @@ public class AdminApiController {
 
     private final MemberService memberService;
 
+    private final AttendService attendService;
+
     /**
      * 회원가입 승인
      *
@@ -42,6 +47,27 @@ public class AdminApiController {
                 memberService.recognize(item.getUserNo(), item);
                 result = "success";
             }
+        }
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PostMapping("/member/attendUpdate")
+    public ResponseEntity<?> updateAttend(@RequestBody AttendUpdateByAdminDTO dto) {
+        String result = "error";
+        log.info("dto 확인 : {}", dto);
+        if(dto != null) {
+            attendService.updateByAdmin(dto.getAttendNo(), dto);
+            result = "success";
+        }
+        return ResponseEntity.ok().body(result);
+    }
+
+    @DeleteMapping("/member/delete/{attendNo}")
+    public ResponseEntity<?> deleteAttend(@PathVariable Long attendNo) {
+        String result= "error";
+        if(attendNo != null) {
+            attendService.deleteByAdmin(attendNo);
+            result = "success";
         }
         return ResponseEntity.ok().body(result);
     }

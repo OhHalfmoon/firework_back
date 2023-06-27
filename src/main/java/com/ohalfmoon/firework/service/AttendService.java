@@ -66,6 +66,7 @@ public class AttendService {
         attendRepository.delete(entity);
     }
 
+    @Transactional
     public void updateByAdmin(Long attendNo, AttendUpdateByAdminDTO dto) {
         AttendEntity entity = attendRepository.findById(attendNo)
                 .orElseThrow(() -> new IllegalArgumentException("해당하는 출퇴근 기록이 없습니다."));

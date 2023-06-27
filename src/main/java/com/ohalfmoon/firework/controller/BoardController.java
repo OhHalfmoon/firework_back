@@ -11,6 +11,7 @@ import com.ohalfmoon.firework.dto.paging.PageResponseDTO;
 import com.ohalfmoon.firework.model.BoardEntity;
 import com.ohalfmoon.firework.service.AttachService;
 import com.ohalfmoon.firework.service.BoardService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -45,17 +47,18 @@ import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
+@RequiredArgsConstructor
 @RequestMapping("board")
 public class BoardController {
-    @Autowired
-    private BoardService boardService;
+    private final BoardService boardService;
 
-    @Autowired
-    private AttachService attachService;
+    private final AttachService attachService;
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TL')")
     @GetMapping("/save")
     public void register() {}
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TL')")
     @PostMapping("/save")
     public String save(BoardSaveDTO boardDTO, @RequestParam("file") MultipartFile file) throws IOException {
         log.info("board={}", boardDTO);
@@ -107,6 +110,7 @@ public class BoardController {
         return "/board/view";
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TL')")
     @GetMapping("/modify/{boardNo}")
     public String modify(Model model, @PathVariable Long boardNo) {
         log.info("modify");
@@ -115,6 +119,7 @@ public class BoardController {
         return "board/modify";
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TL')")
     @PostMapping("/modify/{boardNo}")
     public String modify(@PathVariable Long boardNo, BoardUpdateDTO boardUpdateDTO, @RequestParam("file") MultipartFile file) throws IOException {
         String uuid = UUID.randomUUID().toString();
@@ -137,6 +142,7 @@ public class BoardController {
         return "redirect:/board/list";
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TL')")
     @PostMapping("/remove")
     public String remove(Long boardNo) {
         log.info("remove boardNo={}", boardNo);

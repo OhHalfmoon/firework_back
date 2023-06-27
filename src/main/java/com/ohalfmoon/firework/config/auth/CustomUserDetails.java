@@ -45,6 +45,7 @@ public class CustomUserDetails implements UserDetails {
     private Long attachNo;
     private Role roleName;
     private boolean isAttach;
+    private boolean isTeamLeader;
 
 
 
@@ -65,6 +66,7 @@ public class CustomUserDetails implements UserDetails {
         this.attachNo = user.getAttachEntity() != null ? user.getAttachEntity().getAttachNo() : null;
         this.manager = user.getManager() ? true : null;
         this.isAttach = user.getAttachEntity() != null;
+        isTeamLeader = user.getRoleName().getKey() >= 1;
     }
 
     @Override

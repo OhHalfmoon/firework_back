@@ -181,13 +181,6 @@ public class MemberController {
     @GetMapping("agree2")
     public void agree2() {}
 
-
-    @GetMapping("mypage")
-    public void mypage(@AuthenticationPrincipal CustomUserDetails details, Model model) {
-        model.addAttribute("user", details);
-        model.addAttribute("boardList", boardService.getListTop());
-    }
-
     /**
      * 회원 정보 확인
      *
@@ -219,28 +212,6 @@ public class MemberController {
      *
      * @return login page return
      */
-//    @PostMapping("modify")
-//    public String modify(Long userNo, @Valid MemberUpdateDTO dto, BindingResult bindingResult, Model model) {
-//        if(bindingResult.hasErrors()) {
-//            model.addAttribute("member", dto);
-//
-//            Map<String, String> errorMap = new HashMap<>();
-//
-//            for (FieldError error : bindingResult.getFieldErrors()) {
-//                errorMap.put("valid_"+error.getField(), error.getDefaultMessage());
-////                log.info("error message controller : "+error.getDefaultMessage());
-//            }
-//
-//            for(String key : errorMap.keySet()) {
-//                model.addAttribute(key, errorMap.get(key));
-//            }
-//            return "/auth/modify";
-//        }
-//        memberService.update(userNo, dto);
-//
-//        return redirect+"auth/userinfo";
-//    }
-
     @PostMapping("modify")
     public String modify(Long userNo, MemberUpdateDTO dto, HttpSession session) {
         memberService.update(userNo, dto);
@@ -269,25 +240,6 @@ public class MemberController {
         return redirect+"auth/signin";
     }
 
-    @PostMapping("mypage")
-    public String modifySign(@RequestParam("file") MultipartFile file, @AuthenticationPrincipal CustomUserDetails user) throws IOException {
-        String uuid = UUID.randomUUID().toString();
-        String ext = FilenameUtils.getExtension(file.getOriginalFilename());
-
-        AttachSaveDto saveDto = AttachSaveDto.builder()
-                .originName(file.getOriginalFilename())
-                .uuid(uuid)
-                .ext(ext)
-                .build();
-
-
-
-        log.info("dto : {}", saveDto);
-        log.info("file : {}", file);
-        log.info("userNo : {}", saveDto);
-        memberService.updateSign(saveDto, file, user.getUserNo());
-        return redirect+"auth/mypage";
-    }
 
     @GetMapping("getAttend/{userNo}")
     public String getAttend(Model model, MemberResponseDTO dto) {

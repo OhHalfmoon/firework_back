@@ -73,8 +73,8 @@
 
 
 
-                    <div class="col-md-8" id="attendance" style="max-width: 100%">
-                            <form id="updateFrm">
+                    <div class="col-md-12" id="attendance" style="max-width: 100%">
+<!--                            <form id="deleteFrm">-->
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-12">
@@ -96,12 +96,18 @@
                                                         <tbody>
                                                             {{#attend}}
                                                                 <tr class="tableSum" >
+                                                                    <input type="hidden" id="attendNo" value="{{attendNo}}">
                                                                     <th>{{regdate}}</th>
                                                                     <th>{{godate}}</th>
-                                                                    <th>{{#leavedate}}{{leavedate}}{{/leavedate}}</th>
-                                                                    <th class="d-flex">
-                                                                        <button class="btn btn-outline-warning small">수정</button>
-                                                                        <button class="btn btn-outline-danger small">삭제</button>
+                                                                    <th>
+                                                                        {{#leavedate}}{{leavedate}}{{/leavedate}}
+                                                                        {{^leavedate}}<input class="form-control" type="datetime-local" name="leavedate" placeholder="1111-11-11 00:00:00 형식">{{/leavedate}}
+                                                                    </th>
+                                                                    <th class="d-flex justify-content-center">
+                                                                        {{^leavedate}}
+                                                                            <button class="btn btn-outline-warning small mr-2 updateAttend">수정</button>
+                                                                        {{/leavedate}}
+                                                                        <button class="btn btn-outline-danger small deleteAttend">삭제</button>
                                                                     </th>
                                                                 </tr>
                                                             {{/attend}}
@@ -118,7 +124,7 @@
                                     <!-- /.row -->
                                 </div>
                                 <!-- /.container-fluid -->
-                            </form>
+<!--                            </form>-->
                     </div>
                     <div class="col-12 mb-5">
                         <button class="btn btn-outline-secondary float-right" id="attendChk">근태확인</button><br>
@@ -257,6 +263,66 @@
         </div>
     </div>
 
+    <div class="container">
+        <!-- The Modal -->
+        <div class="modal fade" id="attendUpdateModal">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">퇴근시간 수정</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <form>
+                            {{#member}}
+                                <div class="input-group mb-3">
+                                    <label> 변경하실 권한을 선택해주세요
+                                        <select class="d-flex custom-select" name="roleName">
+                                            <option selected value="{{roleName}}">{{roleTitle}}</option>
+                                            {{#role}}
+                                                <option value="{{roleName}}">{{title}}</option>
+                                            {{/role}}
+                                        </select>
+                                    </label>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <label> 회원을 탈퇴시키시겠습니까?
+                                        <select class="d-flex custom-select" name="state">
+                                            <option selected value="{{state}}">아니요</option>
+                                            <option value="SECESSION">네</option>
+                                        </select>
+                                    </label>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <label> 관리자 권한을 주시겠습니까?
+                                        <select class="d-flex custom-select" name="manager">
+                                            <option value="0">No</option>
+                                            <option value="1">Yes</option>
+                                        </select>
+                                    </label>
+                                </div>
+                                <input type="hidden" name="userNo" value="{{userNo}}">
+                                <input type="hidden" name="deptNo" value="{{deptNo}}">
+                                <input type="hidden" name="positionNo" value="{{positionNo}}">
+                            {{/member}}
+                        </form>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" id="update">변경</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
 <script>
@@ -282,6 +348,56 @@
                 $("#frm2").submit();
             }
         })
+        $(".deleteAttend").click(function (e) {
+            e.preventDefault()
+            let result = confirm("삭제 하시겠습니까?");
+            if(result) {
+                let deleteByAdmin = $(this).closest("tr").find("#attendNo").val();
+                console.log(deleteByAdmin);
+                $.ajax({
+                    url : "/admin/member/delete/"+deleteByAdmin,
+                    type : "DELETE",
+                    contentType : "text",
+                    dataType : "text",
+                    data : JSON.stringify(deleteByAdmin),
+                    success: function (response) {
+                        alert("삭제되었습니다.")
+                        location.reload();
+                    },
+                    error : function () {
+                        console.log(deleteByAdmin);
+                        alert("실패!");
+                    }
+                })
+            }
+        })
+        $(".updateAttend").click(function (e) {
+            e.preventDefault();
+            let result = confirm("수정 하시겠습니까?");
+            let leavedate = $(this).closest("tr").find("input[type='datetime-local']").val();
+            let attendNo = $(this).closest("tr").find("#attendNo").val();
+            let dto = ({attendNo : attendNo, leavedate : leavedate})
+            console.log(typeof (leavedate));
+            if(result) {
+                $.ajax({
+                    url : "/admin/member/attendUpdate/",
+                    type : "POST",
+                    contentType: "application/json",
+                    dataType: "text",
+                    data : JSON.stringify(dto),
+                    success : function() {
+                        alert("수정되었습니다.")
+                        location.reload();
+                    },
+                    error : function () {
+                        console.log(dto);
+                        alert("실패!")
+                    }
+
+                })
+            }
+        })
+
     })
 </script>
 </body>

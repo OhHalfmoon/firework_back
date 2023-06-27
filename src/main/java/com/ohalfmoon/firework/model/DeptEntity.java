@@ -27,7 +27,6 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "tbl_dept")
 @DynamicInsert
-@ToString
 @Builder
 public class DeptEntity {
     @Id // primary key
