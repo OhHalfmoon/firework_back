@@ -14,8 +14,15 @@ $(function () {
     });
 
     function getAlarmLiStr(obj) {
+        if(obj.approvalNo != null)
         return `<div class="alarm-divider dropdown-divider" data-alarmno="${obj.alarmNo}"></div>
-				    <a href="#" class="alarm dropdown-item" data-alarmno="${obj.alarmNo}" style="background: lightgrey">
+				    <a href="/approval/${obj.approvalNo}" class="alarm dropdown-item" data-alarmno="${obj.alarmNo}" style="background: lightgrey">
+                    ${obj.alarmTitle}
+				    <span class="float-right text-muted text-sm">${moment(obj.regdate).fromNow()}</span>
+                    </a>
+				    `;
+        else return `<div class="alarm-divider dropdown-divider" data-alarmno="${obj.alarmNo}"></div>
+				    <a href="/board/view/${obj.boardNo}" class="alarm dropdown-item" data-alarmno="${obj.alarmNo}" style="background: lightgrey">
                     ${obj.alarmTitle}
 				    <span class="float-right text-muted text-sm">${moment(obj.regdate).fromNow()}</span>
                     </a>
