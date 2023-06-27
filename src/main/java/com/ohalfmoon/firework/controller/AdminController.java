@@ -75,6 +75,7 @@ public class AdminController {
      */
     @PostMapping("/member/{userNo}")
     public String updateByAdmin(Long userNo, MemberUpdateByAdminRequestDTO dto) {
+        log.info("dto 확인 : {}", dto);
         memberService.updateByAdmin(userNo, dto);
         return "redirect:/admin/member/"+userNo;
     }

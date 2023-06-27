@@ -90,6 +90,7 @@
                     </section>
                 </div>
                 <section class="col-lg-5 connectedSortable float-left">
+                {{#user}}
                 {{#memberSign}}
                     <div class="card-footer clearfix">
                         <button type="submit" class="btn btn-default">전자서명</button>
@@ -102,6 +103,7 @@
                         <h4><b>전자서명이 등록되었습니다.</b></h4>
                     </div>
                 {{/memberSign}}
+                {{/user}}
                 </section>
                 <section class="col-lg-7 connectedSortable float-right">
                     <div class="card-footer clearfix">

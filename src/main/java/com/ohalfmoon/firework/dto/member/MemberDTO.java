@@ -53,24 +53,19 @@ public class MemberDTO {
     private String name;
     private boolean manager;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd", timezone = "Asia/Seoul")
     @NotNull(message = "입사일은 필수 입력 값 입니다.")
     private LocalDate birthdate;
     private String authProvider;
     private String memberSign;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd", timezone = "Asia/Seoul")
     @NotNull(message = "입사일은 필수 입력 값 입니다.")
     private LocalDate startdate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd", timezone = "Asia/Seoul")
     private LocalDate enddate;
     private int state;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd", timezone = "Asia/Seoul")
     private LocalDate regdate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd", timezone = "Asia/Seoul")
     private LocalDateTime updatedate;
     private int roleName;
 
@@ -83,6 +78,7 @@ public class MemberDTO {
             , LocalDate birthdate
             , LocalDate startdate
             , int roleName
+            , boolean manager
     ) {
         this.username = username;
         this.password = password;
@@ -92,6 +88,7 @@ public class MemberDTO {
         this.birthdate = birthdate;
         this.startdate = startdate;
         this.roleName = roleName;
+        this.manager = manager;
     }
     public MemberEntity toEntity() {
         return MemberEntity.builder()
@@ -104,6 +101,7 @@ public class MemberDTO {
                 .startdate(startdate)
                 .roleName(Role.ROLE_EMPLOYEE)
                 .state(State.WATING)
+                .manager(false)
                 .build();
     }
 
