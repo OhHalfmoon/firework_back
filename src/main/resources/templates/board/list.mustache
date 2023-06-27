@@ -13,15 +13,40 @@
     {{>layout/header}}
 
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
+    <div class="content-wrapper row justify-content-center">
         <!-- Main content -->
-        <section class="content m-1 row" style="min-height: 400px">
-
+        <section class="content m-1 row col-md-9" style="min-height: 500px">
             <!-- Default box -->
-            <div class="card my-auto col-md-12">
-                <div class="card-header">
-                    <h1 class="card-title float-left" style="text-align: center">공지 사항 게시판</h1>
-                    <a href="/board/save" class="btn btn-secondary float-right">글 작성</a>
+            <div class="card card-primary card-outline my-auto col-md-12 ">
+                <div class="card-header row">
+                    <div class="col-3">
+                        <h1 class="card-title float-left" style="text-align: center; font-size:30px"><i class="fas fa-fire" style="color: #e11305;"></i> 공지 사항</h1>
+                    </div>
+                    <div class="d-flex justify-content-center col-6">
+                        <div class="form-group row my-0">
+                            <form method="get">
+                                <div class="d-flex flex-row">
+                                    <div class="form-group d-flex flex-row">
+                                        <select class="custom-select form-control-border" name="type" id="type">
+                                            <option value="T">제목</option>
+                                            <option value="C">내용</option>
+                                            <option value="TC">제목+내용</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group mx-2 d-flex flex-row">
+                                        <label for="search" class="align-self-center my-0">검색어</label>
+                                        <div class="d-flex flex-row">
+                                            <input class="form-control col-md-6 mx-2" type="text" id="keyword" name="keyword">
+                                            <button class="btn btn-secondary h-100">검색</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <a href="/board/save" class="btn btn-secondary float-right">글 작성</a>
+                    </div>
                 </div>
                 <div class="card-body row justify-content-center p-2">
                     <div class="col-sm-1" style="text-align: center">
@@ -37,23 +62,70 @@
                         등록 일자
                     </div>
                 </div>
+                <hr class="m-1">
                 <div class="row justify-content-center p-1">
                 {{#boardList}}
-                        <div class="col-sm-1 p-2" style="text-align: center">
-                            {{boardNo}}
-                        </div>
-                        <div class="col-sm-6 p-2" style="text-align: center">
-                            <a href="view/{{boardNo}}" style="color: black">{{title}}</a>
-                        </div>
-                        <div class="col-sm-3 p-2" style="text-align: center">
-                            {{user.name}}
-                        </div>
-                        <div class="col-sm-2 project_progress p-2" style="text-align: center">
-                            <small>
-                                {{regDate}}
-                            </small>
-                        </div>
+                    <div class="col-sm-1 p-2" style="text-align: center">
+                        {{boardNo}}
+                    </div>
+                    <div class="col-sm-6 p-2" style="text-align: center">
+                        <a href="view/{{boardNo}}" style="color: black">{{title}}</a>
+                    </div>
+                    <div class="col-sm-3 p-2" style="text-align: center">
+                        {{user.name}}
+                    </div>
+                    <div class="col-sm-2 project_progress p-2" style="text-align: center">
+                        <small>
+                            {{regDate}}
+                        </small>
+                    </div>
                 {{/boardList}}
+                </div>
+                <div class="card-footer clearfix" style="background-color: white">
+                    <div class="row justify-content-center">
+                        <ul class="pagination pagination-sm m-0 float-right">
+                        {{#pageDTO}}
+                            {{#hasPrevBlock}}
+                                <li class="page-item">
+                                    <a class="page-link" href="{{contextPath}}/board/list{{prevBlockQueryString}}">
+                                        &laquo;
+                                    </a>
+                                </li>
+                            {{/hasPrevBlock}}
+                            {{#prev}}
+                                <li class="page-item">
+                                    <a class="page-link" href="{{contextPath}}/board/list{{prevQueryString}}">
+                                        &lt;
+                                    </a>
+                                </li>
+                            {{/prev}}
+                            {{#pageInfoList}}
+                                {{#isCurrent}}
+                                    <li class="page-item active">
+                                        <a class="page-link" href="/board/list{{queryString}}">{{pageNum}}</a>
+                                    </li>
+                                {{/isCurrent}}
+                                {{^isCurrent}}
+                                    <li class="page-item">
+                                        <a class="page-link" href="/board/list{{queryString}}">{{pageNum}}</a>
+                                    </li>
+                                {{/isCurrent}}
+                            {{/pageInfoList}}
+                            {{#next}}
+                                <li class="page-item">
+                                    <a class="page-link" href="{{contextPath}}/board/list{{nextQueryString}}">&gt;
+                                    </a>
+                                </li>
+                            {{/next}}
+                            {{#hasNextBlock}}
+                                <li class="page-item">
+                                    <a class="page-link" href="{{&contextPath}}/board/list{{nextBlockQueryString}}">&raquo;
+                                    </a>
+                                </li>
+                            {{/hasNextBlock}}
+                        {{/pageDTO}}
+                        </ul>
+                    </div>
                 </div>
             </div>
             <!-- /.card -->

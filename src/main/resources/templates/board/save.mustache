@@ -29,7 +29,6 @@
                 </div>
             </div><!-- /.container-fluid -->
         </section>
-
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
@@ -40,7 +39,7 @@
                                 <h1 class="card-title">글 작성</h1>
                             </div>
                             <!-- /.card-header -->
-                            <form method="post">
+                            <form method="post" enctype="multipart/form-data">
                                 <div class="card-body">
                                     <div class="form-group">
                                         <input class="form-control" placeholder="제목을 입력하세요" name="boardTitle">
@@ -49,13 +48,16 @@
                                         <input class="form-control" value="{{user.name}}" readonly>
                                     </div>
                                     <div class="form-group">
-                                    <textarea class="form-control" style="height: 300px" placeholder="내용을 입력하세요" name="boardContent"></textarea>
+                                    <textarea class="form-control" style="height: 300px; resize: none" placeholder="내용을 입력하세요" name="boardContent"></textarea>
                                     </div>
                                     <input type="hidden" value="{{user.userNo}}" name="userNo">
                                     <div class="form-group">
-                                        <div class="btn btn-default btn-file">
-                                            <i class="fas fa-paperclip"></i> Attachment
-                                            <input type="file" name="attachment">
+<!--                                        <div class="btn btn-default btn-file">-->
+<!--                                            <i class="fas fa-paperclip"></i> Attachment-->
+<!--                                            <input type="file" name="file">-->
+<!--                                        </div>-->
+                                        <div class="card-body">
+                                            <input type="file" class="form-control" name="file">
                                         </div>
                                         <p class="help-block">Max. 32MB</p>
                                     </div>
