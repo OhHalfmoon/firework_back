@@ -5,6 +5,20 @@ import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
+
+/**
+ * packageName    : com.ohalfmoon.firework.model
+ * fileName       : BoardEntity
+ * author         : 오상현
+ * date           : 2023/06/07
+ * description    : 게시판 Entity
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2023/06/07        오상현           최초 생성
+ * 2023/06/26        이지윤           Attach리스트, update 추가
+ */
 
 @Entity
 @Getter
@@ -25,6 +39,10 @@ public class BoardEntity {
     @ManyToOne
     @JoinColumn(name = "userNo")
     private MemberEntity memberEntity;
+
+    @OneToMany
+    @JoinColumn(name = "boardNo")
+    private List<AttachEntity> attachEntities;
 
     @Column(nullable = false)
     String boardTitle;
