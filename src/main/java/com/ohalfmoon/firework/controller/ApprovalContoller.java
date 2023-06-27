@@ -101,7 +101,7 @@ public class ApprovalContoller {
     //상태값 변경 : 결재반려
     @PutMapping("/reject/{approvalNo}")
     @ResponseBody
-    public Long updatereject(@PathVariable Long approvalNo, @ModelAttribute ApprovalStateDto stateDto) {
+    public Long updatereject(@PathVariable Long approvalNo, @RequestBody ApprovalStateDto stateDto) {
 
         return approvalService.rejectState(approvalNo, stateDto);
     }
