@@ -26,4 +26,6 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
     Page<MemberEntity> findAllByUserNoNotLike(Long userNo, Pageable pageable);
 
     List<MemberEntity> findAllByUserNoNotLike(Long userNo);
+
+    List<MemberEntity> findByDeptEntity_DeptNo(Long deptNo);
 }

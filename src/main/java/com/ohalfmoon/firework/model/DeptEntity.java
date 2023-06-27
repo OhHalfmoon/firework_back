@@ -2,9 +2,12 @@ package com.ohalfmoon.firework.model;
 
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
+import org.springframework.data.jpa.repository.EntityGraph;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * packageName    : com.ohalfmoon.firework.model
@@ -33,4 +36,8 @@ public class DeptEntity {
     private String deptName; // 부서명
     private Date regdate; // 등록일
     private Date updatedate; // 수정일
+
+    @OneToMany
+    @JoinColumn(name = "deptNo")
+    List<MemberEntity> memberList = new ArrayList<>();
 }

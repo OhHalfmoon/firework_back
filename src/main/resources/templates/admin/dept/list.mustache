@@ -53,22 +53,51 @@
                     <div class="col-md-4">
                         <div class="card">
                             <div class="card-header">
-                                부서 추가/수정
+
+                                <ul class="nav nav-pills p-2">
+                                    <li class="nav-item"><a class="nav-link active" href="#addDeptTab" data-toggle="tab">부서 추가</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="#updateDeptTab" data-toggle="tab">부서 수정</a></li>
+                                </ul>
+
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <div class="form-group row">
-                                    <label for="inputEmail3" class="col-sm-2 col-form-label">부서번호</label>
-                                    <div class="col-sm-10">
-                                        <input type="email" class="form-control" id="inputEmail3" placeholder="부서번호">
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="addDeptTab">
+                                        <!-- 추가영역 -->
+                                        <div class="form-group row">
+                                            <label for="addDeptNo" class="col-sm-2 col-form-label">부서번호</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="addDeptNo" placeholder="부서번호">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="addDeptName" class="col-sm-2 col-form-label">부서명</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="addDeptName" placeholder="부서명">
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputEmail3" class="col-sm-2 col-form-label">부서명</label>
-                                    <div class="col-sm-10">
-                                        <input type="email" class="form-control" id="inputEmail3" placeholder="부서명">
+
+                                    <div class="tab-pane" id="updateDeptTab">
+                                        <!-- 수정영역 -->
+                                        <div class="form-group row">
+                                            <label for="updateDeptNo" class="col-sm-2 col-form-label">부서번호</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="updateDeptNo" placeholder="부서번호">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="updateDeptName" class="col-sm-2 col-form-label">부서명</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" id="updateDeptName" placeholder="부서명">
+                                            </div>
+                                        </div>
                                     </div>
+
                                 </div>
+
+
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer clearfix">
@@ -83,39 +112,35 @@
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <div class="form-group row">
-                                    <label for="inputEmail3" class="col-sm-4 col-form-label">사원번호</label>
+                                    <label class="col-sm-4 col-form-label">사원번호</label>
                                     <div class="col-sm-8 align-self-center">
-                                        <div>사원번호</div>
+                                        <div id="memberNo">사원번호</div>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputEmail3" class="col-sm-4 col-form-label">이름</label>
+                                    <label class="col-sm-4 col-form-label">이름</label>
                                     <div class="col-sm-8 align-self-center">
-                                        <div>이름</div>
+                                        <div id="memberName">이름</div>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputEmail3" class="col-sm-4 col-form-label">작책</label>
+                                    <label class="col-sm-4 col-form-label">직책</label>
                                     <div class="col-sm-8 align-self-center">
-                                        <div>직책</div>
+                                        <div id="positionName">직책</div>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="dept" class="col-sm-4 col-form-label">부서</label>
                                     <div class="col-sm-8 align-self-center">
                                         <select id="dept">
-                                            <option>인사팀</option>
-                                            <option>총무팀</option>
-                                            <option>개발1팀</option>
-                                            <option>개발2팀</option>
-                                            <option>개발3팀</option>
+                                            <option>사원을 선택해주세요</option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer clearfix">
-                                <button class="btn btn-primary">입력</button>
+                                <button class="btn btn-primary deptSubmit">입력</button>
                             </div>
                         </div>
                     </div>
@@ -159,112 +184,6 @@
 
     $(()=>{
         const tree = $('#tree');
-        /*
-        var data = [
-            {
-                "text": "test1",
-                "data": "Kit 1",
-                "attr": {
-                    "id": "1"
-                },
-                "state": "closed"
-            },
-            {
-                "text": "test2",
-                "data": "KPCM 049",
-                "attr": {
-                    "id": "4"
-                },
-                "state": "closed"
-            },
-            {
-                "text": "test3",
-                "data": "Linux BSP",
-                "attr": {
-                    "id": "8"
-                },
-                "state": "closed"
-            }
-        ]
-        */
-
-/*
-        var data = [
-            {
-                id: "company1",
-                parent: "#",
-                text: "주식회사 WSJ",
-                state: {
-                    opened: true
-                }
-            },
-            {
-                id: "dept1",
-                parent: "company1",
-                text: "영업팀",
-                state: {
-                    opened: true
-                },
-                data: {
-                    deptNo: 1,
-                    deptName: "영업팀"
-                },
-            },
-            {
-                id: "dept2",
-                parent: "company1",
-                text: "총무팀",
-                state: {
-                    opened: true
-                },
-                data: {
-                    deptNo: 2,
-                    deptName: "총무팀"
-                },
-            },
-            {
-                id: "dept3",
-                parent: "company1",
-                text: "개발팀",
-                state: {
-                    opened: true
-                },
-                data: {
-                    deptNo: 3,
-                    deptName: "개발팀"
-                },
-                children : true,
-                url : '{{contextPath}}/admin/dept/get-member'
-            },
-            {
-                id: "user1",
-                parent: "dept1",
-                text: "테스트유저1",
-                data: {
-                    memberNo: 1,
-                    memberName: "테스트유저1"
-                }
-            },
-            {
-                id: "user2",
-                parent: "dept1",
-                text: "테스트유저2",
-                data: {
-                    memberNo: 2,
-                    memberName: "테스트유저2"
-                }
-            },
-            {
-                id: "user3",
-                parent: "dept1",
-                text: "테스트유저3",
-                data: {
-                    memberNo: 3,
-                    memberName: "테스트유저3"
-                }
-            },
-        ];
-        */
 
         var selectedNode = null;
 
@@ -276,7 +195,13 @@
                                 :'/admin/dept/get-member';
                     },
                     data: function (node) {
-                        return { 'id': node.id };
+                        if(node.id === '#') {
+                            return { 'id': node.id };
+                        } else {
+                            return {
+                                'deptNo' : node.data.deptNo
+                            }
+                        }
                     }
                 }
             },
@@ -290,52 +215,67 @@
         });
 
         tree.on("changed.jstree", function (e, data) {
-            console.log('data.node.id', data.node.id);
-            console.log('data.node', data.node);
-            console.log('data.node.data', data.node.data);
-            console.log('selected', data.selected);
+            selectedNode = data.node.id;
+            // console.log('data.node.id', data.node.id);
+            // console.log('data.node', data.node);
+            // console.log('data.node.data', data.node.data);
+            // console.log('selected', data.selected);
+
+            var rootNode = tree.jstree(true).get_node('#');
+            var firstChildNodeId = rootNode.children;
+            var firstChildNodeList = [];
+
+            // 첫 번째 자식 노드의 ID 배열 순회
+            for (let i = 0; i < firstChildNodeId.length; i++) {
+                var childNodeId = firstChildNodeId[i];
+                var childNode = tree.jstree(true).get_node(childNodeId);
+                firstChildNodeList.push(childNode);
+            }
+
+            console.log('firstChildNodeId', firstChildNodeId);
+            console.log('firstNodeChildLen', firstChildNodeList);
+
+            var nodeData = data.node.data
+            console.log('nodeData', nodeData);
+
+            var deptList = firstChildNodeList.map(item => {item.text})
+
+            if(nodeData.userNo !== undefined){
+                $("#memberNo").text(nodeData.userNo);
+                $("#memberName").text(nodeData.name);
+                $("#positionName").text(nodeData.positionName);
+
+                $("#dept").empty().append('<option>변경할 부서를 선택해주세요</option>');
+                firstChildNodeList.forEach(item =>{
+                            console.log('item', item);
+                            if(nodeData.deptNo !== item.data.deptNo){
+                                $("#dept").append(`<option value="${item.data.deptNo}">${item.data.deptName}</option>'`)
+                            }
+                 });
+
+
+            } else if(nodeData.deptNo !== undefined) {
+                $('#updateDeptTab').addClass('active');
+                $('#addDeptTab').removeClass('active');
+            }
         });
-        //
-        // tree.on("open_node.jstree", function (e, data) {
-        //     var parentNode = data.node;
-        //     var memberUrl = "/admin/dept/get-member";
-        //
-        //     console.log('parentNode', parentNode);
-        //
-        //     if (!parentNode.data.loaded) {
-        //         // URL 변경
-        //         tree.jstree(true).settings.core.data.url = memberUrl;
-        //
-        //         // 기존 노드 제거
-        //         tree.jstree(true).delete_node(parentNode);
-        //
-        //
-        //
-        //         // 데이터 가져오기
-        //         $.ajax({
-        //             url: memberUrl,
-        //             // data: { 'id': parentNode.id },
-        //             success: function (response) {
-        //                 console.log("member response:", response);
-        //
-        //                 response.forEach(function (data) {
-        //                     tree.jstree("add_node", parentNode, {
-        //                         text: data.text,
-        //                         id: data.id,
-        //                         state: data.state
-        //                     });
-        //                 });
-        //
-        //                 parentNode.data.loaded = true;
-        //             },
-        //             error: function (xhr, status, error) {
-        //                 console.log(error);
-        //             }
-        //         });
-        //     }
-        // });
 
+        $(".deptSubmit").on("click", function (data) {
 
+/*
+            $.ajax({
+                url: "{{!contextPath}}", // 클라이언트가 HTTP 요청을 보낼 서버의 URL 주소
+                data: {},  // HTTP 요청과 함께 서버로 보낼 데이터
+                method: "GET",   // HTTP 요청 메소드(GET, POST 등)
+                dataType: "json", // 서버에서 보내줄 데이터의 타입
+                success: function (data) {
+                    // tree.jstree(true).settings.core.data = data;
+                    // tree.jstree(true).refresh();
+
+                }
+            })
+        */
+        })
 
 
     })

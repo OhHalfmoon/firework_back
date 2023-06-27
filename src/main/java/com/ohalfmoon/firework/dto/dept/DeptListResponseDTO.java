@@ -4,6 +4,8 @@ import com.ohalfmoon.firework.model.DeptEntity;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.Accessors;
 
 /**
  * packageName :  com.ohalfmoon.firework.dto.form
@@ -18,6 +20,7 @@ import lombok.NoArgsConstructor;
  * 2023-06-23             방한솔             생성자
  */
 @NoArgsConstructor
+@Accessors(chain = true)
 @Data
 public class DeptListResponseDTO {
     private Long deptNo;
