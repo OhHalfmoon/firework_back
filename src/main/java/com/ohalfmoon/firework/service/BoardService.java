@@ -40,6 +40,7 @@ import java.util.stream.Collectors;
  * 2023/06/22        이지윤           최초 생성
  * 2023/06/23        이지윤           업데이트 서비스 수정
  * 2023/06/26        이지윤           페이징, 검색, 첨부파일 추가
+ * 2023/06/27        이지윤           첨부파일 CRUD
  */
 
 @Service
@@ -159,6 +160,17 @@ public class BoardService {
 
     @Transactional
     public void delete(Long boardNo) {
+        BoardEntity boardEntity = boardRepository.findById(boardNo).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. boardNo=" + boardNo));
+
+        List<AlarmEntity> alarmEntities = alarmRepository.findAllByBoardNo(BoardEntity.builder().boardNo(boardNo).build());
+        if(alarmEntities.size() > 0) {
+            for(AlarmEntity e : alarmEntities){
+                alarmRepository.deleteById(e.getAlarmNo());
+            }
+        }
+        if(attachRepository.findAllByBoardEntity(boardEntity).size() > 0) {
+            attachRepository.deleteBoardEntitiesByBoardEntity_BoardNo(boardNo);
+        }
         boardRepository.deleteById(boardNo);
     }
 
