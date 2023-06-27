@@ -2,6 +2,7 @@ package com.ohalfmoon.firework.persistence;
 
 import com.ohalfmoon.firework.model.AlarmEntity;
 import com.ohalfmoon.firework.model.ApprovalEntity;
+import com.ohalfmoon.firework.model.BoardEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,4 +33,6 @@ public interface AlarmRepository extends JpaRepository<AlarmEntity, Long> {
     Long countAlarmEntitiesByAlarmReceiver(MemberEntity alarmReceiver);
 
     List<AlarmEntity> findAllByApprovalNo(ApprovalEntity approvalEntity);
+
+    List<AlarmEntity> findAllByBoardNo(BoardEntity boardEntity);
 }
