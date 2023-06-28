@@ -3,12 +3,12 @@ package com.ohalfmoon.firework.service;
 import com.ohalfmoon.firework.dto.fileUpload.AttachResponseDto;
 import com.ohalfmoon.firework.dto.fileUpload.AttachSaveDto;
 import com.ohalfmoon.firework.model.AttachEntity;
-import com.ohalfmoon.firework.model.BoardEntity;
 import com.ohalfmoon.firework.model.spec.AttachSpec;
 import com.ohalfmoon.firework.persistence.AttachRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.PathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -17,8 +17,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -126,19 +129,6 @@ public class AttachService {
     }
 
     /**
-     * Get file list list.
-     *
-     * @param boardNo
-     * @return the list
-     */
-    @Transactional(readOnly = true)
-    public List<AttachResponseDto> getFileListByBoardNo(Long boardNo){
-        List<AttachEntity> fileDtos = attachRepository.findAllByBoardEntity(BoardEntity.builder().boardNo(boardNo).build());
-        return fileDtos.stream().map(item -> entityToDto(item, false)).collect(Collectors.toList());
-    }
-
-
-    /**
      * Get file attach response dto.
      *
      * @param attachNo the attach no
@@ -188,10 +178,51 @@ public class AttachService {
      * @return the long
      */
     @Transactional
-    public Long deleteAll(Long approvalNo){
+    public Long deleteAllApprovalNo(Long approvalNo) throws IOException {
+        Long result = 0L;
 
-        return attachRepository.deleteAttachEntitiesByApprovalEntity_ApprovalNo(approvalNo);
+        List<AttachEntity> fileDtos = attachRepository.findAll(AttachSpec.approvalNo(approvalNo));
+
+        return fileDeleteAll(result, fileDtos);
     }
 
+    @Transactional
+    public Long deleteAllBoardNo(Long boardNo) throws IOException {
+        Long result = 0L;
+
+        List<AttachEntity> fileDtos = attachRepository.findAll(AttachSpec.boardNo(boardNo));
+
+        return fileDeleteAll(result, fileDtos);
+    }
+
+    private Long fileDeleteAll(Long result, List<AttachEntity> fileDtos) throws IOException {
+        for(AttachEntity a : fileDtos){
+            String path = a.getPath();
+
+            Path resourcePath = Paths.get(projectPath + path);
+            Resource resource = new PathResource(resourcePath);
+
+            // 파일 DB삭제
+            attachRepository.deleteById(a.getAttachNo());
+
+            // 실제 파일 삭제
+            if(resource.exists()){
+                File file = resource.getFile();
+
+                boolean isDelete = file.delete();
+
+                if(!isDelete) {
+                    throw new RuntimeException("파일 삭제에 실패했습니다.");
+                } else {
+                    result++;
+                }
+            } else {
+                throw new FileNotFoundException("파일을 찾을 수 없습니다!");
+            }
+
+        }
+
+        return result;
+    }
 
 }

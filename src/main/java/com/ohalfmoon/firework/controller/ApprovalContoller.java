@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -114,7 +113,7 @@ public class ApprovalContoller {
         AttachSaveDto attachSaveDto;
         // file 없을 경우 null처리
         if(!file.isEmpty()){
-            attachService.deleteAll(approvalNo);
+            attachService.deleteAllApprovalNo(approvalNo);
             attachSaveDto = AttachSaveDto.builder()
                     .originName(file.getOriginalFilename())
                     .uuid(uuid)

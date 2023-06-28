@@ -1,7 +1,6 @@
 package com.ohalfmoon.firework.model.spec;
 
-import com.ohalfmoon.firework.model.ApprovalEntity;
-import com.ohalfmoon.firework.model.AttachEntity;
+import com.ohalfmoon.firework.model.*;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.*;
@@ -22,9 +21,19 @@ public class AttachSpec {
         return (root, query, criteriaBuilder) -> {
             if(approvalNo == null) return null;
 
-            Join<AttachEntity, ApprovalEntity> attach = root.join("approvalEntity", JoinType.INNER);
+            Join<AttachEntity, ApprovalEntity> attach = root.join(AttachEntity_.APPROVAL_ENTITY, JoinType.INNER);
 
             return criteriaBuilder.equal(attach.get("approvalNo"), approvalNo);
+        };
+    }
+
+    public static Specification<AttachEntity> boardNo(final Long boardNo) {
+        return (root, query, criteriaBuilder) -> {
+            if(boardNo == null) return null;
+
+            Join<AttachEntity, BoardEntity> attach = root.join(AttachEntity_.boardEntity, JoinType.INNER);
+
+            return criteriaBuilder.equal(attach.get("boardNo"), boardNo);
         };
     }
 }
