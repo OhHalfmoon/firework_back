@@ -57,14 +57,15 @@ public class IndexController {
 
     @GetMapping
     public String index(HttpSession session, @AuthenticationPrincipal CustomUserDetails details, Model model) {
-        model.addAttribute("approvalState", approvalService.getStateList(details.getUserNo(), 1));
-//        model.addAttribute("boardList", boardService.getListTop());
+
+        model.addAttribute("boardList", boardService.getListTop());
+//        model.addAttribute("approvalState", approvalService.getStateList(details.getUserNo(), 1));
 //        List<ApprovalLineDto> approvalLineDto = approvalService.getApprovalUserName(approvalNo);
 //        model.addAttribute("approUserList", approvalLineDto);
 //        List<MemberResponseDTO> memberResponseDTOS = memberService.getMemberList()
 //        model.addAttribute("memberSign", memberService.get(details.getUserNo()));
-        log.info("security session : {}", model.getAttribute("user"));
-        log.info("session :{}", session.getAttribute("member"));
+//        log.info("security session : {}", model.getAttribute("user"));
+//        log.info("session :{}", session.getAttribute("member"));
         return "index";
     }
 
@@ -78,11 +79,11 @@ public class IndexController {
                 .uuid(uuid)
                 .ext(ext)
                 .build();
-        log.info("dto : {}", saveDto);
-        log.info("file : {}", file);
-        log.info("user : {}", user.getAttachNo());
+//        log.info("dto : {}", saveDto);
+//        log.info("file : {}", file);
+//        log.info("user : {}", user.getAttachNo());
         memberService.updateSign(saveDto, file, user.getUserNo());
-        log.info("newSign : {}", user.getAttachNo());
+//        log.info("newSign : {}", user.getAttachNo());
         return "redirect:/";
     }
 
