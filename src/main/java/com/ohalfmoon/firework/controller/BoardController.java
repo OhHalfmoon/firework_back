@@ -54,27 +54,28 @@ public class BoardController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TL')")
     @PostMapping("/save")
-    public String save(BoardSaveDTO boardDTO, @RequestParam("file") MultipartFile file) throws IOException {
+    public String save(BoardSaveDTO boardDTO, @RequestParam("file") List<MultipartFile> files) throws IOException {
         log.info("board={}", boardDTO);
 
-        String uuid = UUID.randomUUID().toString();
-        String ext = FilenameUtils.getExtension(file.getOriginalFilename());
-        AttachSaveDto attachSaveDto;
+        AttachSaveDto attachSaveDto = null;
 
-        if(!file.isEmpty()){
-            attachSaveDto = AttachSaveDto.builder()
-                            .originName(file.getOriginalFilename())
-                            .uuid(uuid)
-                            .ext(ext)
-                            .build();
-        } else {
-            attachSaveDto = null;
+        if(!files.isEmpty()){
+            boardService.save(boardDTO, files);
+//            for(MultipartFile file : files) {
+//                String uuid = UUID.randomUUID().toString();
+//                String ext = FilenameUtils.getExtension(file.getOriginalFilename());
+//
+//                attachSaveDto = AttachSaveDto.builder()
+//                        .originName(file.getOriginalFilename())
+//                        .uuid(uuid)
+//                        .ext(ext)
+//                        .build();
+//            }
+            // DB저장용 DTO가 필요 : MultipartFile -> DTO
         }
 
         log.info("saveAttachDto={}", attachSaveDto);
-        log.info("files={}", file);
-        log.info("files.getOriginalFilename()={}", file.getOriginalFilename());
-        boardService.save(boardDTO, attachSaveDto, file);
+//        boardService.save(boardDTO, attachSaveDto, file);
         return "redirect:/board/list";
     }
 
@@ -115,7 +116,7 @@ public class BoardController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TL')")
     @PostMapping("/modify/{boardNo}")
-    public String modify(@PathVariable Long boardNo, BoardUpdateDTO boardUpdateDTO, @RequestParam("file") MultipartFile file) throws IOException {
+    public String modify(@PathVariable Long boardNo, @ModelAttribute BoardUpdateDTO boardUpdateDTO, @RequestParam("file") MultipartFile file) throws IOException {
         String uuid = UUID.randomUUID().toString();
         String ext = FilenameUtils.getExtension(file.getOriginalFilename());
         AttachSaveDto attachSaveDto;

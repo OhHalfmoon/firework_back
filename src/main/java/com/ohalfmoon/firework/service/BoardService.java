@@ -15,6 +15,7 @@ import com.ohalfmoon.firework.persistence.AttachRepository;
 import com.ohalfmoon.firework.persistence.BoardRepository;
 import com.ohalfmoon.firework.persistence.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -72,19 +74,52 @@ public class BoardService {
     }
 
     @Transactional
-    public Long save(BoardSaveDTO boardSaveDTO, AttachSaveDto attachSaveDto, MultipartFile uploadFile) throws IOException {
+    public Long save(BoardSaveDTO boardSaveDTO, List<MultipartFile> files) throws IOException {
+        // 0. files가 들어왔는지 체크하여 파일저장로직을 실행(조건문)
+        // 1. 실제 파일을 files를 순환하면서 실제로 로컬 저장소에 저장
+        // 2. dto List가 있으므로 이 dto들을 엔티티로 변환하여 DB에 저장
 
+        // boardNo 생성
         Long boardNo = boardRepository.save(boardSaveDTO.toEntity()).getBoardNo();
 
-        if(attachSaveDto != null) {
-            String filePath = filePath(attachSaveDto.getUuid(), attachSaveDto.getExt());
-            attachSaveDto.setPath(filePath);
+        if(files != null){
 
-            attachSaveDto.setBoardNo(boardNo);
-            uploadFile.transferTo(new File(projectPath + filePath));
-            AttachEntity attachEntity = attachSaveDto.toEntity();
+            //files를 순환하며 로컬 저장소에 저장
+            for (MultipartFile file : files) {
+                String filePath = filePath(UUID.randomUUID().toString(), FilenameUtils.getExtension(file.getOriginalFilename()));
+                file.transferTo(new File(projectPath + filePath));
+                AttachEntity attachEntity = AttachEntity.builder()
+//                        .boardNo(BoardEntity.builder().boardNo(boardNo).build())
+                        .originName(file.getOriginalFilename())
+                        .uuid(UUID.randomUUID().toString())
+                        .ext(FilenameUtils.getExtension(file.getOriginalFilename()))
+                        .path(filePath)
+                        .build();
+                attachRepository.save(attachEntity);
+            }
+            //DTO를 Entity로 변환
+            List<AttachSaveDto> dtoList = files.stream().map(
+                    file -> {
+                        AttachSaveDto dto = AttachSaveDto.builder()
+                                .boardNo(boardNo)
+                                .originName(file.getOriginalFilename())
+                                .uuid(UUID.randomUUID().toString())
+                                .ext(FilenameUtils.getExtension(file.getOriginalFilename()))
+                                .build();
 
-            attachRepository.save(attachEntity);
+                        String filePath = filePath(dto.getUuid(), dto.getExt());
+//                        dto.setPath(filePath);
+
+                        try {
+                            file.transferTo(new File(projectPath + filePath));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                        return dto;
+                    }
+            ).collect(Collectors.toList());
+
         }
         List<MemberEntity> memberEntities = memberRepository.findAll();
 
@@ -99,13 +134,38 @@ public class BoardService {
         }
 
         return boardNo;
+
+//        if(attachSaveDtos != null) {
+//            for (AttachSaveDto attachSaveDto : attachSaveDtos) {
+//                String filePath = filePath(attachSaveDto.getUuid(), attachSaveDto.getExt());
+//                attachSaveDto.setPath(filePath);
+//
+//                attachSaveDto.setBoardNo(boardNo);
+//                uploadFile.transferTo(new File(projectPath + filePath));
+//                AttachEntity attachEntity = attachSaveDto.toEntity();
+//
+//                attachRepository.save(attachEntity);
+//            }
+////            String filePath = filePath(attachSaveDto.getUuid(), attachSaveDto.getExt());
+////            attachSaveDto.setPath(filePath);
+////
+////            attachSaveDto.setBoardNo(boardNo);
+////            uploadFile.transferTo(new File(projectPath + filePath));
+////            AttachEntity attachEntity = attachSaveDto.toEntity();
+////            attachRepository.save(attachEntity);
+//        }
+//        List<MemberEntity> memberEntities = memberRepository.findAll();
+//
+//        for (MemberEntity i : memberEntities) {
+//            alarmRepository.save(AlarmEntity.builder()
+//                    .alarmReceiver(i)
+//                    .alarmTitle("새로운 공지사항-" + boardNo)
+//                    .alarmCategory("공지사항")
+//                    .boardNo(BoardEntity.builder().boardNo(boardNo).build())
+//                    .approvalNo(null)
+//                    .build());
+//        }
     }
-
-
-    public void addAttachEntity(Long boardNo) {
-
-    }
-
 
     public List<BoardResponseDTO> getList() {
         return boardRepository.findAll().stream()
@@ -129,10 +189,11 @@ public class BoardService {
         boardEntity.update(
                 boardNo
                 , boardUpdateDTO.getBoardTitle()
-                , boardUpdateDTO.getBoardContent());
+                , boardUpdateDTO.getBoardContent()
+        );
 
         if(attachSaveDto != null) {
-            if(attachRepository.findAllByBoardEntity(boardEntity).size() > 0) {
+            if(attachRepository.findAllByBoardEntity(boardEntity).size() != 0) {
                 attachRepository.deleteBoardEntitiesByBoardEntity_BoardNo(boardNo);
             }
             String filePath = filePath(attachSaveDto.getUuid(), attachSaveDto.getExt());
@@ -144,6 +205,7 @@ public class BoardService {
             attachEntity.updateBoardEntity(boardEntity);
             attachRepository.save(attachEntity);
         }
+
         List<MemberEntity> memberEntities = memberRepository.findAll();
 
         for (MemberEntity i : memberEntities) {
