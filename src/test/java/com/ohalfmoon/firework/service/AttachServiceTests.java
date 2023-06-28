@@ -42,18 +42,20 @@ public class AttachServiceTests {
                 .ext(FilenameUtils.getExtension(file.getOriginalFilename()))
                 .originName(file.getOriginalFilename())
                 .approvalNo(32L)
+                .file(file)
                 .build();
 
-        attachService.fileSave(dto, file);
+        attachService.fileSave(dto);
 
         AttachSaveDto dto1 = AttachSaveDto.builder()
                 .uuid(UUID.randomUUID().toString())
                 .ext(FilenameUtils.getExtension(file.getOriginalFilename()))
                 .originName(file.getOriginalFilename())
                 .approvalNo(32L)
+                .file(file)
                 .build();
 
-        attachService.fileSave(dto1, file);
+        attachService.fileSave(dto1);
     }
 
     @Test

@@ -50,9 +50,10 @@ public class AttachUploadController {
                 .originName(uploadFile.getOriginalFilename())
                 .uuid(uuid)
                 .ext(ext)
+                .file(uploadFile)
                 .build();
 
-        Long fileNo = service.fileSave(dto, uploadFile);
+        Long fileNo = service.fileSave(dto);
 
 
         Map<String, Object> map = new HashMap<>();

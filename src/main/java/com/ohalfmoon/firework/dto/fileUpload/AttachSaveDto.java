@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -42,14 +43,18 @@ public class AttachSaveDto {
     // 확장자
     String ext;
 
+    // 실제 파일
+    MultipartFile file;
+
     @Builder
-    public AttachSaveDto(Long boardNo, Long approvalNo, String uuid, String originName, String path, String ext) {
+    public AttachSaveDto(Long boardNo, Long approvalNo, String uuid, String originName, String path, String ext, MultipartFile file) {
         this.boardNo = boardNo;
         this.approvalNo = approvalNo;
         this.uuid = uuid;
         this.originName = originName;
         this.path = path;
         this.ext = ext;
+        this.file = file;
     }
 
     public AttachEntity toEntity(){
