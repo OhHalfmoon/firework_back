@@ -1,9 +1,6 @@
 package com.ohalfmoon.firework.service;
 
-import com.ohalfmoon.firework.dto.dept.DeptCountResponseDTO;
-import com.ohalfmoon.firework.dto.dept.DeptListResponseDTO;
-import com.ohalfmoon.firework.dto.dept.DeptSaveDto;
-import com.ohalfmoon.firework.dto.dept.DeptUpdateDto;
+import com.ohalfmoon.firework.dto.dept.*;
 import com.ohalfmoon.firework.model.DeptEntity;
 import com.ohalfmoon.firework.model.DocboxEntity;
 import com.ohalfmoon.firework.persistence.DeptRepository;
@@ -11,6 +8,7 @@ import com.ohalfmoon.firework.persistence.DocboxRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,6 +62,7 @@ public class DeptService {
 
     @Transactional
     public boolean insertDept(DeptSaveDto dto){
+        try{
             DeptEntity dept = DeptEntity.builder()
                     .deptName(dto.getDeptName())
                     .build();
@@ -79,16 +78,42 @@ public class DeptService {
             docboxRepository.save(box);
 
             return true;
+        } catch (Exception e) {
+            throw new DataAccessException("부서 추가 중 오류가 발생하였습니다!.", e){};
+        }
+
     }
 
     @Transactional
     public boolean updateDept(DeptUpdateDto dto){
-        DeptEntity entity = deptRepository.findById(dto.getDeptNo())
-                .orElseThrow(() -> new IllegalArgumentException("해당 부서가 존재하지 않습니다. deptNo = " + dto.getDeptName()));
+        try {
+            DeptEntity entity = deptRepository.findById(dto.getDeptNo())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 부서가 존재하지 않습니다. deptNo = " + dto.getDeptName()));
 
-        entity.update(dto);
+            entity.update(dto);
 
-        return true;
+            return true;
+        }
+        catch (Exception e) {
+            throw new DataAccessException("부서 업데이트 중 오류가 발생하였습니다!.", e){};
+        }
+    }
+
+    @Transactional
+    public boolean deleteDept(DeptDeleteDto dto){
+        try{
+            DeptEntity entity = deptRepository.findById(dto.getDeptNo())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 부서가 존재하지 않습니다. deptNo = " + dto.getDeptNo()));
+
+            if(entity.getMemberList().size() == 0){
+                deptRepository.delete(entity);
+                return true;
+            }
+
+            return false;
+        } catch (Exception e) {
+            throw new DataAccessException("부서 삭제 중 오류가 발생하였습니다!.", e){};
+        }
     }
 
 }

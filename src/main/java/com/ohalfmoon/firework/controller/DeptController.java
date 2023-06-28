@@ -2,10 +2,7 @@ package com.ohalfmoon.firework.controller;
 
 import com.ohalfmoon.firework.dto.JsTreeNodeDto;
 import com.ohalfmoon.firework.dto.JsTreeState;
-import com.ohalfmoon.firework.dto.dept.DeptCountResponseDTO;
-import com.ohalfmoon.firework.dto.dept.DeptListResponseDTO;
-import com.ohalfmoon.firework.dto.dept.DeptSaveDto;
-import com.ohalfmoon.firework.dto.dept.DeptUpdateDto;
+import com.ohalfmoon.firework.dto.dept.*;
 import com.ohalfmoon.firework.dto.member.MemberResponseDTO;
 import com.ohalfmoon.firework.dto.member.MemberUpdateDeptDto;
 import com.ohalfmoon.firework.service.DeptService;
@@ -21,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.zip.DataFormatException;
 
 /**
  * packageName    : com.ohalfmoon.firework.controller
@@ -138,15 +136,29 @@ public class DeptController {
         }
     }
 
-//    @DeleteMapping("/delete")
-//    public ResponseEntity<?> deleteDept(@RequestBody Long deptNo){
-//
-//
-//        if(deleteResult){
-//            return ResponseEntity.ok().body(result);
-//        } else {
-//            return ResponseEntity.badRequest().body(result);
-//        }
-//    }
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteDept(@RequestBody DeptDeleteDto dto) {
+        Map<String, Object> result = new HashMap<>();
+
+        try {
+            boolean deleteResult = deptService.deleteDept(dto);
+            result.put("result", deleteResult);
+
+            if(deleteResult) {
+
+                return ResponseEntity.ok().body(result);
+            } else {
+                result.put("message", "회원수가 없는 부서만 삭제 할 수 있습니다!");
+
+                return ResponseEntity.badRequest().body(result);
+            }
+
+        } catch (Exception e){
+            result.put("error", "부서 삭제 중 오류가 발생했습니다.");
+
+            return ResponseEntity.internalServerError().body(result);
+        }
+
+    }
 
 }
