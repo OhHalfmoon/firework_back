@@ -97,9 +97,6 @@ public class AdminController {
         model.addAttribute("stateByZeroUser", memberPageDto);
         model.addAttribute("stateByOneUser", memberPageDto2);
         model.addAttribute("stateByTwoUser", memberPageDto3);
-//        model.addAttribute("stateByZeroUser", memberService.getStateByZero());
-//        model.addAttribute("stateByOneUser", memberService.getStateByOne());
-//        model.addAttribute("stateByTwoUser", memberService.getStateByTwo());
 
         return "/admin/member/member";
     }

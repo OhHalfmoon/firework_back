@@ -55,8 +55,7 @@ public class IndexController {
     private final CustomUserDetailsService customUserDetailsService;
 
     @GetMapping
-    public String index(HttpSession session, @AuthenticationPrincipal CustomUserDetails details, Model model) {
-
+    public String index(Model model) {
         model.addAttribute("boardList", boardService.getListTop());
 //        model.addAttribute("approvalState", approvalService.getStateList(details.getUserNo(), 1));
 //        List<ApprovalLineDto> approvalLineDto = approvalService.getApprovalUserName(approvalNo);
