@@ -268,10 +268,6 @@ public class MemberService {
      *
      * @return the state by zero
      */
-//    public List<MemberResponseDTO> getStateByZero() {
-//        return memberRepository.findAllByState(State.WATING)
-//                .stream().map(MemberResponseDTO::new).collect(Collectors.toList());
-//    }
     public Page<MemberEntity> getStateByZero(Pageable pageable) {
         return memberRepository.findAllByState(State.WATING, pageable);
     }
@@ -281,10 +277,6 @@ public class MemberService {
      *
      * @return the state by one
      */
-//    public List<MemberResponseDTO> getStateByOne() {
-//        return memberRepository.findAllByState(State.APPROVAL)
-//                .stream().map(MemberResponseDTO::new).collect(Collectors.toList());
-//    }
     public Page<MemberEntity> getStateByOne(Pageable pageable) {
         return memberRepository.findAllByState(State.APPROVAL, pageable);
     }
@@ -294,13 +286,10 @@ public class MemberService {
      *
      * @return the state by two
      */
-//    public List<MemberResponseDTO> getStateByTwo() {
-//        return memberRepository.findAllByState(State.SECESSION)
-//                .stream().map(MemberResponseDTO::new).collect(Collectors.toList());
-
     public Page<MemberEntity> getStateByTwo(Pageable pageable) {
         return memberRepository.findAllByState(State.SECESSION, pageable);
     }
+
     /**
      * 로그인한 유저 빼고 모든 회원 return
      *
@@ -328,10 +317,15 @@ public class MemberService {
         return validatorResult;
     }
 
+    /**
+     * 회원 id(username) 중복체크
+     *
+     * @param username the username
+     * @return the boolean
+     */
     @Transactional(readOnly = true)
     public boolean checkUsernameDuplication(String username) {
-        boolean usernameDuplicate = memberRepository.existsByUsername(username);
-        return usernameDuplicate;
+        return memberRepository.existsByUsername(username);
     }
 
     /**

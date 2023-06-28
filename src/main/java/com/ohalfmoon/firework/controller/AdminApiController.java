@@ -51,6 +51,12 @@ public class AdminApiController {
         return ResponseEntity.ok().body(result);
     }
 
+    /**
+     * 회원 근태 수정
+     *
+     * @param dto the dto
+     * @return the response entity
+     */
     @PostMapping("/member/attendUpdate")
     public ResponseEntity<?> updateAttend(@RequestBody AttendUpdateByAdminDTO dto) {
         String result = "error";
@@ -62,6 +68,12 @@ public class AdminApiController {
         return ResponseEntity.ok().body(result);
     }
 
+    /**
+     * 회원 근태 삭제
+     *
+     * @param attendNo the attend no
+     * @return the response entity
+     */
     @DeleteMapping("/member/delete/{attendNo}")
     public ResponseEntity<?> deleteAttend(@PathVariable Long attendNo) {
         String result= "error";

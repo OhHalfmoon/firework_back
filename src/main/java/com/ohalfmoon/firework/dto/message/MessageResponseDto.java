@@ -1,4 +1,4 @@
-package com.ohalfmoon.firework.dto;
+package com.ohalfmoon.firework.dto.message;
 
 import com.ohalfmoon.firework.dto.paging.PageResponseDTO;
 import com.ohalfmoon.firework.model.MessageEntity;

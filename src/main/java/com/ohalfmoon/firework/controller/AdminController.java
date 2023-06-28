@@ -1,6 +1,6 @@
 package com.ohalfmoon.firework.controller;
 
-import com.ohalfmoon.firework.dto.MemberPageDto;
+import com.ohalfmoon.firework.dto.member.MemberPageDto;
 import com.ohalfmoon.firework.dto.member.MemberResponseDTO;
 import com.ohalfmoon.firework.dto.member.MemberUpdateByAdminRequestDTO;
 import com.ohalfmoon.firework.dto.paging.PageRequestDTO;
@@ -97,9 +97,6 @@ public class AdminController {
         model.addAttribute("stateByZeroUser", memberPageDto);
         model.addAttribute("stateByOneUser", memberPageDto2);
         model.addAttribute("stateByTwoUser", memberPageDto3);
-//        model.addAttribute("stateByZeroUser", memberService.getStateByZero());
-//        model.addAttribute("stateByOneUser", memberService.getStateByOne());
-//        model.addAttribute("stateByTwoUser", memberService.getStateByTwo());
 
         return "/admin/member/member";
     }

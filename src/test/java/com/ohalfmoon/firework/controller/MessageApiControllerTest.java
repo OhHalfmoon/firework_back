@@ -1,6 +1,6 @@
 package com.ohalfmoon.firework.controller;
 
-import com.ohalfmoon.firework.dto.MessageSaveDto;
+import com.ohalfmoon.firework.dto.message.MessageSaveDto;
 import com.ohalfmoon.firework.model.MessageEntity;
 import com.ohalfmoon.firework.persistence.MessageRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +41,7 @@ public class MessageApiControllerTest {
     @Autowired
     private MessageRepository messageRepository;
 
+    // 쪽지 생성 테스트
     @Test
     @Transactional
     @Rollback(value = false)

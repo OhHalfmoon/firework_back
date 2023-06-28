@@ -91,8 +91,17 @@
                 </div>
                 <section class="col-lg-5 connectedSortable float-left">
                     <div class="card-footer clearfix">
-                        <button type="submit" class="btn btn-default">전자서명</button>
-                        <button type="button" class="btn btn-outline-secondary float-right" data-toggle="modal" data-target="#myModal">전자서명 등록</button>
+<!--                        <button type="submit" class="btn btn-default">전자서명</button>-->
+<!--                        <div class="col-sm-2 float-left" style="text-align: center;">전자서명</div>-->
+                        {{#user.isAttach}}
+                            <div class="col-sm-5 float-left">서명이 등록되었습니다.</div>
+                            <button type="button" class="btn btn-outline-success float-right" data-toggle="modal" data-target="#myModal">전자서명 수정</button>
+                            <img src="{{contextPath}}/upload/imageView?fileNo={{user.attachNo}}"style="width: 100px;background: white;">
+                        {{/user.isAttach}}
+                        {{^user.isAttach}}
+                            <div class="col-sm-8 float-left">등록된 서명이 없습니다.&nbsp&nbsp 전자서명을 등록해 주세요.</div>
+                            <button type="button" class="btn btn-outline-secondary float-right" data-toggle="modal" data-target="#myModal">전자서명 등록</button>
+                        {{/user.isAttach}}
                     </div>
                 </section>
 

@@ -3,19 +3,16 @@ package com.ohalfmoon.firework.controller;
 import com.ohalfmoon.firework.config.auth.CheckUsernameValidator;
 import com.ohalfmoon.firework.config.auth.CustomUserDetails;
 import com.ohalfmoon.firework.config.auth.CustomUserDetailsService;
-import com.ohalfmoon.firework.dto.fileUpload.AttachSaveDto;
 import com.ohalfmoon.firework.dto.member.*;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.persistence.MemberRepository;
 import com.ohalfmoon.firework.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
@@ -24,14 +21,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * packageName    : com.ohalfmoon.firework.controller
@@ -101,13 +95,6 @@ public class MemberController {
         model.addAttribute("position", positionService.positionList());
     }
 
-
-    @GetMapping("signupProc")
-    public String proc(Model model) {
-        model.addAttribute("dept", deptService.deptList());
-        model.addAttribute("position", positionService.positionList());
-        return "/auth/signup";
-    }
     /**
      * 회원가입(post)
      * 가입 성공시 로그인페이지 이동
@@ -118,6 +105,8 @@ public class MemberController {
     public String register(@Valid MemberDTO memberDTO, BindingResult bindingResult, Model model) {
         if(bindingResult.hasErrors()) {
             model.addAttribute("member", memberDTO);
+            model.addAttribute("dept", deptService.deptList());
+            model.addAttribute("position", positionService.positionList());
 
             Map<String, String> errorMap = new HashMap<>();
 
@@ -142,6 +131,13 @@ public class MemberController {
         return redirect+"auth/signin";
     }
 
+    /**
+     * 로그인실패시 에러메세지 출력
+     *
+     * @param error     the error
+     * @param exception the exception
+     * @param model     the model
+     */
     @GetMapping("signin")
     public void login(@RequestParam(value = "error", required = false)String error, @RequestParam(value = "exception", required = false)String exception, Model model) {
         model.addAttribute("error", error);
@@ -149,40 +145,8 @@ public class MemberController {
     }
 
     /**
-     * 로그인(post)
-     * 로그인 성공시 security session에 로그인정보(MemberLoginDTO) 저장, 메인페이지 이동
-     * @param dto     the dto
-     * @return the string
-     */
-    @PostMapping("signin")
-    public void login(MemberLoginDTO dto, String username) {
-        MemberEntity entity = memberService.get(username);
-        MemberResponseDTO member = memberService.login(dto);
-        log.info("entity : {}", memberService.get(username));
-//            return redirect;
-        }
-
-//    @PostMapping("signin")
-//    public String login(MemberLoginDTO dto) {
-//        MemberResponseDTO member = memberService.login(dto);
-//        if(member == null) {
-//            return redirect;
-//        }else {
-//            if(member.getState()==0) {
-//                return redirect + "auth/signin";
-//            }else {
-//                log.warn("state : {}", member.getState());
-//                return redirect;
-//            }
-//        }
-//    }
-
-
-    /**
      * 회원가입 이용약관 페이지
      */
-    @GetMapping("agree")
-    public void agree() {}
 
     @GetMapping("agree2")
     public void agree2() {}
@@ -214,7 +178,7 @@ public class MemberController {
     }
 
     /**
-     * 회원정보 수정 중 입력한 값을 받아 회원 정보 수정
+     * 회원정보 수정 후 session 재설정
      *
      * @return login page return
      */
@@ -239,6 +203,14 @@ public class MemberController {
         model.addAttribute("position", positionService.positionList());
     }
 
+    /**
+     * 비밀번호 수정
+     *
+     * @param userNo  the user no
+     * @param dto     the dto
+     * @param session the session
+     * @return the string
+     */
     @PostMapping("modifyPw")
     public String modifyPw(Long userNo, MemberUpdatePwDTO dto, HttpSession session) {
         memberService.updatePw(userNo, dto);
@@ -247,6 +219,13 @@ public class MemberController {
     }
 
 
+    /**
+     * 근태 확인
+     *
+     * @param model the model
+     * @param dto   the dto
+     * @return the attend
+     */
     @GetMapping("getAttend/{userNo}")
     public String getAttend(Model model, MemberResponseDTO dto) {
         model.addAttribute("attend", attendService.getAttend(dto.getUserNo()));

@@ -224,12 +224,7 @@ public class BoardService {
     public void delete(Long boardNo) {
         BoardEntity boardEntity = boardRepository.findById(boardNo).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. boardNo=" + boardNo));
 
-        List<AlarmEntity> alarmEntities = alarmRepository.findAllByBoardNo(BoardEntity.builder().boardNo(boardNo).build());
-        if(alarmEntities.size() > 0) {
-            for(AlarmEntity e : alarmEntities){
-                alarmRepository.deleteById(e.getAlarmNo());
-            }
-        }
+        alarmRepository.deleteByBoardNo(boardEntity);
         if(attachRepository.findAllByBoardEntity(boardEntity).size() > 0) {
             attachRepository.deleteBoardEntitiesByBoardEntity_BoardNo(boardNo);
         }
