@@ -3,19 +3,16 @@ package com.ohalfmoon.firework.controller;
 import com.ohalfmoon.firework.config.auth.CheckUsernameValidator;
 import com.ohalfmoon.firework.config.auth.CustomUserDetails;
 import com.ohalfmoon.firework.config.auth.CustomUserDetailsService;
-import com.ohalfmoon.firework.dto.fileUpload.AttachSaveDto;
 import com.ohalfmoon.firework.dto.member.*;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.persistence.MemberRepository;
 import com.ohalfmoon.firework.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
@@ -24,14 +21,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * packageName    : com.ohalfmoon.firework.controller
@@ -101,13 +95,6 @@ public class MemberController {
         model.addAttribute("position", positionService.positionList());
     }
 
-
-    @GetMapping("signupProc")
-    public String proc(Model model) {
-        model.addAttribute("dept", deptService.deptList());
-        model.addAttribute("position", positionService.positionList());
-        return "/auth/signup";
-    }
     /**
      * 회원가입(post)
      * 가입 성공시 로그인페이지 이동
@@ -118,6 +105,8 @@ public class MemberController {
     public String register(@Valid MemberDTO memberDTO, BindingResult bindingResult, Model model) {
         if(bindingResult.hasErrors()) {
             model.addAttribute("member", memberDTO);
+            model.addAttribute("dept", deptService.deptList());
+            model.addAttribute("position", positionService.positionList());
 
             Map<String, String> errorMap = new HashMap<>();
 
@@ -181,8 +170,6 @@ public class MemberController {
     /**
      * 회원가입 이용약관 페이지
      */
-    @GetMapping("agree")
-    public void agree() {}
 
     @GetMapping("agree2")
     public void agree2() {}
