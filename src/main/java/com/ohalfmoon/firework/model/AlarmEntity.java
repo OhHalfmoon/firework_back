@@ -43,7 +43,7 @@ public class AlarmEntity {
     private Long alarmNo;
 
     // 알림 받을 사원객체(사원일련번호로)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "alarmReceiver")
     private MemberEntity alarmReceiver;
 
@@ -64,12 +64,12 @@ public class AlarmEntity {
     private LocalDateTime regdate;
 
     // 알림을 생성할 게시글객체(게시글일련번호로)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "boardNo")
     private BoardEntity boardNo;
 
     // 알림을 생성할 결재객체(결재일련번호로)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "approvalNo")
     private ApprovalEntity approvalNo;
 

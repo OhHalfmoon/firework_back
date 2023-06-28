@@ -38,4 +38,6 @@ public interface AlarmRepository extends JpaRepository<AlarmEntity, Long> {
 
     // 게시글번호로 알림리스트 조회
     List<AlarmEntity> findAllByBoardNo(BoardEntity boardEntity);
+
+    void deleteByBoardNo(BoardEntity boardEntity);
 }

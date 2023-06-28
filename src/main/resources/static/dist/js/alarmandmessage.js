@@ -5,6 +5,7 @@ $(function () {
         $(".alarmcount").html(result);
     })
 
+    // 알림 리스트 조회
     alarmService.getList({userNo: userNo}, function (result) {
         var str = "";
         for (var i in result.content) {
@@ -13,6 +14,7 @@ $(function () {
         $(".alarms").html(str);
     });
 
+    // 알림정보를 html 태그로 감싸기
     function getAlarmLiStr(obj) {
         if(obj.approvalNo != null)
         return `<div class="alarm-divider dropdown-divider" data-alarmno="${obj.alarmNo}"></div>
@@ -29,6 +31,7 @@ $(function () {
 				    `;
 
     }
+
 
     $(".alarms").on("click", ".alarm", function () {
         event.stopPropagation();
