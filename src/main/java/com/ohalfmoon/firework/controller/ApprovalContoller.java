@@ -118,6 +118,7 @@ public class ApprovalContoller {
                     .originName(file.getOriginalFilename())
                     .uuid(uuid)
                     .ext(ext)
+                    .file(file)
                     .build();
         } else {
             attachSaveDto = null;

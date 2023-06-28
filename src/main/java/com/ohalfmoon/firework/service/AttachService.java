@@ -69,19 +69,18 @@ public class AttachService {
      * File save long.
      *
      * @param dto        the dto
-     * @param uploadFile the upload file
      * @return the long
      * @throws IOException the io exception
      */
     @Transactional
-    public Long fileSave(AttachSaveDto dto, MultipartFile uploadFile) throws IOException {
+    public Long fileSave(AttachSaveDto dto) throws IOException {
         // 파일 저장 시작
         String filePath = filePath(dto.getUuid(), dto.getExt());
         dto.setPath(filePath);
 
         log.info("경로명 : {}", filePath);
 
-        uploadFile.transferTo(new File(projectPath + filePath));
+        dto.getFile().transferTo(new File(projectPath + filePath));
 
         // 파일 정보 저장
         AttachEntity attachEntity = dto.toEntity();
@@ -223,6 +222,14 @@ public class AttachService {
         }
 
         return result;
+    }
+
+
+    public boolean fileListSave(){
+        // 파일 저장 시작
+
+        // return attachEntity.getAttachNo() != null;
+        return false;
     }
 
 }
