@@ -26,13 +26,16 @@ import java.util.List;
  * 2023/06/14        우성준           알림 리스트->슬라이스로 변경
  */
 public interface AlarmRepository extends JpaRepository<AlarmEntity, Long> {
-//    List<AlarmEntity> findTop5ByAlarmReceiverAndAlarmNoLessThanOrderByAlarmNoDesc(MemberEntity alarmReceiver, Long last);
 
+    // 알림 리스트(슬라이스) 조회
     Slice<AlarmEntity> findSliceByAlarmReceiver(MemberEntity alarmReceiver, Pageable pageable);
 
+    // 읽지 않은 알림 개수
     Long countAlarmEntitiesByAlarmReceiver(MemberEntity alarmReceiver);
 
+    // 결재번호로 알림리스트 조회
     List<AlarmEntity> findAllByApprovalNo(ApprovalEntity approvalEntity);
 
+    // 게시글번호로 알림리스트 조회
     List<AlarmEntity> findAllByBoardNo(BoardEntity boardEntity);
 }

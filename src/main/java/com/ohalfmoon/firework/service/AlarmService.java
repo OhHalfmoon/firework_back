@@ -1,7 +1,7 @@
 package com.ohalfmoon.firework.service;
 
-import com.ohalfmoon.firework.dto.AlarmResponseDto;
-import com.ohalfmoon.firework.dto.AlarmSaveDto;
+import com.ohalfmoon.firework.dto.alarm.AlarmResponseDto;
+import com.ohalfmoon.firework.dto.alarm.AlarmSaveDto;
 import com.ohalfmoon.firework.model.AlarmEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.persistence.AlarmRepository;
@@ -12,8 +12,6 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * packageName    : com.ohalfmoon.firework.service
@@ -34,9 +32,11 @@ public class AlarmService {
     private final AlarmRepository alarmRepository;
     private final MemberRepository memberRepository;
 
+    // 알림 생성
     @Transactional
     public Long save(AlarmSaveDto alarm) { return alarmRepository.save(alarm.toEntity()).getAlarmNo();}
 
+    // 알림 단일 조회
     @Transactional
     public AlarmResponseDto findByAlarmNo(Long alarmNo) {
         AlarmEntity alarm = alarmRepository
@@ -46,13 +46,7 @@ public class AlarmService {
         return new AlarmResponseDto(alarm);
     }
 
-//    @Transactional
-//    public List<AlarmResponseDto>findTop5ByAlarmReceiver(Long userNo, Long alarmNo) {
-//       return alarmRepository
-//                .findTop5ByAlarmReceiverAndAlarmNoLessThanOrderByAlarmNoDesc(memberRepository.findById(userNo).orElse(null), alarmNo)
-//                        .stream().map(AlarmResponseDto::new).collect(Collectors.toList());
-//    }
-
+    // 알림 확인 업데이트
     @Transactional
     public Long update(Long alarmNo, boolean alarmCheck){
         AlarmEntity alarmEntity = alarmRepository.findById(alarmNo)
@@ -62,6 +56,7 @@ public class AlarmService {
         return alarmRepository.save(alarmEntity).getAlarmNo();
     }
 
+    // 알림 삭제
     @Transactional
     public void delete(Long alarmNo) {
         AlarmEntity alarmEntity = alarmRepository.findById(alarmNo)
@@ -70,11 +65,13 @@ public class AlarmService {
         alarmRepository.delete(alarmEntity);
     }
 
+    // 미확인 알림 개수
     @Transactional
     public Long countAlarmByAlarmReceiver(Long userNo) {
         return alarmRepository.countAlarmEntitiesByAlarmReceiver(memberRepository.findById(userNo).orElse(null));
     }
 
+    // 알림 리스트(슬라이스) 조회
     @Transactional
     public Slice<AlarmResponseDto> findListBySlice(Long userNo, Pageable pageable) {
         return alarmRepository.findSliceByAlarmReceiver(MemberEntity.builder().userNo(userNo).build(), pageable)

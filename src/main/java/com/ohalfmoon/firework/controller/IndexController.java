@@ -54,8 +54,6 @@ import java.util.UUID;
 public class IndexController {
     private final ApprovalService approvalService;
     private final MemberService memberService;
-    private final AttendService attendService;
-    private final BoardService boardService;
 
     @GetMapping
     public String index(HttpSession session, @AuthenticationPrincipal CustomUserDetails details, Model model) {
@@ -86,17 +84,6 @@ public class IndexController {
         memberService.updateSign(saveDto, file, user.getUserNo());
         log.info("newSign : {}", user.getAttachNo());
         return "redirect:/";
-    }
-
-
-
-    @GetMapping("approvalList")
-    @ResponseBody
-    public ApprovalPageDto findApprovals(@AuthenticationPrincipal CustomUserDetails details, @PageableDefault(size = 5,
-            direction = Sort.Direction.DESC,
-            sort = "approvalNo") Pageable pageable) {
-        Page<ApprovalEntity> entities = approvalService.getStateListByPaging(details.getUserNo(), 1, pageable);
-        return new ApprovalPageDto(new PageResponseDTO<>(entities), entities.map(ApprovalResponseDto::new));
     }
 
     @GetMapping("login")

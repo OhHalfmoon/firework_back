@@ -1,7 +1,7 @@
 package com.ohalfmoon.firework.service;
 
-import com.ohalfmoon.firework.dto.MessageResponseDto;
-import com.ohalfmoon.firework.dto.MessageSaveDto;
+import com.ohalfmoon.firework.dto.message.MessageResponseDto;
+import com.ohalfmoon.firework.dto.message.MessageSaveDto;
 import com.ohalfmoon.firework.model.MessageEntity;
 import com.ohalfmoon.firework.persistence.MessageRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 /**
  * packageName    : com.ohalfmoon.firework.service
