@@ -1,4 +1,4 @@
-package com.ohalfmoon.firework.dto;
+package com.ohalfmoon.firework.dto.member;
 
 import com.ohalfmoon.firework.dto.member.MemberResponseDTO;
 import com.ohalfmoon.firework.dto.paging.PageResponseDTO;

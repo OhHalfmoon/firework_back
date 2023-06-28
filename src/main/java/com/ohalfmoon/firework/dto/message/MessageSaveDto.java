@@ -1,4 +1,4 @@
-package com.ohalfmoon.firework.dto;
+package com.ohalfmoon.firework.dto.message;
 
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.MessageEntity;
@@ -23,14 +23,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class MessageSaveDto {
+
+    // 쪽지 받을 사원일련번호
     private Long receiver;
 
+    // 쪽지 보낼 사원일련번호
     private Long sender;
 
+    // 쪽지 제목
     private String messageTitle;
 
+    // 쪽지 내용
     private String messageContent;
 
+    // 엔티티로 변환
     public MessageEntity toEntity(){
         return MessageEntity.builder()
                 .receiver(MemberEntity.builder().userNo(receiver).build())

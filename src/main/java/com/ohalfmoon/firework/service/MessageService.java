@@ -1,11 +1,9 @@
 package com.ohalfmoon.firework.service;
 
-import com.ohalfmoon.firework.dto.MessageResponseDto;
-import com.ohalfmoon.firework.dto.MessageSaveDto;
-import com.ohalfmoon.firework.dto.paging.PageRequestDTO;
+import com.ohalfmoon.firework.dto.message.MessageResponseDto;
+import com.ohalfmoon.firework.dto.message.MessageSaveDto;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.MessageEntity;
-import com.ohalfmoon.firework.model.spec.MessageSpec;
 import com.ohalfmoon.firework.persistence.MemberRepository;
 import com.ohalfmoon.firework.persistence.MessageRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,13 +33,13 @@ import java.util.stream.Collectors;
 public class MessageService {
     private final MessageRepository messageRepository;
 
-    private final MemberRepository memberRepository;
-
+    // 쪽지 생성
     @Transactional
     public Long save(MessageSaveDto messageSaveDto) {
         return  messageRepository.save(messageSaveDto.toEntity()).getMessageNo();
     }
 
+    // 쪽지 단일 조회
     @Transactional
     public MessageResponseDto findByMessageNo(Long messageNo) {
         MessageEntity message = messageRepository
@@ -51,6 +49,7 @@ public class MessageService {
         return new MessageResponseDto(message);
     }
 
+    // 쪽지 확인 업데이트
     @Transactional
     public Long update(Long messageNo, boolean messageCheck) {
         MessageEntity messageEntity = messageRepository.findById(messageNo)
@@ -60,6 +59,7 @@ public class MessageService {
         return messageRepository.save(messageEntity).getMessageNo();
     }
 
+    // 쪽지 단일 삭제
     @Transactional
     public void delete(Long messageNo) {
         MessageEntity messageEntity = messageRepository.findById(messageNo)
@@ -68,50 +68,25 @@ public class MessageService {
         messageRepository.delete(messageEntity);
     }
 
+    // 미확인 쪽지 개수
     @Transactional
     public Long countMessage(Long receiverNo) {
         return messageRepository.countMessageEntitiesByReceiverAndMessageCheckFalse(MemberEntity.builder().userNo(receiverNo).build());
     }
 
+    // 받은 쪽지 리스트 조회
     public Page<MessageEntity> messageListByReceiver(Long receiver, Pageable pageable) {
         return messageRepository.findAllByReceiver(MemberEntity.builder().userNo(receiver).build(),pageable);
     }
 
+    // 보낸 쪽지 리스트 조회
     public Page<MessageEntity> messageListBySender(Long sender, Pageable pageable) {
         return messageRepository.findAllBySender(MemberEntity.builder().userNo(sender).build(),pageable);
     }
 
+    // 선택된 쪽지들 삭제
     @Transactional
     public void deleteAll(List<Long> arrMessage) {
         messageRepository.deleteAll(arrMessage.stream().map(m->MessageEntity.builder().messageNo(m).build()).collect(Collectors.toList()));
     }
-
-//    public Page<MessageEntity> getMessagePages(MessagePageRequestDto dto, Pageable pageable, Long userNo){
-//        Page<MessageEntity> result;
-//        if(dto.getDivision()){
-//            if(dto.getType()=="W") {
-//                MemberEntity searchMemberEntity = MemberEntity.builder()
-//                        .name(dto.getKeyword())
-//                        .build();
-//
-//                result = messageRepository.findAllByReceiver(searchMemberEntity, pageable);
-//            }
-//            else {
-//                result = messageRepository.findAll(MessageSpec.MessageSearch(dto.getType(), dto.getKeyword(), userNo, dto.getDivision()), pageable);
-//            }
-//        }
-//        else {
-//            if(dto.getType()=="W") {
-//                MemberEntity searchMemberEntity = MemberEntity.builder()
-//                        .name(dto.getKeyword())
-//                        .build();
-//
-//                result = messageRepository.findAllBySender(searchMemberEntity, pageable);
-//            }
-//            else {
-//                result = messageRepository.findAll(MessageSpec.MessageSearch(dto.getType(), dto.getKeyword(), userNo, dto.getDivision()), pageable);
-//            }
-//        }
-//        return result;
-//    }
 }

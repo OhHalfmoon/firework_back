@@ -49,6 +49,7 @@ public class AlarmRepositoryTests {
     @Autowired
     private ApprovalRepository approvalRepository;
 
+    // 알림 생성테스트
     @Test
     @Transactional
     @Rollback(value = false)
@@ -68,9 +69,9 @@ public class AlarmRepositoryTests {
         log.info("{}", save.hashCode());
         log.info("{}", findAlarm.hashCode());
         log.info("{}",findAlarm);
-//        assertThat(save).isSameAs(findAlarm);
     }
 
+    // 알림 단일 조회 테스트
     @Test
     public void findOneTest() {
         Long alarmNo = 51L;
@@ -82,18 +83,8 @@ public class AlarmRepositoryTests {
         log.info("{}", findAlarm);
     }
 
-//    @Test
-//    public void findTop5ByAlarmReceiverAndAlarmNoLessThanOrderByAlarmNoDescTest() {
-//        Long userNo = 1L;
-//
-//        List<AlarmEntity> alarmEntityList =
-//                alarmRepository.
-//                        findTop5ByAlarmReceiverAndAlarmNoLessThanOrderByAlarmNoDesc(memberRepository.
-//                                findById(userNo).orElse(null), 55L);
-//
-//        log.info("{}", alarmEntityList);
-//    }
 
+    // 알림 삭제 테스트
     @Test
     public void deleteAlarmTest() {
         Long alarmNo= 10L;
@@ -105,6 +96,7 @@ public class AlarmRepositoryTests {
         Assertions.assertThat(alarm).isNull();
     }
 
+    // 알림 확인 업데이트
     @Test
     public void updateAlarmTest() {
         Long alarmNo = 1L;
@@ -116,6 +108,7 @@ public class AlarmRepositoryTests {
         log.info("{}", alarm);
     }
 
+    // 미확인 알림 개수 조회 테스트
     @Test
     public void countAlarmByAlarmReceiverTest(){
         Long userNo = 1L;
@@ -123,6 +116,7 @@ public class AlarmRepositoryTests {
         log.info("{}", count);
     }
 
+    // 알림 리스트(슬라이스) 조회 테스트
     @Test
     public void findListBySlice() {
         Pageable pageable = PageRequest.of(0, 3, Sort.Direction.DESC, "alarmReceiver");
@@ -131,6 +125,7 @@ public class AlarmRepositoryTests {
         log.info("{}", alarmEntities.getContent());
     }
 
+    // 결재번호로 알림 리스트 조회 테스트
     @Test
     public void findAllByApprovalNo() {
         log.info("{}",alarmRepository.findAllByApprovalNo(ApprovalEntity.builder().approvalNo(51L).build()));

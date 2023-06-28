@@ -19,11 +19,17 @@ import java.util.List;
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
  * 2023/06/13        우성준           최초 생성
- * 2023/06/19        우성준           페이징 기능 추가
+ * 2023/06/16        우성준           페이징 기능 추가
+ * 2023/06/23        우성준           JpaSpecificationExecutor 추가 (하지만 검색기능 구현 X)
  */
 public interface MessageRepository extends JpaRepository<MessageEntity, Long>, JpaSpecificationExecutor<MessageEntity> {
+
+    // 받은 쪽지 리스트 조회
     Page<MessageEntity> findAllByReceiver(MemberEntity receiver, Pageable pageable);
 
+    // 보낸 쪽지 리스트 조회
     Page<MessageEntity> findAllBySender(MemberEntity sender, Pageable pageable);
+
+    // 미확인 쪽지 개수
     Long countMessageEntitiesByReceiverAndMessageCheckFalse(MemberEntity receiver);
 }

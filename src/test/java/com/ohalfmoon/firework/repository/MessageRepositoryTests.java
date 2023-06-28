@@ -42,6 +42,7 @@ public class MessageRepositoryTests {
     @Autowired
     private MessageRepository messageRepository;
 
+    // 쪽지 생성 테스트
     @Test
     @Transactional
     @Rollback(value = false)
@@ -62,6 +63,7 @@ public class MessageRepositoryTests {
         log.info("{}", findMessage);
     }
 
+    // 쪽지 단일 조회 테스트
     @Test
     public void findOneTest() {
         MessageEntity findMessage = messageRepository.findById(1L).orElse(null);
@@ -69,7 +71,7 @@ public class MessageRepositoryTests {
         log.info("{}", findMessage);
     }
 
-
+    // 쪽지 삭제 테스트
     @Test
     public void deleteMessageTest() {
         messageRepository.deleteById(11L);
@@ -77,6 +79,7 @@ public class MessageRepositoryTests {
         Assertions.assertThat(message).isNull();
     }
 
+    // 쪽지 확인 업데이트 테스트
     @Test
     public void updateMessageTest() {
         MessageEntity message = messageRepository.findById(1L).orElse(null);
@@ -85,12 +88,14 @@ public class MessageRepositoryTests {
         log.info("{}", message);
     }
 
+    // 미확인 쪽지 개수 조회 테스트
     @Test
     public void countMessageTest(){
         Long count = messageRepository.countMessageEntitiesByReceiverAndMessageCheckFalse(memberRepository.findById(1L).orElse(null));
         log.info("{}", count);
     }
 
+    // 쪽지 페이징 테스트
     @Test
     @Transactional
     @DisplayName("쪽지 페이징 테스트")

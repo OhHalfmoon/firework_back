@@ -1,9 +1,7 @@
 package com.ohalfmoon.firework.controller;
 
-import com.ohalfmoon.firework.dto.AlarmSaveDto;
+import com.ohalfmoon.firework.dto.alarm.AlarmSaveDto;
 import com.ohalfmoon.firework.model.AlarmEntity;
-import com.ohalfmoon.firework.model.ApprovalEntity;
-import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.persistence.AlarmRepository;
 import com.ohalfmoon.firework.service.AlarmService;
 import lombok.extern.slf4j.Slf4j;
@@ -13,11 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -47,13 +43,7 @@ public class AlarmApiControllerTest {
     @Autowired
     private AlarmRepository alarmRepository;
 
-    @Autowired
-    private AlarmService alarmService;
-//    @After
-//    public void tearDown() throws Exception {
-//        alarmRepository.deleteAll();
-//    }
-
+    // 알림 생성 테스트
     @Test
     @Transactional
     @Rollback(value = false)

@@ -1,22 +1,16 @@
 package com.ohalfmoon.firework.service;
 
-import com.ohalfmoon.firework.dto.AlarmResponseDto;
-import com.ohalfmoon.firework.dto.master.MasterLineResponseDTO;
-import com.ohalfmoon.firework.dto.master.MasterLineSaveDTO;
 import com.ohalfmoon.firework.dto.sub.SubLineResponseDTO;
 import com.ohalfmoon.firework.dto.sub.SubLineSaveDTO;
 import com.ohalfmoon.firework.dto.sub.SubLineUpdateDTO;
-import com.ohalfmoon.firework.model.MasterLineEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.SubLineEntity;
-import com.ohalfmoon.firework.persistence.MasterLineRepository;
 import com.ohalfmoon.firework.persistence.SubLineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**

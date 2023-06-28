@@ -1,9 +1,8 @@
 package com.ohalfmoon.firework.service;
 
-import com.ohalfmoon.firework.dto.AlarmResponseDto;
-import com.ohalfmoon.firework.dto.AlarmSaveDto;
+import com.ohalfmoon.firework.dto.alarm.AlarmResponseDto;
+import com.ohalfmoon.firework.dto.alarm.AlarmSaveDto;
 import com.ohalfmoon.firework.model.AlarmEntity;
-import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.persistence.AlarmRepository;
 import com.ohalfmoon.firework.persistence.ApprovalRepository;
 import com.ohalfmoon.firework.persistence.MemberRepository;
@@ -19,8 +18,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -42,12 +39,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AlarmServiceTest {
     @Autowired
     private AlarmService alarmService;
-
-    @Autowired
-    private MemberRepository memberRepository;
-
-    @Autowired
-    private ApprovalRepository approvalRepository;
 
     @Autowired
     private AlarmRepository alarmRepository;
@@ -84,14 +75,6 @@ public class AlarmServiceTest {
         AlarmResponseDto alarmResponseDto = new AlarmResponseDto(alarmRepository.findById(alarmNo).orElse(new AlarmEntity()));
         assertThat(byAlarmNo).isEqualTo(alarmResponseDto);
     }
-
-//    @Test
-//    @DisplayName("리스트조회 테스트")
-//    @Transactional
-//    void findTop5ByAlarmReceiverAndAlarmNoLessThanOrderByAlarmNoDescTest() {
-//        List<AlarmResponseDto> list = alarmService.findTop5ByAlarmReceiver(1L, 55L);
-//        log.info("{}", list);
-//    }
 
     @Test
     @DisplayName("수정 테스트")

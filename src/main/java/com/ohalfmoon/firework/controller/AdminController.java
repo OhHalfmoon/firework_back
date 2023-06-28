@@ -1,6 +1,6 @@
 package com.ohalfmoon.firework.controller;
 
-import com.ohalfmoon.firework.dto.MemberPageDto;
+import com.ohalfmoon.firework.dto.member.MemberPageDto;
 import com.ohalfmoon.firework.dto.member.MemberResponseDTO;
 import com.ohalfmoon.firework.dto.member.MemberUpdateByAdminRequestDTO;
 import com.ohalfmoon.firework.dto.paging.PageRequestDTO;
