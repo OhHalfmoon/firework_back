@@ -92,6 +92,11 @@
                                                 <input type="text" class="form-control" id="updateDeptName" placeholder="부서명">
                                             </div>
                                         </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-10 text-danger">
+                                                부서에 소속된 사원이 없을 경우에만 삭제가 가능합니다!
+                                            </div>
+                                        </div>
 
                                         <div class="d-flex justify-content-between">
                                             <button class="btn btn-warning" id="deptUpdSubmit">수정</button>
@@ -99,11 +104,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group row">
-                                        <div class="col-sm-10 text-danger">
-                                            부서에 소속된 사원이 없을 경우에만 삭제가 가능합니다!
-                                        </div>
-                                    </div>
+
 
                                 </div>
 
@@ -411,7 +412,50 @@
                 })
             }
 
-            // function
+        });
+
+        $("#deptDelSubmit").on("click", function () {
+
+            var deptNo = $("#updateDeptNo").val()
+
+            var nodeData = tree.jstree(true).get_node(selectedNode);
+
+
+            if(nodeData.data.count === 0){
+                console.log('delete nodeData', nodeData);
+
+                var deptDeleteData = {
+                    deptNo: deptNo,
+                }
+
+                $.ajax({
+                    url: "{{contextPath}}/admin/dept/delete", // 클라이언트가 HTTP 요청을 보낼 서버의 URL 주소
+                    data: JSON.stringify(deptDeleteData),  // HTTP 요청과 함께 서버로 보낼 데이터
+                    method: "DELETE",   // HTTP 요청 메소드(GET, POST 등)
+                    dataType: "json", // 서버에서 보내줄 데이터의 타입
+                    contentType: 'application/json',
+                    success: function (responseData) {
+
+                        console.log("ajax success", responseData);
+
+                        redrawTree();
+                    },
+                    error: function (xhr, status, error) {
+                        console.log(xhr, status, error);
+                    }, complete : function () {
+                        $("#updateDeptNo").val("")
+                        $("#updateDeptName").val("")
+
+                        $('#addDeptTab').addClass('active');
+                        $('#addDeptTab a').tab('show');
+                        $('#updateDeptTab').removeClass('active');
+
+                        $('#addDeptBox').addClass('active');
+                        $('#updateDeptBox').removeClass('active');
+                    }
+                })
+
+            }
 
         });
     })

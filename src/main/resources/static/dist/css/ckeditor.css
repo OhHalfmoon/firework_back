@@ -1,0 +1,13 @@
+.document-editor__toolbar {
+    width: 100%;
+}
+
+.editor-container {
+    width: 100%;
+    border: 1px solid #ccc;
+    padding: 0px;
+}
+
+.centered {
+    padding: 0.5rem;
+}

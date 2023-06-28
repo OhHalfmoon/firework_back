@@ -102,6 +102,12 @@ public class MemberController {
     }
 
 
+    @GetMapping("signupProc")
+    public String proc(Model model) {
+        model.addAttribute("dept", deptService.deptList());
+        model.addAttribute("position", positionService.positionList());
+        return "/auth/signup";
+    }
     /**
      * 회원가입(post)
      * 가입 성공시 로그인페이지 이동

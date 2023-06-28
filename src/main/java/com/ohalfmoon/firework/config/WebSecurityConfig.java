@@ -67,7 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // session방식 사용
                 // 권한관련 시작 (배포 전까지 주석)
                 .and().authorizeRequests() // 인증절차에 대한 설정을 진행
-                .antMatchers("/auth/signin", "/auth/signup", "/auth/agree2").permitAll() // 로그인, 회원가입 페이지는 권한이 없어도 사용 가능
+                .antMatchers("/auth/signin", "/auth/signup", "/auth/agree2", "/auth/signupProc").permitAll() // 로그인, 회원가입 페이지는 권한이 없어도 사용 가능
                 .antMatchers("/").hasAnyRole("EMPLOYEE", "TL", "CEO", "ADMIN") // 그 외 페이지는 인증된 사람만 이용가능
                 .antMatchers("/admin/**").hasRole("ADMIN") // 관리자페이지 권한설정
                 .antMatchers("/dist/**", "/plugins/**", "/resources/**").permitAll() // 정적파일 호출
