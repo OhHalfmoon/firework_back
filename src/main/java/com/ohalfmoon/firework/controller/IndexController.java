@@ -1,14 +1,10 @@
 package com.ohalfmoon.firework.controller;
 
 import com.ohalfmoon.firework.config.auth.CustomUserDetails;
-import com.ohalfmoon.firework.dto.approval.ApprovalLineDto;
+import com.ohalfmoon.firework.config.auth.CustomUserDetailsService;
 import com.ohalfmoon.firework.dto.approval.ApprovalPageDto;
 import com.ohalfmoon.firework.dto.approval.ApprovalResponseDto;
-import com.ohalfmoon.firework.dto.attend.AttendResponseDTO;
-import com.ohalfmoon.firework.dto.attend.AttendSaveDTO;
 import com.ohalfmoon.firework.dto.fileUpload.AttachSaveDto;
-import com.ohalfmoon.firework.dto.member.MemberLoginDTO;
-import com.ohalfmoon.firework.dto.member.MemberResponseDTO;
 import com.ohalfmoon.firework.dto.paging.PageResponseDTO;
 import com.ohalfmoon.firework.model.ApprovalEntity;
 import com.ohalfmoon.firework.service.ApprovalService;
@@ -18,22 +14,22 @@ import com.ohalfmoon.firework.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -54,6 +50,9 @@ import java.util.UUID;
 public class IndexController {
     private final ApprovalService approvalService;
     private final MemberService memberService;
+    private final AttendService attendService;
+    private final BoardService boardService;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @GetMapping
     public String index(HttpSession session, @AuthenticationPrincipal CustomUserDetails details, Model model) {
@@ -70,7 +69,7 @@ public class IndexController {
     }
 
     @PostMapping
-    public String modifySign(@RequestParam("file") MultipartFile file, @AuthenticationPrincipal CustomUserDetails user) throws IOException {
+    public String modifySign(@RequestParam("file") MultipartFile file, @AuthenticationPrincipal CustomUserDetails user, HttpSession session) throws IOException {
         String uuid = UUID.randomUUID().toString();
         String ext = FilenameUtils.getExtension(file.getOriginalFilename());
 
@@ -84,7 +83,27 @@ public class IndexController {
 //        log.info("user : {}", user.getAttachNo());
         memberService.updateSign(saveDto, file, user.getUserNo());
 //        log.info("newSign : {}", user.getAttachNo());
+        // session reset start
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); // session값 가져옴
+        CustomUserDetails details = (CustomUserDetails) customUserDetailsService.loadUserByUsername(authentication.getName()); // 현재 사용자의 정보를 CustomUserDetails에 담음?
+        UsernamePasswordAuthenticationToken passwordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                details, authentication.getCredentials(), details.getAuthorities()); // session값 설정
+        SecurityContextHolder.getContext().setAuthentication(passwordAuthenticationToken); // 인증 토큰 설정
+        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, // 세션 저장
+                SecurityContextHolder.getContext());
+        // session reset end
         return "redirect:/";
+    }
+
+
+
+    @GetMapping("approvalList")
+    @ResponseBody
+    public ApprovalPageDto findApprovals(@AuthenticationPrincipal CustomUserDetails details, @PageableDefault(size = 5,
+            direction = Sort.Direction.DESC,
+            sort = "approvalNo") Pageable pageable) {
+        Page<ApprovalEntity> entities = approvalService.getStateListByPaging(details.getUserNo(), 1, pageable);
+        return new ApprovalPageDto(new PageResponseDTO<>(entities), entities.map(ApprovalResponseDto::new));
     }
 
     @GetMapping("login")
