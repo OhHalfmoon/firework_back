@@ -34,7 +34,6 @@ public class BoardResponseDTO {
     private Long userNo;
     private String name;
     private Date regDate;
-    private List<String> originName;
 
     public BoardResponseDTO(final BoardEntity boardEntity) {
         boardNo = boardEntity.getBoardNo();
@@ -42,9 +41,6 @@ public class BoardResponseDTO {
         content = boardEntity.getBoardContent();
         regDate = boardEntity.getRegdate();
         name = boardEntity.getMemberEntity().getName();
-        originName = boardEntity.getAttachEntities()
-                .stream().map(attachEntity -> attachEntity.getOriginName())
-                .collect(Collectors.toList());
     }
 
     public BoardEntity toEntity() {

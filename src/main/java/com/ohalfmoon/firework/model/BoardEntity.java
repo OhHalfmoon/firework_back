@@ -40,9 +40,9 @@ public class BoardEntity {
     @JoinColumn(name = "userNo")
     private MemberEntity memberEntity;
 
-    @OneToMany
-    @JoinColumn(name = "boardNo")
-    private List<AttachEntity> attachEntities;
+//    @OneToMany
+//    @JoinColumn(name = "boardNo")
+//    private List<AttachEntity> attachEntities;
 
     @Column(nullable = false)
     String boardTitle;

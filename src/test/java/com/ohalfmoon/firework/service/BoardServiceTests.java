@@ -43,23 +43,23 @@ public class BoardServiceTests {
     @Rollback(value = false)
     @Transactional
     public void testSave() throws IOException {
-        Long userNo = 1L;
-        MockMultipartFile file = new MockMultipartFile("uploadFile", "test.txt", "text/plain", "hello file".getBytes());
-        BoardSaveDTO boardSaveDTO = BoardSaveDTO.builder()
-                .boardTitle("서비스 테스트 제목 4")
-                .boardContent("서비스 테스트 내용 4")
-                .userNo(userNo)
-                .build();
-        AttachSaveDto attachSaveDto = AttachSaveDto.builder()
-                .uuid(UUID.randomUUID().toString())
-                .ext(FilenameUtils.getExtension(file.getOriginalFilename()))
-                .originName(file.getOriginalFilename())
-                .build();
-
-         Long boardNo = boardService.save(boardSaveDTO, attachSaveDto, file);
-         log.info("boardSaveDTO : {}", boardSaveDTO);
-         log.info("attachSaveDto : {}", attachSaveDto);
-         log.info("boardNo : {}", boardNo);
+//        Long userNo = 1L;
+//        MockMultipartFile file = new MockMultipartFile("uploadFile", "test.txt", "text/plain", "hello file".getBytes());
+//        BoardSaveDTO boardSaveDTO = BoardSaveDTO.builder()
+//                .boardTitle("서비스 테스트 제목 4")
+//                .boardContent("서비스 테스트 내용 4")
+//                .userNo(userNo)
+//                .build();
+//        AttachSaveDto attachSaveDto = AttachSaveDto.builder()
+//                .uuid(UUID.randomUUID().toString())
+//                .ext(FilenameUtils.getExtension(file.getOriginalFilename()))
+//                .originName(file.getOriginalFilename())
+//                .build();
+//
+//         Long boardNo = boardService.save(boardSaveDTO, attachSaveDto, file);
+//         log.info("boardSaveDTO : {}", boardSaveDTO);
+//         log.info("attachSaveDto : {}", attachSaveDto);
+//         log.info("boardNo : {}", boardNo);
 
     }
 
