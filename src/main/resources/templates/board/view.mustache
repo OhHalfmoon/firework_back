@@ -87,8 +87,8 @@
                                         <input type="hidden" name="boardNo" value="{{boardNo}}">
                                         {{#user}}
                                             {{#isTeamLeader}}
-                                                <button id="viewDeleteBtn" type="submit" formaction="/board/remove" class="btn btn-danger"> 삭제 </button>
-                                                <a href="/board/modify/{{boardNo}}" type="button" class="btn btn-primary"><i class="fas fa-pencil-alt"></i> 수정 </a>
+                                                <button id="isDelete" type="submit" formaction="/board/remove" class="btn btn-danger"> 삭제 </button>
+                                                <a href="/board/modify/{{boardNo}}" id="isModify" type="button" class="btn btn-primary"><i class="fas fa-pencil-alt"></i> 수정 </a>
                                             {{/isTeamLeader}}
                                             {{^isteamLeader}}
                                             {{/isteamLeader}}
@@ -117,11 +117,26 @@
 {{>layout/library}}
 <script>
    $(function () {
-       $("#viewDeleteBtn").click(function () {
+       var user = {{user.userNo}};
+       var writer = {{board.userNo}};
+
+       $("#isDelete").click(function (e) {
+           // e.preventDefault();
+           if(user !== writer) {
+               alert("작성자만 삭제할 수 있습니다.");
+               return false;
+           }
            if(confirm("삭제하시겠습니까?")) {
                 return true;
-              } else {
+           } else {
                 return false;
+           }
+       })
+
+       $("#isModify").click(function (e) {
+           if(user !== writer) {
+               alert("작성자만 수정할 수 있습니다.");
+               return false;
            }
        })
    })
