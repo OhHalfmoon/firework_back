@@ -1,5 +1,5 @@
 $(function () {
-    // user.userNo로 바꿀 예정!!
+    // 알림 시작
     moment.locale('ko');
     alarmService.getCount(userNo, function (result) {
         $(".alarmcount").html(result);
@@ -30,23 +30,11 @@ $(function () {
 
     }
 
-
-    // $(".alarm").on("click", "a", function () {
-    //     event.preventDefault();
-    //     var $this = $(this);
-    //     console.log($this);
-    //     var obj = {alarmNo: $this.data("alarmno"), alarmCheck: true}
-    //     alarmService.modify(obj, function (result) {
-    //         // console.log(result);
-    //     });
-    // });
-
     $(".alarms").on("click", ".alarm", function () {
         event.stopPropagation();
         var $this = $(this);
         var alarmNo = $this.data("alarmno");
         alarmService.remove(alarmNo, function (result) {
-            // console.log(result);
         });
     });
 
@@ -66,7 +54,9 @@ $(function () {
         });
         pageNum++;
     })
+    // 알림 종료
 
+    // 쪽지 시작
     var divison = true;
 
     messageService.getListByReceiver({userNo: userNo}, function (result) {
@@ -236,7 +226,6 @@ $(function () {
                         messageTitle: messageTitle,
                         messageContent: messageContent
                     }, function (result) {
-                        // console.log(result);
                     })
                 }
                 alert("성공적으로 보냈습니다")
@@ -667,4 +656,5 @@ $(function () {
         }
     })
 
+    // 쪽지 종료
 });
