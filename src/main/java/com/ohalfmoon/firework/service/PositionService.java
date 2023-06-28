@@ -3,6 +3,7 @@ package com.ohalfmoon.firework.service;
 import com.ohalfmoon.firework.dto.position.PositionListResponseDTO;
 import com.ohalfmoon.firework.model.PositionEntity;
 import com.ohalfmoon.firework.persistence.PositionRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,10 +24,10 @@ import java.util.stream.Collectors;
  * 2023-06-09                ycy            PositionList 추가
  */
 @Service
+@RequiredArgsConstructor
 public class PositionService {
 
-    @Autowired
-    private PositionRepository positionRepository;
+    private final PositionRepository positionRepository;
 
     /**
      * Position list 조회
@@ -35,7 +36,6 @@ public class PositionService {
      */
     @Transactional(readOnly = true)
     public List<PositionListResponseDTO> positionList() {
-        System.out.println("들어왔슴");
         return positionRepository.findAll().stream()
                 .map(PositionListResponseDTO::new)
                 .collect(Collectors.toList());

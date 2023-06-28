@@ -51,7 +51,7 @@
                                 </div>
                                 {{#user}}
                                     <h3 class="profile-username text-center my-3"><b>회원 정보 수정</b></h3>
-                                    <form method="post">
+                                    <form method="post" id="frm">
                                         <ul class="list-group list-group-unbordered mb-3 overflow-y-auto">
                                             <li class="list-unstyled">
                                                 <input type="hidden" name="userNo" value="{{userNo}}">
@@ -83,7 +83,7 @@
                                             <a href="userinfo" class="btn btn-outline-dark btn-block"><b>이전으로</b></a>
                                         </div>
                                         <div class="col-4">
-                                            <button type="submit" class="btn btn-danger btn-block"><b>수정하기</b></button>
+                                            <button type="submit" class="btn btn-danger btn-block" id="updatePw"><b>수정하기</b></button>
                                         </div>
                                     </div>
                                 </form>
@@ -118,6 +118,14 @@
             else {
                 outputPw.innerHTML = "비밀번호가 일치합니다.";
                 outputPw.style.color = "black";
+            }
+        })
+        $("#updatePw").click(function (e){
+            e.preventDefault();
+            let result = confirm("수정하시겠습니까?");
+            if(result) {
+                alert("비밀번호가 수정되었습니다. 다시 로그인해주세요");
+                $("#frm").submit();
             }
         })
     })

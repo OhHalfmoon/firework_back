@@ -131,41 +131,18 @@ public class MemberController {
         return redirect+"auth/signin";
     }
 
+    /**
+     * 로그인실패시 에러메세지 출력
+     *
+     * @param error     the error
+     * @param exception the exception
+     * @param model     the model
+     */
     @GetMapping("signin")
     public void login(@RequestParam(value = "error", required = false)String error, @RequestParam(value = "exception", required = false)String exception, Model model) {
         model.addAttribute("error", error);
         model.addAttribute("exception", exception);
     }
-
-    /**
-     * 로그인(post)
-     * 로그인 성공시 security session에 로그인정보(MemberLoginDTO) 저장, 메인페이지 이동
-     * @param dto     the dto
-     * @return the string
-     */
-    @PostMapping("signin")
-    public void login(MemberLoginDTO dto, String username) {
-        MemberEntity entity = memberService.get(username);
-        MemberResponseDTO member = memberService.login(dto);
-        log.info("entity : {}", memberService.get(username));
-//            return redirect;
-        }
-
-//    @PostMapping("signin")
-//    public String login(MemberLoginDTO dto) {
-//        MemberResponseDTO member = memberService.login(dto);
-//        if(member == null) {
-//            return redirect;
-//        }else {
-//            if(member.getState()==0) {
-//                return redirect + "auth/signin";
-//            }else {
-//                log.warn("state : {}", member.getState());
-//                return redirect;
-//            }
-//        }
-//    }
-
 
     /**
      * 회원가입 이용약관 페이지
@@ -201,7 +178,7 @@ public class MemberController {
     }
 
     /**
-     * 회원정보 수정 중 입력한 값을 받아 회원 정보 수정
+     * 회원정보 수정 후 session 재설정
      *
      * @return login page return
      */
@@ -226,6 +203,14 @@ public class MemberController {
         model.addAttribute("position", positionService.positionList());
     }
 
+    /**
+     * 비밀번호 수정
+     *
+     * @param userNo  the user no
+     * @param dto     the dto
+     * @param session the session
+     * @return the string
+     */
     @PostMapping("modifyPw")
     public String modifyPw(Long userNo, MemberUpdatePwDTO dto, HttpSession session) {
         memberService.updatePw(userNo, dto);
@@ -234,6 +219,13 @@ public class MemberController {
     }
 
 
+    /**
+     * 근태 확인
+     *
+     * @param model the model
+     * @param dto   the dto
+     * @return the attend
+     */
     @GetMapping("getAttend/{userNo}")
     public String getAttend(Model model, MemberResponseDTO dto) {
         model.addAttribute("attend", attendService.getAttend(dto.getUserNo()));
