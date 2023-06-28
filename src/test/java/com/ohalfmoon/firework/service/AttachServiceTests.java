@@ -2,7 +2,6 @@ package com.ohalfmoon.firework.service;
 
 import com.ohalfmoon.firework.dto.fileUpload.AttachResponseDto;
 import com.ohalfmoon.firework.dto.fileUpload.AttachSaveDto;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.assertj.core.api.Assertions;
@@ -10,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
@@ -30,7 +28,6 @@ import java.util.UUID;
  */
 @SpringBootTest
 @Slf4j
-@Commit
 public class AttachServiceTests {
     @Autowired
     private AttachService attachService;
@@ -68,10 +65,10 @@ public class AttachServiceTests {
     }
 
     @Test
-    @Transactional
-    public void deleteTests(){
-        Long deleteAll = attachService.deleteAll(104L);
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteTests() throws IOException {
+        Long deleteAll = attachService.deleteAllApprovalNo(110L);
 
-        Assertions.assertThat(deleteAll).isGreaterThan(0);
+        Assertions.assertThat(deleteAll).isGreaterThan(0L);
     }
 }

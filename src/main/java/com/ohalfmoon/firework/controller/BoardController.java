@@ -1,7 +1,5 @@
 package com.ohalfmoon.firework.controller;
 
-import com.ohalfmoon.firework.dto.MessageResponseDto;
-import com.ohalfmoon.firework.dto.board.BoardPageDTO;
 import com.ohalfmoon.firework.dto.board.BoardResponseDTO;
 import com.ohalfmoon.firework.dto.board.BoardSaveDTO;
 import com.ohalfmoon.firework.dto.board.BoardUpdateDTO;
@@ -14,11 +12,7 @@ import com.ohalfmoon.firework.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -104,9 +98,9 @@ public class BoardController {
     public String get(Model model, @PathVariable Long boardNo) {
         log.info("view boardNo={}", boardNo);
         model.addAttribute("board", boardService.get(boardNo));
-        model.addAttribute("fileList", attachService.getFileListByBoardNo(boardNo));
+//        model.addAttribute("fileList", attachService.getFileListByBoardNo(boardNo));
 
-        log.info("fileList : {}", attachService.getFileListByBoardNo(boardNo));
+//        log.info("fileList : {}", attachService.getFileListByBoardNo(boardNo));
         return "/board/view";
     }
 
@@ -115,7 +109,7 @@ public class BoardController {
     public String modify(Model model, @PathVariable Long boardNo) {
         log.info("modify");
         model.addAttribute("board", boardService.get(boardNo));
-        model.addAttribute("fileList", attachService.getFileListByBoardNo(boardNo));
+//        model.addAttribute("fileList", attachService.getFileListByBoardNo(boardNo));
         return "board/modify";
     }
 
@@ -127,7 +121,7 @@ public class BoardController {
         AttachSaveDto attachSaveDto;
 
         if(!file.isEmpty()){
-            attachService.deleteAll(boardNo);
+            attachService.deleteAllApprovalNo(boardNo);
             attachSaveDto = AttachSaveDto.builder()
                     .originName(file.getOriginalFilename())
                     .uuid(uuid)
