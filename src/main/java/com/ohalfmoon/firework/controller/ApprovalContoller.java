@@ -104,18 +104,22 @@ public class ApprovalContoller {
     //기안 내용 수정
     @PostMapping("/update/{approvalNo}")
     public String update(@RequestParam("file") MultipartFile file, @PathVariable Long approvalNo, @ModelAttribute ApprovalUpdateDto updateDto) throws IOException {
-        String uuid = UUID.randomUUID().toString();
-        String ext = FilenameUtils.getExtension(file.getOriginalFilename());
-        AttachDto attachDto;
-        // file 없을 경우 null처리
-        if(!file.isEmpty()){
-            attachService.deleteAllApprovalNo(approvalNo);
-            attachDto = new AttachDto(file);
-        } else {
-            attachDto = null;
-        }
+//
+//        String uuid = UUID.randomUUID().toString();
+//        String ext = FilenameUtils.getExtension(file.getOriginalFilename());
+//        AttachDto attachDto;
+//
+//        // file 없을 경우 null처리
+//        if(!file.isEmpty()){
+//            attachService.deleteAllApprovalNo(approvalNo);
+//            attachDto = new AttachDto(file);
+//        } else {
+//            attachDto = null;
+//        }
+//
+
         log.info("dto값: {}", updateDto);
-        approvalService.update(attachDto, file, approvalNo, updateDto);
+        approvalService.update(file, approvalNo, updateDto);
 
         return "redirect:/";
     }
