@@ -59,7 +59,10 @@
                                             <li class="list-group-item">
                                                 <label class="row">
                                                     <b class="m-2">현재 비밀번호를 입력해주세요</b><br>
-                                                    <input type="password" id="" name="name" class="form-control m-1" placeholder="현재 비밀번호를 입력해주세요">
+                                                    <input type="password" id="" name="oldPw" class="form-control m-1" placeholder="현재 비밀번호를 입력해주세요">
+                                                    {{#message}}
+                                                        <p style="color: red" class="ml-2">{{message}}</p>
+                                                    {{/message}}
                                                 </label>
                                             </li>
                                             <li class="list-group-item">
@@ -67,6 +70,7 @@
                                                     <b class="m-2">변경하실 비밀번호를 입력해주세요</b>
                                                     <input type="password" id="pw" name="password" class="form-control m-1" placeholder="변경하실 비밀번호를 입력해주세요">
                                                 </label>
+                                                <output id="outputPass" class="col-12"></output>
                                             </li>
                                             <li class="list-group-item">
                                                 <label class="row">
@@ -83,7 +87,7 @@
                                             <a href="userinfo" class="btn btn-outline-dark btn-block"><b>이전으로</b></a>
                                         </div>
                                         <div class="col-4">
-                                            <button type="submit" class="btn btn-danger btn-block" id="updatePw"><b>수정하기</b></button>
+                                            <button type="submit" class="btn btn-danger btn-block" id="updatePw" disabled><b>수정하기</b></button>
                                         </div>
                                     </div>
                                 </form>
@@ -108,8 +112,22 @@
 <script>
     $(function() {
         let outputPw = document.querySelector("#outputPw");
+        let outputPass = document.querySelector("#outputPass");
         let pass = document.querySelector("#pw");
         let passChk = document.querySelector("#checkPw");
+        let updateBtn = document.querySelector("#updatePw")
+
+        $("#pw").blur(function () {
+            let pw =  /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/;
+            if(!pw.test(pass.value)) {
+                outputPass.innerHTML = "비밀번호는 영문 대,소문자와 숫자, 특수기호가 적어도 1개 이상씩 포함된 8자 ~ 20자의 비밀번호여야 합니다.";
+                outputPass.style.color = "red";
+            }else {
+                outputPass.innerHTML = "사용가능한 비밀번호 입니다.";
+                outputPass.style.color = "black";
+            }
+        })
+
         $("#checkPw").blur(function() {
             if(passChk.value !== pass.value) {
                 outputPw.innerHTML = "비밀번호가 일치하지 않습니다.";
@@ -118,13 +136,14 @@
             else {
                 outputPw.innerHTML = "비밀번호가 일치합니다.";
                 outputPw.style.color = "black";
+                updateBtn.disabled = false;
+
             }
         })
         $("#updatePw").click(function (e){
             e.preventDefault();
             let result = confirm("수정하시겠습니까?");
-            if(result) {
-                alert("비밀번호가 수정되었습니다. 다시 로그인해주세요");
+            if (result) {
                 $("#frm").submit();
             }
         })

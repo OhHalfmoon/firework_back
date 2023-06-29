@@ -109,7 +109,7 @@
                     <!-- /.col -->
                     <div class="col-12 ">
 
-                        <button type="submit" class="btn btn-secondary btn-block"><i class="fas fa-user-edit" style="color: white;"></i> 회원가입</button>
+                        <button type="submit" class="btn btn-secondary btn-block" id="saveBtn" disabled="disabled"><i class="fas fa-user-edit" style="color: white;"></i> 회원가입</button>
                     </div>
                     <!-- /.col -->
                 </div>
@@ -134,14 +134,17 @@
         let outputPw = document.querySelector("#outputPw");
         let pass = document.querySelector("#pw");
         let passChk = document.querySelector("#checkPw");
+        let save = document.querySelector("#saveBtn");
         $("#checkPw").blur(function() {
             if(passChk.value !== pass.value) {
                 outputPw.innerHTML = "비밀번호가 일치하지 않습니다.";
                 outputPw.style.color = "red";
+                passChk.focus();
             }
             else {
                 outputPw.innerHTML = "비밀번호가 일치합니다.";
                 outputPw.style.color = "black";
+                save.disabled = false
             }
         })
     })

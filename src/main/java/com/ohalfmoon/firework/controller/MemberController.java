@@ -14,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -66,6 +67,8 @@ public class MemberController {
 
     private final CustomUserDetailsService customUserDetailsService;
 
+    private final PasswordEncoder encoder;
+
     String redirect = "redirect:/";
 
     /**
@@ -117,12 +120,8 @@ public class MemberController {
 
             for(String key : errorMap.keySet()) {
                 model.addAttribute(key, errorMap.get(key));
-                log.info("key : "+key);
-                log.info("errorMap : "+errorMap.toString());
-                log.info("errorMap get(key) : "+errorMap.get(key));
-                log.info("model add : "+model.addAttribute(key, errorMap.get(key)));
-
             }
+            model.addAttribute("errorMap", errorMap);
             // 회원가입 실패시 회원가입 페이지로 리턴
             return "/auth/signup";
         }
@@ -212,10 +211,16 @@ public class MemberController {
      * @return the string
      */
     @PostMapping("modifyPw")
-    public String modifyPw(Long userNo, MemberUpdatePwDTO dto, HttpSession session) {
-        memberService.updatePw(userNo, dto);
-        session.invalidate();
-        return redirect+"auth/signin";
+    public String modifyPw(Long userNo, MemberUpdatePwDTO dto, HttpSession session, Model model) {
+        if (memberService.updatePw(userNo, dto).equals("success")) {
+            memberService.updatePw(userNo, dto);
+            session.invalidate();
+            return redirect+"auth/signin";
+        }
+        else {
+            model.addAttribute("message", "기존 비밀번호와 다릅니다. 다시 입력해주세요");
+            return "auth/modifyPw";
+        }
     }
 
 

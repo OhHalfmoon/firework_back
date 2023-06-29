@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Data
 public class MemberUpdatePwDTO {
+    private String oldPw;
     private String password;
 
     @Builder

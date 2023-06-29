@@ -115,13 +115,19 @@ public class MemberService {
      * @return the long
      */
     @Transactional
-    public Long updatePw(Long userNo, MemberUpdatePwDTO dto) {
+    public String updatePw(Long userNo, MemberUpdatePwDTO dto) {
         MemberEntity entity = memberRepository.findById(userNo)
                 .orElseThrow(() -> new IllegalArgumentException("해당 id가 존재하지 않습니다." + userNo));
         dto.setPassword(encoder.encode(dto.getPassword()));
-        entity.updatePw(dto.getPassword());
-        return userNo;
+        if(encoder.matches(dto.getOldPw(), entity.getPassword())) {
+            entity.updatePw(dto.getPassword());
+            return "success";
+        }
+        else {
+            return "error";
+        }
     }
+
     @Transactional
     public Long updateSign(AttachSaveDto adto, MultipartFile uploadFile, Long userNo) throws IOException {
         String filePath =  filePath(adto.getUuid(), adto.getExt());
