@@ -59,7 +59,10 @@
                                             <li class="list-group-item">
                                                 <label class="row">
                                                     <b class="m-2">현재 비밀번호를 입력해주세요</b><br>
-                                                    <input type="password" id="" name="name" class="form-control m-1" placeholder="현재 비밀번호를 입력해주세요">
+                                                    <input type="password" id="" name="oldPw" class="form-control m-1" placeholder="현재 비밀번호를 입력해주세요">
+                                                    {{#message}}
+                                                        <p style="color: red" class="ml-2">{{message}}</p>
+                                                    {{/message}}
                                                 </label>
                                             </li>
                                             <li class="list-group-item">
@@ -110,6 +113,7 @@
         let outputPw = document.querySelector("#outputPw");
         let pass = document.querySelector("#pw");
         let passChk = document.querySelector("#checkPw");
+
         $("#checkPw").blur(function() {
             if(passChk.value !== pass.value) {
                 outputPw.innerHTML = "비밀번호가 일치하지 않습니다.";
@@ -123,8 +127,7 @@
         $("#updatePw").click(function (e){
             e.preventDefault();
             let result = confirm("수정하시겠습니까?");
-            if(result) {
-                alert("비밀번호가 수정되었습니다. 다시 로그인해주세요");
+            if (result) {
                 $("#frm").submit();
             }
         })

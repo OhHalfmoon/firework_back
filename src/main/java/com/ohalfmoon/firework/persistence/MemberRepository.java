@@ -21,6 +21,8 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
 
     boolean existsByUsername(String username);
 
+    MemberEntity findByPassword (Long userNo);
+
     Page<MemberEntity> findAllByState(State state, Pageable pageable);
 
     Page<MemberEntity> findAllByUserNoNotLike(Long userNo, Pageable pageable);
