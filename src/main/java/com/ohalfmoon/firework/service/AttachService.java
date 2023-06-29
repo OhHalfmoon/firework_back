@@ -1,7 +1,7 @@
 package com.ohalfmoon.firework.service;
 
 import com.ohalfmoon.firework.dto.fileUpload.AttachResponseDto;
-import com.ohalfmoon.firework.dto.fileUpload.AttachSaveDto;
+import com.ohalfmoon.firework.dto.fileUpload.AttachDto;
 import com.ohalfmoon.firework.model.AttachEntity;
 import com.ohalfmoon.firework.model.spec.AttachSpec;
 import com.ohalfmoon.firework.persistence.AttachRepository;
@@ -40,16 +40,25 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class AttachService {
-    @Value("${upload.path}")
-    private String uploadDir;
+//    @Value("${upload.path}")
+//    private String uploadDir;
+
+    public static String uploadDir = "upload";
 
     private final AttachRepository attachRepository;
 
     private final HttpServletRequest request;
 
-    private final String projectPath = new File("").getAbsolutePath();
+    // 업로드 기준 경로
+    private static final String projectPath = new File("").getAbsolutePath();
 
-    private String filePath(String uuid, String ext){
+//    public String getProjectPath() throws IOException {
+//        Resource resource = resourceLoader.getResource("classpath:");
+//        return resource.getFile().getAbsolutePath();
+//    }
+
+
+    public String filePath(String uuid, String ext){
         // 프로젝트 루트 경로 확인용
 
         // 실제 업로드 폴더 경로
@@ -65,28 +74,54 @@ public class AttachService {
         return File.separator + uploadDir + File.separator + uuid + "." + ext;
     }
 
+    public void saveFile(MultipartFile multipartFile, AttachDto dto) throws IOException {
+        File path = new File(uploadDir, dto.getPath());
+        log.info("save dto : {}", dto);
+        File file = dto.getFile();
+
+        if(!path.exists()){
+            boolean mkdirs = path.mkdirs();
+        }
+
+        String absolutePath = file.getAbsolutePath();
+
+        log.info("save absolutePath : {}", absolutePath);
+
+//        multipartFile.transferTo(new File(absolutePath));
+        multipartFile.transferTo(new File(absolutePath));
+    }
+
     /**
-     * File save long.
+     * File upload long.
      *
      * @param dto        the dto
      * @return the long
      * @throws IOException the io exception
      */
     @Transactional
-    public Long fileSave(AttachSaveDto dto) throws IOException {
+    public Long upload(MultipartFile multipartFile, AttachDto dto) throws IOException {
         // 파일 저장 시작
-        String filePath = filePath(dto.getUuid(), dto.getExt());
-        dto.setPath(filePath);
+//        String filePath = filePath(dto.getUuid(), dto.getExt());
+//        dto.setPath(filePath);
 
-        log.info("경로명 : {}", filePath);
+//        File path = new File(UPLOAD_PATH, dto.getPath());
 
-        dto.getFile().transferTo(new File(projectPath + filePath));
+//        log.info("경로명 : {}", filePath);
 
-        // 파일 정보 저장
-        AttachEntity attachEntity = dto.toEntity();
-        attachRepository.save(attachEntity);
+//        dto.getFile().transferTo(new File(projectPath + filePath));
 
-        return attachEntity.getAttachNo();
+        try{
+            saveFile(multipartFile, dto);
+            // 파일 정보 저장
+            AttachEntity attachEntity = dto.toEntity();
+            attachRepository.save(attachEntity);
+
+            return attachEntity.getAttachNo();
+
+        } catch (IOException e){
+            throw new RuntimeException("파일 저장시 오류가 발생했습니다!");
+        }
+
     }
 
     /**
@@ -127,6 +162,14 @@ public class AttachService {
         return fileDtos.stream().map(item -> entityToDto(item, false)).collect(Collectors.toList());
     }
 
+    public List<AttachResponseDto> getBoardFileList(Long boardNo){
+//        List<AttachEntity> fileDtos = attachRepository.findAttachEntitiesByApprovalEntity_ApprovalNo(approvalNo);
+        List<AttachEntity> fileDtos = attachRepository.findAll(AttachSpec.boardNo(boardNo));
+
+        return fileDtos.stream()
+                .map(item -> entityToDto(item, false)).collect(Collectors.toList());
+    }
+
     /**
      * Get file attach response dto.
      *
@@ -163,11 +206,13 @@ public class AttachService {
                 .originName(entity.getOriginName())
                 .ext(entity.getExt())
                 .uuid(entity.getUuid())
+                .path(entity.getPath())
                 .url(request.getScheme()
                         + "://" + request.getServerName()
                         + ":" + request.getServerPort()
                         + "/upload/" + url + "?fileNo=" + entity.getAttachNo())
                 .build();
+
     }
 
     /**
@@ -225,11 +270,31 @@ public class AttachService {
     }
 
 
-    public boolean fileListSave(){
+    @Transactional
+    public void fileListSave(List<MultipartFile> fileList, Long boardNo) {
         // 파일 저장 시작
 
-        // return attachEntity.getAttachNo() != null;
-        return false;
+//        try{
+
+            for (MultipartFile multipartFile : fileList) {
+                AttachDto dto = new AttachDto(multipartFile);
+                dto.setBoardNo(boardNo);
+                try {
+                    saveFile(multipartFile, dto);
+                } catch (IOException e){
+                    e.printStackTrace();
+                    throw new IllegalStateException("파일 저장 중 문제가 발생하였습니다.");
+                }
+                // 파일 정보 저장
+
+                AttachEntity attachEntity = dto.toEntity();
+                attachRepository.save(attachEntity);
+
+            }
+        //        }
+//        catch (IOException e){
+//            throw new IllegalStateException("파일 저장 중 문제가 발생하였습니다.");
+//        }
     }
 
 }

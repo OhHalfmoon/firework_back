@@ -4,7 +4,7 @@ import com.ohalfmoon.firework.config.auth.CustomUserDetails;
 import com.ohalfmoon.firework.config.auth.CustomUserDetailsService;
 import com.ohalfmoon.firework.dto.approval.ApprovalPageDto;
 import com.ohalfmoon.firework.dto.approval.ApprovalResponseDto;
-import com.ohalfmoon.firework.dto.fileUpload.AttachSaveDto;
+import com.ohalfmoon.firework.dto.fileUpload.AttachDto;
 import com.ohalfmoon.firework.dto.paging.PageResponseDTO;
 import com.ohalfmoon.firework.model.ApprovalEntity;
 import com.ohalfmoon.firework.service.ApprovalService;
@@ -72,7 +72,7 @@ public class IndexController {
         String uuid = UUID.randomUUID().toString();
         String ext = FilenameUtils.getExtension(file.getOriginalFilename());
 
-        AttachSaveDto saveDto = AttachSaveDto.builder()
+        AttachDto saveDto = AttachDto.builder()
                 .originName(file.getOriginalFilename())
                 .uuid(uuid)
                 .ext(ext)

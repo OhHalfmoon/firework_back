@@ -1,7 +1,7 @@
 package com.ohalfmoon.firework.service;
 
 import com.ohalfmoon.firework.dto.fileUpload.AttachResponseDto;
-import com.ohalfmoon.firework.dto.fileUpload.AttachSaveDto;
+import com.ohalfmoon.firework.dto.fileUpload.AttachDto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.assertj.core.api.Assertions;
@@ -37,31 +37,37 @@ public class AttachServiceTests {
     public void saveTest() throws IOException {
         MockMultipartFile file = new MockMultipartFile("file", "test.txt", "text/plain", "Hello, World!".getBytes());
 
-        AttachSaveDto dto = AttachSaveDto.builder()
+        AttachDto dto = AttachDto.builder()
                 .uuid(UUID.randomUUID().toString())
                 .ext(FilenameUtils.getExtension(file.getOriginalFilename()))
                 .originName(file.getOriginalFilename())
                 .approvalNo(32L)
-                .file(file)
                 .build();
 
-        attachService.fileSave(dto);
+        attachService.upload(file, dto);
 
-        AttachSaveDto dto1 = AttachSaveDto.builder()
+        AttachDto dto1 = AttachDto.builder()
                 .uuid(UUID.randomUUID().toString())
                 .ext(FilenameUtils.getExtension(file.getOriginalFilename()))
                 .originName(file.getOriginalFilename())
                 .approvalNo(32L)
-                .file(file)
                 .build();
 
-        attachService.fileSave(dto1);
+        attachService.upload(file, dto1);
     }
 
     @Test
     @Transactional(readOnly = true)
     public void getFileListByApprovalNo(){
         List<AttachResponseDto> fileList = attachService.getFileList(32L);
+
+        log.info("fileList : {}", fileList);
+    }
+
+    @Test
+    @Transactional(readOnly = true)
+    public void getFileListByBoardNo(){
+        List<AttachResponseDto> fileList = attachService.getBoardFileList(334L);
 
         log.info("fileList : {}", fileList);
     }

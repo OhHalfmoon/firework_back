@@ -1,11 +1,9 @@
 package com.ohalfmoon.firework.service;
 
-import com.ohalfmoon.firework.dto.fileUpload.AttachSaveDto;
+import com.ohalfmoon.firework.dto.fileUpload.AttachDto;
 import com.ohalfmoon.firework.dto.member.*;
-import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.Role;
 import com.ohalfmoon.firework.model.State;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.jupiter.api.DisplayName;
@@ -14,11 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -108,7 +104,7 @@ public class MemberServiceTest {
     public void saveFileTest() throws IOException {
         MockMultipartFile file = new MockMultipartFile("signtest", "image-removebg-preview.png", "image/png", "Hello, World!".getBytes());
 
-        AttachSaveDto dto = AttachSaveDto.builder()
+        AttachDto dto = AttachDto.builder()
                 .uuid(UUID.randomUUID().toString())
                 .ext(FilenameUtils.getExtension(file.getOriginalFilename()))
                 .originName(file.getOriginalFilename())

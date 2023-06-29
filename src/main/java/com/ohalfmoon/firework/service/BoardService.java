@@ -3,7 +3,7 @@ package com.ohalfmoon.firework.service;
 import com.ohalfmoon.firework.dto.board.BoardResponseDTO;
 import com.ohalfmoon.firework.dto.board.BoardSaveDTO;
 import com.ohalfmoon.firework.dto.board.BoardUpdateDTO;
-import com.ohalfmoon.firework.dto.fileUpload.AttachSaveDto;
+import com.ohalfmoon.firework.dto.fileUpload.AttachDto;
 import com.ohalfmoon.firework.dto.paging.PageRequestDTO;
 import com.ohalfmoon.firework.model.AlarmEntity;
 import com.ohalfmoon.firework.model.AttachEntity;
@@ -15,19 +15,18 @@ import com.ohalfmoon.firework.persistence.AttachRepository;
 import com.ohalfmoon.firework.persistence.BoardRepository;
 import com.ohalfmoon.firework.persistence.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -60,6 +59,9 @@ public class BoardService {
     @Autowired
     private MemberRepository memberRepository;
 
+    @Autowired
+    private AttachService attachService;
+
     private final String projectPath = new File("").getAbsolutePath();
 
     @Value("upload")
@@ -73,65 +75,22 @@ public class BoardService {
         return File.separator + uploadDir + File.separator + uuid + "." + ext;
     }
 
-    @Transactional
+    // 트랜잭션 전파
+    @Transactional(propagation = Propagation.REQUIRED)
     public Long save(BoardSaveDTO boardSaveDTO, List<MultipartFile> files) throws IOException {
         // 0. files가 들어왔는지 체크하여 파일저장로직을 실행(조건문)
         // 1. 실제 파일을 files를 순환하면서 실제로 로컬 저장소에 저장
         // 2. dto List가 있으므로 이 dto들을 엔티티로 변환하여 DB에 저장
 
+        // 파일 저장시 문제가 생겼을 경우 UnexpectedRollbackException 발생
+
         // boardNo 생성
         Long boardNo = boardRepository.save(boardSaveDTO.toEntity()).getBoardNo();
 
         if(files != null){
-
-            //files를 순환하며 로컬 저장소에 저장
-            for (MultipartFile file : files) {
-                String filePath = filePath(UUID.randomUUID().toString(), FilenameUtils.getExtension(file.getOriginalFilename()));
-                file.transferTo(new File(projectPath + filePath));
-                AttachEntity attachEntity = AttachEntity.builder()
-//                        .boardNo(BoardEntity.builder().boardNo(boardNo).build())
-                        .originName(file.getOriginalFilename())
-                        .uuid(UUID.randomUUID().toString())
-                        .ext(FilenameUtils.getExtension(file.getOriginalFilename()))
-                        .path(filePath)
-                        .build();
-                attachRepository.save(attachEntity);
-            }
-            //DTO를 Entity로 변환
-            List<AttachSaveDto> dtoList = files.stream().map(
-                    file -> {
-                        AttachSaveDto dto = AttachSaveDto.builder()
-                                .boardNo(boardNo)
-                                .originName(file.getOriginalFilename())
-                                .uuid(UUID.randomUUID().toString())
-                                .ext(FilenameUtils.getExtension(file.getOriginalFilename()))
-                                .build();
-
-                        String filePath = filePath(dto.getUuid(), dto.getExt());
-//                        dto.setPath(filePath);
-
-                        try {
-                            file.transferTo(new File(projectPath + filePath));
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-
-                        return dto;
-                    }
-            ).collect(Collectors.toList());
+            attachService.fileListSave(files, boardNo);
 
         }
-//        List<MemberEntity> memberEntities = memberRepository.findAll();
-//
-//        for (MemberEntity i : memberEntities) {
-//            alarmRepository.save(AlarmEntity.builder()
-//                    .alarmReceiver(i)
-//                    .alarmTitle("새로운 공지사항-" + boardNo)
-//                    .alarmCategory("공지사항")
-//                    .boardNo(BoardEntity.builder().boardNo(boardNo).build())
-//                    .approvalNo(null)
-//                    .build());
-//        }
 
         return boardNo;
 
@@ -156,6 +115,8 @@ public class BoardService {
 //        }
 //        List<MemberEntity> memberEntities = memberRepository.findAll();
 //
+
+
 //        for (MemberEntity i : memberEntities) {
 //            alarmRepository.save(AlarmEntity.builder()
 //                    .alarmReceiver(i)
@@ -184,7 +145,7 @@ public class BoardService {
     }
 
     @Transactional
-    public Long update(Long boardNo, BoardUpdateDTO boardUpdateDTO, AttachSaveDto attachSaveDto, MultipartFile uploadFile) throws IOException {
+    public Long update(Long boardNo, BoardUpdateDTO boardUpdateDTO, AttachDto attachDto, MultipartFile uploadFile) throws IOException {
         BoardEntity boardEntity = boardRepository.findById(boardNo).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. boardNo=" + boardNo));
         boardEntity.update(
                 boardNo
@@ -192,15 +153,15 @@ public class BoardService {
                 , boardUpdateDTO.getBoardContent()
         );
 
-        if(attachSaveDto != null) {
+        if(attachDto != null) {
             if(attachRepository.findAllByBoardEntity(boardEntity).size() != 0) {
                 attachRepository.deleteBoardEntitiesByBoardEntity_BoardNo(boardNo);
             }
-            String filePath = filePath(attachSaveDto.getUuid(), attachSaveDto.getExt());
-            attachSaveDto.setPath(filePath);
-            attachSaveDto.setBoardNo(boardNo);
+            String filePath = filePath(attachDto.getUuid(), attachDto.getExt());
+            attachDto.setPath(filePath);
+            attachDto.setBoardNo(boardNo);
             uploadFile.transferTo(new File(projectPath + filePath));
-            AttachEntity attachEntity = attachSaveDto.toEntity();
+            AttachEntity attachEntity = attachDto.toEntity();
 
             attachEntity.updateBoardEntity(boardEntity);
             attachRepository.save(attachEntity);
