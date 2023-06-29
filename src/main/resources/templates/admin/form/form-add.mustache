@@ -98,31 +98,33 @@
         let data;
         let editor;
 
-        DecoupledDocumentEditor
-                .create( document.querySelector( '.editor' )
-                 )
-                .then( editor => {
-                    window.editor = editor;
-
-                    console.log(editor.ui.view.toolbar.element);
-
-                    // Set a custom container for the toolbar.
-                    document.querySelector( '.document-editor__toolbar' ).appendChild( editor.ui.view.toolbar.element );
-                    document.querySelector( '.ck-toolbar' ).classList.add( 'ck-reset_all' );
-
-                    // const toolbarContainer = document.querySelector( '.document-editor__toolbar'  );
-
-                    // toolbarContainer.appendChild( editor.ui.view.toolbar.element );
-                } )
-                .catch( error => {
-                    console.error( 'Oops, something went wrong!' );
-                    console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
-                    console.warn( 'Build id: mhijpyjl1akp-mumjti75eytr' );
-                    console.error( error );
-                } );
-
         $(()=>{
-            $("#btnSubmit").on("click", function () {
+            DecoupledDocumentEditor
+                    .create( document.querySelector( '.editor' ), {
+                        language: "ko",
+                        simpleUpload: {
+                            uploadUrl: "/upload/ajax"
+                        },
+                        sourceEditing: true
+                    })
+                    .then( editor => {
+                        window.editor = editor;
+
+                        document.querySelector( '.document-editor__toolbar' ).appendChild( editor.ui.view.toolbar.element );
+                        document.querySelector( '.ck-toolbar' ).classList.add( 'ck-reset_all' );
+
+                        $("#btnSubmit").on("click", function () {
+                            buttonInit(editor);
+                        })
+                    } )
+                    .catch( error => {
+                        console.error( 'Oops, something went wrong!' );
+                        console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
+                        console.warn( 'Build id: mhijpyjl1akp-mumjti75eytr' );
+                        console.error( error );
+                    });
+
+            function buttonInit(editor) {
                 event.preventDefault();
                 console.log("폼 입력 테스트")
 
@@ -135,7 +137,7 @@
                 //$("#formText").setValue()
 
                 $("#approvalForm").submit();
-            })
+            }
         })
 
     </script>
