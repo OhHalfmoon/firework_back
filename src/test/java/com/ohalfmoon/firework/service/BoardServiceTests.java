@@ -1,13 +1,7 @@
 package com.ohalfmoon.firework.service;
 
-import com.ohalfmoon.firework.dto.board.BoardResponseDTO;
-import com.ohalfmoon.firework.dto.board.BoardSaveDTO;
 import com.ohalfmoon.firework.dto.board.BoardUpdateDTO;
-import com.ohalfmoon.firework.dto.fileUpload.AttachSaveDto;
-import com.ohalfmoon.firework.model.BoardEntity;
-import com.ohalfmoon.firework.persistence.BoardRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FilenameUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +11,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.UUID;
 
 /**
  * packageName    : com.ohalfmoon.firework.service

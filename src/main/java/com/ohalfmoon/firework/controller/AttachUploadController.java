@@ -1,11 +1,12 @@
 package com.ohalfmoon.firework.controller;
 
+import com.ohalfmoon.firework.dto.fileUpload.AttachDto;
 import com.ohalfmoon.firework.dto.fileUpload.AttachResponseDto;
-import com.ohalfmoon.firework.dto.fileUpload.AttachSaveDto;
 import com.ohalfmoon.firework.service.AttachService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
@@ -14,8 +15,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -46,13 +49,15 @@ public class AttachUploadController {
         String uuid = UUID.randomUUID().toString();
         String ext = FilenameUtils.getExtension(uploadFile.getOriginalFilename());
 
-        AttachSaveDto dto = AttachSaveDto.builder()
-                .originName(uploadFile.getOriginalFilename())
-                .uuid(uuid)
-                .ext(ext)
-                .build();
+//        AttachSaveDto dto = AttachSaveDto.builder()
+//                .originName(uploadFile.getOriginalFilename())
+//                .uuid(uuid)
+//                .ext(ext)
+//                .build();
 
-        Long fileNo = service.fileSave(dto, uploadFile);
+        AttachDto dto = new AttachDto(uploadFile);
+
+        Long fileNo = service.upload(uploadFile, dto);
 
 
         Map<String, Object> map = new HashMap<>();
@@ -70,40 +75,43 @@ public class AttachUploadController {
 
     @GetMapping("/download")
     @ResponseBody
-    public ResponseEntity<Resource> download(@RequestParam Long fileNo) throws MalformedURLException {
+    public ResponseEntity<Resource> download(@RequestParam Long fileNo) throws MalformedURLException, FileNotFoundException {
 
-         AttachResponseDto file = service.getFile(fileNo, false);
+        AttachResponseDto dto = service.getFile(fileNo, false);
 
-        Resource resource = service.getFileResource(fileNo);
+//        Resource resource = Optional.of( service.getFileResource(fileNo))
+//                .orElseThrow(() -> new FileNotFoundException("파일이 존재하지 않습니다!"));
+        File file = new File(dto.getFile().getAbsolutePath());
 
-        if(resource.exists()) {
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION
-                            , "attachment; filename=\"" + file.getOriginName() + "\"")
-                    .body(resource);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders
+                .setContentDisposition(ContentDisposition.builder("attachment")
+                        .filename(dto.getOriginName(), StandardCharsets.UTF_8)
+                        .build());
 
+        FileSystemResource resource = new FileSystemResource(file);
+
+        return new ResponseEntity<>(resource, httpHeaders, HttpStatus.OK);
     }
 
     @GetMapping("/imageView")
     @ResponseBody
     public ResponseEntity<Resource> showImage(@RequestParam Long fileNo) throws IOException {
-        Resource resource = service.getFileResource(fileNo);
+//        Resource resource = service.getFileResource(fileNo);
 
+       AttachResponseDto dto = service.getFile(fileNo, true);
 
+        if (dto != null) {
 
-        if (resource != null) {
             HttpHeaders headers = new HttpHeaders();
-
-            String extension = FilenameUtils.getExtension(resource.getFilename());
+            String extension = dto.getExt();
 
             switch (extension.toLowerCase()) {
                 case "png":
                     headers.setContentType(MediaType.IMAGE_PNG);
                     break;
                 case "jpeg":
+                case "jpg":
                     headers.setContentType(MediaType.IMAGE_JPEG);
                     break;
                 case "gif":
@@ -111,7 +119,10 @@ public class AttachUploadController {
                     break;
             }
 
-            headers.setContentDisposition(ContentDisposition.inline().build());
+            headers.setContentDisposition(ContentDisposition.inline()
+                    .filename(dto.getOriginName(), StandardCharsets.UTF_8).build());
+
+            Resource resource = new FileSystemResource(dto.getFile());
 
             return ResponseEntity.ok()
                     .headers(headers)

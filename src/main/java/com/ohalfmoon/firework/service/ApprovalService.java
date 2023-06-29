@@ -1,7 +1,7 @@
 package com.ohalfmoon.firework.service;
 
 import com.ohalfmoon.firework.dto.approval.*;
-import com.ohalfmoon.firework.dto.fileUpload.AttachSaveDto;
+import com.ohalfmoon.firework.dto.fileUpload.AttachDto;
 import com.ohalfmoon.firework.model.*;
 import com.ohalfmoon.firework.persistence.*;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -91,7 +90,7 @@ public class ApprovalService {
 //    }
     //기안 제출(결재)
     @Transactional
-    public Long register(AttachSaveDto adto, MultipartFile uploadFile, ApprovalSaveDto saveDto) throws IOException {
+    public Long register(AttachDto adto, MultipartFile uploadFile, ApprovalSaveDto saveDto) throws IOException {
         ApprovalEntity approvalEntity = saveDto.toSaveApproval();
 
         Long no = approvalRepository.save(approvalEntity).getApprovalNo();
@@ -247,7 +246,7 @@ public class ApprovalService {
 
 //    결재 서류 수정
     @Transactional
-    public Long update(AttachSaveDto adto, MultipartFile uploadFile, long approvalNo, ApprovalUpdateDto updateDto) throws IOException {
+    public Long update(AttachDto adto, MultipartFile uploadFile, long approvalNo, ApprovalUpdateDto updateDto) throws IOException {
 
         ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
 

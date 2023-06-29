@@ -5,7 +5,7 @@ import com.ohalfmoon.firework.dto.FormResponseDto;
 import com.ohalfmoon.firework.dto.approval.*;
 import com.ohalfmoon.firework.dto.dept.DeptListResponseDTO;
 import com.ohalfmoon.firework.dto.docbox.DocboxListResponseDTO;
-import com.ohalfmoon.firework.dto.fileUpload.AttachSaveDto;
+import com.ohalfmoon.firework.dto.fileUpload.AttachDto;
 import com.ohalfmoon.firework.dto.paging.PageRequestDTO;
 import com.ohalfmoon.firework.dto.paging.PageResponseDTO;
 import com.ohalfmoon.firework.model.FormEntity;
@@ -73,18 +73,18 @@ public class ApprovalContoller {
 
         String uuid = UUID.randomUUID().toString();
         String ext = FilenameUtils.getExtension(file.getOriginalFilename());
-        AttachSaveDto attachSaveDto;
+        AttachDto attachDto;
         // file 없을 경우 null처리
         if(!file.isEmpty()){
-            attachSaveDto = AttachSaveDto.builder()
+            attachDto = AttachDto.builder()
                     .originName(file.getOriginalFilename())
                     .uuid(uuid)
                     .ext(ext)
                     .build();
         } else {
-            attachSaveDto = null;
+            attachDto = null;
         }
-            approvalService.register(attachSaveDto, file, saveDto);
+            approvalService.register(attachDto, file, saveDto);
         return "redirect:/";
     }
 
@@ -110,20 +110,20 @@ public class ApprovalContoller {
     public String update(@RequestParam("file") MultipartFile file, @PathVariable Long approvalNo, @ModelAttribute ApprovalUpdateDto updateDto) throws IOException {
         String uuid = UUID.randomUUID().toString();
         String ext = FilenameUtils.getExtension(file.getOriginalFilename());
-        AttachSaveDto attachSaveDto;
+        AttachDto attachDto;
         // file 없을 경우 null처리
         if(!file.isEmpty()){
             attachService.deleteAllApprovalNo(approvalNo);
-            attachSaveDto = AttachSaveDto.builder()
+            attachDto = AttachDto.builder()
                     .originName(file.getOriginalFilename())
                     .uuid(uuid)
                     .ext(ext)
                     .build();
         } else {
-            attachSaveDto = null;
+            attachDto = null;
         }
         log.info("dto값: {}", updateDto);
-        approvalService.update(attachSaveDto, file, approvalNo, updateDto);
+        approvalService.update(attachDto, file, approvalNo, updateDto);
 
         return "redirect:/";
     }

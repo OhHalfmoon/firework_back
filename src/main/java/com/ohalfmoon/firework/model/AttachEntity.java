@@ -1,6 +1,5 @@
 package com.ohalfmoon.firework.model;
 
-import com.ohalfmoon.firework.dto.fileUpload.AttachSaveDto;
 import lombok.*;
 
 import javax.persistence.*;

@@ -1,9 +1,13 @@
 package com.ohalfmoon.firework.model.spec;
 
-import com.ohalfmoon.firework.model.*;
+import com.ohalfmoon.firework.model.ApprovalEntity;
+import com.ohalfmoon.firework.model.AttachEntity;
+import com.ohalfmoon.firework.model.AttachEntity_;
+import com.ohalfmoon.firework.model.BoardEntity;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 
 /**
  * packageName    : com.ohalfmoon.firework.model.spec

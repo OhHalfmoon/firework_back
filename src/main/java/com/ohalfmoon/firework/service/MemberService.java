@@ -1,10 +1,7 @@
 package com.ohalfmoon.firework.service;
 
-import com.ohalfmoon.firework.config.auth.CustomUserDetails;
-import com.ohalfmoon.firework.config.auth.CustomUserDetailsService;
-import com.ohalfmoon.firework.dto.fileUpload.AttachSaveDto;
+import com.ohalfmoon.firework.dto.fileUpload.AttachDto;
 import com.ohalfmoon.firework.dto.member.*;
-import com.ohalfmoon.firework.dto.paging.PageRequestDTO;
 import com.ohalfmoon.firework.model.*;
 import com.ohalfmoon.firework.persistence.*;
 import lombok.RequiredArgsConstructor;
@@ -12,18 +9,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.PersistenceUnitUtil;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -129,7 +121,7 @@ public class MemberService {
     }
 
     @Transactional
-    public Long updateSign(AttachSaveDto adto, MultipartFile uploadFile, Long userNo) throws IOException {
+    public Long updateSign(AttachDto adto, MultipartFile uploadFile, Long userNo) throws IOException {
         String filePath =  filePath(adto.getUuid(), adto.getExt());
         adto.setPath(filePath);
         uploadFile.transferTo(new File(projectPath + filePath));
