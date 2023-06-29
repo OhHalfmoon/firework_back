@@ -76,11 +76,7 @@ public class ApprovalContoller {
         AttachDto attachDto;
         // file 없을 경우 null처리
         if(!file.isEmpty()){
-            attachDto = AttachDto.builder()
-                    .originName(file.getOriginalFilename())
-                    .uuid(uuid)
-                    .ext(ext)
-                    .build();
+            attachDto = new AttachDto(file);
         } else {
             attachDto = null;
         }
@@ -114,11 +110,7 @@ public class ApprovalContoller {
         // file 없을 경우 null처리
         if(!file.isEmpty()){
             attachService.deleteAllApprovalNo(approvalNo);
-            attachDto = AttachDto.builder()
-                    .originName(file.getOriginalFilename())
-                    .uuid(uuid)
-                    .ext(ext)
-                    .build();
+            attachDto = new AttachDto(file);
         } else {
             attachDto = null;
         }

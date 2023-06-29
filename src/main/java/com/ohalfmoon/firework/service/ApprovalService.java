@@ -14,6 +14,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.Nullable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +24,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -89,7 +91,7 @@ public class ApprovalService {
 //        return no;
 //    }
     //기안 제출(결재)
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public Long register(AttachDto adto, MultipartFile uploadFile, ApprovalSaveDto saveDto) throws IOException {
         ApprovalEntity approvalEntity = saveDto.toSaveApproval();
 
@@ -97,15 +99,21 @@ public class ApprovalService {
 
         // 파일 null 처리
         if (adto != null) {
-            String filePath = filePath(adto.getUuid(), adto.getExt());
-            adto.setPath(filePath);
+//            String filePath = filePath(adto.getUuid(), adto.getExt());
+//            adto.setPath(filePath);
 
-            uploadFile.transferTo(new File(projectPath + filePath));
+//            uploadFile.transferTo(new File(projectPath + filePath));
 
-            AttachEntity sign = adto.toEntity();
+//            AttachEntity sign = adto.toEntity();
             // 파일 null 처리
-            sign.updateApprovalEntity(approvalEntity);
-            attachRepository.save(sign);
+//            sign.updateApprovalEntity(approvalEntity);
+//            attachRepository.save(sign);
+            AttachDto dto = new AttachDto(uploadFile);
+            Long uploadId = attachService.upload(uploadFile, dto);
+
+            AttachEntity uploadAttach = attachRepository.findById(uploadId).orElseThrow(()->new IllegalArgumentException("존재하지 않는 파일입니다. fileNo = " + uploadId));
+            uploadAttach.updateApprovalEntity(approvalEntity);
+
         }
         alarmRepository.save(AlarmEntity.builder()
                 .approvalNo(ApprovalEntity.builder().approvalNo(no).build())

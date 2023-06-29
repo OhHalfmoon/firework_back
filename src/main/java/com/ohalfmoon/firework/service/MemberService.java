@@ -2,15 +2,21 @@ package com.ohalfmoon.firework.service;
 
 import com.ohalfmoon.firework.dto.fileUpload.AttachDto;
 import com.ohalfmoon.firework.dto.member.*;
-import com.ohalfmoon.firework.model.*;
-import com.ohalfmoon.firework.persistence.*;
+import com.ohalfmoon.firework.model.DeptEntity;
+import com.ohalfmoon.firework.model.MemberEntity;
+import com.ohalfmoon.firework.model.PositionEntity;
+import com.ohalfmoon.firework.model.State;
+import com.ohalfmoon.firework.persistence.AttachRepository;
+import com.ohalfmoon.firework.persistence.DeptRepository;
+import com.ohalfmoon.firework.persistence.MemberRepository;
+import com.ohalfmoon.firework.persistence.PositionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
@@ -59,20 +65,6 @@ public class MemberService {
 
     private final PasswordEncoder encoder;
     private final AttachService attachService;
-    @Value("${upload.path}")
-    private String uploadDir;
-
-    private String filePath(String uuid, String ext){
-        // 프로젝트 루트 경로 확인용
-
-        // 실제 업로드 폴더 경로
-        File uploadFolder = new File(projectPath + uploadDir);
-        if(!uploadFolder.exists()){
-            boolean mkdirs = uploadFolder.mkdirs();
-        }
-
-        return File.separator + uploadDir + File.separator + uuid + "." + ext;
-    }
 
     /**
      * 회원가입 기능
@@ -120,15 +112,17 @@ public class MemberService {
         }
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public Long updateSign(AttachDto adto, MultipartFile uploadFile, Long userNo) throws IOException {
-        String filePath =  filePath(adto.getUuid(), adto.getExt());
-        adto.setPath(filePath);
-        uploadFile.transferTo(new File(projectPath + filePath));
-        AttachEntity sign = adto.toEntity();
-        attachRepository.save(sign);
+//        String filePath =  filePath(adto.getUuid(), adto.getExt());
+//        adto.setPath(filePath);
+//        uploadFile.transferTo(new File(projectPath + filePath));
+//        AttachEntity sign = adto.toEntity();
+//        attachRepository.save(sign);
 
-        Long signNo = sign.getAttachNo();
+        Long signNo = attachService.upload(uploadFile, adto);
+
+        //Long signNo = sign.getAttachNo();
 
         MemberEntity memberEntity = memberRepository.findById(userNo)
                 .orElseThrow(() -> new IllegalArgumentException("해당 id가 존재하지 않습니다." + userNo));

@@ -104,11 +104,12 @@ public class MemberServiceTest {
     public void saveFileTest() throws IOException {
         MockMultipartFile file = new MockMultipartFile("signtest", "image-removebg-preview.png", "image/png", "Hello, World!".getBytes());
 
-        AttachDto dto = AttachDto.builder()
-                .uuid(UUID.randomUUID().toString())
-                .ext(FilenameUtils.getExtension(file.getOriginalFilename()))
-                .originName(file.getOriginalFilename())
-                .build();
+//        AttachDto dto = AttachDto.builder()
+//                .uuid(UUID.randomUUID().toString())
+//                .ext(FilenameUtils.getExtension(file.getOriginalFilename()))
+//                .originName(file.getOriginalFilename())
+//                .build();
+        AttachDto dto = new AttachDto(file);
 
 //        Long attachNo = attachService.fileSave(dto, file);
 //        log.info("파일테스트,{}", attachNo);

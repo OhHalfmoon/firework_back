@@ -37,21 +37,11 @@ public class AttachServiceTests {
     public void saveTest() throws IOException {
         MockMultipartFile file = new MockMultipartFile("file", "test.txt", "text/plain", "Hello, World!".getBytes());
 
-        AttachDto dto = AttachDto.builder()
-                .uuid(UUID.randomUUID().toString())
-                .ext(FilenameUtils.getExtension(file.getOriginalFilename()))
-                .originName(file.getOriginalFilename())
-                .approvalNo(32L)
-                .build();
+        AttachDto dto = new AttachDto(file);
 
         attachService.upload(file, dto);
 
-        AttachDto dto1 = AttachDto.builder()
-                .uuid(UUID.randomUUID().toString())
-                .ext(FilenameUtils.getExtension(file.getOriginalFilename()))
-                .originName(file.getOriginalFilename())
-                .approvalNo(32L)
-                .build();
+        AttachDto dto1 = new AttachDto(file);
 
         attachService.upload(file, dto1);
     }

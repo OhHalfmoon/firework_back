@@ -144,8 +144,8 @@ public class BoardService {
         return new BoardResponseDTO(boardRepository.findById(boardNo).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. boardNo=" + boardNo)));
     }
 
-    @Transactional
-    public Long update(Long boardNo, BoardUpdateDTO boardUpdateDTO, AttachDto attachDto, MultipartFile uploadFile) throws IOException {
+    @Transactional(propagation = Propagation.REQUIRED)
+    public Long update(Long boardNo, BoardUpdateDTO boardUpdateDTO, List<MultipartFile> files) throws IOException {
         BoardEntity boardEntity = boardRepository.findById(boardNo).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. boardNo=" + boardNo));
         boardEntity.update(
                 boardNo
@@ -153,18 +153,8 @@ public class BoardService {
                 , boardUpdateDTO.getBoardContent()
         );
 
-        if(attachDto != null) {
-            if(attachRepository.findAllByBoardEntity(boardEntity).size() != 0) {
-                attachRepository.deleteBoardEntitiesByBoardEntity_BoardNo(boardNo);
-            }
-            String filePath = filePath(attachDto.getUuid(), attachDto.getExt());
-            attachDto.setPath(filePath);
-            attachDto.setBoardNo(boardNo);
-            uploadFile.transferTo(new File(projectPath + filePath));
-            AttachEntity attachEntity = attachDto.toEntity();
-
-            attachEntity.updateBoardEntity(boardEntity);
-            attachRepository.save(attachEntity);
+        if(!files.get(0).isEmpty()) {
+            attachService.updateFileList(boardNo, files);
         }
 
         List<MemberEntity> memberEntities = memberRepository.findAll();

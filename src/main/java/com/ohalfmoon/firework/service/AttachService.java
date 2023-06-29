@@ -7,7 +7,6 @@ import com.ohalfmoon.firework.model.spec.AttachSpec;
 import com.ohalfmoon.firework.persistence.AttachRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.PathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -57,24 +56,7 @@ public class AttachService {
 //        return resource.getFile().getAbsolutePath();
 //    }
 
-
-    public String filePath(String uuid, String ext){
-        // 프로젝트 루트 경로 확인용
-
-        // 실제 업로드 폴더 경로
-        File uploadFolder = new File(projectPath + uploadDir);
-
-        log.info("uploadFolder path : {}", projectPath + uploadDir);
-
-        if(!uploadFolder.exists()){
-            boolean mkdirs = uploadFolder.mkdirs();
-            log.info("업로드 폴더 생성 : {}", mkdirs);
-        }
-
-        return File.separator + uploadDir + File.separator + uuid + "." + ext;
-    }
-
-    public void saveFile(MultipartFile multipartFile, AttachDto dto) throws IOException {
+    private void saveFile(MultipartFile multipartFile, AttachDto dto) throws IOException {
         File path = new File(uploadDir, dto.getPath());
         log.info("save dto : {}", dto);
         File file = dto.getFile();
@@ -231,37 +213,39 @@ public class AttachService {
     }
 
     @Transactional
-    public Long deleteAllBoardNo(Long boardNo) throws IOException {
-        Long result = 0L;
+    public void updateFileList(Long boardNo, List<MultipartFile> fileList) throws IOException {
+//        Long result = 0L;
 
         List<AttachEntity> fileDtos = attachRepository.findAll(AttachSpec.boardNo(boardNo));
 
-        return fileDeleteAll(result, fileDtos);
+        fileDeleteAll(boardNo, fileDtos);
+
+        fileBulkSave(fileList, boardNo);
     }
 
     private Long fileDeleteAll(Long result, List<AttachEntity> fileDtos) throws IOException {
         for(AttachEntity a : fileDtos){
-            String path = a.getPath();
+            String filePath = a.getPath();
+            log.info("delete path : {}", filePath);
 
-            Path resourcePath = Paths.get(projectPath + path);
-            Resource resource = new PathResource(resourcePath);
+            AttachResponseDto dto = entityToDto(a, false);
+
+//                File file = new File(dto.getFile().getAbsolutePath());
+
+//                Resource resource = new UrlResource("file:" + projectPath + filePath);
 
             // 파일 DB삭제
             attachRepository.deleteById(a.getAttachNo());
 
             // 실제 파일 삭제
-            if(resource.exists()){
-                File file = resource.getFile();
+            File file = new File(dto.getFile().getAbsolutePath());
 
-                boolean isDelete = file.delete();
+            boolean isDelete = file.delete();
 
-                if(!isDelete) {
-                    throw new RuntimeException("파일 삭제에 실패했습니다.");
-                } else {
-                    result++;
-                }
+            if(!isDelete) {
+                throw new RuntimeException("파일 삭제에 실패했습니다.");
             } else {
-                throw new FileNotFoundException("파일을 찾을 수 없습니다!");
+                result++;
             }
 
         }
@@ -274,27 +258,26 @@ public class AttachService {
     public void fileListSave(List<MultipartFile> fileList, Long boardNo) {
         // 파일 저장 시작
 
-//        try{
+        fileBulkSave(fileList, boardNo);
+    }
 
-            for (MultipartFile multipartFile : fileList) {
-                AttachDto dto = new AttachDto(multipartFile);
-                dto.setBoardNo(boardNo);
-                try {
-                    saveFile(multipartFile, dto);
-                } catch (IOException e){
-                    e.printStackTrace();
-                    throw new IllegalStateException("파일 저장 중 문제가 발생하였습니다.");
-                }
-                // 파일 정보 저장
 
-                AttachEntity attachEntity = dto.toEntity();
-                attachRepository.save(attachEntity);
-
+    private void fileBulkSave(List<MultipartFile> fileList, Long boardNo) {
+        for (MultipartFile multipartFile : fileList) {
+            AttachDto dto = new AttachDto(multipartFile);
+            dto.setBoardNo(boardNo);
+            try {
+                saveFile(multipartFile, dto);
+            } catch (IOException e){
+                e.printStackTrace();
+                throw new IllegalStateException("파일 저장 중 문제가 발생하였습니다.");
             }
-        //        }
-//        catch (IOException e){
-//            throw new IllegalStateException("파일 저장 중 문제가 발생하였습니다.");
-//        }
+            // 파일 정보 저장
+
+            AttachEntity attachEntity = dto.toEntity();
+            attachRepository.save(attachEntity);
+
+        }
     }
 
 }

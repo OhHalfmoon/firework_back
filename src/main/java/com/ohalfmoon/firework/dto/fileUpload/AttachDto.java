@@ -49,7 +49,7 @@ public class AttachDto {
     String ext;
 
 
-    @Builder
+//    @Builder
     public AttachDto(Long boardNo, Long approvalNo, String uuid, String originName, String path, String ext) {
         this.boardNo = boardNo;
         this.approvalNo = approvalNo;

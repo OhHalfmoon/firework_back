@@ -72,11 +72,9 @@ public class IndexController {
         String uuid = UUID.randomUUID().toString();
         String ext = FilenameUtils.getExtension(file.getOriginalFilename());
 
-        AttachDto saveDto = AttachDto.builder()
-                .originName(file.getOriginalFilename())
-                .uuid(uuid)
-                .ext(ext)
-                .build();
+        AttachDto saveDto = new AttachDto(file);
+
+
 //        log.info("dto : {}", saveDto);
 //        log.info("file : {}", file);
 //        log.info("user : {}", user.getAttachNo());

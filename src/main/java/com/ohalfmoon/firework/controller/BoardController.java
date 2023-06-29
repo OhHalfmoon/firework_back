@@ -11,7 +11,6 @@ import com.ohalfmoon.firework.service.AttachService;
 import com.ohalfmoon.firework.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -22,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -127,24 +125,10 @@ public class BoardController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TL', 'ROLE_CEO')")
     @PostMapping("/modify/{boardNo}")
-    public String modify(@PathVariable Long boardNo, @ModelAttribute BoardUpdateDTO boardUpdateDTO, @RequestParam("file") MultipartFile file) throws IOException {
-        String uuid = UUID.randomUUID().toString();
-        String ext = FilenameUtils.getExtension(file.getOriginalFilename());
-        AttachDto attachDto;
-
-        if(!file.isEmpty()){
-            attachService.deleteAllApprovalNo(boardNo);
-            attachDto = AttachDto.builder()
-                    .originName(file.getOriginalFilename())
-                    .uuid(uuid)
-                    .ext(ext)
-                    .build();
-        } else {
-            attachDto = null;
-        }
+    public String modify(@PathVariable Long boardNo, @ModelAttribute BoardUpdateDTO boardUpdateDTO, @RequestParam("file") List<MultipartFile> file) throws IOException {
         log.info("board={}", boardUpdateDTO);
         log.info("modify boardNo={}", boardNo);
-        boardService.update(boardNo, boardUpdateDTO, attachDto, file);
+        boardService.update(boardNo, boardUpdateDTO, file);
         return "redirect:/board/list";
     }
 
