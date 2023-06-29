@@ -99,8 +99,9 @@
                             <img src="{{contextPath}}/upload/imageView?fileNo={{user.attachNo}}"style="width: 100px;background: white;">
                         {{/user.isAttach}}
                         {{^user.isAttach}}
-                            <div class="col-sm-8 float-left">등록된 서명이 없습니다.&nbsp&nbsp 전자서명을 등록해 주세요.</div>
+                            <div class="col-sm-8 float-left">등록된 서명이 없습니다.</div>
                             <button type="button" class="btn btn-outline-secondary float-right" data-toggle="modal" data-target="#myModal">전자서명 등록</button>
+                            <div class="col-sm-8 float-left">배경이 없는 이미지파일을 등록해 주세요.</div>
                         {{/user.isAttach}}
                     </div>
                 </section>
