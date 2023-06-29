@@ -277,17 +277,21 @@
                             url: '/approval/reject/' + id,
                             datatype: 'json',
                             contentType: 'application/json; charset=utf-8',
-                            data: JSON.stringify(data)
-                        }).done(function () {
+                            data: JSON.stringify(data),
+                            success :function (responseData) {
+                                alert("결재가 반려되었습니다.")
+                            },error : function () {
+                                alert("잘못된 요청입니다.")
+                            }, complete :function () {
+                                refreshMemList();
+                            }
                         })
-                        alert("결재가 반려되었습니다.")
-                        refreshMemList();
                     }
                 }
             });
 
             $("#modify").click(function (){
-                if (writer != user) {
+                if (writer != user || ($('#approvalState').val() != 0)) {
                     alert("권한이 없습니다")
                 } else  {
                     var id = $('#approvalNo').val();
