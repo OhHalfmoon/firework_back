@@ -48,11 +48,11 @@ public class BoardController {
 
     private final AttachService attachService;
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TL')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TL', 'ROLE_CEO')")
     @GetMapping("/save")
     public void register() {}
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TL')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TL', 'ROLE_CEO')")
     @PostMapping("/save")
     public String save(BoardSaveDTO boardDTO, @RequestParam("file") List<MultipartFile> files) throws IOException {
         log.info("board={}", boardDTO);
@@ -105,7 +105,7 @@ public class BoardController {
         return "/board/view";
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TL')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TL', 'ROLE_CEO')")
     @GetMapping("/modify/{boardNo}")
     public String modify(Model model, @PathVariable Long boardNo) {
         log.info("modify");
@@ -114,7 +114,7 @@ public class BoardController {
         return "board/modify";
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TL')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TL', 'ROLE_CEO')")
     @PostMapping("/modify/{boardNo}")
     public String modify(@PathVariable Long boardNo, @ModelAttribute BoardUpdateDTO boardUpdateDTO, @RequestParam("file") MultipartFile file) throws IOException {
         String uuid = UUID.randomUUID().toString();
@@ -137,7 +137,7 @@ public class BoardController {
         return "redirect:/board/list";
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TL')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TL', 'ROLE_CEO')")
     @PostMapping("/remove")
     public String remove(Long boardNo) {
         log.info("remove boardNo={}", boardNo);

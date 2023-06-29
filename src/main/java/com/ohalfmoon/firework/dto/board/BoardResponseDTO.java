@@ -41,6 +41,7 @@ public class BoardResponseDTO {
         content = boardEntity.getBoardContent();
         regDate = boardEntity.getRegdate();
         name = boardEntity.getMemberEntity().getName();
+        userNo = boardEntity.getMemberEntity().getUserNo();
     }
 
     public BoardEntity toEntity() {
