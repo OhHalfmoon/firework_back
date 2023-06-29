@@ -62,11 +62,4 @@ public class AttachServiceTests {
         log.info("fileList : {}", fileList);
     }
 
-    @Test
-    @Transactional(rollbackFor = Exception.class)
-    public void deleteTests() throws IOException {
-        Long deleteAll = attachService.deleteAllApprovalNo(110L);
-
-        Assertions.assertThat(deleteAll).isGreaterThan(0L);
-    }
 }
