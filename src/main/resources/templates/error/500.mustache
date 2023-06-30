@@ -37,11 +37,11 @@
                 <h2 class="headline text-danger">500</h2>
 
                 <div class="error-content">
-                    <h3><i class="fas fa-exclamation-triangle text-danger"></i> Oops! Something went wrong.</h3>
+                    <h3><i class="fas fa-exclamation-triangle text-danger"></i> 오류가 발생하였습니다!</h3>
 
                     <p>
-                        We will work on fixing that right away.
-                        Meanwhile, you may <a href="{{contextPath}}">return to dashboard</a> or try using the search form.
+                        관리자에게 문의해주세요
+                        <a href="{{contextPath}}">메인 화면으로 이동</a>
                     </p>
 
                     <form class="search-form">
@@ -55,15 +55,6 @@
                         </div>
                         <!-- /.input-group -->
                     </form>
-
-                    <!-- TODO 개발시 에러 확인용으로만 사용, 최종완성때 지워야함! -->
-                    <div class="mt-4">
-                        <h6>에러정보</h6>
-                        {{#error}}
-                            <div>접근경로 : {{path}}</div>
-                            <div>에러메시지 : {{message}}</div>
-                        {{/error}}
-                    </div>
                 </div>
             </div>
             <!-- /.error-page -->
