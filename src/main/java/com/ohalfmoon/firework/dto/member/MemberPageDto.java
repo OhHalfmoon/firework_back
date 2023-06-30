@@ -2,6 +2,7 @@ package com.ohalfmoon.firework.dto.member;
 
 import com.ohalfmoon.firework.dto.member.MemberResponseDTO;
 import com.ohalfmoon.firework.dto.paging.PageResponseDTO;
+import com.ohalfmoon.firework.model.MemberEntity;
 import lombok.*;
 import org.springframework.data.domain.Page;
 
@@ -23,6 +24,6 @@ import org.springframework.data.domain.Page;
 @EqualsAndHashCode
 @AllArgsConstructor
 public class MemberPageDto {
-    private PageResponseDTO pageResponseDTO;
+    private PageResponseDTO<MemberEntity> pageResponseDTO;
     private Page<MemberResponseDTO> memberList;
 }
