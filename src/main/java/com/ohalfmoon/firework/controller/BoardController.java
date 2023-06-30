@@ -101,7 +101,7 @@ public class BoardController {
         model.addAttribute("boardList", boardList);
         model.addAttribute("pageDTO", pageResponseDTO);
 
-        return "/board/list";
+        return "board/list";
     }
 
     @GetMapping("/view/{boardNo}")
@@ -111,7 +111,7 @@ public class BoardController {
         model.addAttribute("fileList", attachService.getBoardFileList(boardNo));
 
 //        log.info("fileList : {}", attachService.getFileListByBoardNo(boardNo));
-        return "/board/view";
+        return "board/view";
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TL', 'ROLE_CEO')")
