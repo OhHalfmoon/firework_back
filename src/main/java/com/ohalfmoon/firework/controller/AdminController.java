@@ -1,5 +1,6 @@
 package com.ohalfmoon.firework.controller;
 
+import com.ohalfmoon.firework.config.auth.CustomUserDetails;
 import com.ohalfmoon.firework.dto.member.MemberPageDto;
 import com.ohalfmoon.firework.dto.member.MemberResponseDTO;
 import com.ohalfmoon.firework.dto.member.MemberUpdateByAdminRequestDTO;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +37,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * 2023-06-15                ycy             최초 생성
  */
 @Controller
-@RequestMapping("admin")
+@RequestMapping("/admin")
 @RequiredArgsConstructor
 @Slf4j
 public class AdminController {
@@ -56,14 +58,15 @@ public class AdminController {
      * @return the member
      */
     @GetMapping("/member/{userNo}")
-    public String getMember(Model model, MemberResponseDTO dto) {
+    public String getMember(Model model, MemberResponseDTO dto, @AuthenticationPrincipal CustomUserDetails details) {
         model.addAttribute("member", memberService.get(dto.getUserNo()));
         model.addAttribute("attend", attendService.getAttend(dto.getUserNo()));
         model.addAttribute("dept", deptService.deptList());
         model.addAttribute("position", positionService.positionList());
         model.addAttribute("role", Role.values());
+        model.addAttribute("user", details);
         model.addAttribute("state", State.values());
-        return "/admin/member/getMember";
+        return "admin/member/getMember";
     }
 
     /**
@@ -75,7 +78,7 @@ public class AdminController {
      */
     @PostMapping("/member/{userNo}")
     public String updateByAdmin(Long userNo, MemberUpdateByAdminRequestDTO dto) {
-        log.info("dto 확인 : {}", dto);
+//        log.info("dto 확인 : {}", dto);
         memberService.updateByAdmin(userNo, dto);
         return "redirect:/admin/member/"+userNo;
     }
@@ -87,17 +90,18 @@ public class AdminController {
      * @return the string
      */
     @GetMapping("/member")
-    public String member(Model model, PageRequestDTO dto, @PageableDefault(size = 10)Pageable pageable) {
+    public String member(Model model, @PageableDefault(size = 10)Pageable pageable, @AuthenticationPrincipal CustomUserDetails details) {
         Page<MemberEntity> entities = memberService.getStateByZero(pageable);
         Page<MemberEntity> entities2 = memberService.getStateByOne(pageable);
         Page<MemberEntity> entities3 = memberService.getStateByTwo(pageable);
         MemberPageDto memberPageDto = new MemberPageDto(new PageResponseDTO<>(entities), entities.map(MemberResponseDTO::new));
         MemberPageDto memberPageDto2 = new MemberPageDto(new PageResponseDTO<>(entities2), entities2.map(MemberResponseDTO::new));
         MemberPageDto memberPageDto3 = new MemberPageDto(new PageResponseDTO<>(entities3), entities3.map(MemberResponseDTO::new));
+        model.addAttribute("user", details);
         model.addAttribute("stateByZeroUser", memberPageDto);
         model.addAttribute("stateByOneUser", memberPageDto2);
         model.addAttribute("stateByTwoUser", memberPageDto3);
 
-        return "/admin/member/member";
+        return "admin/member/member";
     }
 }
