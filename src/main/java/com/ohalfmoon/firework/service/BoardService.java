@@ -89,6 +89,19 @@ public class BoardService {
 //            attachService.updateBoardFileList(boardNo, files);
             attachService.fileListSave(files, boardNo);
         }
+        List<MemberEntity> memberEntities = memberRepository.findAll();
+
+
+
+        for (MemberEntity i : memberEntities) {
+            alarmRepository.save(AlarmEntity.builder()
+                    .alarmReceiver(i)
+                    .alarmTitle("새로운 공지사항-" + boardNo)
+                    .alarmCategory("공지사항")
+                    .boardNo(BoardEntity.builder().boardNo(boardNo).build())
+                    .approvalNo(null)
+                    .build());
+        }
 
         return boardNo;
 
@@ -111,19 +124,7 @@ public class BoardService {
 ////            AttachEntity attachEntity = attachSaveDto.toEntity();
 ////            attachRepository.save(attachEntity);
 //        }
-//        List<MemberEntity> memberEntities = memberRepository.findAll();
-//
 
-
-//        for (MemberEntity i : memberEntities) {
-//            alarmRepository.save(AlarmEntity.builder()
-//                    .alarmReceiver(i)
-//                    .alarmTitle("새로운 공지사항-" + boardNo)
-//                    .alarmCategory("공지사항")
-//                    .boardNo(BoardEntity.builder().boardNo(boardNo).build())
-//                    .approvalNo(null)
-//                    .build());
-//        }
     }
 
     public List<BoardResponseDTO> getList() {
