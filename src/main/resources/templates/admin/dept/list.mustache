@@ -73,7 +73,7 @@
                                         </div>
 
                                         <div class="d-flex justify-content-between">
-                                            <button class="btn btn-primary" id="deptAddSubmit">입력</button>
+                                            <button class="btn btn-primary" id="deptAddSubmit" disabled>입력</button>
                                         </div>
                                     </div>
 
@@ -145,7 +145,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <button class="btn btn-primary" id="deptSubmit">입력</button>
+                                    <button class="btn btn-primary" id="deptSubmit" disabled>입력</button>
                                 </div>
                             </div>
                             <!-- /.card-body -->
@@ -159,25 +159,6 @@
     </div>
     <!-- /.content -->
 
-    <div class="modal fade" id="formDeleteModal" tabindex="-1" role="dialog" aria-labelledby="formDeleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="formDeleteModalLabel">모달 제목</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p><span id="formNoText"></span>번 양식을 삭제하시겠습니까?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                    <button type="button" class="btn btn-danger " id="submitBtn">삭제</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- /.content-wrapper -->
     {{>layout/footer}}
 
@@ -248,8 +229,8 @@
                     firstChildNodeList.push(childNode);
                 }
 
-                console.log('firstChildNodeId', firstChildNodeId);
-                console.log('firstNodeChildLen', firstChildNodeList);
+                // console.log('firstChildNodeId', firstChildNodeId);
+                // console.log('firstNodeChildLen', firstChildNodeList);
 
                 var nodeData = data.node.data
                 console.log('nodeData', nodeData);
@@ -257,13 +238,17 @@
                 var deptList = firstChildNodeList.map(item => {item.text})
 
                 if(nodeData.userNo !== undefined) {
+                    var submitBtn = $("#deptSubmit");
+
                     $("#memberNo").text(nodeData.userNo);
                     $("#memberName").text(nodeData.name);
                     $("#positionName").text(nodeData.positionName);
 
+                    submitBtn.prop("disabled", false);
+
                     $("#dept").empty().append('<option>변경할 부서를 선택해주세요</option>');
                     firstChildNodeList.forEach(item => {
-                        console.log('item', item);
+                        // console.log('item', item);
                         if (nodeData.deptNo !== item.data.deptNo) {
                             $("#dept").append(`<option value="${item.data.deptNo}">${item.data.deptName}</option>'`)
                         }
@@ -282,6 +267,12 @@
                     // 부서정보 입력
                     $("#updateDeptNo").val(nodeData.deptNo);
                     $("#updateDeptName").val(nodeData.deptName);
+
+                    if(nodeData.count > 0){
+                        $("#deptDelSubmit").attr("disabled", true);
+                    } else {
+                        $("#deptDelSubmit").attr("disabled", false);
+                    }
                 }
             });
 
@@ -306,7 +297,8 @@
                 console.log("test", isNaN(Number(selectDept)));
 
                 if(isNaN(Number(selectDept))){
-                    console.log("변경할 부서를 선택해주세요");
+                    $("#dept").val("");
+                    alert("변경할 부서를 선택해주세요!");
                     return;
                 }
 
@@ -315,6 +307,10 @@
                     deptNo: selectDept,
                 }
                 console.log(deptUpdateData)
+
+                var submitBtn = $(this);
+
+                submitBtn.prop("disabled", true);
 
                 $.ajax({
                     url: "{{contextPath}}/admin/dept/updateMemDept", // 클라이언트가 HTTP 요청을 보낼 서버의 URL 주소
@@ -326,15 +322,54 @@
 
                         console.log("ajax success", responseData);
 
+                        alert("사원의 부서를 변경하였습니다!");
+
                         redrawTree();
+
+                        $("#memberNo").text('사원번호');
+                        $("#memberName").text('이름');
+                        $("#positionName").text('직책');
+
+                        // $("#dept").val("");  // 선택된 값을 초기값으로 설정
+
+                        $("#dept").empty().append('<option>사원을 선택해주세요</option>');
+
+
+                        submitBtn.prop("disabled", true);
+
                     },
                     error: function (xhr, status, error) {
                         console.log(xhr, status, error);
+
+                        submitBtn.prop("disabled", false);
                     }
                 })
 
             } else {
-                console.log("회원을 선택해주세요!")
+                // console.log("회원을 선택해주세요!")
+                alert("회원을 선택해주세요!");
+            }
+        })
+
+        $("#addDeptName").on("input", function () {
+            var deptName = $("#addDeptName").val();
+            console.log("on input : ", deptName);
+
+            if(deptName === ''){
+                $("#deptAddSubmit").attr("disabled", true);
+            } else {
+                $("#deptAddSubmit").attr("disabled", false);
+            }
+        })
+
+        $("#updateDeptName").on("input", function () {
+            var deptName = $("#updateDeptName").val();
+            console.log("on input : ", deptName);
+
+            if(deptName === ''){
+                $("#deptUpdSubmit").attr("disabled", true);
+            } else {
+                $("#deptUpdSubmit").attr("disabled", false);
             }
         })
 
@@ -358,6 +393,8 @@
 
                         console.log("ajax success", responseData);
 
+                        alert("신규 부서를 생성하였습니다!");
+
                         redrawTree();
                     },
                     error: function (xhr, status, error) {
@@ -366,6 +403,8 @@
                         $("#addDeptName").val("")
                     }
                 })
+            } else {
+                alert("부서명을 입력해주세요!");
             }
 
         });
@@ -393,6 +432,8 @@
                     success: function (responseData) {
 
                         console.log("ajax success", responseData);
+
+                        alert("부서정보를 수정하였습니다!");
 
                         redrawTree();
                     },
@@ -437,6 +478,8 @@
                     success: function (responseData) {
 
                         console.log("ajax success", responseData);
+
+                        alert("부서를 삭제했습니다!");
 
                         redrawTree();
                     },
