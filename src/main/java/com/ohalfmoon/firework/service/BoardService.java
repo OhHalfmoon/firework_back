@@ -3,10 +3,8 @@ package com.ohalfmoon.firework.service;
 import com.ohalfmoon.firework.dto.board.BoardResponseDTO;
 import com.ohalfmoon.firework.dto.board.BoardSaveDTO;
 import com.ohalfmoon.firework.dto.board.BoardUpdateDTO;
-import com.ohalfmoon.firework.dto.fileUpload.AttachDto;
 import com.ohalfmoon.firework.dto.paging.PageRequestDTO;
 import com.ohalfmoon.firework.model.AlarmEntity;
-import com.ohalfmoon.firework.model.AttachEntity;
 import com.ohalfmoon.firework.model.BoardEntity;
 import com.ohalfmoon.firework.model.MemberEntity;
 import com.ohalfmoon.firework.model.spec.BoardSpec;
@@ -87,9 +85,9 @@ public class BoardService {
         // boardNo 생성
         Long boardNo = boardRepository.save(boardSaveDTO.toEntity()).getBoardNo();
 
-        if(files != null){
+        if(!files.get(0).isEmpty()) {
+//            attachService.updateBoardFileList(boardNo, files);
             attachService.fileListSave(files, boardNo);
-
         }
 
         return boardNo;
@@ -154,7 +152,7 @@ public class BoardService {
         );
 
         if(!files.get(0).isEmpty()) {
-            attachService.updateFileList(boardNo, files);
+            attachService.updateBoardFileList(boardNo, files);
         }
 
         List<MemberEntity> memberEntities = memberRepository.findAll();

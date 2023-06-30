@@ -7,20 +7,13 @@ import com.ohalfmoon.firework.model.spec.AttachSpec;
 import com.ohalfmoon.firework.persistence.AttachRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.PathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,7 +42,7 @@ public class AttachService {
     private final HttpServletRequest request;
 
     // 업로드 기준 경로
-    private static final String projectPath = new File("").getAbsolutePath();
+//    private static final String projectPath = new File("").getAbsolutePath();
 
 //    public String getProjectPath() throws IOException {
 //        Resource resource = resourceLoader.getResource("classpath:");
@@ -82,16 +75,6 @@ public class AttachService {
      */
     @Transactional
     public Long upload(MultipartFile multipartFile, AttachDto dto) throws IOException {
-        // 파일 저장 시작
-//        String filePath = filePath(dto.getUuid(), dto.getExt());
-//        dto.setPath(filePath);
-
-//        File path = new File(UPLOAD_PATH, dto.getPath());
-
-//        log.info("경로명 : {}", filePath);
-
-//        dto.getFile().transferTo(new File(projectPath + filePath));
-
         try{
             saveFile(multipartFile, dto);
             // 파일 정보 저장
@@ -106,29 +89,22 @@ public class AttachService {
 
     }
 
-    /**
-     * Gets file resource.
-     *
-     * @param attachNo the attach no
-     * @return the file resource
-     * @throws MalformedURLException the malformed url exception
-     */
-    @Transactional(readOnly = true)
-    public Resource getFileResource(Long attachNo) throws MalformedURLException {
-        AttachEntity attachEntity = attachRepository.findById(attachNo)
-                .orElseThrow(() -> new IllegalArgumentException("해당 파일이 존재하지 않습니다. attachNo = " + attachNo));
-
-        String filePath = attachEntity.getPath();
-
-        Resource resource = new UrlResource("file:" + projectPath + filePath);
-
-        if(resource.exists()){
-            return resource;
-        } else {
-            return null;
-        }
-
-    }
+//    @Transactional(readOnly = true)
+//    public Resource getFileResource(Long attachNo) throws MalformedURLException {
+//        AttachEntity attachEntity = attachRepository.findById(attachNo)
+//                .orElseThrow(() -> new IllegalArgumentException("해당 파일이 존재하지 않습니다. attachNo = " + attachNo));
+//
+//        String filePath = attachEntity.getPath();
+//
+//        Resource resource = new UrlResource("file:" + projectPath + filePath);
+//
+//        if(resource.exists()){
+//            return resource;
+//        } else {
+//            return null;
+//        }
+//
+//    }
 
     /**
      * Get file list list.
@@ -203,27 +179,45 @@ public class AttachService {
      * @param approvalNo the approval no
      * @return the long
      */
-    @Transactional
-    public Long deleteAllApprovalNo(Long approvalNo) throws IOException {
-        Long result = 0L;
+//    public Long deleteAllApprovalNo(Long approvalNo, ) throws IOException {
+//        List<AttachEntity> fileDtos = attachRepository.findAll(AttachSpec.approvalNo(approvalNo));
+//
+//        return fileDeleteAll(fileDtos);
+//    }
 
+    @Transactional
+    public Long updateApprovalFile(Long approvalNo, MultipartFile file) throws IOException {
         List<AttachEntity> fileDtos = attachRepository.findAll(AttachSpec.approvalNo(approvalNo));
 
-        return fileDeleteAll(result, fileDtos);
+        fileDeleteAll(fileDtos);
+
+        AttachDto dto = new AttachDto(file);
+        dto.setApprovalNo(approvalNo);
+
+        saveFile(file, dto);
+        // 파일 정보 저장
+        AttachEntity attachEntity = dto.toEntity();
+        attachRepository.save(attachEntity);
+
+        return attachEntity.getAttachNo();
     }
 
     @Transactional
-    public void updateFileList(Long boardNo, List<MultipartFile> fileList) throws IOException {
+    public void updateBoardFileList(Long boardNo, List<MultipartFile> fileList) throws IOException {
 //        Long result = 0L;
 
         List<AttachEntity> fileDtos = attachRepository.findAll(AttachSpec.boardNo(boardNo));
 
-        fileDeleteAll(boardNo, fileDtos);
+        fileDeleteAll(fileDtos);
 
         fileBulkSave(fileList, boardNo);
     }
 
-    private Long fileDeleteAll(Long result, List<AttachEntity> fileDtos) throws IOException {
+
+
+    private Long fileDeleteAll(List<AttachEntity> fileDtos) throws IOException {
+        Long result = 0L;
+
         for(AttachEntity a : fileDtos){
             String filePath = a.getPath();
             log.info("delete path : {}", filePath);

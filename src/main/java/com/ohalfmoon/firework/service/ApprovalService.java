@@ -58,20 +58,20 @@ public class ApprovalService {
 
     private final PasswordEncoder encoder;
     private final AttachService attachService;
-    @Value("${upload.path}")
-    private String uploadDir;
+//    @Value("${upload.path}")
+//    private String uploadDir;
 
-    private String filePath(String uuid, String ext){
-        // 프로젝트 루트 경로 확인용
-
-        // 실제 업로드 폴더 경로
-        File uploadFolder = new File(projectPath + uploadDir);
-        if(!uploadFolder.exists()){
-            boolean mkdirs = uploadFolder.mkdirs();
-        }
-
-        return File.separator + uploadDir + File.separator + uuid + "." + ext;
-    }
+//    private String filePath(String uuid, String ext){
+//        // 프로젝트 루트 경로 확인용
+//
+//        // 실제 업로드 폴더 경로
+//        File uploadFolder = new File(projectPath + uploadDir);
+//        if(!uploadFolder.exists()){
+//            boolean mkdirs = uploadFolder.mkdirs();
+//        }
+//
+//        return File.separator + uploadDir + File.separator + uuid + "." + ext;
+//    }
 
 
     //기안 제출(결재)
@@ -253,8 +253,8 @@ public class ApprovalService {
 //    }
 
 //    결재 서류 수정
-    @Transactional
-    public Long update(AttachDto adto, MultipartFile uploadFile, long approvalNo, ApprovalUpdateDto updateDto) throws IOException {
+    @Transactional(propagation = Propagation.REQUIRED)
+    public Long update(MultipartFile uploadFile, long approvalNo, ApprovalUpdateDto updateDto) throws IOException {
 
         ApprovalEntity approvalEntity = approvalRepository.findByApprovalNo(approvalNo);
 
@@ -266,18 +266,23 @@ public class ApprovalService {
                 updateDto.getRegdate()
         );
 
-        if (adto != null) {
-            if (attachRepository.findAllByApprovalEntity(approvalEntity).size() != 0) {
-                attachRepository.deleteAttachEntitiesByApprovalEntity_ApprovalNo(approvalNo);
-            }
-            String filePath = filePath(adto.getUuid(), adto.getExt());
-            adto.setPath(filePath);
-            uploadFile.transferTo(new File(projectPath + filePath));
-            AttachEntity sign = adto.toEntity();
-            // 파일 null 처리
-            sign.updateApprovalEntity(approvalEntity);
-            attachRepository.save(sign);
+        if (!uploadFile.isEmpty()) {
+//            if (attachRepository.findAllByApprovalEntity(approvalEntity).size() != 0) {
+//                attachRepository.deleteAttachEntitiesByApprovalEntity_ApprovalNo(approvalNo);
+//            }
+//
+//            String filePath = filePath(adto.getUuid(), adto.getExt());
+//            adto.setPath(filePath);
+//            uploadFile.transferTo(new File(projectPath + filePath));
+//
+//            AttachEntity sign = adto.toEntity();
+//            // 파일 null 처리
+//            sign.updateApprovalEntity(approvalEntity);
+//            attachRepository.save(sign);
+
+            attachService.updateApprovalFile(approvalNo, uploadFile);
         }
+
         if (approvalEntity.getApprovalOrder() == 1) {
             List<ApprovalLineDto> lineDtos = getApprovalUserName(approvalNo);
             alarmRepository.save(AlarmEntity.builder()

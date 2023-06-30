@@ -49,12 +49,6 @@ public class AttachUploadController {
         String uuid = UUID.randomUUID().toString();
         String ext = FilenameUtils.getExtension(uploadFile.getOriginalFilename());
 
-//        AttachSaveDto dto = AttachSaveDto.builder()
-//                .originName(uploadFile.getOriginalFilename())
-//                .uuid(uuid)
-//                .ext(ext)
-//                .build();
-
         AttachDto dto = new AttachDto(uploadFile);
 
         Long fileNo = service.upload(uploadFile, dto);
@@ -79,8 +73,6 @@ public class AttachUploadController {
 
         AttachResponseDto dto = service.getFile(fileNo, false);
 
-//        Resource resource = Optional.of( service.getFileResource(fileNo))
-//                .orElseThrow(() -> new FileNotFoundException("파일이 존재하지 않습니다!"));
         File file = new File(dto.getFile().getAbsolutePath());
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -97,7 +89,6 @@ public class AttachUploadController {
     @GetMapping("/imageView")
     @ResponseBody
     public ResponseEntity<Resource> showImage(@RequestParam Long fileNo) throws IOException {
-//        Resource resource = service.getFileResource(fileNo);
 
        AttachResponseDto dto = service.getFile(fileNo, true);
 
