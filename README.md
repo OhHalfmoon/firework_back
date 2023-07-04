@@ -14,11 +14,11 @@
 
 ## 개발 환경 설정
 
-```sh
-Front-end : JQuery & AjAX, BootStrap4, CKEditor, {{ MUSTACHE }}, TreeView.js
-Back-end : JAVA 1.8, Spring Boot, Spring Security, MariaDB, JPA
-tools : IntelliJ, DBeaver, Postman, Git
-```  
+
+>Front-end : JQuery & AjAX, BootStrap4, CKEditor, {{ MUSTACHE }}, TreeView.js  
+Back-end : JAVA 1.8, Spring Boot, Spring Security, MariaDB, JPA  
+Tools : IntelliJ, DBeaver, Postman, Git
+  
 
 ## 사용 예제
 
