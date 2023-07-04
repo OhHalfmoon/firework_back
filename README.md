@@ -134,6 +134,12 @@ state는 3개의 레벨로 미승인유저, 승인유저, 탈퇴회원으로 관
 </details>
 
 
+
+## Document
+
+>#### 서류 : <a href="https://docs.google.com/spreadsheets/d/1GRlM8714v9oGw3WbDz8jqPfoP7ULFIXCdVFrU4gGe-4/edit?usp=sharing">서류링크</a>
+>#### 서류내용 : 요구사항 정의서, 테이블명세서, 업무분장   
+>#### ppt : 파일첨부
   
 
   
