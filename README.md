@@ -2,15 +2,15 @@
 # 프로젝트명
 > team 단체티  
 > project : FireWorks   
+> 주제 : 전자결재 그룹웨어 프로그램 설계
 
 [![NPM Version][npm-image]][npm-url]
 [![Build Status][travis-image]][travis-url]
 [![Downloads Stats][npm-downloads]][npm-url]
 
-> 주제 : 전자결재 그룹웨어 프로그램 설계 
+
 
 ![](../header.png)
-
 
 ## 개발 환경 설정
 
