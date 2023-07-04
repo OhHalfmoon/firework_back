@@ -27,9 +27,15 @@ import javax.servlet.http.HttpServletRequest;
 public class GlobalControllerAdvice {
     @ModelAttribute("contextPath")
     public void addContextPath(HttpServletRequest request, Model model) {
-        String contextPath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+        String contextPath = request.getScheme() + "://" + request.getServerName();
+
+        int serverPort = request.getServerPort();
+        if (serverPort != 80 && serverPort != 443) {
+            contextPath += ":" + serverPort;
+        }
 
         model.addAttribute("contextPath", contextPath);
+
     }
 
     @ModelAttribute("user")
