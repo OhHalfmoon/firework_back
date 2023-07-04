@@ -23,8 +23,19 @@ npm test
 
 ## 사용 예제
 
->테스트 계정 :  사원계정, 팀장계정, 관리자계정 명시  
-  
+>테스트 계정  
+  사원계정   - id : fireworks pw : qwer1234  
+  관리자계정 - id : qwe pw : 1234
+
+
+## Collaborator
+
+이름 – [양찬용](https://github.com/yangchanyong) 
+
+XYZ 라이센스를 준수하며 ``LICENSE``에서 자세한 정보를 확인할 수 있습니다.
+
+[https://github.com/yourname/github-link](https://github.com/dbader/)
+
   
 
   
@@ -37,28 +48,17 @@ npm test
 <details><summary>게시판</summary>게시판내용</details>
 <details><summary>결재선</summary>결재선 내용</details>
 <details><summary>전자서명</summary>전자서명 내용</details>
-<details><summary>결재</summary>결재내용</details>
-<details><summary>알림</summary>알림내용</details>
-<details><summary>쪽지</summary>쪽지내용</details>
-
 <details><summary>결재</summary>
 ![결재2](https://github.com/OhHalfmoon/firework_back/assets/132035690/8fec3d8a-ed1d-473f-871a-d72e1e81201c)
-  
+
 > 문서내용을 입력합니다. 상단의
 >
 ![결재3](https://github.com/OhHalfmoon/firework_back/assets/132035690/2f6c4c63-fa8b-4400-99cd-63ca4089a99b)
 
 ![결재5](https://github.com/OhHalfmoon/firework_back/assets/132035690/7983612a-9176-4e0d-91d2-c4b19507d35d)
 </details>
-
-
-## Collaborator
-
-이름 – [@트위터 주소](https://twitter.com/dbader_org) – 이메일주소@example.com
-
-XYZ 라이센스를 준수하며 ``LICENSE``에서 자세한 정보를 확인할 수 있습니다.
-
-[https://github.com/yourname/github-link](https://github.com/dbader/)
+<details><summary>알림</summary>알림내용</details>
+<details><summary>쪽지</summary>쪽지내용</details>
 
 
 
