@@ -20,13 +20,20 @@ Back-end : JAVA 1.8, Spring Boot, Spring Security, MariaDB, JPA
 Tools : IntelliJ, DBeaver, Postman, Git
   
 
-## 사용 예제
+## 사용 예제  
+> Project site : https://final.ohalfmoon.com
+- 회원가입으로 신규계정을 사용하기 위해서는 관리자 계정의 승인이 필요합니다.
+- 기안작성 테스트를 위해서 전자서명 이미지파일(뒷배경이 없는 이미지파일)이 필요합니다.  
+테스트 서명파일을 첨부하였습니다.
 
->테스트 계정  
-  사원 - id : fireworks  
-     pw : qwer1234   
-> 관리자 - id : qwe   
-     pw : 1234 
+> 테스트 계정    
+     id : fireworks pw : qwer1234  
+     id : ycy pw : 1234  
+     id : admin99 pw : 1234  
+     id : sangoo1234 pw : qwer1234  
+
+> 관리자  
+     id : admin99 pw : 1234  
 
 ## Collaborator
 
@@ -162,6 +169,7 @@ state는 3개의 레벨로 미승인유저, 승인유저, 탈퇴회원으로 관
 >#### 서류 : <a href="https://docs.google.com/spreadsheets/d/1GRlM8714v9oGw3WbDz8jqPfoP7ULFIXCdVFrU4gGe-4/edit?usp=sharing">서류링크</a>
 >#### 서류내용 : 요구사항 정의서, 테이블명세서, 업무분장   
 >#### ppt : 파일첨부
+>#### 전자서명 이미지 : test.png
   
 
   
